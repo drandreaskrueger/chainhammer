@@ -1,3 +1,4 @@
+public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346)
 # chainhammer v04
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
