@@ -59,6 +59,8 @@ python send.py threaded1
  
 max rate that I have seen was 91 TPS.
 
+**yes, averaged over 1000 transactions; will measure intermediate peak rates next time, probably Thursday**
+
 ### multithreaded 2
 
 with an optimized number of parallel threads, i.e. a couple of hundred threads?
