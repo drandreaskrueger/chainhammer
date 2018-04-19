@@ -12,11 +12,11 @@ from __future__ import print_function
 from web3 import Web3, HTTPProvider
 import sys, time, threading
 
-httpAddress='http://localhost:22001' # node 1 of the 7nodes quorum example
+RPCaddress='http://localhost:22001' # node 1 of the 7nodes quorum example
 
 # HTTP provider 
 # (TODO: try IPC provider, perhaps done within the docker container?)
-web3 = Web3(HTTPProvider(httpAddress,request_kwargs={'timeout': 120}))
+web3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
 print("BlockNumber = ", web3.eth.blockNumber)
 
 def unlockAccount(address=None, password="", duration=3600):

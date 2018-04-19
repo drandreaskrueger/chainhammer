@@ -13,7 +13,9 @@ from web3 import Web3, HTTPProvider
 import time, timeit
 
 # HTTP provider 
-web3 = Web3(HTTPProvider('http://localhost:22001'))
+RPCaddress='http://localhost:22002'
+
+web3 = Web3(HTTPProvider(RPCaddress))
 blockNumber_start=web3.eth.blockNumber
 RAFT=True
 
