@@ -11,13 +11,9 @@ from __future__ import print_function
 
 RPCaddress='http://localhost:22001' # 22001 = node 1 of the 7nodes quorum example
 
-from web3 import Web3, HTTPProvider
+from web3 import Web3, HTTPProvider # pip3 install web3
 import sys, time, threading
-
-# HTTP provider 
-# (TODO: try IPC provider, perhaps done within the docker container?)
-web3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-print("BlockNumber = ", web3.eth.blockNumber)
+from pprint import pprint
 
 
 def unlockAccount(address=None, password="", duration=3600):
@@ -48,6 +44,7 @@ def initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0):
    
     print("unlock account:", unlockAccount())
 
+    # pprint (dir(contract))
     return contract
 
 
@@ -58,7 +55,11 @@ def contract_set(contract, arg, privateFor=None):
     txParameters = {'from': web3.eth.coinbase}
     if privateFor:
         txParameters['privateFor'] = privateFor
+        
+    # old web3 syntax:
     tx = contract.transact(txParameters).set( arg )
+    # new web3 syntax
+    # tx = contract.functions.set( arg ).transact(txParameters)
     return tx
 
 
@@ -101,6 +102,12 @@ def many_transactions_threaded(howMany):
     
 
 if __name__ == '__main__':
+
+    # HTTP provider 
+    # (TODO: try IPC provider, perhaps done within the docker container?)
+    web3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
+    print("BlockNumber = ", web3.eth.blockNumber)
+
     
     if len(sys.argv)>1 and sys.argv[1]=="threaded1":
         many_transactions_threaded(1000)

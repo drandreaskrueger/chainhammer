@@ -12,11 +12,11 @@ from __future__ import print_function
 RPCaddress='http://localhost:22002' # node 2 of the 7nodes quorum example
 RAFT=True
 
-from web3 import Web3, HTTPProvider
-import time, timeit
+import time, timeit, sys
 from pprint import pprint
 
-web3 = Web3(HTTPProvider(RPCaddress))
+from web3 import Web3, HTTPProvider, __version__ as web3version
+print ("web3 version %s, python %s" % (web3version, sys.version.replace("\n", "")))
 
 
 def loopUntilActionBegins(query_intervall = 0.1):
@@ -101,6 +101,9 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
 
 
 if __name__ == '__main__':
+    
+    web3 = Web3(HTTPProvider(RPCaddress))
+    
     blockNumber_start = web3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
     
