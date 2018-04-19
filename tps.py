@@ -15,7 +15,7 @@ RAFT=True
 import time, timeit, sys
 from pprint import pprint
 
-from web3 import Web3, HTTPProvider, __version__ as web3version
+from web3 import Web3, HTTPProvider, __version__ as web3version # pip3 install web3
 print ("web3 version %s, python %s" % (web3version, sys.version.replace("\n", "")))
 
 
