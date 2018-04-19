@@ -62,10 +62,13 @@ max rate that I have seen was 91 TPS.
 **yes, averaged over 1000 transactions; will measure intermediate peak rates next time, probably Thursday**
 
 ### multithreaded 2
+not a new thread per each of the `N` transaction but a queue with `M` multithreaded workers. 
 
-with an optimized number of parallel threads, i.e. a couple of hundred threads?
+```
+python send.py threaded2
+```
 
-TODO: find that sweet spot, if it exists.
+see [log.md](log.md) for details, and sweet spot
 
 ## example output
 
