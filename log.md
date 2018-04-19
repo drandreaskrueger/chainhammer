@@ -47,19 +47,16 @@ send 1000 transactions, multi-threaded, one thread per tx:
 
 > 65.6 TPS_average, 127 TPS peak
 
-after (chain empty again):
+after redoing [README.md#initialize-7nodes](README.md#initialize-7nodes), the chain is empty again:  
+
 
 ```
-vagrant destroy
-vagrant up
-vagrant ssh
-cd quorum-examples/7nodes
-./raft-init.sh
-./raft-start.sh
-sleep 3
-./runscript.sh script1.js
-exit
+BlockNumber =  1
+./send.py threaded1
+send 1000 transactions, multi-threaded, one thread per tx:
+
 ```
 
 > 74.6 TPS_average, 117 TPS peak
 
+It looks as if the TPS go down a bit, when the chain gets longer?
