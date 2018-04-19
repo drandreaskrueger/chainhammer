@@ -60,3 +60,53 @@ send 1000 transactions, multi-threaded, one thread per tx:
 > 74.6 TPS_average, 117 TPS peak
 
 It looks as if the TPS go down a bit, when the chain gets longer?
+
+
+### queue with *small* number of multi-threading workers 
+
+```
+./send.py threaded2 10
+```
+```
+   3 workers: 32.0 TPS_average,  38 TPS peak
+   5 workers: 44.3 TPS_average,  56 TPS peak
+  10 workers: 62.9 TPS_average,  72 TPS peak
+  15 workers: 69.5 TPS_average,  85 TPS peak  
+  20 workers: 74.7 TPS_average,  82 TPS peak
+  25 workers: 74.3 TPS_average,  85 TPS peak                
+  30 workers: 72.5 TPS_average,  92 TPS peak       
+```
+
+--> multithreading does not need awfully many parallel threads, 25 seems optimal.
+
+### batched multi-threading, no Queue
+Even at optimal number of workers (74.3 TPS), 
+to use the Queue seemed to have some overhead, 
+compared to simple 1000 threads (92.9 TPS) ...
+ 
+So what if we just batch the simple threading.
+
+```
+ batch size  25: 62.2 TPS_average,   85 TPS peak 
+ batch size  50: 65.6 TPS_average,  140 TPS peak
+ batch size 100: 70.2 TPS_average,  122 TPS peak
+ batch size 200: 71.3 TPS_average,  112 TPS peak
+batch size 1000: 72.2 TPS_average,  108 TPS peak
+```
+
+the last is identical to 
+
+```
+./send.py threaded1
+```
+which results in
+```
+72.4 TPS_average,  135 TPS peak
+```
+
+so the initial 92.9 TPS average could not even be replicated anymore; strange.
+
+but in short: thread batching does not help.
+
+
+

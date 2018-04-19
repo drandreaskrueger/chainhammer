@@ -139,6 +139,38 @@ def many_transactions_threaded_Queue(contract, howMany, num_worker_threads=100):
     
 
 
+def many_transactions_threaded_in_batches(contract, howMany, batchSize=25):
+    """
+    submit many transactions multi-threaded;
+    But in batches of rather small numbers.
+    """
+
+    print ("send %d transactions, multi-threaded, one thread per tx, in batches of %d parallel threads:\n" % (howMany, batchSize))
+
+    howManyLeft=howMany
+    while howManyLeft>0:
+            
+        print ("Next batch of %d transactions ... %d left to do" % (batchSize, howManyLeft))
+        threads = []
+        for i in range(batchSize):
+            t = Thread(target = contract_set,
+                       args   = (contract, 7))
+            threads.append(t)
+            print (".", end="")
+        print ("%d transaction threads created." % len(threads))
+    
+        for t in threads:
+            t.start()
+            print (".", end="")
+            sys.stdout.flush()
+        print ("all threads started.")
+        
+        for t in threads: 
+            t.join()
+        print ("all threads ended.")
+
+        howManyLeft -= batchSize
+
 if __name__ == '__main__':
 
     # HTTP provider 
@@ -162,6 +194,12 @@ if __name__ == '__main__':
                     pass
             many_transactions_threaded_Queue(contract, 1000, num_worker_threads=num_workers)
             
+        elif sys.argv[1]=="threaded3":
+            batchSize=25
+            many_transactions_threaded_in_batches(contract, 
+                                                  howMany=1000, 
+                                                  batchSize=batchSize)
+          
         else:
             print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
     else:
