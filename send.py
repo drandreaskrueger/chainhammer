@@ -4,7 +4,7 @@ from __future__ import print_function
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v04
+@version: v05 (19/April/2018)
 @since:   17/April/2018
 @author:  https://github.com/drandreaskrueger
 """
@@ -92,6 +92,8 @@ def many_transactions_threaded(howMany):
 
     for t in threads:
         t.start()
+        print (".", end="")
+        sys.stdout.flush()
     print ("all threads started.")
     
     for t in threads: 
