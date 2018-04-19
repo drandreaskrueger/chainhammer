@@ -9,15 +9,16 @@ from __future__ import print_function
 @author:  https://github.com/drandreaskrueger
 """
 
+RPCaddress='http://localhost:22001' # 22001 = node 1 of the 7nodes quorum example
+
 from web3 import Web3, HTTPProvider
 import sys, time, threading
-
-RPCaddress='http://localhost:22001' # node 1 of the 7nodes quorum example
 
 # HTTP provider 
 # (TODO: try IPC provider, perhaps done within the docker container?)
 web3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
 print("BlockNumber = ", web3.eth.blockNumber)
+
 
 def unlockAccount(address=None, password="", duration=3600):
     """
@@ -79,15 +80,13 @@ def many_transactions_threaded(howMany):
     """
 
     contract = initialize()
-    
-    threads = []
 
+    threads = []
     for i in range(howMany):
         t = threading.Thread(target = contract_set,
                              args   = (contract, 7))
         threads.append(t)
         print (".", end="")
-    
     print ("%d transaction threads created." % len(threads))
 
     for t in threads:
@@ -98,7 +97,6 @@ def many_transactions_threaded(howMany):
     
     for t in threads: 
         t.join()
-        
     print ("all threads ended.")
     
 
