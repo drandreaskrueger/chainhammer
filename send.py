@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
+# from __future__ import print_function
 
 """
 @summary: submit many contract.set(arg) transactions to the example contract
@@ -57,9 +57,9 @@ def contract_set(contract, arg, privateFor=None):
         txParameters['privateFor'] = privateFor
         
     # old web3 syntax:
-    tx = contract.transact(txParameters).set( arg )
+    # tx = contract.transact(txParameters).set( arg )
     # new web3 syntax
-    # tx = contract.functions.set( arg ).transact(txParameters)
+    tx = contract.functions.set( arg ).transact(txParameters)
     return tx
 
 
@@ -72,7 +72,9 @@ def many_transactions(howMany):
     
     for i in range(howMany):
         tx = contract_set(contract, 7)
-        print ("set() transaction submitted: ", tx)
+        
+        # print ("set() transaction submitted: ", tx) # old web3 
+        print ("set() transaction submitted: ", Web3.toHex(tx)) # new web3
 
 
 def many_transactions_threaded(howMany):

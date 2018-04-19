@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-from __future__ import print_function
+#!/usr/bin/env python3
+# from __future__ import print_function
 
 """
 @summary: Timing transactions that are getting into the chain
