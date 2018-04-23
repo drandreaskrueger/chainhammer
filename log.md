@@ -120,7 +120,16 @@ but in short: thread batching does not help.
 ```
 
 ### doing away with vagrant
-because [suggested here](https://github.com/jpmorganchase/quorum/issues/346)
+because [suggested here](https://github.com/jpmorganchase/quorum/issues/346) 
 
-Now see https://github.com/drandreaskrueger/quorum-examples/tree/master/non-vagrant because pull-request to jpm repo.
+> You can achieve significantly higher TPS:  
+> 1. Not running in vagrant  
+> ...
+
+Now see repo https://github.com/drandreaskrueger/quorum-examples/tree/master/non-vagrant because pull-request to jpm repo.
+
+**Status quo: quorum crashes**, see [issue #352](https://github.com/jpmorganchase/quorum/issues/352), and [my 'non-vagrant' manual](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md)
+
+--> going back to running everything inside vagrant *sigh* .
+
 
