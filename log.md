@@ -132,4 +132,48 @@ Now see repo https://github.com/drandreaskrueger/quorum-examples/tree/master/non
 
 --> going back to running everything inside vagrant *sigh* .
 
+### back to vagrant
 
+```
+rm -rf examples/7nodes/qdata
+
+vagrant up
+vagrant ssh
+
+cd quorum-examples/7nodes
+./raft-init.sh
+./raft-start.sh
+sleep 4
+./runscript.sh script3.js # script3.js deploys contract WITHOUT privateFor parameter
+```
+
+### gas
+
+Turns out the above transactions had all failed 
+(even though they made it into the chain, and 
+drove raft into making new blocks), 
+because `gas=90000` has to be set manually as an input parameter.  
+ 
+A typical `set(7)` transaction needs `gas=26644`.
+
+### sending via web3 versus sending via RPC
+Samer Falah (@jpmsam) had [suggested](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) 
+that I submit the transactions not via web3, but directly via RPC calls; to speed up the TPS.
+
+So I went through the pain of manually compiling the transaction from ABI, method_ID, padded parameter, etc. - see [code](TBA)
+
+*Results:*
+ 
+#### blocking (non-async)
+
+set() via web3:  
+
+
+set() via RPC:
+
+#### threaded2 (async, queue with 23 workers)
+
+set() via web3:  
+
+
+set() via RPC:
