@@ -238,7 +238,7 @@ def many_transactions_threaded_Queue(contract, howMany, num_worker_threads=100):
     with size limited threading Queue
     """
 
-    print ("send %d transactions, via multi-threading queue with %d workers:\n" % (howMany, num_workers))
+    print ("send %d transactions, via multi-threading queue with %d workers:\n" % (howMany, num_worker_threads))
 
     q = Queue()
     
@@ -262,7 +262,7 @@ def many_transactions_threaded_Queue(contract, howMany, num_worker_threads=100):
     print ("%d items queued." % howMany)
 
     q.join()
-    print ("all items - done.")
+    print ("\nall items - done.")
     
 
 
@@ -326,7 +326,9 @@ def benchmark():
                     num_workers = int(sys.argv[2])
                 except:
                     pass
-            many_transactions_threaded_Queue(contract, 1000, num_worker_threads=num_workers)
+                
+            numTx = 1000
+            many_transactions_threaded_Queue(contract, numTx, num_worker_threads=num_workers)
             
         elif sys.argv[1]=="threaded3":
             batchSize=25
@@ -346,7 +348,7 @@ if __name__ == '__main__':
 
     # test_contract_set_via_web3(); exit()
     # test_argument_encoding(); exit()
-    test_contract_set_via_RPC(); exit()
+    # test_contract_set_via_RPC(); exit()
 
     benchmark()
 
