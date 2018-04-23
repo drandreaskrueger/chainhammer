@@ -160,6 +160,5 @@ Also see  https://github.com/drandreaskrueger/quorum-examples/blob/master/non-va
 
 = /home/akrueger/Documents/Code/github/non-electron/drandreaskrueger_quorum-examples
 
-
-could not commit this on Thursday, because the internet came down ... again. What a shitty workplace environment.
+moving this there
 
