@@ -65,10 +65,12 @@ max rate that I have seen was 91 TPS.
 not a new thread per each of the `N` transaction but a queue with `M` multithreaded workers. 
 
 ```
-python send.py threaded2
+python send.py threaded2 23
 ```
 
-see [log.md](log.md) for details, and sweet spot
+see [log.md](log.md) for details, and sweet spot `M=23`
+
+
 
 ## example output
 
