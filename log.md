@@ -172,7 +172,14 @@ Then constellation might slow everything down?
 Samer Falah (@jpmsam) had [suggested](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) 
 that I submit the transactions not via web3, but directly via RPC calls; to speed up the TPS.
 
-So I went through the pain of manually compiling the transaction from ABI, method_ID, padded parameter, etc. - see [code](TBA)
+So I went through the pain of manually compiling the transaction from ABI, 
+method_ID, padded parameter, etc. 
+- see [code](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L87-112) 
+and then submitting that manually created transaction via requests directly to the JSON-RPC server 
+- see [code](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L144-159).
+
+The two choices can be switched with this global constant [ROUTE](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L13).
+
 
 *Results:*
  
