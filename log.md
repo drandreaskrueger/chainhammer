@@ -173,10 +173,10 @@ Samer Falah (@jpmsam) had [suggested](https://github.com/jpmorganchase/quorum/is
 that I submit the transactions not via web3, but directly via RPC calls; to speed up the TPS.
 
 So I went through the pain of manually compiling the transaction from ABI, 
-method_ID, padded parameter, etc. 
-- see [code](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L87-112) 
-and then submitting that manually created transaction via requests directly to the JSON-RPC server 
-- see [code](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L144-159).
+method_ID, padded parameter, etc. - see 
+[code](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L87-112) 
+and then submitting that manually created transaction via requests directly to the JSON-RPC server - see 
+[code](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L144-159).
 
 The two choices can be switched with this global constant [ROUTE](https://gitlab.com/electronDLT/chainhammer/blob/9ef7da32443640f2d929b13270a29ac4eef3bc37/send.py#L13).
 
@@ -187,33 +187,38 @@ The two choices can be switched with this global constant [ROUTE](https://gitlab
 
 100 transactions:
 
+```
 set() via web3: 75.3 TPS_average, 87 TPS peak  
 set() via RPC : 75.2 TPS_average, 101 TPS peak  
+```
 
 #### threaded2 (async, queue with 23 workers)
 Initially, the nodes crashed quite a few times when trying 1000 transactions, so I started with a smaller number first:
 
 300 transactions:
-
+```
 set() via web3: 153.8 TPS_average, 183 TPS peak  
 set() via RPC : 133.0 TPS_average, 235 TPS peak
+```
 
 500 transactions:  
-
+```
 set() via web3: 146.3 TPS_average, 173 TPS peak
 set() via RPC : 126.8 TPS_average, 380 TPS peak  
-
+```
 1000 transactions:
-
+```
 set() via web3: 141.9 TPS_average, 209 TPS peak  
 set() via RPC : 112.5 TPS_average, 393 TPS peak
-
+```
 
 So ... calling the JSON-RPC server directly reaches higher peak rates temporarily, 
 but then seems to throttle, because the average TPS is considerably lower than  
 submitting the transactions with web3.
 
-So - no speed up. Have I lost a whole day of coding now?
+So - **no speed increase**. 
+
+*Have I lost a whole day of coding now?*
 
 
 ### no privateFor (previous chapter), versus `privateFor=["..."]`
