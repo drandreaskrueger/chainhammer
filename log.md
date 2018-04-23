@@ -156,6 +156,18 @@ because `gas=90000` has to be set manually as an input parameter.
  
 A typical `set(7)` transaction needs `gas=26644`.
 
+
+### non private contract
+First I will now benchmark **quorum raft** without setting the `privateFor` field,
+by varying the [script1.js](script1.js) --> [script3.js](script3.js) 
+
+So I expect constellation to not be in the way.  
+
+Then later the same benchmarking but with `privateFor` field set.  
+
+Then constellation might slow everything down?  
+
+
 ### sending via web3 versus sending via RPC
 Samer Falah (@jpmsam) had [suggested](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) 
 that I submit the transactions not via web3, but directly via RPC calls; to speed up the TPS.

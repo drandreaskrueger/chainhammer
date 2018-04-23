@@ -21,6 +21,7 @@ from threading import Thread
 from queue import Queue
 from pprint import pprint
 
+import requests # pip3 install requests
 
 def unlockAccount(address=None, password="", duration=3600):
     """
@@ -140,19 +141,24 @@ def contract_set_via_RPC(contract, arg, privateFor=None, gas=90000):
     
     method_ID = contract_method_ID("set", contract.abi)
     data = argument_encoding(method_ID, arg)
-    
     txParameters = {'from': w3.eth.coinbase, 
                     'to' : contract.address,
-                    'gas' : gas,
+                    'gas' : w3.toHex(gas),
                     'data' : data} 
-    
     if privateFor:
         txParameters['privateFor'] = privateFor  # untested
- 
-    tx = w3.eth.sendTransaction(txParameters)
-    print ("[sent directly via RPC]", end=" ")
     
-    tx = w3.toHex(tx)
+    method = 'eth_sendTransaction'
+    payload= {"jsonrpc" : "2.0",
+               "method" : method,
+               "params" : [txParameters],
+               "id"     : 1}
+    headers = {'Content-type' : 'application/json'}
+    response = requests.post(RPCaddress, json=payload, headers=headers)
+    # print('raw json response: {}'.format(response.json()))
+    tx = response.json()['result']
+        
+    print ("[sent directly via RPC]", end=" ")
     return tx
 
 
@@ -340,7 +346,7 @@ if __name__ == '__main__':
 
     # test_contract_set_via_web3(); exit()
     # test_argument_encoding(); exit()
-    # test_contract_set_via_RPC(); exit()
+    test_contract_set_via_RPC(); exit()
 
     benchmark()
 
