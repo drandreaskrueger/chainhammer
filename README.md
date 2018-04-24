@@ -1,5 +1,5 @@
 public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346)
-# chainhammer v04
+# chainhammer v05
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
 ## initialize 7nodes
@@ -113,3 +113,26 @@ See [log.md](log.md) for what I have tried to get this faster.
 how can I speed this up?
 
 * see [jpmsam suggestions April 18th](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382523147)
+
+## issues raised
+while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
+
+* [Q #322](https://github.com/jpmorganchase/quorum/issues/322) **tests failing (v2.0.2)** 
+  * non-failing tests are ... nice to have ;-)
+* [Q #346](https://github.com/jpmorganchase/quorum/issues/346) **~90 tps?** 
+  * ongoing discussion!
+* [Q #351](https://github.com/jpmorganchase/quorum/issues/351) **version mismatch 2.0.2 --> 2.0.1** 
+  * tiny issue only
+* [Q #352](https://github.com/jpmorganchase/quorum/issues/352) **panic: runtime error: invalid memory address or nil pointer dereference** 
+  * needs fixing, before I can continue!
+* [QE #85](https://github.com/jpmorganchase/quorum-examples/issues/85) **7nodes node crashing - fatal error: runtime: out of memory**
+  * Increase memory in vagrant config file
+* [QE #86](https://github.com/jpmorganchase/quorum-examples/issues/86) **7nodes: some nodes with web3.eth.accounts==[ ]** 
+  * nice to have
+* [QE #87](https://github.com/jpmorganchase/quorum-examples/issues/87) **7nodes: private.set(3) fails with a 500 Internal Server Error when done from node 7**
+  * was only: lack of good error message
+* [QE #90](https://github.com/jpmorganchase/quorum-examples/issues/90) **2 recipient keys in `privateFor` - not working???** 
+  * *"its not currently possible to add a new participant to an existing private contract. It's one of the enhancements that we have in our backlog."*
+* [QE PR #93](https://github.com/jpmorganchase/quorum-examples/pull/93) **initialize JSRE var with deployed contract, and script2.js to deploy privateFor 2 recipients**
+
+
