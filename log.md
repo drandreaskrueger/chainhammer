@@ -222,7 +222,8 @@ So - **no speed increase**.
 
 
 ### always resetting the chain before each experiment:
-Longer chain / previously hammered system ... seems to lower the TPS - really?
+Longer chain / previously hammered system ... seems to lower the TPS - really?  
+Sadly, that seems to be the case; so for better accuracy, I always reset before each experiment.  
 
 Quick-reset:
 ```
@@ -230,7 +231,7 @@ Quick-reset:
 ```
 
 #### non-`privateFor` contract
-contract deployed with `./runscript.sh script3.js` 
+contract deployed with `script3.js` 
 
 blocking (non-async):
 ```
@@ -253,7 +254,7 @@ RPC : 177.1 TPS_average, 270 TPS peak
 
 #### contract deployed with `privateFor=["..."]`
 
-contract deployed with `./runscript.sh script1.js`
+contract deployed with `script1.js`
 
 and for each experiment start again at block 1:
 ```
@@ -278,3 +279,31 @@ async, queue, 23 workers; `send.py threaded2 23`
 web3: 143.0 TPS_average, 243 TPS peak
 RPC : 136.8 TPS_average, 248 TPS peak 
 ```
+
+
+#### contract deployed with `privateFor=["..."]`, AND transactions with `privateFor=["..."]` 
+
+contract deployed with `script1.js`; and for each experiment re-start again at block 1:
+```
+./stop.sh; ./raft-init.sh; ./raft-start.sh; sleep 4; ./runscript.sh script1.js
+```
+always 1000 transactions.  
+
+blocking (non-async):
+```
+web3: 61.6 TPS_average, 78 TPS peak  
+RPC : 62.8 TPS_average, 83 TPS peak  
+```
+
+async, 1000 threads; `send.py threaded1`
+```
+web3:  82.7 TPS_average, 134 TPS peak
+RPC :  78.8 TPS_average, 133 TPS peak
+```
+
+async, queue, 23 workers; `send.py threaded2 23`
+```
+web3:  89.6 TPS_average, 138 TPS peak
+RPC :  83.9 TPS_average, 129 TPS peak 
+```
+
