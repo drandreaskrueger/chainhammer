@@ -221,7 +221,60 @@ So - **no speed increase**.
 *Have I lost a whole day of coding now?*
 
 
-### no privateFor (previous chapter), versus `privateFor=["..."]`
+### always resetting the chain before each experiment:
+Longer chain / previously hammered system ... seems to lower the TPS - really?
 
-TODO, perhaps tomorrow.
+Quick-reset:
+```
+./stop.sh; ./raft-init.sh; ./raft-start.sh; sleep 4; ./runscript.sh script3.js 
+```
 
+#### non-`privateFor` contract
+contract deployed with `./runscript.sh script3.js` 
+
+blocking (non-async):
+```
+web3: 93.4 TPS_average, 105 TPS peak  
+RPC : 98.5 TPS_average, 114 TPS peak  
+```
+
+async, 1000 threads; `send.py threaded1`
+```
+web3: 129.3 TPS_average, 203 TPS peak
+RPC : 146.3 TPS_average, 307 TPS peak
+```
+
+async, queue 23, workers; `send.py threaded2 23`
+```
+web3: 149.2 TPS_average, 183 TPS peak
+RPC : 177.1 TPS_average, 270 TPS peak 
+```
+
+
+#### contract deployed with `privateFor=["..."]`
+
+contract deployed with `./runscript.sh script1.js`
+
+and for each experiment start again at block 1:
+```
+./stop.sh; ./raft-init.sh; ./raft-start.sh; sleep 4; ./runscript.sh script1.js
+```
+always 1000 transactions.  
+
+blocking (non-async):
+```
+web3: 85.2 TPS_average, 109 TPS peak  
+RPC : 91.4 TPS_average, 160 TPS peak  
+```
+
+async, 1000 threads; `send.py threaded1`
+```
+web3: 132.2 TPS_average, 267 TPS peak
+RPC : 111.4 TPS_average, 350 TPS peak
+```
+
+async, queue, 23 workers; `send.py threaded2 23`
+```
+web3: 143.0 TPS_average, 243 TPS peak
+RPC : 136.8 TPS_average, 248 TPS peak 
+```
