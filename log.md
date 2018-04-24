@@ -251,8 +251,9 @@ web3: 149.2 TPS_average, 183 TPS peak
 RPC : 177.1 TPS_average, 270 TPS peak 
 ```
 
+**Summary: (As constellation is not needed,) public contracts are fastest.** 
 
-#### contract deployed with `privateFor=["..."]`
+#### contract deployed with `privateFor=["..."]`, but PUBLIC .set()-transactions 
 
 contract deployed with `script1.js`
 
@@ -280,6 +281,7 @@ web3: 143.0 TPS_average, 243 TPS peak
 RPC : 136.8 TPS_average, 248 TPS peak 
 ```
 
+**Summary: Private contracts slow down also public transactions, but only a bit.**
 
 #### contract deployed with `privateFor=["..."]`, AND transactions with `privateFor=["..."]` 
 
@@ -306,4 +308,6 @@ async, queue, 23 workers; `send.py threaded2 23`
 web3:  89.6 TPS_average, 138 TPS peak
 RPC :  83.9 TPS_average, 129 TPS peak 
 ```
+
+**Summary: Private transactions cause 30% - 50% lower TPS than public transactions.**
 
