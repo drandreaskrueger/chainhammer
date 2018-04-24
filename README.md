@@ -116,6 +116,22 @@ how can I speed this up?
   * direct RPC communication not via web3 - implemented, gives a slight improvement
   * [eth_sendTransactionAsync](https://www.google.co.uk/search?q="eth_sendTransactionAsync") - not implemented yet, might also not be generally applicable in all situations, right?
 * replace `constellation` by [Crux](https://github.com/blk-io/crux) ???
+
+
+## IBFT = Istanbul BFT
+All of the above was done with the "Raft Consensus Algorithm".
+
+Now I am switching to "Istanbul Byzantine Fault Tolerant" Consensus Algorithm.
+
+Differences to the chainhammer code:
+
+* the smart contract deployment transaction cannot reliably be found in block 0; instead 
+  * we would have to make "[script1.js](https://github.com/drandreaskrueger/quorum-examples/blob/master/examples/7nodes/script1.js)" --> "script4.js" write the contract.address to a file for later reading; but writing to file is not even possible in JS - right?
+  * or console.log(contract.address) it, and then pipe the output of `runscript.sh script4.js` through some clever `awk` to extract the address, and then save it. 
+  * or we reimplement `script1.js` into a real programming language like Python, which can write to file ;-)
+* 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://gitlab.com/electronDLT/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) must be a different one than blocks moving forwards
+
+TODO: next week, probably
   
 ## issues raised
 while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
