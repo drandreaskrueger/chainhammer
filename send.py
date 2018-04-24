@@ -1,6 +1,4 @@
 #!/usr/bin/env python3
-# from __future__ import print_function
-
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
@@ -9,10 +7,26 @@
 @author:  https://github.com/drandreaskrueger
 """
 
-RPCaddress='http://localhost:22000' # 22000 = node 1 of the 7nodes quorum example
-ROUTE = "web3" # "RPC" # "web3" "RPC" ## submit transaction via web3 or directly via RPC
+##########
+# Choices:
+
+
+# 22000 = node 1 of the 7nodes quorum example
+RPCaddress='http://localhost:22000' 
+
+## submit transaction via web3 or directly via RPC
+ROUTE = "web3" # "RPC" # "web3" "RPC" 
+
+# set this to a list of public keys for privateFor-transactions, 
+# or to None for public transactions 
 PRIVATE_FOR = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
+PRIVATE_FOR = None
+
+# contract ABI, probably this is 'SimpleStorage.sol'
 ABI = [{"constant":True,"inputs":[],"name":"storedData","outputs":[{"name":"","type":"uint256"}],"payable":False,"type":"function"},{"constant":False,"inputs":[{"name":"x","type":"uint256"}],"name":"set","outputs":[],"payable":False,"type":"function"},{"constant":True,"inputs":[],"name":"get","outputs":[{"name":"retVal","type":"uint256"}],"payable":False,"type":"function"},{"inputs":[{"name":"initVal","type":"uint256"}],"type":"constructor"}];
+
+################
+## Dependencies:
 
 from web3 import Web3, HTTPProvider # pip3 install web3
 from web3.utils.abi import filter_by_name, abi_to_signature
@@ -24,6 +38,11 @@ from queue import Queue
 from pprint import pprint
 
 import requests # pip3 install requests
+
+
+################
+## basic tasks:
+
 
 def unlockAccount(address=None, password="", duration=3600):
     """
@@ -41,7 +60,6 @@ def initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0):
     ./runscript.sh script1.js
     """
     abi = ABI
-    
     print ("Getting the address of the example contract that was deployed")
     block = w3.eth.getBlock(contractTx_blockNumber)
     transaction0=block["transactions"][contractTx_transactionIndex]
@@ -85,10 +103,12 @@ def test_contract_set_via_web3(contract):
     print (storedData) 
 
 
-## manually build & submit transaction, not going though web3
+## Manually build & submit transaction, i.e. not going though web3
+## (the hope of @jpmsam was that this would speed it up) 
 ## 
-## later realized that data compilation steps are already implemented as
+## Later I realized that data compilation steps are already implemented as
 ## myContract.functions.myMethod(*args, **kwargs).buildTransaction(transaction)
+
 
 def contract_method_ID(methodname, abi):
     """
@@ -103,6 +123,7 @@ def contract_method_ID(methodname, abi):
     method_signature_hash_4bytes = method_signature_hash_hex[0:10]
     return method_signature_hash_4bytes
 
+
 def argument_encoding(contract_method_ID, arg):
     """
     concatenate method ID + padded parameter
@@ -111,6 +132,7 @@ def argument_encoding(contract_method_ID, arg):
     arg_hex_padded = pad_hex ( arg_hex, bit_size=256)
     data = contract_method_ID + arg_hex_padded [2:]
     return data
+    
     
 def test_argument_encoding():
     """
@@ -126,7 +148,6 @@ def test_argument_encoding():
     print (data)
     # no need to precalculate, it takes near to no time:
     print ("Doing that %d times ... took %.2f seconds" % (reps, timer) )
-
 
 
 def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
@@ -175,6 +196,7 @@ def test_contract_set_via_RPC(contract, steps=3):
         print (storedData) 
     
     
+    
 # CHOOSE which route to choose (web3 / RPC) depending on constant ROUTE
 contract_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RPC
 
@@ -185,10 +207,11 @@ contract_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RP
 ###
 ### 0 blocking
 ### 1 async 
-### 2 async, queue
-### 3 async, batched
+### 2 async, queue, can give number of workers
+### 3 async, batched (obsolete)
 ###
 ################################################################
+
 
 def many_transactions(contract, howMany):
     """
@@ -259,17 +282,16 @@ def many_transactions_threaded_Queue(contract, howMany, num_worker_threads=100):
 
     q.join()
     print ("\nall items - done.")
-    
 
 
 def many_transactions_threaded_in_batches(contract, howMany, batchSize=25):
     """
     submit many transactions multi-threaded;
     But in batches of rather small numbers.
+    Does not give an advantage --> OBSOLETE, probably. 
     """
 
     print ("send %d transactions, multi-threaded, one thread per tx, in batches of %d parallel threads:\n" % (howMany, batchSize))
-
     howManyLeft=howMany
     while howManyLeft>0:
             
@@ -341,13 +363,11 @@ if __name__ == '__main__':
     # (TODO: try IPC provider, when quorum-outside-vagrant starts working)
     global w3
     w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-    
     # test_argument_encoding(); exit()
     
     contract = initialize()
-
     # test_contract_set_via_web3(contract); exit()
-    # test_contract_set_via_RPC(contract); exit()
+    # test_contract_set_via_RPC(contract);  exit()
 
     benchmark()
 
