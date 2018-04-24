@@ -47,7 +47,7 @@ python tps.py
 python send.py
 ```
 
-I could see about 12-15 tps max.
+Initially could see only 12-15 tps; eventually (raft, non-private contract) about 100 TPS average.
 
 ### multithreaded 1
 
@@ -57,9 +57,8 @@ you must kill (`CTRL-C`), and restart the listener, then:
 python send.py threaded1
 ```
  
-max rate that I have seen was 91 TPS.
+The best rate that I have seen was 146 TPS, as average over 1000 transactions.
 
-**yes, averaged over 1000 transactions; will measure intermediate peak rates next time, probably Thursday**
 
 ### multithreaded 2
 not a new thread per each of the `N` transaction but a queue with `M` multithreaded workers. 
@@ -68,9 +67,9 @@ not a new thread per each of the `N` transaction but a queue with `M` multithrea
 python send.py threaded2 23
 ```
 
-see [log.md](log.md) for details, and sweet spot `M=23`
+see [log.md](log.md) for details, and the sweet spot `M=23`
 
-
+Best average rate: 177 TPS.
 
 ## example output
 
@@ -113,7 +112,11 @@ See [log.md](log.md) for what I have tried to get this faster.
 how can I speed this up?
 
 * see [jpmsam suggestions April 18th](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382523147)
-
+  * run on host machine, not in vagrant VB - implemented, but [crashes](https://github.com/jpmorganchase/quorum/issues/352)
+  * direct RPC communication not via web3 - implemented, gives a slight improvement
+  * [eth_sendTransactionAsync](https://www.google.co.uk/search?q="eth_sendTransactionAsync") - not implemented yet, might also not be generally applicable in all situations, right?
+* replace `constellation` by [Crux](https://github.com/blk-io/crux) ???
+  
 ## issues raised
 while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 
