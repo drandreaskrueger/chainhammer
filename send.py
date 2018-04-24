@@ -5,12 +5,14 @@
 @summary: submit many contract.set(arg) transactions to the example contract
 
 @version: v06 (23/April/2018)
-@since:   17/April/2018
+@since:   18/April/2018
 @author:  https://github.com/drandreaskrueger
 """
 
 RPCaddress='http://localhost:22001' # 22001 = node 1 of the 7nodes quorum example
-ROUTE =  "RPC" # "web3" "RPC" ## submit transaction via web3 or directly via RPC
+ROUTE = "RPC" # "web3" "RPC" ## submit transaction via web3 or directly via RPC
+
+ABI = [{"constant":True,"inputs":[],"name":"storedData","outputs":[{"name":"","type":"uint256"}],"payable":False,"type":"function"},{"constant":False,"inputs":[{"name":"x","type":"uint256"}],"name":"set","outputs":[],"payable":False,"type":"function"},{"constant":True,"inputs":[],"name":"get","outputs":[{"name":"retVal","type":"uint256"}],"payable":False,"type":"function"},{"inputs":[{"name":"initVal","type":"uint256"}],"type":"constructor"}];
 
 from web3 import Web3, HTTPProvider # pip3 install web3
 from web3.utils.abi import filter_by_name, abi_to_signature
@@ -38,7 +40,7 @@ def initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0):
     if called without arguments, it assumes that the very first transaction was done by
     ./runscript.sh script1.js
     """
-    abi = [{"constant":True,"inputs":[],"name":"storedData","outputs":[{"name":"","type":"uint256"}],"payable":False,"type":"function"},{"constant":False,"inputs":[{"name":"x","type":"uint256"}],"name":"set","outputs":[],"payable":False,"type":"function"},{"constant":True,"inputs":[],"name":"get","outputs":[{"name":"retVal","type":"uint256"}],"payable":False,"type":"function"},{"inputs":[{"name":"initVal","type":"uint256"}],"type":"constructor"}];
+    abi = ABI
     
     print ("Getting the address of the example contract that was deployed")
     block = w3.eth.getBlock(contractTx_blockNumber)
@@ -71,13 +73,10 @@ def contract_set_via_web3(contract, arg, privateFor=None, gas=90000):
     return tx
 
 
-def test_contract_set_via_web3():
+def test_contract_set_via_web3(contract):
     """
     test the above
     """
-    global w3
-    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-    contract = initialize()
     tx = contract_set_via_web3(contract, arg=2)
     print (tx)
     storedData = contract.functions.get().call()
@@ -113,20 +112,19 @@ def argument_encoding(contract_method_ID, arg):
     
 def test_argument_encoding():
     """
-    test the above
+    test the above:
+    'Doing that 10000 times ... took 0.45 seconds'
     """
-    global w3
-    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-    contract = initialize()
     timer = time.clock()
     reps = 10000
     for i in range(reps):
-        method_ID = contract_method_ID("set", contract.abi)
+        method_ID = contract_method_ID("set", ABI)
         data = argument_encoding(method_ID, 7)
     timer = time.clock() - timer
     print (data)
     # no need to precalculate, it takes near to no time:
     print ("Doing that %d times ... took %.2f seconds" % (reps, timer) )
+
 
 
 def contract_set_via_RPC(contract, arg, privateFor=None, gas=90000):
@@ -162,14 +160,10 @@ def contract_set_via_RPC(contract, arg, privateFor=None, gas=90000):
     return tx
 
 
-def test_contract_set_via_RPC(steps=3):
+def test_contract_set_via_RPC(contract, steps=3):
     """
     test the above, write 3 transactions, and check the storedData
     """
-    global w3
-    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-    contract = initialize()
-    
     rand = random.randint(1, 100)
     for number in range(rand, rand+steps):
         tx = contract_set_via_RPC(contract, number)
@@ -306,14 +300,9 @@ def many_transactions_threaded_in_batches(contract, howMany, batchSize=25):
 ###########################################################
 
 def benchmark():
-    # HTTP provider 
-    # (TODO: try IPC provider, perhaps done within the docker container?)
-    global w3
-    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
+
     print("\nBlockNumber = ", w3.eth.blockNumber)
     
-    contract = initialize()
-
     if len(sys.argv)>1:
         if sys.argv[1]=="threaded1":
             many_transactions_threaded(contract, 1000)
@@ -340,15 +329,23 @@ def benchmark():
             print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
     else:
         
-        many_transactions(contract, 100)  # blocking, non-async
+        many_transactions(contract, 1000)  # blocking, non-async
 
 
 
 if __name__ == '__main__':
 
-    # test_contract_set_via_web3(); exit()
+    # HTTP provider 
+    # (TODO: try IPC provider, when quorum-outside-vagrant starts working)
+    global w3
+    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
+    
     # test_argument_encoding(); exit()
-    # test_contract_set_via_RPC(); exit()
+    
+    contract = initialize()
+
+    # test_contract_set_via_web3(contract); exit()
+    # test_contract_set_via_RPC(contract); exit()
 
     benchmark()
 
