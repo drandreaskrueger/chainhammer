@@ -4,14 +4,14 @@
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v06 (23/April/2018)
-@since:   18/April/2018
+@version: v06 (24/April/2018)
+@since:   17/April/2018
 @author:  https://github.com/drandreaskrueger
 """
 
-RPCaddress='http://localhost:22001' # 22001 = node 1 of the 7nodes quorum example
-ROUTE = "RPC" # "web3" "RPC" ## submit transaction via web3 or directly via RPC
-
+RPCaddress='http://localhost:22000' # 22000 = node 1 of the 7nodes quorum example
+ROUTE = "web3" # "RPC" # "web3" "RPC" ## submit transaction via web3 or directly via RPC
+PRIVATE_FOR = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
 ABI = [{"constant":True,"inputs":[],"name":"storedData","outputs":[{"name":"","type":"uint256"}],"payable":False,"type":"function"},{"constant":False,"inputs":[{"name":"x","type":"uint256"}],"name":"set","outputs":[],"payable":False,"type":"function"},{"constant":True,"inputs":[],"name":"get","outputs":[{"name":"retVal","type":"uint256"}],"payable":False,"type":"function"},{"inputs":[{"name":"initVal","type":"uint256"}],"type":"constructor"}];
 
 from web3 import Web3, HTTPProvider # pip3 install web3
@@ -57,7 +57,7 @@ def initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0):
     return contract
 
 
-def contract_set_via_web3(contract, arg, privateFor=None, gas=90000):
+def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     """
     call the .set(arg) method, possibly with 'privateFor' tx-property
     using the web3 method 
@@ -66,6 +66,8 @@ def contract_set_via_web3(contract, arg, privateFor=None, gas=90000):
                     'gas' : gas}
     if privateFor:
         txParameters['privateFor'] = privateFor  # untested
+        
+    # pprint (txParameters)
         
     tx = contract.functions.set( x=arg ).transact(txParameters)
     print ("[sent via web3]", end=" ")
@@ -127,7 +129,7 @@ def test_argument_encoding():
 
 
 
-def contract_set_via_RPC(contract, arg, privateFor=None, gas=90000):
+def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     """
     call the .set(arg) method 
     not going through web3
