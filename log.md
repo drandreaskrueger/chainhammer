@@ -311,3 +311,10 @@ RPC :  83.9 TPS_average, 129 TPS peak
 
 **Summary: Private transactions cause 30% - 50% lower TPS than public transactions.**
 
+
+### pause now
+
+I must pause this for now.  Last steps for wrapping it up:
+* added more infos to the [open issue #352](https://github.com/jpmorganchase/quorum/issues/352)
+* new [TODO.md](TODO.md) with possible next steps - feel free to fork this, and work on it. Thanks.
+

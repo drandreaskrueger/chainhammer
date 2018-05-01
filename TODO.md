@@ -19,6 +19,7 @@ interesting next questions:
   * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. loop multiplication) instead of the SimpleStorage.sol
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
+* [QuorumNetworkManager](https://github.com/ConsenSys/QuorumNetworkManager)
 * compare all results in a table / barchart, instead of chronological text log files.
 
 what else?
