@@ -15,9 +15,12 @@ interesting next questions:
   * [hackernoon](https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8)
   * [stackexchange](https://ethereum.stackexchange.com/questions/15644/setting-up-a-private-poa-clique-network-with-puppeth/15649#15649)
 * gas / transaction bytes / block size / ...
-  * standard `.set()` call needs 26xxx gas, very small; general calls will be larger --> estimate effect of gas on TPS:
+  * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
   * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. loop multiplication) instead of the SimpleStorage.sol
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
+* compare all results in a table / barchart, instead of chronological text log files.
 
 what else?
+
+N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
