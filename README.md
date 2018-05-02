@@ -40,7 +40,7 @@ see [send.py](send.py) --> ` initialize(contractTx_blockNumber=1, contractTx_tra
 virtualenv -p python3 py3eth
 source py3eth/bin/activate
 python3 -m pip install --upgrade pip==9.0.3
-pip3 install py-solc web3 eth-tester requests
+pip3 install py-solc web3 web3[tester] eth-testrpc requests 
 ```
 ## start listener
 
