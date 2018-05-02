@@ -1,3 +1,6 @@
+# http://web3py.readthedocs.io/en/stable/examples.html
+# as on 2018 May 2nd
+
 import sys
 import time
 import pprint
