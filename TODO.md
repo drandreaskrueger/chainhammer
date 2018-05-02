@@ -25,3 +25,10 @@ interesting next questions:
 what else?
 
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
+
+### other places:
+* [log.md](log.md) - sequence of everything that I've already optimized, to get this faster
+* [README.md](README.md) - quickstart how to use this chainhammer tool
+* [Quorum-consensus.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md) - raft, IBFT, etc
+* [Quorum-privacy.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-privacy.md) - quorum private transactions
+* [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md) - attempt to run it on host machine instead of inside vagrant VB; currently broken, issue unanswered
