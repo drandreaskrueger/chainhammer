@@ -1,7 +1,5 @@
 // https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/simplestorage.sol
 
-/*
-
 pragma solidity ^0.4.15;
 
 contract simplestorage {
@@ -20,7 +18,7 @@ contract simplestorage {
   }
 }
 
-*/
+
 
 // https://github.com/jpmorganchase/cakeshop/blob/master/cakeshop-api/src/main/resources/contracts/SimpleStorage.sol
 
@@ -53,6 +51,7 @@ contract SimpleStorage {
 
 // http://web3py.readthedocs.io/en/stable/examples.html#working-with-contracts
 
+/*
 contract StoreVar {
 
     uint8 public _myVar;
@@ -69,3 +68,4 @@ contract StoreVar {
 
 }
 
+*/
