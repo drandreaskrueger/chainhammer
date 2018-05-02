@@ -7,23 +7,8 @@
 @author:  https://github.com/drandreaskrueger
 """
 
-##########
-# Choices:
 
-
-# 22000 = node 1 of the 7nodes quorum example
-RPCaddress='http://localhost:22000' 
-
-## submit transaction via web3 or directly via RPC
-ROUTE = "web3" # "RPC" # "web3" "RPC" 
-
-# set this to a list of public keys for privateFor-transactions, 
-# or to None for public transactions 
-PRIVATE_FOR = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
-PRIVATE_FOR = None
-
-# contract ABI, probably this is 'SimpleStorage.sol'
-ABI = [{"constant":True,"inputs":[],"name":"storedData","outputs":[{"name":"","type":"uint256"}],"payable":False,"type":"function"},{"constant":False,"inputs":[{"name":"x","type":"uint256"}],"name":"set","outputs":[],"payable":False,"type":"function"},{"constant":True,"inputs":[],"name":"get","outputs":[{"name":"retVal","type":"uint256"}],"payable":False,"type":"function"},{"inputs":[{"name":"initVal","type":"uint256"}],"type":"constructor"}];
+from config import RPCaddress, ROUTE, PRIVATE_FOR, ABI
 
 ################
 ## Dependencies:

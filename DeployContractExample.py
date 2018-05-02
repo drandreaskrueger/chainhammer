@@ -6,11 +6,6 @@
 # see issue 808 https://github.com/ethereum/web3.py/issues/808
 
 
-import sys
-from web3 import Web3, HTTPProvider, __version__ as web3version # pip3 install web3
-from solc import get_solc_version
-print ("versions: web3 %s, solc %s, python %s" % (web3version, get_solc_version(), sys.version.replace("\n", "")))
-
 import json
 import web3
 
@@ -18,6 +13,9 @@ from web3 import Web3
 from solc import compile_source
 from web3.contract import ConciseContract
 
+from config import printVersions 
+
+printVersions()
 
 # Solidity source code
 contract_source_code = '''

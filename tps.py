@@ -10,14 +10,16 @@
 """
 
 RPCaddress='http://localhost:22002' # node 2 of the 7nodes quorum example
-RAFT=True
+RAFT=True # # consensus algo - TODO: ask node
 
 import time, timeit, sys
 from pprint import pprint
 
-from web3 import Web3, HTTPProvider, __version__ as web3version # pip3 install web3
-print ("web3 version %s, python %s" % (web3version, sys.version.replace("\n", "")))
+from web3 import Web3, HTTPProvider
+from config import printVersions
 
+
+printVersions()
 
 def loopUntilActionBegins(query_intervall = 0.1):
     """
