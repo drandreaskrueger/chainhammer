@@ -9,6 +9,8 @@ from web3.providers.eth_tester import EthereumTesterProvider
 from web3 import Web3
 from solc import compile_source
 
+from web3 import Web3, HTTPProvider, __version__ as web3version # pip3 install web3
+print ("web3 version %s, python %s" % (web3version, sys.version.replace("\n", "")))
 
 def compile_source_file(file_path):
    with open(file_path, 'r') as f:
