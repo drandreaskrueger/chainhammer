@@ -22,6 +22,8 @@ cd quorum-examples/7nodes
 ./raft-init.sh
 ./raft-start.sh
 sleep 3
+ps aux | grep geth
+
 ./runscript.sh script1.js
 ```
 if that says sth like
@@ -33,7 +35,13 @@ then we now have a block 1 transaction 0 which contains a simple set()/get() sma
 
 see [send.py](send.py) --> ` initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0)`
 
-
+## virtualenv for py3 dependencies, mostly ethereum 
+```
+virtualenv -p python3 py3eth
+source py3eth/bin/activate
+python3 -m pip install --upgrade pip==9.0.3
+pip3 install py-solc web3 eth-tester requests
+```
 ## start listener
 
 ```

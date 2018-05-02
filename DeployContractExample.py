@@ -50,8 +50,9 @@ store_var_contract = w3.eth.contract(
    address=address,
    abi=contract_interface['abi'])
 
-gas_estimate = store_var_contract.functions.setVar(255).estimateGas()
+# gas_estimate = store_var_contract.functions.setVar(255).estimateGas()
 print("Gas estimate to transact with setVar: {0}\n".format(gas_estimate))
+gas_estimate = 100000
 
 if gas_estimate < 100000:
   print("Sending transaction to setVar(255)\n")
