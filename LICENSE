@@ -1,3 +1,15 @@
+See README.md#credits --> 
+
+> benchmarking scripts "chainhammer"  
+> https://gitlab.com/electronDLT/chainhammer/  
+> by Dr Andreas Krueger, Electron.org.uk, London 2018  
+
+Import this repo into your work as a git submodule please.
+
+Consider to submit your improvements as pull request. Thanks.
+
+-----------------------------------------------------------------------------
+
 MIT License
 
 Copyright (c) 2018 

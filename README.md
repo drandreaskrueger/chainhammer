@@ -1,5 +1,5 @@
-public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), for backgrounds also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md)
-# chainhammer v05
+Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md).
+# chainhammer v06
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
 ## initialize 7nodes
@@ -163,3 +163,11 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [QE PR #93](https://github.com/jpmorganchase/quorum-examples/pull/93) **initialize JSRE var with deployed contract, and script2.js to deploy privateFor 2 recipients**
 
 
+# credits
+Please credit this as:
+
+> benchmarking scripts "chainhammer"  
+> https://gitlab.com/electronDLT/chainhammer    
+> by Dr Andreas Krueger, Electron.org.uk, London 2018  
+
+Consider to submit your improvements & [usage](other-projects.md) as pull request. Thanks.
