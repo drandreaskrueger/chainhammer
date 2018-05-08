@@ -4,9 +4,11 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v05 (19/April/2018)
+@version: v09 (8/May/2018)
 @since:   17/April/2018
+@organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
+@see: https://gitlab.com/electronDLT/chainhammer for updates
 """
 
 RPCaddress='http://localhost:22002' # node 2 of the 7nodes quorum example

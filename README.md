@@ -129,9 +129,9 @@ how can I speed this up?
 ## IBFT = Istanbul BFT
 All of the above was done with the "Raft Consensus Algorithm".
 
-Now I am switching to "Istanbul Byzantine Fault Tolerant" Consensus Algorithm.
+Next I would be switching to "Istanbul Byzantine Fault Tolerant" Consensus Algorithm.
 
-Differences to the chainhammer code:
+Foreseable differences to the current chainhammer code:
 
 * the smart contract deployment transaction cannot reliably be found in block 0; instead 
   * we would have to make "[script1.js](https://github.com/drandreaskrueger/quorum-examples/blob/master/examples/7nodes/script1.js)" --> "script4.js" write the contract.address to a file for later reading; but writing to file is not even possible in JS - right?
@@ -139,7 +139,7 @@ Differences to the chainhammer code:
   * or we reimplement `script1.js` into a real programming language like Python, which can write to file ;-)
 * 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://gitlab.com/electronDLT/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) must be a different one than blocks moving forwards
 
-TODO: next week, probably
+TODO: no time; anyone wanting to take this task?
   
 ## issues raised
 while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):

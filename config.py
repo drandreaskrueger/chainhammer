@@ -2,9 +2,11 @@
 """
 @summary: deploy contract
 
-@version: v08 (2/May/2018)
-@since:   2/May/2018
+@version: v09 (2/May/2018)
+@since:   8/May/2018
+@organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
+@see: https://gitlab.com/electronDLT/chainhammer for updates
 """
 
 ##########
