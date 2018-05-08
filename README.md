@@ -163,7 +163,7 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [QE #90](https://github.com/jpmorganchase/quorum-examples/issues/90) **2 recipient keys in `privateFor` - not working???** 
   * *"its not currently possible to add a new participant to an existing private contract. It's one of the enhancements that we have in our backlog."*
 * [QE PR #93](https://github.com/jpmorganchase/quorum-examples/pull/93) **initialize JSRE var with deployed contract, and script2.js to deploy privateFor 2 recipients**
-
+* [Web3.py #808](https://github.com/ethereum/web3.py/issues/808) --> solved
 
 # credits
 Please credit this as:

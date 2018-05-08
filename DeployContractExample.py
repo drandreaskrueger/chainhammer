@@ -3,6 +3,8 @@
 # then updated:
 # was broken, see issue 808 https://github.com/ethereum/web3.py/issues/808
 # fixed, see https://github.com/ethereum/web3.py/issues/808#issuecomment-386014138
+# tested with these versions:
+# web3 4.2.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3
 
 import json
 import web3
