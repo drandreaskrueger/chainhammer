@@ -12,9 +12,9 @@
 ##########
 # Choices:
 
-RPCaddress=None # just for testing, with TestRPCProvider 
-RPCaddress='http://localhost:22000' # 22000 = node 1 of the 7nodes quorum example 
-RPCaddress='http://localhost:8545'  # 8545 = default Ethereum RPC port
+RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
+RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different nodes for writing and reading  
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "web3"  # "web3" "RPC" 

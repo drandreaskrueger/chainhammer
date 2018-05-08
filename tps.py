@@ -11,39 +11,64 @@
 @see: https://gitlab.com/electronDLT/chainhammer for updates
 """
 
-RPCaddress='http://localhost:22002' # node 2 of the 7nodes quorum example
-RAFT=True # # consensus algo - TODO: ask node
+RAFT=True
 
 import time, timeit, sys
 from pprint import pprint
 
 from web3 import Web3, HTTPProvider
 from config import printVersions
+from deploy import loadFromDisk
 
+from config import RPCaddress2
 
-printVersions()
+   
+    
 
-def loopUntilActionBegins(query_intervall = 0.1):
+def loopUntilActionBegins_raft(query_intervall = 0.1):
     """
     raft:  polls until chain moves forward
     other: polls until a non-empty block appears (untested)
     """
     while(True):
-        blockNumber=web3.eth.blockNumber
+        blockNumber=w3.eth.blockNumber
         
-        if RAFT:
-            # relies on chain moving forward, doesn't work for PoW, works for raft
-            if (blockNumber != blockNumber_start):
-                break
-        else:
-            # relies on empty blocks, doesn't work for raft:
-            if(web3.eth.getBlockTransactionCount('latest')!=0):
-                break
+        # relies on chain moving forward only with new transaction, 
+        # doesn't work for PoW, works for raft
+        if (blockNumber != blockNumber_start):
+            break
         
         time.sleep(query_intervall)
       
     print('')
-    return blockNumber_start + 1
+    # return blockNumber_start + 1
+
+
+def loopUntilActionBegins_withNewContract(query_intervall = 0.1):
+    """
+    (UNTESTED!)
+    """
+    
+    AddressAndABI = loadFromDisk()
+    
+    while(True):
+        time.sleep(query_intervall)
+        
+        # checks whether a new contract has been deployed
+        # because then a new address has been saved:
+        if (loadFromDisk() != AddressAndABI):
+            break
+        
+    print('')
+    # return w3.eth.blockNumber
+
+
+
+def loopUntilActionBegins(query_intervall = 0.1):
+    if RAFT:
+        loopUntilActionBegins_raft(query_intervall=query_intervall)
+    else:
+        loopUntilActionBegins_withNewContract(query_intervall=query_intervall)
 
 
 def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
@@ -54,10 +79,10 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     
     txCount_new = 0
     for bl in range(blockNumber+1, newBlockNumber+1):
-        txCount_new += web3.eth.getBlockTransactionCount(bl)
+        txCount_new += w3.eth.getBlockTransactionCount(bl)
 
-    ts_blockNumber =    web3.eth.getBlock(   blockNumber).timestamp
-    ts_newBlockNumber = web3.eth.getBlock(newBlockNumber).timestamp
+    ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
+    ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
     duration = (ts_newBlockNumber - ts_blockNumber) 
     tps_current = 1000000000.0 * txCount_new / duration 
 
@@ -79,7 +104,7 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
 
     # the block we had been waiting for already contains the first transaction/s
     # N.B.: slight inaccurracy of time measurement, because not measured how long those needed
-    txCount=web3.eth.getBlockTransactionCount(blockNumber)
+    txCount=w3.eth.getBlockTransactionCount(blockNumber)
     
     # perhaps instead of elapsed system time, use blocktime?
     start_time = timeit.default_timer() 
@@ -89,11 +114,11 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     while(True):
         # wait for empty blocks (untested)
         # does not work in RAFT because there are no empty blocks
-        if(web3.eth.getBlockTransactionCount('latest')==0):
+        if(w3.eth.getBlockTransactionCount('latest')==0):
             break
         
         # when a new block appears:
-        newBlockNumber=web3.eth.blockNumber
+        newBlockNumber=w3.eth.blockNumber
         if(blockNumber!=newBlockNumber):
             txCount = analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time)
             blockNumber = newBlockNumber
@@ -105,10 +130,12 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
 
 
 if __name__ == '__main__':
+    printVersions()
     
-    web3 = Web3(HTTPProvider(RPCaddress))
+    global w3
+    w3 = Web3(HTTPProvider(RPCaddress2))
     
-    blockNumber_start = web3.eth.blockNumber
+    blockNumber_start = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
     
     loopUntilActionBegins() 
