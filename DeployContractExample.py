@@ -39,9 +39,7 @@ contract_interface = compiled_sol['<stdin>:Greeter']
 
 # web3.py instance
 # w3 = Web3(Web3.EthereumTesterProvider()) # bug, see https://github.com/ethereum/web3.py/issues/808#issuecomment-386014138
-w3 = Web3(Web3.TestRPCProvider())
-
-# print (w3.eth.account.create("asdf").address)
+w3 = Web3(Web3.TestRPCProvider()) # added by me
 
 # set pre-funded account as sender
 w3.eth.defaultAccount = w3.eth.accounts[0]
