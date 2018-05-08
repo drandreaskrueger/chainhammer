@@ -15,16 +15,19 @@ from config import RPCaddress, ROUTE, PRIVATE_FOR, ABI
 ################
 ## Dependencies:
 
-from web3 import Web3, HTTPProvider # pip3 install web3
-from web3.utils.abi import filter_by_name, abi_to_signature
-from web3.utils.encoding import pad_hex
-
 import sys, time, random
 from threading import Thread
 from queue import Queue
 from pprint import pprint
 
 import requests # pip3 install requests
+
+from web3 import Web3, HTTPProvider # pip3 install web3
+from web3.utils.abi import filter_by_name, abi_to_signature
+from web3.utils.encoding import pad_hex
+
+from deploy import loadFromDisk
+from config import RAFT
 
 
 ################
@@ -40,7 +43,7 @@ def unlockAccount(address=None, password="", duration=3600):
     return w3.personal.unlockAccount(address, password, duration)
 
 
-def initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0):
+def initialize_fromBlock(contractTx_blockNumber=1, contractTx_transactionIndex=0):
     """
     use example contract from 7 nodes example
     if called without arguments, it assumes that the very first transaction was done by
@@ -61,6 +64,13 @@ def initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0):
     # pprint (dir(contract))
     return contract
 
+
+def initialize_fromAddress():
+    contractAddress, abi = loadFromDisk()
+    myContract = w3.eth.contract(address=contractAddress,
+                                 abi=abi)
+    return myContract
+    
 
 def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     """
@@ -352,7 +362,11 @@ if __name__ == '__main__':
     w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
     # test_argument_encoding(); exit()
     
-    contract = initialize()
+    if RAFT:
+        contract = initialize_fromBlock()
+    else:
+        contract = initialize_fromAddress()
+        
     # test_contract_set_via_web3(contract); exit()
     # test_contract_set_via_RPC(contract);  exit()
 

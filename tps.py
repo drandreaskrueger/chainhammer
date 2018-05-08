@@ -11,7 +11,6 @@
 @see: https://gitlab.com/electronDLT/chainhammer for updates
 """
 
-RAFT=True
 
 import time, timeit, sys
 from pprint import pprint
@@ -20,12 +19,12 @@ from web3 import Web3, HTTPProvider
 from config import printVersions
 from deploy import loadFromDisk
 
-from config import RPCaddress2
+from config import RPCaddress2, RAFT
 
    
     
 
-def loopUntilActionBegins_raft(query_intervall = 0.1):
+def loopUntilActionBegins_raft(blockNumber_start, query_intervall = 0.1):
     """
     raft:  polls until chain moves forward
     other: polls until a non-empty block appears (untested)
@@ -41,10 +40,10 @@ def loopUntilActionBegins_raft(query_intervall = 0.1):
         time.sleep(query_intervall)
       
     print('')
-    # return blockNumber_start + 1
+    return blockNumber_start + 1
 
 
-def loopUntilActionBegins_withNewContract(query_intervall = 0.1):
+def loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall = 0.1):
     """
     (UNTESTED!)
     """
@@ -60,15 +59,15 @@ def loopUntilActionBegins_withNewContract(query_intervall = 0.1):
             break
         
     print('')
-    # return w3.eth.blockNumber
+    return w3.eth.blockNumber # ignore blockNumber_start
 
 
 
-def loopUntilActionBegins(query_intervall = 0.1):
+def loopUntilActionBegins(blockNumber_start, query_intervall = 0.1):
     if RAFT:
-        loopUntilActionBegins_raft(query_intervall=query_intervall)
+        return loopUntilActionBegins_raft(blockNumber_start, query_intervall=query_intervall)
     else:
-        loopUntilActionBegins_withNewContract(query_intervall=query_intervall)
+        return loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall=query_intervall)
 
 
 def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
@@ -83,7 +82,10 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
 
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
-    duration = (ts_newBlockNumber - ts_blockNumber) 
+    
+    timeunits = 1000000000.0 if PARITY else 1.0
+    duration = (ts_newBlockNumber - ts_blockNumber) * timeunits  
+    
     tps_current = 1000000000.0 * txCount_new / duration 
 
     txCount += txCount_new
@@ -114,8 +116,8 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     while(True):
         # wait for empty blocks (untested)
         # does not work in RAFT because there are no empty blocks
-        if(w3.eth.getBlockTransactionCount('latest')==0):
-            break
+        # if(w3.eth.getBlockTransactionCount('latest')==0):
+        #    break
         
         # when a new block appears:
         newBlockNumber=w3.eth.blockNumber
@@ -134,12 +136,15 @@ if __name__ == '__main__':
     
     global w3
     w3 = Web3(HTTPProvider(RPCaddress2))
+    global PARITY
+    PARITY = "rustc" in w3.version.node
     
     blockNumber_start = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
     
-    loopUntilActionBegins() 
+    blocknumber_start_here = loopUntilActionBegins(blockNumber_start) 
     
-    measurement( blockNumber_start + 1 )
+    # measurement( blockNumber_start + 1 )
+    measurement( blocknumber_start_here )
     
     
