@@ -1,8 +1,8 @@
-# chainhammer
+# other projects & blockchain benchmarks
 https://gitlab.com/electronDLT/chainhammer has helped to create these measurements, on different Ethereum type blockchains. Feel free to include it into your project, preferably as a [submodule](https://www.google.co.uk/search?q=git+submodule+how+to).  
 
 To appear here, please fork this repo, add your project to the following list, and then pull request. Thanks.
-## projects using this
+## projects using chainhammer
 * [log.md](log.md) = initial results with this repo (April, May 2018)
 * "Quorum stress-test 1: 140 TPS" by vasa (@vaibhavsaini, @vasa-develop) (May 2018)
   * [medium article](https://medium.com/@vaibhavsaini_67863/792f39d0b43f)
@@ -11,7 +11,7 @@ To appear here, please fork this repo, add your project to the following list, a
 
 please add yours at the bottom, and pull request
 
-## other blockchain benchmarking tools & source codes
+## other blockchain benchmarking results & source codes
 * ...
 
 please add yours, and pull request
