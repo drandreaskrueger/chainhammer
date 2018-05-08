@@ -1,10 +1,8 @@
-# http://web3py.readthedocs.io/en/stable/examples.html
-# as on 2018 May 2nd
-
-# broken
-# on 2018 May 2nd
-# see issue 808 https://github.com/ethereum/web3.py/issues/808
-
+# taken from
+# http://web3py.readthedocs.io/en/latest/contracts.html#contract-deployment-example
+# then updated:
+# was broken, see issue 808 https://github.com/ethereum/web3.py/issues/808
+# fixed, see https://github.com/ethereum/web3.py/issues/808#issuecomment-386014138
 
 import json
 import web3
@@ -13,9 +11,7 @@ from web3 import Web3
 from solc import compile_source
 from web3.contract import ConciseContract
 
-from config import printVersions 
-
-printVersions()
+from config import printVersions; printVersions() # added by me
 
 # Solidity source code
 contract_source_code = '''
@@ -42,7 +38,8 @@ compiled_sol = compile_source(contract_source_code) # Compiled source code
 contract_interface = compiled_sol['<stdin>:Greeter']
 
 # web3.py instance
-w3 = Web3(Web3.EthereumTesterProvider())
+# w3 = Web3(Web3.EthereumTesterProvider()) # bug, see https://github.com/ethereum/web3.py/issues/808#issuecomment-386014138
+w3 = Web3(Web3.TestRPCProvider())
 
 # print (w3.eth.account.create("asdf").address)
 
@@ -57,6 +54,7 @@ tx_hash = Greeter.constructor().transact()
 
 # Wait for the transaction to be mined, and get the transaction receipt
 tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+print ( "Deployed. gasUsed={gasUsed} contractAddress={contractAddress}".format(**tx_receipt) ) # added by me 
 
 # Create the contract instance with the newly-deployed address
 greeter = w3.eth.contract(

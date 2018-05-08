@@ -38,11 +38,13 @@ def printVersions():
     import sys
     from web3 import __version__ as web3version 
     from solc import get_solc_version
-    print ("versions: web3 %s, solc %s, python %s" % (web3version, get_solc_version(), sys.version.replace("\n", "")))
+    from testrpc import __version__ as ethtestrpcversion
+    # TODO: extract py-solc version from https://github.com/ethereum/py-solc/blob/master/.bumpversion.cfg --> current_version = 2.1.0
+    print ("versions: web3 %s, py-solc: TODO, solc %s, testrpc %s, python %s" % (web3version, get_solc_version(), ethtestrpcversion, sys.version.replace("\n", "")))
 
 
 if __name__ == '__main__':
-
+    printVersions()
     print ("Do not run this. Like you just did. Don't.")
     
     
