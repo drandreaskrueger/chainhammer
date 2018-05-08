@@ -13,8 +13,8 @@
 # Choices:
 
 RPCaddress=None # just for testing, with TestRPCProvider 
-# RPCaddress='http://localhost:22000' # 22000 = node 1 of the 7nodes quorum example 
-# RPCaddress='http://localhost:8545'  # 8545 = default Ethereum RPC port
+RPCaddress='http://localhost:22000' # 22000 = node 1 of the 7nodes quorum example 
+RPCaddress='http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "web3"  # "web3" "RPC" 
@@ -33,6 +33,8 @@ CONTRACT_SOURCE = "contract.sol"
 CONTRACT_ABI = "contract-abi.json"
 CONTRACT_ADDRESS ="contract-address.json"
 
+# account passphrase
+PASSPHRASE_FILE = "account-passphrase.txt"
 
 def printVersions():
     import sys
