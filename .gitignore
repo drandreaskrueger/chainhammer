@@ -1,3 +1,7 @@
+# block database files
+allblocks.db.sql
+allblocks.db
+
 # account passphrase file
 account-passphrase.txt
 

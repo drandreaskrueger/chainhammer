@@ -14,7 +14,7 @@
 
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
+RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 # if consensus algorithm is Quorum raft, then --> True
 # RAFT=False
@@ -39,6 +39,9 @@ CONTRACT_ADDRESS ="contract-address.json"
 
 # account passphrase
 PASSPHRASE_FILE = "account-passphrase.txt"
+
+# DB file for traversing all blocks
+DBFILE="allblocks.db"
 
 def printVersions():
     import sys

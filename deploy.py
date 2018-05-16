@@ -92,6 +92,8 @@ def start_web3connection(RPCaddress=None, account=None):
         w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     print ("first account of node is", w3.eth.defaultAccount, end=", ")
     print ("balance is %s Ether" % w3.fromWei(w3.eth.getBalance(w3.eth.defaultAccount), "ether"))
+    
+    return w3
 
 
 def saveToDisk(contractAddress, abi):
