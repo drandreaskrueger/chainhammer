@@ -18,10 +18,14 @@
 #
 # single threaded into file: 1000 blocks took 2.09 seconds
 #
-# multithreaded into file:  1000000 blocks took 1892.22 seconds
-# manyBlocks_singlethreaded into file: 
-#
 # big surprise multithreaded slower than singlethreaded !!!
+#
+# multithreaded but 1 worker into file: 1000000 blocks took 1892.22 seconds
+# manyBlocks_singlethreaded into file:  1970342 blocks took 4237.88 seconds
+#
+# execute & commit 4392280 SQL statements into DB took 37.91 seconds
+
+
 
 
 ################
@@ -124,7 +128,10 @@ def SQLfileIntoDB(conn, commitEvery=100000):
             line = f.readline()
             if not line:
                 break
-            c.execute(line)
+            try:
+                c.execute(line)
+            except Exception as e:
+                print (type(e), e, line)
             numRows += 1
             if numRows % commitEvery == 0:
                 conn.commit()
@@ -306,12 +313,14 @@ if __name__ == '__main__':
     
     # manyBlocks_singlethreaded(); exit()
     
-    # DB_newFromFile()
+    DB_newFromFile(); exit()
     
     # N.B.: perhaps manually delete existing "allblocks.db.sql" 
-    blockNumberFrom=1776424
-    manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, 
-                              numBlocks=w3.eth.blockNumber()-blockNumberFrom)
+    blockNumberFrom=4299999
+    manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, # numBlocks=1)
+    
+                              numBlocks=w3.eth.blockNumber - blockNumberFrom)
+                              
     DB_newFromFile()
     
     
