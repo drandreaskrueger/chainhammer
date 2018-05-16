@@ -309,9 +309,9 @@ if __name__ == '__main__':
     # DB_newFromFile()
     
     # N.B.: perhaps manually delete existing "allblocks.db.sql" 
-    blockNumberFrom=0
+    blockNumberFrom=1776424
     manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, 
-                              numBlocks=w3.eth.blockNumber())
+                              numBlocks=w3.eth.blockNumber()-blockNumberFrom)
     DB_newFromFile()
     
     
