@@ -11,13 +11,17 @@ interesting next questions:
 * Vanilla Ethereum PoW
   * to get the baseline TPS using my scripts
 * Vanilla Ethereum PoA
-  * perhaps easiest via **--> puppeth** ?
+  * `parity` PoA
+  * `geth` perhaps easiest via **--> puppeth** ?
   * [hackernoon](https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8)
   * [stackexchange](https://ethereum.stackexchange.com/questions/15644/setting-up-a-private-poa-clique-network-with-puppeth/15649#15649)
   * [puppeth hints](https://github.com/ethereum/go-ethereum/issues/15581)
 * gas / transaction bytes / block size / ...
   * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
   * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. loop multiplication) instead of the SimpleStorage.sol
+* is the parity RPC server single-threaded??
+  * send TX via IPC instead of RPC - faster?
+  * send TX via websockets instead of RPC - faster?
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
 * [QuorumNetworkManager](https://github.com/ConsenSys/QuorumNetworkManager)
