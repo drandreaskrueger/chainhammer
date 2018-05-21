@@ -208,7 +208,7 @@ source py3eth/bin/activate
 blocksDB_create.py
 jupyter notebook
 ```
---> [blocksDB_analyze.ipynb](blocksDB_analyze.ipynb)
+--> chainreader / [blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb)
 
 ![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
 
