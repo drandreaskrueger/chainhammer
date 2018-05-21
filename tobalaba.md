@@ -7,7 +7,8 @@ Here: Toabalaba chain of the EnergyWebFoundation.
 directly jump to 
 
 * script outputs --> [#results](#results)
-* **benchmarking result --> [#TPS](#TPS)**
+* **benchmarking result --> [#tps](#tps)**
+* 5 TPS ? --> [#conclusion](#conclusion)
 
 ## useful sites for Tobalaba:
 
