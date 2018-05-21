@@ -1,7 +1,7 @@
 # [chainhammer](README.md): Tobalaba
-Purpose: Extending the quorum benchmarking other Ethereum-type chains. 
+Purpose: Extending the quorum benchmarking to other Ethereum-type chains. 
 
-Here: Toabalaba chain of the EnergyWebFoundation.
+Here: *Toabalaba chain of the EnergyWebFoundation*, a fork of parity.
 
 ## quick shortcut:
 directly jump to 
@@ -12,10 +12,10 @@ directly jump to
 
 ## useful sites for Tobalaba:
 
-* [netstats](http://netstats.energyweb.org/) authority nodes
+* [netstats](http://netstats.energyweb.org/) about the authority nodes
 * block explorer e.g. --> [pending transactions](https://tobalaba.etherscan.com/txsPending)
 * [faucet](https://energyweb.atlassian.net/wiki/spaces/EWF/pages/126517249) to get Tobalaba-ETH 
-* EWF [website](https://energyweb.org/blockchain/)
+* EWF [website](https://energyweb.org/blockchain/) 
 
 ## preparations 
 
@@ -58,7 +58,7 @@ I now start the node with these parameters
                             --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue \
                             --tx-queue-mem-limit=0 --tx-queue-per-sender=2001 --tx-queue-gas=off 
 
-Then it accepted 1000 transactions
+Then it accepted 1000 transactions.
     
 ### account, password
 
@@ -217,6 +217,11 @@ jupyter notebook
 * **3 - 5 TPS** on average during 1000 transactions   
 * --> only as fast (slow) as the *Ethereum PoW* chain?
 
-Hello energywebfoundation: How to make this faster? How did you get higher rates? Please you yourself try these benchmarking scripts, thanks.
+Hello energywebfoundation: How to make this faster? How did you get higher rates? Please you yourself try these benchmarking scripts. 
+
+Thanks.
+
+---
+
 
 
