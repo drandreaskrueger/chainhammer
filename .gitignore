@@ -1,6 +1,6 @@
-# block database files
-allblocks.db.sql
-allblocks.db
+# block database files allblocks.db.sql and allblocks.db
+*.db.sql
+*.db
 
 # account passphrase file
 account-passphrase.txt
