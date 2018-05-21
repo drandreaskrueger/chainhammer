@@ -123,7 +123,7 @@ def SQLfileIntoDB(conn, commitEvery=100000):
     
     c = conn.cursor()
     
-    numRows = 0
+    numRows, duplicates = 0, 0
     with open(DBFILE + ".sql", "r") as f:
         while True:
             line = f.readline()
@@ -132,23 +132,35 @@ def SQLfileIntoDB(conn, commitEvery=100000):
             try:
                 c.execute(line)
             except Exception as e:
-                print (type(e), e, line)
+                print ("\n", type(e), e, line)
+                duplicates += 1
             numRows += 1
             if numRows % commitEvery == 0:
                 conn.commit()
-    
+                print (numRows, end=" "); sys.stdout.flush()
+            lastline=line
+    print ()
+    print ("last one was: ", lastline)
     duration = time.clock() - before
-    print ("\nexecute & commit %d SQL statements into DB took %.2f seconds\n" % (numRows, duration))
+    print ("\nexecute & commit %d SQL statements (where %d duplicates) into DB took %.2f seconds\n" % (numRows, duplicates, duration))
 
+
+
+def DB_query(SQL, conn):
+    """
+    execute any SQL query, fetchall, return result
+    """
+    cur = conn.cursor()
+    cur.execute(SQL)
+    result = cur.fetchall()
+    return result
     
 
 def DB_readTable(conn):
     """
     prints the whole table
     """
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM blocks ORDER BY blocknumber")
-    table = cur.fetchall()
+    table = DB_query("SELECT * FROM blocks ORDER BY blocknumber", conn)
     pprint (table)
     return table
 
@@ -164,7 +176,14 @@ def DB_tableSize(conn):
     return count
     
 
-def start_web3connection(RPCaddress=None, account=None):
+def DB_blocknumberMinMax(conn):
+    result = DB_query("SELECT MIN(blocknumber), MAX(blocknumber) FROM blocks", conn)
+    print ("MIN(blocknumber), MAX(blocknumber) = %s " % (result) )
+    return result
+    
+
+def start_web3connection(RPCaddress=None, 
+                         IPCpath="TODO"): # how to enable IPC in parity ???
     """
     get a global web3 object
     """
@@ -307,31 +326,36 @@ def tests():
 def DB_newFromFile():
     """
     drop and create table, read textfile into DB 
+    
+    if you have many duplicates in allblocks.db.sql then this helps 
+        sort allblocks.db.sql | uniq > allblocks_.db.sql; wc allblocks_.db.sql 
     """
     conn = sqlite3.connect(DBFILE)
     DB_dropTable()
     DB_createTable()
     SQLfileIntoDB(conn)
     DB_tableSize(conn)
+    DB_blocknumberMinMax(conn)
     conn.close()
 
 
 if __name__ == '__main__':
     
     global w3
-    w3=start_web3connection(RPCaddress=RPCaddress, account=None) 
+    w3=start_web3connection(RPCaddress=RPCaddress) 
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()
     # manyBlocks_singlethreaded(); exit()
+    
     # DB_newFromFile(); exit()
     
     # N.B.: perhaps manually delete the existing "allblocks.db.sql" before 
     blockNumberFrom=0
-    blockNumberFrom=4365410
+    # blockNumberFrom=4429077
     manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, # numBlocks=1)
                               numBlocks=w3.eth.blockNumber - blockNumberFrom)
                               
     DB_newFromFile()
-    
+    print ("done.")
     

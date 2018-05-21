@@ -2,7 +2,7 @@
 """
 @summary: deploy contract
 
-@version: v10 (8/May/2018)
+@version: v11 (21/May/2018)
 @since:   2/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -18,8 +18,12 @@ from pprint import pprint
 
 import requests # pip3 install requests
 
-from web3 import Web3, HTTPProvider # pip3 install web3
-from solc import compile_source # pip install py-solc
+try:
+    from web3 import Web3, HTTPProvider # pip3 install web3
+    from solc import compile_source # pip install py-solc
+except:
+    print ("Dependencies unavailable. Start virtualenv first!")
+    exit()
 
 from config import RPCaddress, CONTRACT_SOURCE, CONTRACT_ABI, CONTRACT_ADDRESS
 from config import PRIVATE_FOR, printVersions, PASSPHRASE_FILE
@@ -169,7 +173,7 @@ if __name__ == '__main__':
     deployTheContract(contract_source_file=CONTRACT_SOURCE)
     
     if len(sys.argv)>1 and sys.argv[1]=="notest":
-        exit() # allows to skip the .set() test transaction 
+        exit() # argument "notest" allows to skip the .set() test transaction 
         
     contractAddress, abi = loadFromDisk()
     myContract = contractObject(contractAddress, abi)

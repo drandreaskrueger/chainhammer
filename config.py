@@ -17,8 +17,9 @@ RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # u
 RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 # if consensus algorithm is Quorum raft, then --> True
-# RAFT=False
-RAFT=True
+# would be nice to automate that, see FR issue https://github.com/jpmorganchase/quorum/issues/369 
+RAFT=False
+# RAFT=True
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "web3"  # "web3" "RPC" 
