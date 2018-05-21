@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-@summary: deploy contract
+@summary: settings
 
 @version: v09 (2/May/2018)
 @since:   8/May/2018
