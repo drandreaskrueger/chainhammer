@@ -3,7 +3,7 @@ Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), 
 TPS measurements of Quorum, EnergyWebFoundation, etc.
 
 ## instructions
-* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md)
+* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md) and [tobalaba.md](tobalaba.md)
 * `chainreader` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [chainreader/README.md](chainreader/README.md)
 
 ## faster wider more
@@ -11,14 +11,14 @@ TPS measurements of Quorum, EnergyWebFoundation, etc.
 See 
 
 * logbook [log.md](log.md) for what I have done to get this faster on Quorum, step by step.
-* [other-clients.md](other-clients.md) for EWF Tobalaba, and other clients
 * some ideas what to try next: [TODO.md](TODO.md) = e.g. IBFT, geth/parity PoA, IPC not RPC, Crux not Constellation, etc.
 
 
 Suggestions please: how can I speed this up further? 
 
 ## you
-[other-projects.md](other-projects.md) using this, or which are similar to this. 
+See [other-projects.md](other-projects.md) using this, or which are similar to this. Please report back when you have done other / new measurements. 
+
 
 ## credits
 
