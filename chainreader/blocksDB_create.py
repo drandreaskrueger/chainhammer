@@ -139,6 +139,7 @@ def SQLfileIntoDB(conn, commitEvery=100000):
                 conn.commit()
                 print (numRows, end=" "); sys.stdout.flush()
             lastline=line
+    conn.commit()
     print ()
     print ("last one was: ", lastline)
     duration = time.clock() - before
@@ -348,11 +349,11 @@ if __name__ == '__main__':
     # manyBlocks_multithreaded(); exit()
     # manyBlocks_singlethreaded(); exit()
     
-    # DB_newFromFile(); exit()
+    DB_newFromFile(); exit()
     
     # N.B.: perhaps manually delete the existing "allblocks.db.sql" before 
     blockNumberFrom=0
-    # blockNumberFrom=4429077
+    blockNumberFrom=4429200
     manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, # numBlocks=1)
                               numBlocks=w3.eth.blockNumber - blockNumberFrom)
                               

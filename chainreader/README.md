@@ -18,7 +18,7 @@ Sync the chain. Possibly with `archive` flag on:
 cd energywebfoundation_energyweb-client
 ./target/release/parity --pruning=archive --geth --chain tobalaba --rpcapi "web3,eth,personal" --db-compaction=ssd --cache-size=2048
 ```
-It took about ~3 hours for >3 million transactions in the >4 million blocks of the "Tobalaba" chain.
+It took about ~3 hours for syncing the >3 million transactions in the >4 million blocks of the "Tobalaba" chain.
 
 
 ## step 1: create DB
@@ -29,6 +29,17 @@ So we first extract all block information data, and dump it into an SQLite datab
 ```
 python3 blocksDB_create.py
 ```
+
+TODO: Is the parity RPC server really single-threaded? Would perhaps the IPC connection be faster? But there is no `~/.local/share/io.ethereum.parity/jsonrpc.ipc`. How to [enable IPC](https://wiki.parity.io/Configuring-Parity) in Tobalaba-parity?
+
+The 4.4 million blocks took 2.5 hours to extract:
+
+> 4429200 blocks took 9431.95 seconds  
+> execute & commit 4429200 SQL statements into DB took 40.71 seconds  
+> TABLE blocks has 4429200 rows  
+> MIN(blocknumber), MAX(blocknumber) = [(0, 4429199)]   
+
+But now we have them in our sqlite3 database, blazing fast...
 
 ## step 2: analyze & visualize
 

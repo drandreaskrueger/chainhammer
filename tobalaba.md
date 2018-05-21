@@ -3,6 +3,12 @@ Purpose: Extending the quorum benchmarking other Ethereum-type chains.
 
 Here: Toabalaba chain of the EnergyWebFoundation.
 
+## quick shortcut:
+directly jump to 
+
+* script outputs --> [#results](#results)
+* **benchmarking result --> [#TPS](#TPS)**
+
 ## useful sites for Tobalaba:
 
 * [netstats](http://netstats.energyweb.org/) authority nodes
@@ -186,9 +192,8 @@ block 4428739 | new #TX   0 / 6000 ms =   0.0 TPS_current | total: #TX 1025 / 27
 ```
 
 ## TPS
-**1000 transactions --> 3 - 5 TPS on average --> as fast (or rather slow) as Ethereum PoW ?**
 
-Sample 
+Sample transaction and block:
 
 * [transaction](https://tobalaba.etherscan.com/tx/0x34b844767a0b9fa4bbee69dece85e26bccd648166b8ac072059abed6e8993d5a): 26691 gas
 * [block 4428722](https://tobalaba.etherscan.com/block/4428722): 81 transactions, gas used 2.72%
@@ -203,4 +208,14 @@ blocksDB_create.py
 jupyter notebook
 ```
 --> [blocksDB_analyze.ipynb](blocksDB_analyze.ipynb)
+
+![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
+
+## Conclusion
+
+* **3 - 5 TPS** on average during 1000 transactions   
+* --> only as fast (slow) as the *Ethereum PoW* chain?
+
+Hello energywebfoundation: How to make this faster? How did you get higher rates? Please you yourself try these benchmarking scripts, thanks.
+
 
