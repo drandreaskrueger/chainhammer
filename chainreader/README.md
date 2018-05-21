@@ -2,7 +2,7 @@
 In this case, the "Tobalaba" chain of the energywebfoundation. More background information [here](https://gitlab.com/electronDLT/training-material/tree/master/EWF) (private).
 
 ## prep
-All happens in virtualenv (see [../README.md](README.md)).
+All happens in virtualenv (see [../quorum.md#virtualenv](../quorum.md#virtualenv)).
 
 Start virtualenv, install dependencies:
 ```
