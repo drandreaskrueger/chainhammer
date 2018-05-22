@@ -1,5 +1,5 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v12
+# chainhammer v13
 TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain
 
 ## instructions
@@ -32,3 +32,16 @@ Please credit this as:
 > by Dr Andreas Krueger, Electron.org.uk, London 2018  
 
 Consider to submit your improvements & [usage](other-projects.md) as pull request. Thanks.
+
+---
+
+---
+
+---
+
+## chainhammer --> chainreader -->  diagrammer
+
+![chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png](chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png)
+
+
+(Quorum, raft consensus, 1000 transactions multi-threaded with 23 workers, average TPS around 160 TPS, and 20 raft blocks per second)
