@@ -29,7 +29,9 @@
 
 
 RPCaddress = 'http://localhost:8545' # 8545 = default Ethereum RPC port
+RPCaddress = 'http://localhost:22001' # 2200x = Quorum
 DBFILE = "allblocks.db"
+DBFILE = "allblocks-quorum.db"
 
 
 ################
@@ -349,13 +351,13 @@ if __name__ == '__main__':
     # manyBlocks_multithreaded(); exit()
     # manyBlocks_singlethreaded(); exit()
     
-    DB_newFromFile(); exit()
+    # DB_newFromFile(); exit()
     
     # N.B.: perhaps manually delete the existing "allblocks.db.sql" before 
     blockNumberFrom=0
-    blockNumberFrom=4429200
+    # blockNumberFrom=4429200
     manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, # numBlocks=1)
-                              numBlocks=w3.eth.blockNumber - blockNumberFrom)
+                              numBlocks=w3.eth.blockNumber - blockNumberFrom + 1)
                               
     DB_newFromFile()
     print ("done.")
