@@ -25,16 +25,7 @@ directly jump to
 
 ```
 Traceback (most recent call last):
-  File "/usr/lib/python3.5/threading.py", line 914, in _bootstrap_inner
-    self.run()
-  File "/usr/lib/python3.5/threading.py", line 862, in run
-    self._target(*self._args, **self._kwargs)
-  File "./send.py", line 264, in worker
-    contract_set(contract, item)
-  File "./send.py", line 87, in contract_set_via_web3
-    tx = contract.functions.set( x=arg ).transact(txParameters)
-  File "...python3.5/site-packages/web3/contract.py", line 1034, in transact
-    **self.kwargs)
+...
   File "...python3.5/site-packages/web3/contract.py", line 1311, in transact_with_contract_function
     txn_hash = web3.eth.sendTransaction(transact_transaction)
   File "...python3.5/site-packages/web3/eth.py", line 244, in sendTransaction
@@ -223,5 +214,13 @@ Thanks.
 
 ---
 
+## issues
+that I raised while developing this
 
+* [EWC #17](https://github.com/energywebfoundation/energyweb-client/issues/17) git checkout tags/(some reasonably stable release version)
+* [EWC #18](https://github.com/energywebfoundation/energyweb-client/issues/18) faucet broken?
+* [W3PY #808](https://github.com/ethereum/web3.py/issues/808) deploy contract example is broken
+* [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 
+* [EWC #20](https://github.com/energywebfoundation/energyweb-client/issues/20) 5 TPS?
+* [GL #46558](https://gitlab.com/gitlab-org/gitlab-ce/issues/46558) gitlab not rendering HTML correctly in markdown cells 
 
