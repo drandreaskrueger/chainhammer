@@ -115,6 +115,15 @@ block 4816 | new #TX 119 /  608 ms = 195.6 TPS_current | total: #TX  883 / 10.4 
 block 4822 | new #TX 117 /  358 ms = 326.1 TPS_current | total: #TX 1000 / 10.8 s =  92.9 TPS_average
 ```
 
+### chainreader
+* Quorum, raft consensus
+* submitted 1000 transactions, multi-threaded with 23 workers
+* the image shows the third such experiment on a newly started [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes) network
+* average TPS around 160 TPS, about 20 blocks per second
+
+![chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png](chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png)
+
+
 ## faster
 
 See [log.md](log.md) for what I have tried to get this faster.
@@ -132,18 +141,16 @@ how can I speed this up?
 ## IBFT = Istanbul BFT
 All of the above was done with the "Raft Consensus Algorithm".
 
-Next I would be switching to "Istanbul Byzantine Fault Tolerant" Consensus Algorithm.
+**Next I would be switching to *"Istanbul Byzantine Fault Tolerant" (IBFT)* ** Consensus Algorithm.
 
-Foreseable differences to the current chainhammer code:
+Differences to the raft chainhammer code (already solved, to benchmark the [Tobalaba](tobalaba.md) EnergyWebClient):
 
 * the smart contract deployment transaction cannot reliably be found in block 0; instead 
-  * we would have to make "[script1.js](https://github.com/drandreaskrueger/quorum-examples/blob/master/examples/7nodes/script1.js)" --> "script4.js" write the contract.address to a file for later reading; but writing to file is not even possible in JS - right?
-  * or console.log(contract.address) it, and then pipe the output of `runscript.sh script4.js` through some clever `awk` to extract the address, and then save it. 
-  * or we reimplement `script1.js` into a real programming language like Python, which can write to file ;-)
-* 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://gitlab.com/electronDLT/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) must be a different one than blocks moving forwards
+  * we reimplemented `script1.js` into a real programming language, which is allowed to write to file --> `deploy.py`
+* 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://gitlab.com/electronDLT/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) needed be a different one than blocks moving forwards; it is now just waiting for that `contract-address.json` file to be updated.
 
-TODO: no time; anyone wanting to take this task?
-  
+--> benchmarking IBFT should be simple, and straightforward. Still, no more time now.
+
 ## issues raised
 while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 
