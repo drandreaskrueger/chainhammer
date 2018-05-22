@@ -27,7 +27,7 @@ interesting next questions:
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
 * [QuorumNetworkManager](https://github.com/ConsenSys/QuorumNetworkManager)
 * compare all results in a table / barchart, instead of chronological text log files.
-* refactor [chainreader/blocksDB_analyze.ipynb] into 2 files: functions library + visualisation jupyter notebook
+* refactor [chainreader/blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
 
 what else?
 
