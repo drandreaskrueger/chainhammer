@@ -23,17 +23,22 @@ interesting next questions:
   * send TX via IPC instead of RPC - faster?
   * send TX via websockets instead of RPC - faster?
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed
+  * perhaps try Crux not Constellation? 
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
 * [QuorumNetworkManager](https://github.com/ConsenSys/QuorumNetworkManager)
 * compare all results in a table / barchart, instead of chronological text log files.
+* refactor [chainreader/blocksDB_analyze.ipynb] into 2 files: functions library + visualisation jupyter notebook
 
 what else?
 
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
 
 ### other places:
-* [log.md](log.md) - sequence of everything that I've already optimized, to get this faster
-* [README.md](README.md) - quickstart how to use this chainhammer tool
-* [Quorum-consensus.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md) - raft, IBFT, etc
-* [Quorum-privacy.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-privacy.md) - quorum private transactions
-* [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md) - attempt to run it on host machine instead of inside vagrant VB; currently broken, issue unanswered
+* [quorum.md](quorum.md) - quickstart how to use this chainhammer tool
+  * [log.md](log.md) - sequence of everything that I've already optimized, to get this faster 
+  * [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md) - attempt to run it on host machine instead of inside vagrant VB; currently broken, issue unanswered.
+  * [Quorum-consensus.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md) - raft, IBFT, etc
+  * [Quorum-privacy.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-privacy.md) - quorum private transactions
+* [tobalaba.md](tobalaba.md) also benchmarked the parity fork of the EnergyWebFoundation: `--chain Tobalaba`
+* [chainreader/](chainreader/) traverse whole chain, display as 4 diagrams: TPS, size, gas, blocktime
+* [README.md](README.md) - entry point for this repo
