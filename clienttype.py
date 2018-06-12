@@ -68,11 +68,13 @@ def curl_post(method, txParameters=[], RPCaddress=RPCaddress, ifPrint=False):
         return response_json['result']
         
 
-def clientType():
+def clientType(w3):
     """
     queries several ethereum API endpoints, 
     to figure out which client type & consensus algorithm (e.g. RAFT)
     """
+
+    consensus = "???"
     
     # Raft consensus?
     try:
@@ -80,30 +82,37 @@ def clientType():
         if answer:
             consensus = "raft"
     except MethodNotExistentError:
-        consensus = "???"
-
-    # IBFT consensus?
-    ## TODO: what is the best analogous call to the above?
+        pass
+    
+        # IBFT consensus?    
+        try:
+            answer = curl_post(method="admin_nodeInfo")
+            if 'istanbul' in answer.get('protocols', {}).keys():
+                consensus = "istanbul"
+        except:
+            pass
 
     # Geth / Parity / Energy Web:
     nodeString = w3.version.node
     nodeType = nodeString.split("/")[0] 
     
     # Quorum pretends to be Geth - so how to distinguish vanillaGeth from QuorumGeth?
-    ## TODO, candidates: 
-    ## 
-    ## admin_nodeInfo --> protocols --> istanbul 
-    ## (but unfortunately, when "raft", that pretends to be  --> protocols --> eth)  
+    nodeName = nodeType
+    if consensus in ('raft', 'istanbul'):
+        nodeName = "Quorum"
+        
+    if nodeName == "Energy Web":
+        nodeType = "Parity"
     
-    return nodeType, consensus
+    return nodeName, nodeType, consensus
     
 
 def test_clientType():
     """
     test the above
     """
-    nodeType, RAFT = clientType()
-    print ("nodeType: %s, consensus: %s" % (nodeType, RAFT))
+    nodeName, nodeType, consensus = clientType()
+    print ("nodeName: %s, nodeType: %s, consensus: %s" % (nodeName, nodeType, consensus))
 
 
 def justTryingOutDifferentThings():
@@ -126,5 +135,5 @@ if __name__ == '__main__':
     test_clientType()
     
     print()
-    justTryingOutDifferentThings()
+    #justTryingOutDifferentThings()
     

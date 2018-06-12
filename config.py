@@ -18,8 +18,8 @@ RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # u
 
 # if consensus algorithm is Quorum raft, then --> True
 # would be nice to automate that, see FR issue https://github.com/jpmorganchase/quorum/issues/369 
-# RAFT=False
-RAFT=True
+RAFT=False
+# RAFT=True
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "web3"  # "web3" "RPC" 
