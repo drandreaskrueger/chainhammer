@@ -2,7 +2,7 @@
 """
 @summary: deploy contract
 
-@version: v11 (21/May/2018)
+@version: v15 (12/June/2018)
 @since:   2/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -27,6 +27,8 @@ except:
 
 from config import RPCaddress, CONTRACT_SOURCE, CONTRACT_ABI, CONTRACT_ADDRESS
 from config import PRIVATE_FOR, printVersions, PASSPHRASE_FILE
+
+from clienttype import clientType
 
 
 ###############################################################################
@@ -127,12 +129,19 @@ def unlockAccount(duration=3600):
     
     account = w3.eth.defaultAccount
         
-    with open(PASSPHRASE_FILE, "r") as f:
-        passphrase=f.read().strip()
+
+    if NODENAME=="Quorum":
+        passphrase=""
+    else:
+        with open(PASSPHRASE_FILE, "r") as f:
+            passphrase=f.read().strip()
+
+    if NODETYPE=="Parity":
+        duration = w3.toHex(duration)
 
     return w3.personal.unlockAccount(account=account, 
                                      passphrase=passphrase,  
-                                     duration=w3.toHex(duration))
+                                     duration=duration)
 
 
 def deployTheContract(contract_source_file):
@@ -164,11 +173,22 @@ def testMethods(myContract):
     print('.get(): {}'.format(answer))
 
 
+def setGlobalVariables_clientType():
+    """
+    set global variables
+    """
+    global NODENAME, NODETYPE, CONSENSUS
+    NODENAME, NODETYPE, CONSENSUS = clientType(w3)
+    print ("nodeName: %s, nodeType: %s, consensus: %s" % (NODENAME, NODETYPE, CONSENSUS))
+    
+
 if __name__ == '__main__':
     printVersions()
     
     # account=None --> default account [0]
     start_web3connection(RPCaddress=RPCaddress, account=None) 
+
+    setGlobalVariables_clientType()
 
     deployTheContract(contract_source_file=CONTRACT_SOURCE)
     

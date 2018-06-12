@@ -3,7 +3,7 @@
 @summary: Which client type do we have? 
           quorum-raft/ibft OR energyweb OR parity OR geth OR ...
 
-@version: v14 (29/May/2018)
+@version: v15 (12/June/2018)
 @since:   29/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -103,6 +103,7 @@ def clientType(w3):
         
     if nodeName == "Energy Web":
         nodeType = "Parity"
+        consensus = "PoA"
     
     return nodeName, nodeType, consensus
     
@@ -111,7 +112,7 @@ def test_clientType():
     """
     test the above
     """
-    nodeName, nodeType, consensus = clientType()
+    nodeName, nodeType, consensus = clientType(w3)
     print ("nodeName: %s, nodeType: %s, consensus: %s" % (nodeName, nodeType, consensus))
 
 
