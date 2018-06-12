@@ -149,7 +149,35 @@ Differences to the raft chainhammer code (already solved, to benchmark the [Toba
   * we reimplemented `script1.js` into a real programming language, which is allowed to write to file --> `deploy.py`
 * 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://gitlab.com/electronDLT/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) needed be a different one than blocks moving forwards; it is now just waiting for that `contract-address.json` file to be updated.
 
---> benchmarking IBFT should be simple, and straightforward. Still, no more time now.
+--> benchmarking IBFT should be simple, and straightforward. Let's see:
+
+in 7 nodes quorum-examples:
+```
+cd quorum-examples/7nodes/
+./istanbul-init.sh 
+./istanbul-start.sh 
+tail -f qdata/logs/1.log 
+```
+
+in chainhammer:
+`config.py`: 
+```
+RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001'
+RAFT=False
+```
+terminal 1:
+```
+source py3eth/bin/activate
+./tps.py
+```
+terminal 2:
+```
+source py3eth/bin/activate
+./deploy.py notest; ./send.py threaded2 23
+```
+
+Does not work yet, as contract deployment seems to be slightly different in "Quorum" (Geth) than in "Energy Web" (Parity).
+
 
 ## issues raised
 while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
