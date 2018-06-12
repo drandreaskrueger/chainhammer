@@ -210,27 +210,27 @@ contract_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RP
 ################################################################
 
 
-def many_transactions(contract, howMany):
+def many_transactions(contract, numTx):
     """
     naive approach, blocking --> 15 TPS
     """
     
-    print ("send %d transactions, non-async, one after the other:\n" % (howMany))
+    print ("send %d transactions, non-async, one after the other:\n" % (numTx))
 
-    for i in range(howMany):
+    for i in range(numTx):
         tx = contract_set(contract, i)
         print ("set() transaction submitted: ", tx) # Web3.toHex(tx)) # new web3
 
 
-def many_transactions_threaded(contract, howMany):
+def many_transactions_threaded(contract, numTx):
     """
     submit many transactions multi-threaded.
     """
 
-    print ("send %d transactions, multi-threaded, one thread per tx:\n" % (howMany))
+    print ("send %d transactions, multi-threaded, one thread per tx:\n" % (numTx))
 
     threads = []
-    for i in range(howMany):
+    for i in range(numTx):
         t = Thread(target = contract_set,
                    args   = (contract, 7))
         threads.append(t)
@@ -248,13 +248,13 @@ def many_transactions_threaded(contract, howMany):
     print ("all threads ended.")
     
 
-def many_transactions_threaded_Queue(contract, howMany, num_worker_threads=100):
+def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=100):
     """
     submit many transactions multi-threaded, 
     with size limited threading Queue
     """
 
-    print ("send %d transactions, via multi-threading queue with %d workers:\n" % (howMany, num_worker_threads))
+    print ("send %d transactions, via multi-threading queue with %d workers:\n" % (numTx, num_worker_threads))
 
     q = Queue()
     
@@ -272,24 +272,24 @@ def many_transactions_threaded_Queue(contract, howMany, num_worker_threads=100):
          print (".", end=""); sys.stdout.flush()
     print ("%d worker threads created." % num_worker_threads)
 
-    for i in range(howMany):
+    for i in range(numTx):
         q.put (7)
         print (".", end=""); sys.stdout.flush()
-    print ("%d items queued." % howMany)
+    print ("%d items queued." % numTx)
 
     q.join()
     print ("\nall items - done.")
 
 
-def many_transactions_threaded_in_batches(contract, howMany, batchSize=25):
+def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
     """
     submit many transactions multi-threaded;
     But in batches of rather small numbers.
     Does not give an advantage --> OBSOLETE, probably. 
     """
 
-    print ("send %d transactions, multi-threaded, one thread per tx, in batches of %d parallel threads:\n" % (howMany, batchSize))
-    howManyLeft=howMany
+    print ("send %d transactions, multi-threaded, one thread per tx, in batches of %d parallel threads:\n" % (numTx, batchSize))
+    howManyLeft=numTx
     while howManyLeft>0:
             
         print ("Next batch of %d transactions ... %d left to do" % (batchSize, howManyLeft))
@@ -320,13 +320,13 @@ def many_transactions_threaded_in_batches(contract, howMany, batchSize=25):
 ###
 ###########################################################
 
-def benchmark():
+def benchmark(numTransactions = 3000):
 
     print("\nBlockNumber = ", w3.eth.blockNumber)
     
     if len(sys.argv)>1:
         if sys.argv[1]=="threaded1":
-            many_transactions_threaded(contract, 1000)
+            many_transactions_threaded(contract, numTransactions)
             
             
         elif sys.argv[1]=="threaded2":
@@ -337,20 +337,21 @@ def benchmark():
                 except:
                     pass
                 
-            numTx = 1000
-            many_transactions_threaded_Queue(contract, numTx, num_worker_threads=num_workers)
+            many_transactions_threaded_Queue(contract, 
+                                             numTx=numTransactions, 
+                                             num_worker_threads=num_workers)
             
         elif sys.argv[1]=="threaded3":
             batchSize=25
             many_transactions_threaded_in_batches(contract, 
-                                                  howMany=1000, 
+                                                  numTx=numTransactions, 
                                                   batchSize=batchSize)
           
         else:
             print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
     else:
         
-        many_transactions(contract, 1000)  # blocking, non-async
+        many_transactions(contract, numTransactions)  # blocking, non-async
 
 
 
