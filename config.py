@@ -14,7 +14,7 @@
 
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
+RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 # if consensus algorithm is Quorum raft, then --> True
 # would be nice to automate that, see FR issue https://github.com/jpmorganchase/quorum/issues/369 

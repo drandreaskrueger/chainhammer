@@ -103,7 +103,7 @@ def clientType(w3):
         
     if nodeName == "Energy Web":
         nodeType = "Parity"
-        consensus = "PoA"
+        consensus = "PoA"  # TODO: study the answers of typical commands, can say more? 
     
     return nodeName, nodeType, consensus
     
