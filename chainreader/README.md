@@ -45,7 +45,7 @@ But now we have them in our sqlite3 database, blazing fast...
 
 Python Jupyter is a nice graphics enabled IDE to show tables, diagrams, etc inline that are created with Python pandas, numpy, matplotlib.
 ```
-jupyter notebook
+jupyter notebook --ip=127.0.0.1
 ```
 
 then execute all cells in [blocksDB_analyze.ipynb](blocksDB_analyze.ipynb)
