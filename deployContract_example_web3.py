@@ -65,6 +65,14 @@ contract_interface = compiled_sol['<stdin>:Greeter']
 # step 2 https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md#7-nodes
 w3 = Web3(HTTPProvider('http://localhost:22000'))  
 
+nodeName = "Quorum"
+if nodeName == "Quorum":
+    # bugfix for quorum, see
+    # https://github.com/ethereum/web3.py/issues/898#issuecomment-396701172
+    from web3.middleware import geth_poa_middleware
+    # inject the poa compatibility middleware to the innermost layer
+    w3.middleware_stack.inject(geth_poa_middleware, layer=0)
+
 # print client ID string:
 print ("Node ID string:", w3.version.node)
 
