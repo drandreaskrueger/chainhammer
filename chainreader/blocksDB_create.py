@@ -31,7 +31,7 @@
 RPCaddress = 'http://localhost:8545' # 8545 = default Ethereum RPC port
 RPCaddress = 'http://localhost:22001' # 2200x = Quorum
 DBFILE = "allblocks.db"
-DBFILE = "allblocks-quorum.db"
+DBFILE = "allblocks-quorum-istanbul.db"
 
 
 ################
@@ -46,6 +46,14 @@ from queue import Queue
 from threading import Thread
 
 from web3 import Web3, HTTPProvider # pip3 install web3
+
+# import from parent folder: 
+import inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
+
+from deploy import setGlobalVariables_clientType # TODO: refactor into tools library?
 
 ###############################################################################
 
@@ -346,6 +354,7 @@ if __name__ == '__main__':
     
     global w3
     w3=start_web3connection(RPCaddress=RPCaddress) 
+    setGlobalVariables_clientType(w3)
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()
