@@ -21,7 +21,7 @@ from deploy import loadFromDisk
 
 from config import RPCaddress2, RAFT
 
-   
+from deploy import setGlobalVariables_clientType # TODO: refactor into tools library?
     
 
 def loopUntilActionBegins_raft(blockNumber_start, query_intervall = 0.1):
@@ -83,16 +83,22 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
     
-    timeunits = 1000000000.0 if PARITY else 1.0
-    duration = (ts_newBlockNumber - ts_blockNumber) * timeunits  
+    # (in some previous version ???) parity returned not seconds but nanoseconds?  
+    # timeunits = 1000000000.0 if PARITY else 1.0
+    # timeunits = 1000000000.0 if NODETYPE=="Parity" else 1.0
+    timeunits = 1.0
     
-    tps_current = 1000000000.0 * txCount_new / duration 
+    blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) * timeunits
+    # print (blocktimeSeconds)
+    
+    # tps_current = 1000000000.0 * txCount_new / blocktimeSeconds 
+    tps_current = txCount_new / blocktimeSeconds
 
     txCount += txCount_new
     elapsed = timeit.default_timer() - start_time
     tps = txCount / elapsed
     line = "block %d | new #TX %3d / %4.0f ms = %5.1f TPS_current | total: #TX %4d / %4.1f s = %5.1f TPS_average" 
-    line = line % ( blockNumber, txCount_new, duration / 1000000, tps_current, txCount, elapsed, tps) 
+    line = line % ( blockNumber, txCount_new, blocktimeSeconds * 1000, tps_current, txCount, elapsed, tps) 
     print (line)
     
     return txCount
@@ -136,8 +142,11 @@ if __name__ == '__main__':
     
     global w3
     w3 = Web3(HTTPProvider(RPCaddress2))
-    global PARITY
-    PARITY = "rustc" in w3.version.node
+    # global PARITY
+    # PARITY = "rustc" in w3.version.node
+    
+    global NODENAME, NODETYPE, CONSENSUS
+    NODENAME, NODETYPE, CONSENSUS = setGlobalVariables_clientType(w3)
     
     blockNumber_start = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
