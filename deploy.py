@@ -173,7 +173,7 @@ def testMethods(myContract):
     print('.get(): {}'.format(answer))
 
 
-def setGlobalVariables_clientType():
+def setGlobalVariables_clientType(w3):
     """
     set global variables
     """
@@ -181,6 +181,15 @@ def setGlobalVariables_clientType():
     NODENAME, NODETYPE, CONSENSUS = clientType(w3)
     print ("nodeName: %s, nodeType: %s, consensus: %s" % (NODENAME, NODETYPE, CONSENSUS))
     
+    if NODENAME == "Quorum":
+        # bugfix for quorum, see
+        # https://github.com/ethereum/web3.py/issues/898#issuecomment-396701172
+        from web3.middleware import geth_poa_middleware
+        # inject the poa compatibility middleware to the innermost layer
+        w3.middleware_stack.inject(geth_poa_middleware, layer=0)
+
+    return NODENAME, NODETYPE, CONSENSUS # for when imported into other modules
+
 
 if __name__ == '__main__':
     printVersions()
@@ -188,7 +197,7 @@ if __name__ == '__main__':
     # account=None --> default account [0]
     start_web3connection(RPCaddress=RPCaddress, account=None) 
 
-    setGlobalVariables_clientType()
+    setGlobalVariables_clientType(w3)
 
     deployTheContract(contract_source_file=CONTRACT_SOURCE)
     
