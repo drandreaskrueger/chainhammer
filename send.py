@@ -27,7 +27,7 @@ from web3.utils.abi import filter_by_name, abi_to_signature
 from web3.utils.encoding import pad_hex
 
 from deploy import loadFromDisk
-from config import RAFT
+from config import RAFT, NUMBER_OF_TRANSACTIONS
 
 
 ################
@@ -39,7 +39,7 @@ def unlockAccount(address=None, password="", duration=3600):
     unlock once, then leave open, to not loose time for unlocking
     """
     if not address:
-        address = w3.eth.coinbase
+        address = w3.eth.defaultAccount
     return w3.personal.unlockAccount(address, password, duration)
 
 
@@ -77,7 +77,7 @@ def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     call the .set(arg) method, possibly with 'privateFor' tx-property
     using the web3 method 
     """
-    txParameters = {'from': w3.eth.coinbase,
+    txParameters = {'from': w3.eth.defaultAccount,
                     'gas' : gas}
     if privateFor:
         txParameters['privateFor'] = privateFor  # untested
@@ -159,7 +159,7 @@ def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     
     method_ID = contract_method_ID("set", contract.abi)
     data = argument_encoding(method_ID, arg)
-    txParameters = {'from': w3.eth.coinbase, 
+    txParameters = {'from': w3.eth.defaultAccount, 
                     'to' : contract.address,
                     'gas' : w3.toHex(gas),
                     'data' : data} 
@@ -320,7 +320,7 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
 ###
 ###########################################################
 
-def benchmark(numTransactions = 3000):
+def benchmark(numTransactions = NUMBER_OF_TRANSACTIONS):
 
     print("\nBlockNumber = ", w3.eth.blockNumber)
     
@@ -361,6 +361,7 @@ if __name__ == '__main__':
     # (TODO: try IPC provider, when quorum-outside-vagrant starts working)
     global w3
     w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
+    w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # test_argument_encoding(); exit()
     
     if RAFT:
