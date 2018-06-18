@@ -41,7 +41,7 @@ for py3 dependencies, mostly ethereum
 virtualenv -p python3 py3eth
 source py3eth/bin/activate
 python3 -m pip install --upgrade pip==9.0.3
-pip3 install --upgrade py-solc==2.1.0 web3==4.2.0 web3[tester]==4.2.0 rlp==0.6.0 eth-testrpc==1.3.4 requests 
+pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests 
 ```
 see [hints from the Web3.py team](https://github.com/ethereum/web3.py/issues/808#issuecomment-386014138)
 
@@ -201,6 +201,7 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [QE PR #93](https://github.com/jpmorganchase/quorum-examples/pull/93) **initialize JSRE var with deployed contract, and script2.js to deploy privateFor 2 recipients**
 * [Q #369](https://github.com/jpmorganchase/quorum/issues/369) FR: new API endpoint/answer
 * [Web3.py #808](https://github.com/ethereum/web3.py/issues/808) --> solved
+* [Web3.py #898](https://github.com/ethereum/web3.py/issues/898) --> solved
 
 # credits
 Please credit this as:
