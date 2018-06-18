@@ -31,7 +31,7 @@
 RPCaddress = 'http://localhost:8545' # 8545 = default Ethereum RPC port
 RPCaddress = 'http://localhost:22001' # 2200x = Quorum
 DBFILE = "allblocks.db"
-DBFILE = "allblocks-quorum-istanbul.db"
+DBFILE = "allblocks-quorum-raft.db"
 
 
 ################

@@ -23,7 +23,7 @@ NUMBER_OF_TRANSACTIONS = 10000
 # mostly automated now ... from clienttype import clientType
 # TODO: replace everywhere (after refactoring startup functions into tools module) 
 RAFT=False
-# RAFT=True
+RAFT=True
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "web3"  # "web3" "RPC" 

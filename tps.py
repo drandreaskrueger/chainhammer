@@ -83,15 +83,11 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
     
-    # (in some previous version ???) parity returned not seconds but nanoseconds?  
-    # timeunits = 1000000000.0 if PARITY else 1.0
-    # timeunits = 1000000000.0 if NODETYPE=="Parity" else 1.0
-    timeunits = 1.0
+    # quorum raft consensus ... returns not seconds but nanoseconds?  
+    timeunits = 1000000000.0 if CONSENSUS=="raft" else 1.0
     
-    blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) * timeunits
-    # print (blocktimeSeconds)
+    blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) / timeunits
     
-    # tps_current = 1000000000.0 * txCount_new / blocktimeSeconds 
     tps_current = txCount_new / blocktimeSeconds
 
     txCount += txCount_new
