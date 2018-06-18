@@ -2,7 +2,7 @@
 """
 @summary: settings
 
-@version: v09 (2/May/2018)
+@version: v16 (18/June/2018)
 @since:   8/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger

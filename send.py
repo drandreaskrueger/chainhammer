@@ -2,7 +2,7 @@
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v15 (12/June/2018)
+@version: v16 (18/June/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger

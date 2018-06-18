@@ -4,7 +4,7 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v09 (8/May/2018)
+@version: v16 (18/June/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
