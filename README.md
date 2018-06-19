@@ -1,5 +1,5 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v16
+# chainhammer v19
 TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain
 
 ## instructions
@@ -21,6 +21,21 @@ See [other-projects.md](other-projects.md) using this, or projects which are sim
 
 Please report back when you have done other / new measurements. 
 
+## dependencies
+```
+pip install virtualenv
+virtualenv -p python3 py3eth
+source py3eth/bin/activate
+python3 -m pip install --upgrade pip==9.0.3
+pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests 
+```
+all python scripts & jupyer notebooks must be run within that virtualenv:
+
+```
+source py3eth/bin/activate
+./tps.py 
+```
+etc
 
 ## credits
 

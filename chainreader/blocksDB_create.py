@@ -4,7 +4,7 @@
 
 @attention: MOST of the code in here (all the multithreaded stuff) is actually obsolete as surprisingly the fastest way to read from parity RPC is ... single-threaded
 
-@version: v12 (17/May/2018)
+@version: v19 (19/June/2018)
 @since:   16/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
