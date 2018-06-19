@@ -20,7 +20,7 @@ directly jump to
 ## quickstart
 
 * sync your energyweb client: `./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal,net,parity" --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off`
-* put some Tobalaba-Ether onto the first address of that node
+* put some Tobalaba-Ether onto the first address of that node; and its passphrase into `account-passphrase.txt`
 * clone this repo (and checkout e.g. commit 12d6de2e because that definitely contains the correct `config.py`)
 * install the [virtualenv & dependencies](https://gitlab.com/electronDLT/chainhammer/blob/master/README.md#dependencies) - each of the following terminals needs to start that venv first, with `source py3eth/bin/activate`
 * first terminal:   `./tps.py`
