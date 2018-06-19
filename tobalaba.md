@@ -215,7 +215,7 @@ Thanks.
 ---
 
 ## issues
-that I raised while developing this
+that I raised while developing this, and testing it on the Tobalaba client
 
 * [EWC #17](https://github.com/energywebfoundation/energyweb-client/issues/17) git checkout tags/(some reasonably stable release version)
 * [SOF #50117762](https://stackoverflow.com/questions/50117762/diff-of-commit-histories-of-two-forked-but-not-forked-from-github-repos) commit history diff of Parity vs EnergyWebClient (the latter wasn't github-forked)
@@ -224,4 +224,6 @@ that I raised while developing this
 * [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 
 * [EWC #20](https://github.com/energywebfoundation/energyweb-client/issues/20) 5 TPS?
 * [GL #46558](https://gitlab.com/gitlab-org/gitlab-ce/issues/46558) gitlab not rendering HTML correctly in markdown cells 
-
+* [EWC#25](https://github.com/energywebfoundation/energyweb-client/issues/25) 1.12 client may be unstable. Please use the 1.9.3 client ... 
+* [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) 0/25 peers
+* [EWC#25](https://github.com/energywebfoundation/energyweb-client/issues/25) 1.12 client may be unstable. Please use the 1.9.3 client ...
