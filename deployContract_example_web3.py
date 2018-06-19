@@ -4,6 +4,9 @@
 # then repaired:
 # see issue 808 https://github.com/ethereum/web3.py/issues/808
 # and extended
+#
+# and quorum-bugfixed, see
+# https://github.com/ethereum/web3.py/issues/898#issuecomment-396701172
 
 # tested with these versions:
 #   web3 4.2.0
@@ -14,7 +17,7 @@
 # 
 # does work      with TestRPCProvider()
 # does work      with Energy Web//v1.12.0 (parity fork)
-# does NOT work  with Quorum 2.0.2 (fork of Geth/v1.7.2)
+# now also works with Quorum 2.0.2 (fork of Geth/v1.7.2)
 
 import json
 import web3
@@ -22,12 +25,6 @@ import web3
 from web3 import Web3, HTTPProvider
 from solc import compile_source
 from web3.contract import ConciseContract
-
-try:
-    from config import printVersions; printVersions() # added by me
-except:
-    pass
-
 
 # Solidity source code
 contract_source_code = '''
@@ -116,4 +113,3 @@ print('Updated contract greeting: {}'.format(
 # When issuing a lot of reads, try this more concise reader:
 reader = ConciseContract(greeter)
 assert reader.greet() == "Nihao"
-
