@@ -15,7 +15,7 @@
 ## Dependencies:
 
 import json
-from pprint import pprint
+
 import requests # pip3 install requests
 
 try:
@@ -24,12 +24,12 @@ except:
     print ("Dependencies unavailable. Start virtualenv first!")
     exit()
 
-from config import RPCaddress, printVersions
+from config import RPCaddress
 
 
 def start_web3connection(RPCaddress=None):
     """
-    get a web3 object
+    get a web3 object.
     """
     w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
     print ("web3 connection established, blockNumber =", w3.eth.blockNumber, end=", ")
@@ -145,7 +145,7 @@ def justTryingOutDifferentThings():
         
 
 if __name__ == '__main__':
-    printVersions()
+
     w3 = start_web3connection(RPCaddress=RPCaddress) 
 
     test_clientType(w3)

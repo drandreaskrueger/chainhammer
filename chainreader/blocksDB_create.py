@@ -28,10 +28,10 @@
 # execute & commit 4392280 SQL statements into DB took 37.91 seconds
 
 
-RPCaddress = 'http://localhost:8545' # 8545 = default Ethereum RPC port
-RPCaddress = 'http://localhost:22001' # 2200x = Quorum
+
 DBFILE = "allblocks.db"
 DBFILE = "allblocks-quorum-raft.db"
+DBFILE = "allblocks-tobalaba.db"
 
 
 ################
@@ -53,7 +53,8 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 
-from deploy import setGlobalVariables_clientType # TODO: refactor into tools library?
+from config import RPCaddress
+from clienttools import web3connection
 
 ###############################################################################
 
@@ -352,9 +353,9 @@ def DB_newFromFile():
 
 if __name__ == '__main__':
     
-    global w3
-    w3=start_web3connection(RPCaddress=RPCaddress) 
-    setGlobalVariables_clientType(w3)
+    answer = web3connection(RPCaddress=RPCaddress, account=None)
+    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()

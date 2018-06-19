@@ -4,7 +4,7 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v16 (18/June/2018)
+@version: v19 (19/June/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -13,15 +13,12 @@
 
 
 import time, timeit, sys
-from pprint import pprint
 
 from web3 import Web3, HTTPProvider
-from config import printVersions
-from deploy import loadFromDisk
 
 from config import RPCaddress2, RAFT
-
-from deploy import setGlobalVariables_clientType # TODO: refactor into tools library?
+from deploy import loadFromDisk
+from clienttools import web3connection
     
 
 def loopUntilActionBegins_raft(blockNumber_start, query_intervall = 0.1):
@@ -64,7 +61,7 @@ def loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall = 0
 
 
 def loopUntilActionBegins(blockNumber_start, query_intervall = 0.1):
-    if RAFT:
+    if RAFT: # TODO - automate that hardcoded constant away with CONSENSUS query result  
         return loopUntilActionBegins_raft(blockNumber_start, query_intervall=query_intervall)
     else:
         return loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall=query_intervall)
@@ -134,20 +131,16 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
 
 
 if __name__ == '__main__':
-    printVersions()
     
-    global w3
-    w3 = Web3(HTTPProvider(RPCaddress2))
-    
-    global NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    NODENAME, NODETYPE, CONSENSUS, CHAINNAME = setGlobalVariables_clientType(w3)
+    answer = web3connection(RPCaddress=RPCaddress2, account=None)
+    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
     
     blockNumber_start = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
     
     blocknumber_start_here = loopUntilActionBegins(blockNumber_start) 
     
-    # measurement( blockNumber_start + 1 )
     measurement( blocknumber_start_here )
     
     

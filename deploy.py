@@ -2,7 +2,7 @@
 """
 @summary: deploy contract
 
-@version: v16 (18/June/2018)
+@version: v19 (19/June/2018)
 @since:   2/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -26,9 +26,9 @@ except:
     exit()
 
 from config import RPCaddress, CONTRACT_SOURCE, CONTRACT_ABI, CONTRACT_ADDRESS
-from config import PRIVATE_FOR, printVersions, PASSPHRASE_FILE
+from config import PRIVATE_FOR, PASSPHRASE_FILE
 
-from clienttype import clientType
+from clienttools import web3connection, unlockAccount
 
 
 ###############################################################################
@@ -80,28 +80,6 @@ def contractObject(contractAddress, abi):
 ## additional basic tasks:
 ##########################
 
-def start_web3connection(RPCaddress=None, account=None):
-    """
-    get a global web3 object
-    """
-    global w3
-    if RPCaddress:
-        # HTTP provider 
-        # (TODO: also try whether IPC provider is faster, when quorum-outside-vagrant starts working)
-        w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-    else:
-        w3 = Web3(Web3.TestRPCProvider()) 
-    
-    print ("web3 connection established, blockNumber =", w3.eth.blockNumber, end=", ")
-    print ("node version string = ", w3.version.node)
-    if not account:
-        w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
-    print ("first account of node is", w3.eth.defaultAccount, end=", ")
-    print ("balance is %s Ether" % w3.fromWei(w3.eth.getBalance(w3.eth.defaultAccount), "ether"))
-    
-    return w3
-
-
 def saveToDisk(contractAddress, abi):
     """
     save address & abi, for usage in the other script
@@ -117,31 +95,6 @@ def loadFromDisk():
     contractAddress = json.load(open(CONTRACT_ADDRESS, 'r'))
     abi = json.load(open(CONTRACT_ABI, 'r'))
     return contractAddress["address"], abi
-
-
-def unlockAccount(duration=3600):
-    """
-    unlock once, then leave open, to later not loose time for unlocking
-    """
-    
-    if "TestRPC" in w3.version.node:
-        return True # TestRPC does not need unlocking 
-    
-    account = w3.eth.defaultAccount
-        
-
-    if NODENAME=="Quorum":
-        passphrase=""
-    else:
-        with open(PASSPHRASE_FILE, "r") as f:
-            passphrase=f.read().strip()
-
-    if NODETYPE=="Parity":
-        duration = w3.toHex(duration)
-
-    return w3.personal.unlockAccount(account=account, 
-                                     passphrase=passphrase,  
-                                     duration=duration)
 
 
 def deployTheContract(contract_source_file):
@@ -173,32 +126,12 @@ def testMethods(myContract):
     print('.get(): {}'.format(answer))
 
 
-def setGlobalVariables_clientType(w3):
-    """
-    set global variables
-    """
-    global NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    NODENAME, NODETYPE, CONSENSUS, CHAINNAME = clientType(w3)
-    
-    print ("nodeName: %s, nodeType: %s, consensus: %s, chainName: %s" % (NODENAME, NODETYPE, CONSENSUS, CHAINNAME))
-    
-    if NODENAME == "Quorum":
-        # bugfix for quorum, see
-        # https://github.com/ethereum/web3.py/issues/898#issuecomment-396701172
-        from web3.middleware import geth_poa_middleware
-        # inject the poa compatibility middleware to the innermost layer
-        w3.middleware_stack.inject(geth_poa_middleware, layer=0)
-
-    return NODENAME, NODETYPE, CONSENSUS, CHAINNAME # for when imported into other modules
-
 
 if __name__ == '__main__':
-    printVersions()
-    
-    # account=None --> default account [0]
-    start_web3connection(RPCaddress=RPCaddress, account=None) 
 
-    setGlobalVariables_clientType(w3)
+    answer = web3connection(RPCaddress=RPCaddress, account=None)
+    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
 
     deployTheContract(contract_source_file=CONTRACT_SOURCE)
     

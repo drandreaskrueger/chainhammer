@@ -2,7 +2,7 @@
 """
 @summary: settings
 
-@version: v16 (18/June/2018)
+@version: v19 (19/June/2018)
 @since:   8/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -14,14 +14,14 @@
 
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
+RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 # how many tx to send in send.py
-NUMBER_OF_TRANSACTIONS = 30
+NUMBER_OF_TRANSACTIONS = 5000
 
 # if consensus algorithm is Quorum raft, then --> True
-# mostly automated now ... from clienttype import clientType
-# TODO: replace everywhere (after refactoring startup functions into tools module) 
+# could be automated now ... from clienttype import clientType
+# TODO: replace this constant by  clienttype CONSENSUS query 
 RAFT=False
 # RAFT=True
 
@@ -48,20 +48,7 @@ PASSPHRASE_FILE = "account-passphrase.txt"
 # DB file for traversing all blocks
 DBFILE="allblocks.db"
 
-def printVersions():
-    import sys
-    from web3 import __version__ as web3version 
-    from solc import get_solc_version
-    from testrpc import __version__ as ethtestrpcversion
-    
-    import pkg_resources
-    pysolcversion = pkg_resources.get_distribution("py-solc").version
-    
-    print ("versions: web3 %s, py-solc: %s, solc %s, testrpc %s, python %s" % (web3version, pysolcversion, get_solc_version(), ethtestrpcversion, sys.version.replace("\n", "")))
-
-
 if __name__ == '__main__':
-    printVersions()
     print ("Do not run this. Like you just did. Don't.")
     
     

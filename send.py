@@ -2,7 +2,7 @@
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v16 (18/June/2018)
+@version: v19 (19/June/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -29,18 +29,11 @@ from web3.utils.encoding import pad_hex
 from deploy import loadFromDisk
 from config import RAFT, NUMBER_OF_TRANSACTIONS
 
-
-################
-## basic tasks:
+from clienttools import web3connection, unlockAccount
 
 
-def unlockAccount(address=None, password="", duration=3600):
-    """
-    unlock once, then leave open, to not loose time for unlocking
-    """
-    if not address:
-        address = w3.eth.defaultAccount
-    return w3.personal.unlockAccount(address, password, duration)
+##########################
+## smart contract related:
 
 
 def initialize_fromBlock(contractTx_blockNumber=1, contractTx_transactionIndex=0):
@@ -48,6 +41,7 @@ def initialize_fromBlock(contractTx_blockNumber=1, contractTx_transactionIndex=0
     use example contract from 7 nodes example
     if called without arguments, it assumes that the very first transaction was done by
     ./runscript.sh script1.js
+    (only works with raft consensus)
     """
     abi = ABI
     print ("Getting the address of the example contract that was deployed")
@@ -66,6 +60,9 @@ def initialize_fromBlock(contractTx_blockNumber=1, contractTx_transactionIndex=0
 
 
 def initialize_fromAddress():
+    """
+    initialize contract object from address
+    """
     contractAddress, abi = loadFromDisk()
     myContract = w3.eth.contract(address=contractAddress,
                                  abi=abi)
@@ -357,10 +354,10 @@ def benchmark(numTransactions = NUMBER_OF_TRANSACTIONS):
 
 if __name__ == '__main__':
 
-    # HTTP provider 
-    # (TODO: try IPC provider, when quorum-outside-vagrant starts working)
-    global w3
-    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
+    answer = web3connection(RPCaddress=RPCaddress, account=None)
+    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
+
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # test_argument_encoding(); exit()
     
