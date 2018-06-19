@@ -3,7 +3,7 @@
 @summary: Which client type do we have? 
           quorum-raft/ibft OR energyweb OR parity OR geth OR ...
 
-@version: v16 (18/June/2018)
+@version: v17 (19/June/2018)
 @since:   29/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -29,9 +29,8 @@ from config import RPCaddress, printVersions
 
 def start_web3connection(RPCaddress=None):
     """
-    get a global web3 object
+    get a web3 object
     """
-    global w3
     w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
     print ("web3 connection established, blockNumber =", w3.eth.blockNumber, end=", ")
     print ("node version string = ", w3.version.node)
@@ -45,7 +44,7 @@ class MethodNotExistentError(Error):
     pass
 
 
-def curl_post(method, txParameters=[], RPCaddress=RPCaddress, ifPrint=False):
+def curl_post(method, txParameters=None, RPCaddress=RPCaddress, ifPrint=False):
     """
     call Ethereum RPC functions that are still missing from web3.py 
     see
@@ -53,8 +52,9 @@ def curl_post(method, txParameters=[], RPCaddress=RPCaddress, ifPrint=False):
     """
     payload= {"jsonrpc" : "2.0",
                "method" : method,
-               "params" : [txParameters],
                "id"     : 1}
+    if txParameters:
+        payload["params"] = [txParameters]
     headers = {'Content-type' : 'application/json'}
     response = requests.post(RPCaddress, json=payload, headers=headers)
     response_json = response.json()
@@ -105,15 +105,25 @@ def clientType(w3):
         nodeType = "Parity"
         consensus = "PoA"  # TODO: study the answers of typical commands, can say more? 
     
-    return nodeName, nodeType, consensus
+    chainName="???"
+    if nodeType=="Parity":
+        try:
+            chainName = curl_post(method="parity_chain") #  foundation, tobalaba
+            if chainName=="foundation":
+                consensus = "PoW"  # dangerous assumption, because some day that might actually change. For now fine. 
+        except MethodNotExistentError:
+            pass
+    # TODO: Does geth also have a concept of chainName (e.g. for Morden/Ropsten/...)? How to query?
+    
+    return nodeName, nodeType, consensus, chainName
     
 
-def test_clientType():
+def test_clientType(w3):
     """
     test the above
     """
-    nodeName, nodeType, consensus = clientType(w3)
-    print ("nodeName: %s, nodeType: %s, consensus: %s" % (nodeName, nodeType, consensus))
+    nodeName, nodeType, consensus, chainName = clientType(w3)
+    print ("nodeName: %s, nodeType: %s, consensus: %s, chainName: %s" % (nodeName, nodeType, consensus, chainName))
 
 
 def justTryingOutDifferentThings():
@@ -123,18 +133,23 @@ def justTryingOutDifferentThings():
     https://github.com/jpmorganchase/quorum/blob/3d91976f08074c1f7f605beaadf4b37783026d85/internal/web3ext/web3ext.go#L600-L671
 
     """
-    for method in ("admin_nodeInfo", "net_version", "rpc_modules"):
+    for method in ("admin_nodeInfo", "net_version", "rpc_modules", 
+                   "parity_chainId", "parity_chain", "parity_consensusCapability", 
+                   "parity_nodeKind", "parity_versionInfo", ):
         print ("\n%s:" % method)
-        pprint ( curl_post(method=method) )
+        try:
+            pprint ( curl_post(method=method) )
+        except:
+            pass
         
         
 
 if __name__ == '__main__':
     printVersions()
-    start_web3connection(RPCaddress=RPCaddress) 
+    w3 = start_web3connection(RPCaddress=RPCaddress) 
 
-    test_clientType()
+    test_clientType(w3)
     
     print()
-    #justTryingOutDifferentThings()
+    # justTryingOutDifferentThings()
     

@@ -138,11 +138,9 @@ if __name__ == '__main__':
     
     global w3
     w3 = Web3(HTTPProvider(RPCaddress2))
-    # global PARITY
-    # PARITY = "rustc" in w3.version.node
     
-    global NODENAME, NODETYPE, CONSENSUS
-    NODENAME, NODETYPE, CONSENSUS = setGlobalVariables_clientType(w3)
+    global NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    NODENAME, NODETYPE, CONSENSUS, CHAINNAME = setGlobalVariables_clientType(w3)
     
     blockNumber_start = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 

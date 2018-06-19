@@ -177,9 +177,10 @@ def setGlobalVariables_clientType(w3):
     """
     set global variables
     """
-    global NODENAME, NODETYPE, CONSENSUS
-    NODENAME, NODETYPE, CONSENSUS = clientType(w3)
-    print ("nodeName: %s, nodeType: %s, consensus: %s" % (NODENAME, NODETYPE, CONSENSUS))
+    global NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    NODENAME, NODETYPE, CONSENSUS, CHAINNAME = clientType(w3)
+    
+    print ("nodeName: %s, nodeType: %s, consensus: %s, chainName: %s" % (NODENAME, NODETYPE, CONSENSUS, CHAINNAME))
     
     if NODENAME == "Quorum":
         # bugfix for quorum, see
@@ -188,7 +189,7 @@ def setGlobalVariables_clientType(w3):
         # inject the poa compatibility middleware to the innermost layer
         w3.middleware_stack.inject(geth_poa_middleware, layer=0)
 
-    return NODENAME, NODETYPE, CONSENSUS # for when imported into other modules
+    return NODENAME, NODETYPE, CONSENSUS, CHAINNAME # for when imported into other modules
 
 
 if __name__ == '__main__':

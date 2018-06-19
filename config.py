@@ -14,10 +14,10 @@
 
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
-RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 # how many tx to send in send.py
-NUMBER_OF_TRANSACTIONS = 3000
+NUMBER_OF_TRANSACTIONS = 30
 
 # if consensus algorithm is Quorum raft, then --> True
 # mostly automated now ... from clienttype import clientType
