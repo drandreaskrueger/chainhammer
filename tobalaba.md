@@ -3,7 +3,7 @@ Purpose: Extending the quorum benchmarking to other Ethereum-type chains.
 
 Here: *Toabalaba chain of the EnergyWebFoundation*, a fork of parity.
 
-## quick shortcut:
+## shortcuts:
 directly jump to 
 
 * script outputs --> [#results](#results)
@@ -16,6 +16,17 @@ directly jump to
 * block explorer e.g. --> [pending transactions](https://tobalaba.etherscan.com/txsPending)
 * [faucet](https://energyweb.atlassian.net/wiki/spaces/EWF/pages/126517249) to get Tobalaba-ETH 
 * EWF [website](https://energyweb.org/blockchain/) 
+
+## quickstart
+
+* sync your energyweb client: `./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal,net,parity" --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off`
+* put some Tobalaba-Ether onto the first address of that node
+* clone this repo (and checkout e.g. commit 12d6de2e because that definitely contains the correct `config.py`)
+* install the [virtualenv & dependencies](https://gitlab.com/electronDLT/chainhammer/blob/master/README.md#dependencies) - each of the following terminals needs to start that venv first, with `source py3eth/bin/activate`
+* first terminal:   `./tps.py`
+* second terminal: `./deploy.py notest && ./send.py threaded2 23`
+
+more infos:
 
 ## preparations 
 
@@ -45,9 +56,9 @@ solved by enlarging the *transaction queue*, with additional startup parameters
 
 I now start the node with these parameters
 
-    ./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal" \
+    ./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal,net,parity" \
                             --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue \
-                            --tx-queue-mem-limit=0 --tx-queue-per-sender=2001 --tx-queue-gas=off 
+                            --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off 
 
 Then it accepted 1000 transactions.
     
