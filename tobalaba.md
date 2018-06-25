@@ -58,7 +58,11 @@ I now start the node with these parameters
 
     ./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal,net,parity" \
                             --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue \
-                            --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off 
+                            --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off \
+                            --reserved-peers <PATH>/tobalaba-peers.txt
+
+(See [tobalaba-node-start.sh](tobalaba-node-start.sh) - in it, just change your path)
+
 
 Then it accepted 1000 transactions.
     
