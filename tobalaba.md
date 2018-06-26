@@ -300,7 +300,7 @@ Thanks.
 that I raised while developing this, and testing it on the Tobalaba client
 
 * [EWC #17](https://github.com/energywebfoundation/energyweb-client/issues/17) git checkout tags/(some reasonably stable release version)
-* [SOF #50117762](https://stackoverflow.com/questions/50117762/diff-of-commit-histories-of-two-forked-but-not-forked-from-github-repos) commit history diff of Parity vs EnergyWebClient (the latter wasn't github-forked)
+* [SOF #50117762](https://stackoverflow.com/questions/50117762/diff-of-commit-histories-of-two-forked-but-not-forked-from-github-repos) commit history diff of Parity vs EnergyWebClient (the latter wasn't github-forked) ( * )
 * [EWC #18](https://github.com/energywebfoundation/energyweb-client/issues/18) faucet broken?
 * [W3PY #808](https://github.com/ethereum/web3.py/issues/808) deploy contract example is broken
 * [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 
@@ -309,3 +309,46 @@ that I raised while developing this, and testing it on the Tobalaba client
 * [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) 0/25 peers
 * [EWC#25](https://github.com/energywebfoundation/energyweb-client/issues/25) 1.12 client may be unstable. Please use the 1.9.3 client ...
 * [EWC#26](https://github.com/energywebfoundation/energyweb-client/issues/26) IPC: jsonrpc.ipc ?
+
+
+## solution for ( * )
+
+### ewfclient == fork of parity 1.8.0 (?)
+
+get commit hashes of both repos, and compare them:
+```
+git clone https://github.com/paritytech/parity.git paritytech_parity
+cd paritytech_parity/
+git log --oneline > ../commit_hashes_paritytech.txt
+cd ../energywebfoundation_energyweb-client/
+git log --oneline > ../commit_hashes_ewf.txt
+
+# all commits since the fork, and of that - only the first differing one:
+diff commit_hashes_ewf.txt commit_hashes_paritytech.txt  | grep \< | tail -n 1
+```
+result:
+```
+< 976cf4182 tobalaba default chain
+```
+That first commit was done Sep 7, 2017 --> https://github.com/energywebfoundation/energyweb-client/commit/976cf4182
+
+The parent of that commit was Aug 31, 2017   
+https://github.com/energywebfoundation/energyweb-client/commit/47f7366a5c6a34dd4a587916296e0869475c15de  
+= https://github.com/paritytech/parity/commit/47f7366a5c6a34dd4a587916296e0869475c15de
+
+now, which parity version number was that?
+
+```
+cd paritytech_parity
+git reset --hard  47f7366a5c6a34dd4a587916296e0869475c15de
+grep Cargo.toml -e 'version'
+```
+results in:
+
+```
+version = "1.8.0"
+clippy = { version = "0.0.103", optional = true}
+rustc_version = "0.2"
+```
+
+so ... I guess they have forked from **parity version 1.8.0**.
