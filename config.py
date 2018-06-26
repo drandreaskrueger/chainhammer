@@ -17,7 +17,7 @@ RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # u
 RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port
 
 # how many tx to send in send.py
-NUMBER_OF_TRANSACTIONS = 5000
+NUMBER_OF_TRANSACTIONS = 20000
 
 # if consensus algorithm is Quorum raft, then --> True
 # could be automated now ... from clienttype import clientType

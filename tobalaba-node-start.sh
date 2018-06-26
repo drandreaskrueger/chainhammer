@@ -14,7 +14,7 @@ PEERSFILE=tobalaba-peers.txt
 RPCAPI="web3,eth,personal,net,parity"
 
 ## you want to benchmark over a statistically relevant number of transactions
-TXQUEUESIZE=5001
+TXQUEUESIZE=20001
 
 
 $PARITY --chain tobalaba --pruning=archive \

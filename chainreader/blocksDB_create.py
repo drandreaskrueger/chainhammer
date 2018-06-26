@@ -365,7 +365,7 @@ if __name__ == '__main__':
     
     # N.B.: perhaps manually delete the existing "allblocks.db.sql" before 
     blockNumberFrom=0
-    # blockNumberFrom=4429200
+    blockNumberFrom=5173723
     manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, # numBlocks=1)
                               numBlocks=w3.eth.blockNumber - blockNumberFrom + 1)
                               

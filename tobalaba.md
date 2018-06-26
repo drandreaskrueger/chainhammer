@@ -112,15 +112,16 @@ after each experiment, **restart the listener** `tps.py`, and redeploy the contr
 
 ## results
 
-### 1000 transactions
+### 1000 transactions - bad connectivity
 * multi-threaded with 23 workers threads
 * submitted via web3 `Web3(HTTPProvider('http://localhost:8545'))`
-* to local (non-authority) node
 * with background of only 1-2 unrelated transactions per block
+* to local (non-authority) node
+  * which had very few peers, often 0/25 - see issue [#24](https://github.com/energywebfoundation/energyweb-client/issues/24)
 
---> **3 - 5 TPS on average**, more details following:
+--> **3 - 5 TPS on average**:
 
-### logs
+#### logs
 
 chainhammer `send.py`
 ```
@@ -198,6 +199,65 @@ block 4428738 | new #TX  74 / 33000 ms =   2.2 TPS_current | total: #TX 1025 / 2
 block 4428739 | new #TX   0 / 6000 ms =   0.0 TPS_current | total: #TX 1025 / 276.1 s =   3.7 TPS_average
 ```
 
+### 20,000 transactions, with better connectivity
+
+See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously, often my client had 1/25 peers and sometimes 0/25 peers, and that decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](tobalaba-peers.txt) and [tobalaba-node-start.sh](tobalaba-node-start.sh). 
+
+Really odd is that the peer discovery seems to be broken - the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
+
+Nevertheless, now with more peers, the TPS benchmarking gets too higher results! -->
+
+#### logs
+
+```
+./tps.py 
+```
+```
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 5173628, node version string =  Energy Web//v1.12.0-unstable-a7d13fb69-20180509/x86_64-linux-gnu/rustc1.25.0
+first account of node is 0x0056D95f4c3F1f0B32B538E3BdD393D8e4850857, balance is 59.999602805398779277 Ether
+nodeName: Energy Web, nodeType: Parity, consensus: PoA, chainName: tobalaba
+
+Block  5173628  - waiting for something to happen
+
+starting timer, at block 5173632 which has  2  transactions; at timecode 15443.405352627
+block 5173632 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX    3 /  2.7 s =   1.1 TPS_average
+block 5173633 | new #TX 335 / 3000 ms = 111.7 TPS_current | total: #TX  338 /  6.1 s =  55.6 TPS_average
+block 5173634 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX  339 /  9.4 s =  36.0 TPS_average
+block 5173635 | new #TX   0 / 3000 ms =   0.0 TPS_current | total: #TX  339 / 12.2 s =  27.9 TPS_average
+block 5173636 | new #TX 2338 / 3000 ms = 779.3 TPS_current | total: #TX 2677 / 17.1 s = 156.8 TPS_average
+block 5173637 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 2678 / 18.1 s = 148.3 TPS_average
+block 5173638 | new #TX  73 / 6000 ms =  12.2 TPS_current | total: #TX 2751 / 24.1 s = 114.0 TPS_average
+block 5173639 | new #TX  42 / 3000 ms =  14.0 TPS_current | total: #TX 2793 / 27.5 s = 101.6 TPS_average
+block 5173640 | new #TX  97 / 3000 ms =  32.3 TPS_current | total: #TX 2890 / 31.4 s =  92.0 TPS_average
+block 5173641 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 2891 / 33.3 s =  86.9 TPS_average
+block 5173642 | new #TX 1602 / 3000 ms = 534.0 TPS_current | total: #TX 4493 / 39.7 s = 113.1 TPS_average
+block 5173643 | new #TX 2709 / 9000 ms = 301.0 TPS_current | total: #TX 7202 / 48.0 s = 149.9 TPS_average
+block 5173644 | new #TX 2595 / 12000 ms = 216.2 TPS_current | total: #TX 9797 / 56.9 s = 172.1 TPS_average
+block 5173647 | new #TX 2014 / 3000 ms = 671.3 TPS_current | total: #TX 11811 / 60.6 s = 194.7 TPS_average
+block 5173648 | new #TX   4 / 9000 ms =   0.4 TPS_current | total: #TX 11815 / 69.5 s = 169.9 TPS_average
+block 5173649 | new #TX   4 / 3000 ms =   1.3 TPS_current | total: #TX 11819 / 72.0 s = 164.2 TPS_average
+block 5173650 | new #TX 955 / 3000 ms = 318.3 TPS_current | total: #TX 12774 / 76.3 s = 167.4 TPS_average
+block 5173651 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 12775 / 78.5 s = 162.8 TPS_average
+block 5173652 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 12776 / 82.1 s = 155.6 TPS_average
+block 5173653 | new #TX  83 / 9000 ms =   9.2 TPS_current | total: #TX 12859 / 90.3 s = 142.3 TPS_average
+block 5173654 | new #TX   2 / 3000 ms =   0.7 TPS_current | total: #TX 12861 / 93.1 s = 138.2 TPS_average
+block 5173655 | new #TX 2994 / 4000 ms = 748.5 TPS_current | total: #TX 15855 / 99.9 s = 158.7 TPS_average
+block 5173656 | new #TX   1 / 4000 ms =   0.2 TPS_current | total: #TX 15856 / 103.3 s = 153.4 TPS_average
+block 5173657 | new #TX 2994 / 4000 ms = 748.5 TPS_current | total: #TX 18850 / 108.0 s = 174.5 TPS_average
+block 5173658 | new #TX 1177 / 9000 ms = 130.8 TPS_current | total: #TX 20027 / 115.5 s = 173.4 TPS_average
+block 5173659 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20028 / 117.1 s = 171.1 TPS_average
+block 5173660 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20029 / 120.1 s = 166.7 TPS_average
+block 5173661 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20030 / 122.9 s = 162.9 TPS_average
+block 5173662 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20031 / 128.1 s = 156.3 TPS_average
+block 5173663 | new #TX   1 / 9000 ms =   0.1 TPS_current | total: #TX 20032 / 134.9 s = 148.5 TPS_average
+block 5173664 | new #TX   2 / 3000 ms =   0.7 TPS_current | total: #TX 20034 / 138.0 s = 145.2 TPS_average
+block 5173665 | new #TX   0 / 3000 ms =   0.0 TPS_current | total: #TX 20034 / 141.1 s = 142.0 TPS_average
+block 5173666 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20035 / 144.1 s = 139.0 TPS_average
+```
+
+The numbers in the right column are always only an estimate, and summing over the whole experiment.  For more accurate views on the same range on blocks, see below.
+
 ## TPS
 
 Sample transaction and block:
@@ -214,9 +274,19 @@ source py3eth/bin/activate
 blocksDB_create.py
 jupyter notebook
 ```
+
+### bad connectivity results: 5 TPS
+
 --> chainreader / [blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb)
 
 ![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
+
+### better connectivity results: ___ TPS
+
+--> chainreader / [blocksDB_analyze_tobalaba-better.ipynb](blocksDB_analyze_tobalaba-better.ipynb)
+
+![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
+
 
 ## Conclusion
 
