@@ -19,9 +19,9 @@ directly jump to
 
 ## quickstart
 
-* sync your energyweb client: `./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal,net,parity" --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off`
-* put some Tobalaba-Ether onto the first address of that node; and its passphrase into `account-passphrase.txt`
-* clone this repo (and checkout e.g. commit 12d6de2e because that definitely contains the correct `config.py`)
+* sync your energyweb client, with some special switches: `./tobalaba-node-start.sh`
+* put Tobalaba-Ether onto the first address of that node; and its passphrase into `account-passphrase.txt`
+* clone this repo (and checkout e.g. commit cd844ea7 because that definitely contains [the correct](#config) `config.py`)
 * install the [virtualenv & dependencies](https://gitlab.com/electronDLT/chainhammer/blob/master/README.md#dependencies) - each of the following terminals needs to start that venv first, with `source py3eth/bin/activate`
 * first terminal:   `./tps.py`
 * second terminal: `./deploy.py notest && ./send.py threaded2 23`
@@ -39,11 +39,7 @@ Traceback (most recent call last):
 ...
   File "...python3.5/site-packages/web3/contract.py", line 1311, in transact_with_contract_function
     txn_hash = web3.eth.sendTransaction(transact_transaction)
-  File "...python3.5/site-packages/web3/eth.py", line 244, in sendTransaction
-    [transaction],
-  File "...python3.5/site-packages/web3/manager.py", line 106, in request_blocking
-    raise ValueError(response["error"])
-    
+...
 ValueError: {'message': 'There are too many transactions in the queue. 
                          Your transaction was dropped due to limit. Try increasing the fee.', 'code': -32010}
 ```
@@ -58,13 +54,13 @@ I now start the node with these parameters
 
     ./target/release/parity --chain tobalaba --pruning=archive --geth --rpcapi "web3,eth,personal,net,parity" \
                             --db-compaction=ssd --cache-size=2048 --no-persistent-txqueue \
-                            --tx-queue-mem-limit=0 --tx-queue-per-sender=5001 --tx-queue-gas=off \
+                            --tx-queue-mem-limit=0 --tx-queue-per-sender=10001 --tx-queue-gas=off \
                             --reserved-peers <PATH>/tobalaba-peers.txt
 
 (See [tobalaba-node-start.sh](tobalaba-node-start.sh) - in it, just change your path)
 
 
-Then it accepted 1000 transactions.
+Then it accepted 10000 transactions.
     
 ### account, password
 
@@ -86,6 +82,8 @@ In each terminal start the virtualenv (before the following python scripts):
 See [quorum.md#virtualenv](quorum.md#virtualenv) for which dependencies to install.
 
 ## benchmark
+
+### config
 in [config.py](config.py) manually set:
 ```
 RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
@@ -227,9 +225,9 @@ jupyter notebook --ip=127.0.0.1
 
 See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously (above), my client often had only 1/25 peers and sometimes even 0/25 peers. That had decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](tobalaba-peers.txt) and [tobalaba-node-start.sh](tobalaba-node-start.sh). 
 
-Why don't more nodes get added automatically? Is the peer discovery broken? Even with the hardcoded nodes now, the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
+Why don't more nodes get added automatically? Was the [peer discovery broken](https://github.com/energywebfoundation/energyweb-client/issues/24#issuecomment-399896244) in this old parity fork? Even with the hardcoded nodes now, the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
 
-Nevertheless, now with more peers, the TPS benchmarking gets too higher results! -->
+Nevertheless, now with more peers, the TPS benchmarking gets to higher results! -->
 
 ### logs
 
