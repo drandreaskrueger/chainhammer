@@ -110,20 +110,20 @@ or single-threaded:
 after each experiment, **restart the listener** `tps.py`, and redeploy the contract.
 
 
-## results
+# results
 
-### 1000 transactions - bad connectivity
+## 1000 transactions - but bad connectivity
 * multi-threaded with 23 workers threads
-* submitted via web3 `Web3(HTTPProvider('http://localhost:8545'))`
+* submitted via web3 `Web3(HTTPProvider('http://localhost:8545'))` = RPC --> perhaps [IPC](https://github.com/energywebfoundation/energyweb-client/issues/26) would be faster?
 * with background of only 1-2 unrelated transactions per block
 * to local (non-authority) node
   * which had very few peers, often 0/25 - see issue [#24](https://github.com/energywebfoundation/energyweb-client/issues/24)
 
 --> **3 - 5 TPS on average**:
 
-#### logs
+### logs
 
-chainhammer `send.py`
+chainhammer `deploy.py` (contract), then to it `send.py` many transactions:
 ```
 ./deploy.py notest; ./send.py threaded2 23
 
@@ -199,15 +199,39 @@ block 4428738 | new #TX  74 / 33000 ms =   2.2 TPS_current | total: #TX 1025 / 2
 block 4428739 | new #TX   0 / 6000 ms =   0.0 TPS_current | total: #TX 1025 / 276.1 s =   3.7 TPS_average
 ```
 
-### 20,000 transactions, with better connectivity
+### Sample transaction and block:
 
-See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously, often my client had 1/25 peers and sometimes 0/25 peers, and that decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](tobalaba-peers.txt) and [tobalaba-node-start.sh](tobalaba-node-start.sh). 
+* [transaction](https://tobalaba.etherscan.com/tx/0x34b844767a0b9fa4bbee69dece85e26bccd648166b8ac072059abed6e8993d5a): 26691 gas
+* [block 4428722](https://tobalaba.etherscan.com/block/4428722): 81 transactions, gas used 2.72%
 
-Really odd is that the peer discovery seems to be broken - the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
+### chainreader visualisation:
+
+```
+cd chainreader
+source py3eth/bin/activate
+blocksDB_create.py
+jupyter notebook --ip=127.0.0.1
+```
+
+#### bad connectivity results: < 5 TPS
+(for better results, scroll down)
+
+--> chainreader / [blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb)
+
+![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
+
+
+
+
+## 20,000 transactions, better connectivity
+
+See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously (above), my client often had only 1/25 peers and sometimes even 0/25 peers. That had decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](tobalaba-peers.txt) and [tobalaba-node-start.sh](tobalaba-node-start.sh). 
+
+Why don't more nodes get added automatically? Is the peer discovery broken? Even with the hardcoded nodes now, the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
 
 Nevertheless, now with more peers, the TPS benchmarking gets too higher results! -->
 
-#### logs
+### logs
 
 ```
 ./tps.py 
@@ -251,49 +275,24 @@ block 5173660 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20029 / 1
 block 5173661 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20030 / 122.9 s = 162.9 TPS_average
 block 5173662 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20031 / 128.1 s = 156.3 TPS_average
 block 5173663 | new #TX   1 / 9000 ms =   0.1 TPS_current | total: #TX 20032 / 134.9 s = 148.5 TPS_average
-block 5173664 | new #TX   2 / 3000 ms =   0.7 TPS_current | total: #TX 20034 / 138.0 s = 145.2 TPS_average
-block 5173665 | new #TX   0 / 3000 ms =   0.0 TPS_current | total: #TX 20034 / 141.1 s = 142.0 TPS_average
-block 5173666 | new #TX   1 / 3000 ms =   0.3 TPS_current | total: #TX 20035 / 144.1 s = 139.0 TPS_average
 ```
 
-The numbers in the right column are always only an estimate, and summing over the whole experiment.  For more accurate views on the same range on blocks, see below.
-
-## TPS
-
-Sample transaction and block:
-
-* [transaction](https://tobalaba.etherscan.com/tx/0x34b844767a0b9fa4bbee69dece85e26bccd648166b8ac072059abed6e8993d5a): 26691 gas
-* [block 4428722](https://tobalaba.etherscan.com/block/4428722): 81 transactions, gas used 2.72%
+The TPS numbers in the right column are only an estimate (using unix time), and summing over the whole experiment since the first block.  For more accurate views on the same range on blocks (and using the blocktime), see chainreader:
 
 
-chainreader visualisation:
-
-```
-cd chainreader
-source py3eth/bin/activate
-blocksDB_create.py
-jupyter notebook
-```
-
-### bad connectivity results: 5 TPS
-
---> chainreader / [blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb)
-
-![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
-
-### better connectivity results: ___ TPS
+### better connectivity results: > 150 TPS
 
 --> chainreader / [blocksDB_analyze_tobalaba-better.ipynb](blocksDB_analyze_tobalaba-better.ipynb)
 
-![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
+![chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
 
 
 ## Conclusion
 
-* **3 - 5 TPS** on average during 1000 transactions   
-* --> only as fast (slow) as the *Ethereum PoW* chain?
+* **3 - 5 TPS** on average during 1000 transactions if the local client is badly connected
+* **more than 150 TPS** if the local client has 2-3 peers
 
-Hello energywebfoundation: How to make this faster? How did you get higher rates? Please you yourself try these benchmarking scripts. 
+Hello energywebfoundation: Any additional ideas how to make this faster? Please you yourself try these benchmarking scripts. 
 
 Thanks.
 
@@ -309,7 +308,6 @@ that I raised while developing this, and testing it on the Tobalaba client
 * [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 
 * [EWC #20](https://github.com/energywebfoundation/energyweb-client/issues/20) 5 TPS?
 * [GL #46558](https://gitlab.com/gitlab-org/gitlab-ce/issues/46558) gitlab not rendering HTML correctly in markdown cells 
-* [EWC#25](https://github.com/energywebfoundation/energyweb-client/issues/25) 1.12 client may be unstable. Please use the 1.9.3 client ... 
 * [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) 0/25 peers
 * [EWC#25](https://github.com/energywebfoundation/energyweb-client/issues/25) 1.12 client may be unstable. Please use the 1.9.3 client ...
 * [EWC#26](https://github.com/energywebfoundation/energyweb-client/issues/26) IPC: jsonrpc.ipc ?
