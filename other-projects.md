@@ -15,6 +15,7 @@ To appear in the following lists, please [fork](https://gitlab.com/electronDLT/c
 ## other blockchain benchmarking
 
 * [Cryptocurrency: Scaling Ethereum to 1.5 million TPS](https://steemit.com/blockchain/@andrecronje/cryptocurrency-scaling-ethereum-to-1-5-million-tps)
+* IBFT 800 TPS preliminary results - slide 35 in https://www.slideshare.net/YuTeLin1/istanbul-bft 
 * ...
 
 [please add yours, and pull request]
