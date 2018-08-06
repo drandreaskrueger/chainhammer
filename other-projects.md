@@ -12,7 +12,7 @@ To appear in the following lists, please [fork](https://gitlab.com/electronDLT/c
 
 [please add yours at the bottom, and pull request]
 
-## other blockchain benchmarking results & source codes
+## other blockchain benchmarking
 
 * [Cryptocurrency: Scaling Ethereum to 1.5 million TPS](https://steemit.com/blockchain/@andrecronje/cryptocurrency-scaling-ethereum-to-1-5-million-tps)
 * ...
