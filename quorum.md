@@ -203,6 +203,9 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [Web3.py #808](https://github.com/ethereum/web3.py/issues/808) --> solved
 * [Web3.py #898](https://github.com/ethereum/web3.py/issues/898) --> solved
 
+## alternative: dockerized quorum nodes
+Always used the 7nodes example as described above, but there is also https://github.com/ConsenSys/quorum-docker-Nnodes = Run a bunch of Quorum nodes, each in a separate Docker container. Untested.
+
 # credits
 Please credit this as:
 
