@@ -26,9 +26,16 @@ ARGS="... --istanbul.blockperiod 1 ...
 ### higher gas Limit
 in default settings, but high hammering rate ... every block turns out to be full, so I also tried to raise the gaslimit (from the default 4.7 million):
 
-change istanbul-genesis.json to 
+change `istanbul-genesis.json` to 
 
 --> 20 million gas (["gasLimit": "0x1312D00"](https://github.com/jpmorganchase/quorum-examples/blob/0ccd3eab85e65b73078ecc11ce85dea7459be7ca/examples/7nodes/istanbul-genesis.json#L51))
+
+However, the effect is simply that then the blocktime is going up. So raising the gasLimit does not result in higher TPS yet:
+
+* [10 mio gasLimit](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-1s-gas10mio_run2_tps-bt-bs-gas_blks20-90.png)
+* [20 mio gasLimit](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)
+
+both saturate around ~200 TPS.
 
 ## example run: 1sec istanbul.blockperiod, 20 million gasLimit
 
@@ -92,4 +99,4 @@ https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-
 
 ## how to increase the TPS?
 
-any ideas? Please tell us --> 
+any ideas? Please tell us --> [quorum/issues/479](https://github.com/jpmorganchase/quorum/issues/479)
