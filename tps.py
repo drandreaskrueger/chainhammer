@@ -12,12 +12,12 @@
 """
 
 
-import time, timeit, sys
+import time, timeit, sys, os
 
 from web3 import Web3, HTTPProvider
 
 from config import RPCaddress2, RAFT
-from deploy import loadFromDisk
+from deploy import loadFromDisk, CONTRACT_ADDRESS
 from clienttools import web3connection
     
 
@@ -42,17 +42,26 @@ def loopUntilActionBegins_raft(blockNumber_start, query_intervall = 0.1):
 
 def loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall = 0.1):
     """
-    (UNTESTED!)
+    polls file "CONTRACT_ADDRESS".
+    Continues when overwritten file.
+    
+    N.B.: It can actually happen that the same ethereum contract address is chosen again, 
+          if blockchain is deleted, and everything restarted. So: Check filedate too.
     """
     
-    AddressAndABI = loadFromDisk()
+    address, _ = loadFromDisk()
+    when = os.path.getmtime(CONTRACT_ADDRESS) 
+    print ("(filedate %d) last contract address: %s" %(when, address)) 
     
     while(True):
         time.sleep(query_intervall)
         
         # checks whether a new contract has been deployed
-        # because then a new address has been saved:
-        if (loadFromDisk() != AddressAndABI):
+        # because then a new address has been saved to file:
+        newAddress, _ = loadFromDisk()
+        newWhen = os.path.getmtime(CONTRACT_ADDRESS)
+        if (newAddress != address or newWhen != when):
+            print ("(filedate %d) new contract address: %s" %(newWhen, newAddress))  
             break
         
     print('')
