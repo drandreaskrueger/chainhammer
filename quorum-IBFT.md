@@ -37,7 +37,9 @@ However, the effect is simply that then the blocktime is going up. So raising th
 
 both saturate around ~200 TPS.
 
-## example run: 1sec istanbul.blockperiod, 20 million gasLimit
+## example runs: 
+
+### 7nodes - istanbul.blockperiod 1sec, gasLimit 20 million
 
 ```
 ./tps.py 
@@ -97,6 +99,128 @@ block 81 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 106.1 
 ![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)  
 https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png
 
-## how to increase the TPS?
+### crux docker 4nodes
+different from above:
+
+* crux instead of constellation
+* docker instead of vagrant virtualbox
+* 4 nodes instead of 7 nodes
+
+For (txpool, blockspeed, gasLimit) parameter changes see [my fork of their repo](https://github.com/drandreaskrueger/crux/commits/master). For docker questions see [crux issue 27](https://github.com/blk-io/crux/issues/27).
+
+log:
+```
+./tps.py 
+
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 17, node version string =  Geth/v1.7.2-stable-3f1817ea/linux-amd64/go1.10.1
+first account of node is 0xcA843569e3427144cEad5e4d5999a3D0cCF92B8e, balance is 1000000000 Ether
+nodeName: Quorum, nodeType: Geth, consensus: istanbul, chainName: ???
+
+Block  17  - waiting for something to happen
+(filedate 1534423209) last contract address: 0xc36C1118645ce456E0249562F44175953A076a7a
+(filedate 1534423288) new contract address: 0x1932c48b2bF8102Ba33B4A6B545C32236e342f34
+
+starting timer, at block 25 which has  1  transactions; at timecode 16826.132793952
+block 25 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX    1 /  0.9 s =   1.1 TPS_average
+block 26 | new #TX 113 / 1000 ms = 113.0 TPS_current | total: #TX  114 /  2.1 s =  53.2 TPS_average
+block 27 | new #TX 303 / 1000 ms = 303.0 TPS_current | total: #TX  417 /  3.4 s = 123.8 TPS_average
+block 28 | new #TX 303 / 1000 ms = 303.0 TPS_current | total: #TX  720 /  4.0 s = 178.9 TPS_average
+block 29 | new #TX 262 / 1000 ms = 262.0 TPS_current | total: #TX  982 /  5.3 s = 186.6 TPS_average
+block 30 | new #TX 266 / 1000 ms = 266.0 TPS_current | total: #TX 1248 /  6.2 s = 201.6 TPS_average
+block 31 | new #TX 287 / 1000 ms = 287.0 TPS_current | total: #TX 1535 /  7.1 s = 215.7 TPS_average
+block 32 | new #TX 268 / 1000 ms = 268.0 TPS_current | total: #TX 1803 /  8.1 s = 223.7 TPS_average
+block 33 | new #TX 286 / 1000 ms = 286.0 TPS_current | total: #TX 2089 /  9.3 s = 224.8 TPS_average
+block 34 | new #TX 271 / 1000 ms = 271.0 TPS_current | total: #TX 2360 / 10.2 s = 230.9 TPS_average
+block 35 | new #TX 285 / 1000 ms = 285.0 TPS_current | total: #TX 2645 / 11.2 s = 237.2 TPS_average
+block 36 | new #TX 255 / 1000 ms = 255.0 TPS_current | total: #TX 2900 / 12.1 s = 239.5 TPS_average
+block 37 | new #TX 277 / 1000 ms = 277.0 TPS_current | total: #TX 3177 / 13.1 s = 243.4 TPS_average
+block 38 | new #TX 244 / 1000 ms = 244.0 TPS_current | total: #TX 3421 / 14.3 s = 239.6 TPS_average
+block 39 | new #TX 264 / 1000 ms = 264.0 TPS_current | total: #TX 3685 / 15.2 s = 242.2 TPS_average
+block 40 | new #TX 283 / 1000 ms = 283.0 TPS_current | total: #TX 3968 / 16.1 s = 245.8 TPS_average
+block 41 | new #TX 276 / 1000 ms = 276.0 TPS_current | total: #TX 4244 / 17.1 s = 248.5 TPS_average
+block 42 | new #TX 278 / 1000 ms = 278.0 TPS_current | total: #TX 4522 / 18.3 s = 246.9 TPS_average
+block 43 | new #TX 272 / 1000 ms = 272.0 TPS_current | total: #TX 4794 / 19.2 s = 249.1 TPS_average
+block 44 | new #TX 271 / 1000 ms = 271.0 TPS_current | total: #TX 5065 / 20.2 s = 251.1 TPS_average
+block 45 | new #TX 264 / 1000 ms = 264.0 TPS_current | total: #TX 5329 / 21.1 s = 252.5 TPS_average
+block 46 | new #TX 276 / 1000 ms = 276.0 TPS_current | total: #TX 5605 / 22.4 s = 250.8 TPS_average
+block 47 | new #TX 290 / 1000 ms = 290.0 TPS_current | total: #TX 5895 / 23.3 s = 253.2 TPS_average
+block 48 | new #TX 275 / 1000 ms = 275.0 TPS_current | total: #TX 6170 / 24.0 s = 257.6 TPS_average
+block 49 | new #TX 271 / 1000 ms = 271.0 TPS_current | total: #TX 6441 / 25.2 s = 255.7 TPS_average
+block 50 | new #TX 257 / 1000 ms = 257.0 TPS_current | total: #TX 6698 / 26.1 s = 256.5 TPS_average
+block 51 | new #TX 281 / 1000 ms = 281.0 TPS_current | total: #TX 6979 / 27.1 s = 258.0 TPS_average
+block 52 | new #TX 269 / 1000 ms = 269.0 TPS_current | total: #TX 7248 / 28.0 s = 258.8 TPS_average
+block 53 | new #TX 273 / 1000 ms = 273.0 TPS_current | total: #TX 7521 / 29.2 s = 257.3 TPS_average
+block 54 | new #TX 287 / 1000 ms = 287.0 TPS_current | total: #TX 7808 / 30.2 s = 258.9 TPS_average
+block 55 | new #TX 270 / 1000 ms = 270.0 TPS_current | total: #TX 8078 / 31.1 s = 259.8 TPS_average
+block 56 | new #TX 269 / 1000 ms = 269.0 TPS_current | total: #TX 8347 / 32.0 s = 260.6 TPS_average
+block 57 | new #TX 273 / 1000 ms = 273.0 TPS_current | total: #TX 8620 / 33.3 s = 259.2 TPS_average
+block 58 | new #TX 267 / 1000 ms = 267.0 TPS_current | total: #TX 8887 / 34.2 s = 259.9 TPS_average
+block 59 | new #TX 273 / 1000 ms = 273.0 TPS_current | total: #TX 9160 / 35.1 s = 260.8 TPS_average
+block 60 | new #TX 285 / 1000 ms = 285.0 TPS_current | total: #TX 9445 / 36.1 s = 261.9 TPS_average
+block 61 | new #TX 271 / 1000 ms = 271.0 TPS_current | total: #TX 9716 / 37.0 s = 262.5 TPS_average
+block 62 | new #TX 272 / 1000 ms = 272.0 TPS_current | total: #TX 9988 / 38.3 s = 261.1 TPS_average
+block 63 | new #TX 280 / 1000 ms = 280.0 TPS_current | total: #TX 10268 / 39.2 s = 262.0 TPS_average
+block 64 | new #TX 264 / 1000 ms = 264.0 TPS_current | total: #TX 10532 / 40.1 s = 262.5 TPS_average
+block 65 | new #TX 252 / 1000 ms = 252.0 TPS_current | total: #TX 10784 / 41.1 s = 262.7 TPS_average
+block 66 | new #TX 290 / 1000 ms = 290.0 TPS_current | total: #TX 11074 / 42.3 s = 261.8 TPS_average
+block 67 | new #TX 298 / 1000 ms = 298.0 TPS_current | total: #TX 11372 / 43.2 s = 263.1 TPS_average
+block 68 | new #TX 252 / 1000 ms = 252.0 TPS_current | total: #TX 11624 / 44.2 s = 263.2 TPS_average
+block 69 | new #TX 280 / 1000 ms = 280.0 TPS_current | total: #TX 11904 / 45.1 s = 263.9 TPS_average
+block 70 | new #TX 281 / 1000 ms = 281.0 TPS_current | total: #TX 12185 / 46.3 s = 263.0 TPS_average
+block 71 | new #TX 287 / 1000 ms = 287.0 TPS_current | total: #TX 12472 / 47.3 s = 263.8 TPS_average
+block 72 | new #TX 237 / 1000 ms = 237.0 TPS_current | total: #TX 12709 / 48.2 s = 263.7 TPS_average
+block 73 | new #TX 276 / 1000 ms = 276.0 TPS_current | total: #TX 12985 / 49.1 s = 264.3 TPS_average
+block 74 | new #TX 286 / 1000 ms = 286.0 TPS_current | total: #TX 13271 / 50.1 s = 265.1 TPS_average
+block 75 | new #TX 294 / 1000 ms = 294.0 TPS_current | total: #TX 13565 / 51.3 s = 264.4 TPS_average
+block 76 | new #TX 250 / 1000 ms = 250.0 TPS_current | total: #TX 13815 / 51.9 s = 265.9 TPS_average
+block 77 | new #TX 276 / 1000 ms = 276.0 TPS_current | total: #TX 14091 / 53.2 s = 265.0 TPS_average
+block 78 | new #TX 282 / 1000 ms = 282.0 TPS_current | total: #TX 14373 / 54.1 s = 265.6 TPS_average
+block 79 | new #TX 275 / 1000 ms = 275.0 TPS_current | total: #TX 14648 / 55.0 s = 266.1 TPS_average
+block 80 | new #TX 256 / 1000 ms = 256.0 TPS_current | total: #TX 14904 / 56.0 s = 266.1 TPS_average
+block 81 | new #TX 283 / 1000 ms = 283.0 TPS_current | total: #TX 15187 / 57.2 s = 265.3 TPS_average
+block 82 | new #TX 287 / 1000 ms = 287.0 TPS_current | total: #TX 15474 / 58.2 s = 266.0 TPS_average
+block 83 | new #TX 270 / 1000 ms = 270.0 TPS_current | total: #TX 15744 / 59.1 s = 266.4 TPS_average
+block 84 | new #TX 277 / 1000 ms = 277.0 TPS_current | total: #TX 16021 / 60.1 s = 266.8 TPS_average
+block 85 | new #TX 270 / 1000 ms = 270.0 TPS_current | total: #TX 16291 / 61.3 s = 265.8 TPS_average
+block 86 | new #TX 256 / 1000 ms = 256.0 TPS_current | total: #TX 16547 / 62.2 s = 266.0 TPS_average
+block 87 | new #TX 281 / 1000 ms = 281.0 TPS_current | total: #TX 16828 / 63.1 s = 266.5 TPS_average
+block 88 | new #TX 278 / 1000 ms = 278.0 TPS_current | total: #TX 17106 / 64.1 s = 266.9 TPS_average
+block 89 | new #TX 275 / 1000 ms = 275.0 TPS_current | total: #TX 17381 / 65.1 s = 267.1 TPS_average
+block 90 | new #TX 258 / 1000 ms = 258.0 TPS_current | total: #TX 17639 / 66.0 s = 267.1 TPS_average
+block 91 | new #TX 283 / 1000 ms = 283.0 TPS_current | total: #TX 17922 / 67.3 s = 266.4 TPS_average
+block 92 | new #TX 266 / 1000 ms = 266.0 TPS_current | total: #TX 18188 / 68.2 s = 266.7 TPS_average
+block 93 | new #TX 287 / 1000 ms = 287.0 TPS_current | total: #TX 18475 / 69.1 s = 267.2 TPS_average
+block 94 | new #TX 264 / 1000 ms = 264.0 TPS_current | total: #TX 18739 / 70.1 s = 267.4 TPS_average
+block 95 | new #TX 288 / 1000 ms = 288.0 TPS_current | total: #TX 19027 / 71.3 s = 266.9 TPS_average
+block 96 | new #TX 264 / 1000 ms = 264.0 TPS_current | total: #TX 19291 / 71.9 s = 268.1 TPS_average
+block 97 | new #TX 274 / 1000 ms = 274.0 TPS_current | total: #TX 19565 / 73.2 s = 267.3 TPS_average
+block 98 | new #TX 230 / 1000 ms = 230.0 TPS_current | total: #TX 19795 / 74.2 s = 266.9 TPS_average
+block 99 | new #TX 206 / 1000 ms = 206.0 TPS_current | total: #TX 20001 / 75.2 s = 266.1 TPS_average
+block 100 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 76.1 s = 262.8 TPS_average
+block 101 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 77.1 s = 259.6 TPS_average
+block 102 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 78.0 s = 256.4 TPS_average
+block 103 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 78.9 s = 253.4 TPS_average
+block 104 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 80.2 s = 249.5 TPS_average
+block 105 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 81.1 s = 246.6 TPS_average
+block 106 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 82.0 s = 243.8 TPS_average
+block 107 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 83.0 s = 241.0 TPS_average
+block 108 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 84.2 s = 237.5 TPS_average
+block 109 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 85.2 s = 234.8 TPS_average
+block 110 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 86.1 s = 232.3 TPS_average
+block 111 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 87.1 s = 229.7 TPS_average
+block 112 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 88.0 s = 227.3 TPS_average
+block 113 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 88.9 s = 224.9 TPS_average
+block 114 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 90.2 s = 221.8 TPS_average
+block 115 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 91.1 s = 219.5 TPS_average
+```
+
+![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
+https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
+
+until now the best result - around 270 TPS. No blocktime increase but a steady 1 second blocktime. Blocks not are full in terms of gas, so:
+
+## how to further increase the TPS?
 
 any ideas? Please tell us --> [quorum/issues/479](https://github.com/jpmorganchase/quorum/issues/479)
+
