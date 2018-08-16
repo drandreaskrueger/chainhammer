@@ -108,6 +108,8 @@ different from above:
 
 For (txpool, blockspeed, gasLimit) parameter changes see [my fork of their repo](https://github.com/drandreaskrueger/crux/commits/master). For docker questions see [crux issue 27](https://github.com/blk-io/crux/issues/27).
 
+N.B.: It can take many seconds until the chain actually starts moving, and without stuttering. So better wait a minute after starting with `docker-compose -f docker-compose-local.yaml up --build`.
+
 log:
 ```
 ./tps.py 
@@ -218,9 +220,139 @@ block 115 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 91.1 
 ![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
 https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
 
-until now the best result - around 270 TPS. No blocktime increase but a steady 1 second blocktime. Blocks not are full in terms of gas, so:
+until now the best result - around **273 TPS**. No blocktime increase but a steady 1 second blocktime. Blocks not are full in terms of gas, so: how to further increase the TPS? 
+
+### Direct RPC call instead of web3 call
+
+With [this config switch](https://gitlab.com/electronDLT/chainhammer/blob/509f2df05ebbddce969443849f8129ca66e26d9c/config.py#L29-30) change, all those 20k transactions are not each sent through the standard web3 call
+
+    contract.functions.set( x=arg ).transact(txParameters)
+
+but the transaction is manually compiled, and sent via a POST call directly to the RPC API of the node:
+
+    requests.post(RPCaddress, json=payload, headers=headers)
+
+(see [full code here](https://gitlab.com/electronDLT/chainhammer/blob/d00ea549928d9007a3f4fe051f275cb759bfebd2/send.py#L147-177)).
+
+Quite surprising, but web3 seems to seriously harm the overall execution performance!
+
+Now also a different number of multithreading workers is optimal, see run 8.
+
+
+| run |workers |TPS_average peak                          |TPS_average at end                         |
+|----|----------------|-------------------------------|-----------------------------|
+|4|5|434            |356|
+|3|10|439            |364|
+|7|12|442            |363|
+|8|**13**|**447**            |369|
+|9|14|437            |363|
+|5|15|435            |362|
+|6|23|428            |362|
+|2|100|437            |369|
+
+run 8 --> 13 workers seem to result in the highest TPS rate.
+
+log of best run 8:
+
+```
+./tps.py 
+
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 17, node version string =  Geth/v1.7.2-stable-3f1817ea/linux-amd64/go1.10.1
+first account of node is 0xcA843569e3427144cEad5e4d5999a3D0cCF92B8e, balance is 1000000000 Ether
+nodeName: Quorum, nodeType: Geth, consensus: istanbul, chainName: ???
+
+Block  17  - waiting for something to happen
+(filedate 1534430103) last contract address: 0x1932c48b2bF8102Ba33B4A6B545C32236e342f34
+(filedate 1534430266) new contract address: 0x1932c48b2bF8102Ba33B4A6B545C32236e342f34
+
+starting timer, at block 28 which has  1  transactions; at timecode 23804.15982982
+block 28 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX    1 /  0.9 s =   1.1 TPS_average
+block 29 | new #TX 213 / 1000 ms = 213.0 TPS_current | total: #TX  214 /  2.1 s =  99.7 TPS_average
+block 30 | new #TX 563 / 1000 ms = 563.0 TPS_current | total: #TX  777 /  3.4 s = 229.3 TPS_average
+block 31 | new #TX 509 / 1000 ms = 509.0 TPS_current | total: #TX 1286 /  4.4 s = 295.5 TPS_average
+block 32 | new #TX 523 / 1000 ms = 523.0 TPS_current | total: #TX 1809 /  5.3 s = 341.3 TPS_average
+block 33 | new #TX 393 / 1000 ms = 393.0 TPS_current | total: #TX 2202 /  5.9 s = 370.2 TPS_average
+block 34 | new #TX 446 / 1000 ms = 446.0 TPS_current | total: #TX 2648 /  7.3 s = 365.0 TPS_average
+block 35 | new #TX 467 / 1000 ms = 467.0 TPS_current | total: #TX 3115 /  8.2 s = 379.7 TPS_average
+block 36 | new #TX 504 / 1000 ms = 504.0 TPS_current | total: #TX 3619 /  9.4 s = 383.1 TPS_average
+block 37 | new #TX 464 / 1000 ms = 464.0 TPS_current | total: #TX 4083 / 10.1 s = 404.3 TPS_average
+block 38 | new #TX 440 / 1000 ms = 440.0 TPS_current | total: #TX 4523 / 11.3 s = 398.8 TPS_average
+block 39 | new #TX 487 / 1000 ms = 487.0 TPS_current | total: #TX 5010 / 12.3 s = 407.6 TPS_average
+block 40 | new #TX 494 / 1000 ms = 494.0 TPS_current | total: #TX 5504 / 13.3 s = 414.5 TPS_average
+block 41 | new #TX 459 / 1000 ms = 459.0 TPS_current | total: #TX 5963 / 14.0 s = 427.2 TPS_average
+block 42 | new #TX 454 / 1000 ms = 454.0 TPS_current | total: #TX 6417 / 15.2 s = 421.6 TPS_average
+block 43 | new #TX 435 / 1000 ms = 435.0 TPS_current | total: #TX 6852 / 16.5 s = 416.0 TPS_average
+block 44 | new #TX 585 / 1000 ms = 585.0 TPS_current | total: #TX 7437 / 17.4 s = 426.8 TPS_average
+block 45 | new #TX 451 / 1000 ms = 451.0 TPS_current | total: #TX 7888 / 18.1 s = 436.0 TPS_average
+block 46 | new #TX 417 / 1000 ms = 417.0 TPS_current | total: #TX 8305 / 19.4 s = 427.5 TPS_average
+block 47 | new #TX 473 / 1000 ms = 473.0 TPS_current | total: #TX 8778 / 20.4 s = 431.0 TPS_average
+block 48 | new #TX 455 / 1000 ms = 455.0 TPS_current | total: #TX 9233 / 21.3 s = 433.2 TPS_average
+block 49 | new #TX 460 / 1000 ms = 460.0 TPS_current | total: #TX 9693 / 22.0 s = 440.1 TPS_average
+block 50 | new #TX 402 / 1000 ms = 402.0 TPS_current | total: #TX 10095 / 23.3 s = 433.6 TPS_average
+block 51 | new #TX 504 / 1000 ms = 504.0 TPS_current | total: #TX 10599 / 24.3 s = 437.0 TPS_average
+block 52 | new #TX 546 / 1000 ms = 546.0 TPS_current | total: #TX 11145 / 25.2 s = 442.0 TPS_average
+block 53 | new #TX 386 / 1000 ms = 386.0 TPS_current | total: #TX 11531 / 26.2 s = 440.8 TPS_average
+block 54 | new #TX 407 / 1000 ms = 407.0 TPS_current | total: #TX 11938 / 27.4 s = 435.7 TPS_average
+block 55 | new #TX 475 / 1000 ms = 475.0 TPS_current | total: #TX 12413 / 28.3 s = 438.0 TPS_average
+block 56 | new #TX 556 / 1000 ms = 556.0 TPS_current | total: #TX 12969 / 29.3 s = 442.6 TPS_average
+block 57 | new #TX 408 / 1000 ms = 408.0 TPS_current | total: #TX 13377 / 29.9 s = 446.7 TPS_average
+block 58 | new #TX 452 / 1000 ms = 452.0 TPS_current | total: #TX 13829 / 31.5 s = 438.8 TPS_average
+block 59 | new #TX 402 / 1000 ms = 402.0 TPS_current | total: #TX 14231 / 32.2 s = 442.2 TPS_average
+block 60 | new #TX 289 / 1000 ms = 289.0 TPS_current | total: #TX 14520 / 33.2 s = 437.8 TPS_average
+block 61 | new #TX 185 / 1000 ms = 185.0 TPS_current | total: #TX 14705 / 34.1 s = 431.3 TPS_average
+block 62 | new #TX 291 / 1000 ms = 291.0 TPS_current | total: #TX 14996 / 35.3 s = 424.4 TPS_average
+block 63 | new #TX 298 / 1000 ms = 298.0 TPS_current | total: #TX 15294 / 36.3 s = 421.6 TPS_average
+block 64 | new #TX 298 / 1000 ms = 298.0 TPS_current | total: #TX 15592 / 37.2 s = 418.9 TPS_average
+block 65 | new #TX 256 / 1000 ms = 256.0 TPS_current | total: #TX 15848 / 38.2 s = 415.2 TPS_average
+block 66 | new #TX 253 / 1000 ms = 253.0 TPS_current | total: #TX 16101 / 39.4 s = 408.6 TPS_average
+block 67 | new #TX 268 / 1000 ms = 268.0 TPS_current | total: #TX 16369 / 40.4 s = 405.6 TPS_average
+block 68 | new #TX 259 / 1000 ms = 259.0 TPS_current | total: #TX 16628 / 41.3 s = 402.6 TPS_average
+block 69 | new #TX 294 / 1000 ms = 294.0 TPS_current | total: #TX 16922 / 42.0 s = 403.1 TPS_average
+block 70 | new #TX 257 / 1000 ms = 257.0 TPS_current | total: #TX 17179 / 43.2 s = 397.5 TPS_average
+block 71 | new #TX 283 / 1000 ms = 283.0 TPS_current | total: #TX 17462 / 44.2 s = 395.3 TPS_average
+block 72 | new #TX 267 / 1000 ms = 267.0 TPS_current | total: #TX 17729 / 45.2 s = 392.6 TPS_average
+block 73 | new #TX 260 / 1000 ms = 260.0 TPS_current | total: #TX 17989 / 46.1 s = 390.0 TPS_average
+block 74 | new #TX 268 / 1000 ms = 268.0 TPS_current | total: #TX 18257 / 47.1 s = 387.4 TPS_average
+block 75 | new #TX 281 / 1000 ms = 281.0 TPS_current | total: #TX 18538 / 48.1 s = 385.2 TPS_average
+block 76 | new #TX 296 / 1000 ms = 296.0 TPS_current | total: #TX 18834 / 49.4 s = 381.3 TPS_average
+block 77 | new #TX 235 / 1000 ms = 235.0 TPS_current | total: #TX 19069 / 50.0 s = 381.0 TPS_average
+block 78 | new #TX 232 / 1000 ms = 232.0 TPS_current | total: #TX 19301 / 51.3 s = 376.2 TPS_average
+block 79 | new #TX 281 / 1000 ms = 281.0 TPS_current | total: #TX 19582 / 52.3 s = 374.8 TPS_average
+block 80 | new #TX 317 / 1000 ms = 317.0 TPS_current | total: #TX 19899 / 53.2 s = 373.7 TPS_average
+block 81 | new #TX 102 / 1000 ms = 102.0 TPS_current | total: #TX 20001 / 54.2 s = 368.8 TPS_average
+block 82 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 55.2 s = 362.5 TPS_average
+block 83 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 56.1 s = 356.4 TPS_average
+block 84 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 57.1 s = 350.5 TPS_average
+block 85 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 58.0 s = 344.8 TPS_average
+block 86 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 59.0 s = 339.3 TPS_average
+block 87 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 60.2 s = 332.2 TPS_average
+block 88 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 61.1 s = 327.1 TPS_average
+block 89 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 62.1 s = 322.2 TPS_average
+block 90 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 63.0 s = 317.3 TPS_average
+block 91 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 63.9 s = 312.8 TPS_average
+block 92 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 64.9 s = 308.3 TPS_average
+```
+
+![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
+(diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
+
+Following detailed averages are calculated at the bottom of notebook [chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
+
+Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.  
+
+Looking at blocks 40 to 60 only, we see averages of **~465 TPS**, but then it goes down considerably.  
+Looking at blocks 64 to 80 only, we see averages of ~270 TPS only. 
+
+Unclear what exactly makes the rate collapse here, and only after approx 14000 transactions. Any ideas?  
+
 
 ## how to further increase the TPS?
 
 any ideas? Please tell us --> [quorum/issues/479](https://github.com/jpmorganchase/quorum/issues/479)
 
+Actually, as during the experiment my CPU is near 100% I don't think this can be sped up *much* more.
+
+Things to try:
+
+* send tx not all to 1 node :22001, but round-robin to :22001, :22002, :22003, :22004 ?
