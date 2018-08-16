@@ -342,9 +342,9 @@ Following detailed averages are calculated at the bottom of notebook [chainreade
 Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.  
 
 Looking at blocks 40 to 60 only, we see averages of **~465 TPS**, but then it goes down considerably.  
-Looking at blocks 64 to 80 only, we see averages of ~270 TPS only. 
+Looking at the later blocks 64 to 80 only, we see averages of **~270 TPS**. 
 
-Unclear what exactly makes the rate collapse here, and only after approx 14000 transactions. Any ideas?  
+Unclear what exactly makes the rate collapse here, and after already approx 14000 transactions. Any ideas?  
 
 
 ## how to further increase the TPS?
