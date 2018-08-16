@@ -27,7 +27,8 @@ RAFT=False
 # RAFT=True
 
 ## submit transaction via web3 or directly via RPC
-ROUTE = "web3"  # "web3" "RPC" 
+ROUTE = "RPC"  # "web3" "RPC"
+  
 
 # set this to a list of public keys for privateFor-transactions, 
 # or to None for public transactions 

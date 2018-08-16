@@ -41,7 +41,7 @@ DBFILE = "allblocks-istanbul-2s-gas10mio_run2.db"
 DBFILE = "allblocks-istanbul-1s-gas10mio_run2.db"
 DBFILE = "allblocks-istanbul-1s-gas20mio_run2.db"
 DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio.db"
-
+DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio-RPC_run8.db"
 
 ################
 ## Dependencies:
