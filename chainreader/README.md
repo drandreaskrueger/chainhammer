@@ -75,3 +75,22 @@ That biggest block is block 1,210,825 - see [block explorer](https://tobalaba.et
 SCROLL DOWN TO THE MIDDLE OF THAT FILE.
 
 some images are also in [img/](img)
+
+## notes
+
+### are the transactions actually executed successfully (or are they failing)
+
+open a JSRE console to one of the nodes:
+```
+geth_quorum attach http://localhost:22001
+```
+then query example transaction (here tx 11 in block 55):
+```
+blockheight=55; index=10; 
+txid=eth.getBlock(blockheight)["transactions"][index]; 
+console.log(eth.getTransactionReceipt(txid)["gasUsed"], eth.getTransaction(txid)["gas"])
+
+26691 90000
+```
+If `gasUsed != gas` then the transaction got executed.
+
