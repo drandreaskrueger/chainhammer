@@ -220,7 +220,11 @@ block 115 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 91.1 
 ![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
 https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
 
-until now the best result - around **273 TPS**. No blocktime increase but a steady 1 second blocktime. Blocks not are full in terms of gas, so: how to further increase the TPS? 
+until now the best result - around 
+
+**273 TPS**. 
+
+No blocktime increase (as before with constellation 7 nodes) but a steady 1 second blocktime.  Blocks not are full in terms of gas, so: how to further increase the TPS? 
 
 ### Direct RPC call instead of web3 call
 
@@ -337,6 +341,10 @@ block 92 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 64.9 s
 ![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
 (diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
 
+Surprising acceleration when not using web3 ... not 273 TPS but
+
+**370 - 465 TPS** !
+
 Following detailed averages are calculated at the bottom of notebook [chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
 
 Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.  
@@ -344,15 +352,17 @@ Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.
 Looking at blocks 40 to 60 only, we see averages of **~465 TPS**, but then it goes down considerably.  
 Looking at the later blocks 64 to 80 only, we see averages of **~270 TPS**. 
 
-Unclear what exactly makes the rate collapse here, and after already approx 14000 transactions. Any ideas?  
+Unclear what exactly makes the rate collapse here, and after already approx 13000 - 14000 transactions. I have done several repetitions, they all look similar. Any ideas where this might come from?  
 
 
 ## how to further increase the TPS?
 
 any ideas? Please tell us --> [quorum/issues/479](https://github.com/jpmorganchase/quorum/issues/479)
 
-Actually, as during the experiment my CPU is near 100% I don't think this can be sped up *much* more.
+Actually, during the experiment my CPU is near 100% so I don't think this can be sped up *much* more.
 
 Things to try:
 
-* send tx not all to 1 node :22001, but round-robin to :22001, :22002, :22003, :22004 ?
+* send tx not all to 1 node :22001, but round-robin to :22001, :22002, :22003, :22004 
+
+?
