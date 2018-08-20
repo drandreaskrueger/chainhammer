@@ -338,6 +338,7 @@ block 91 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 63.9 s
 block 92 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 64.9 s = 308.3 TPS_average
 ```
 
+#### result > 400 TPS but only for the first 14k tx
 ![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
 (diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
 
