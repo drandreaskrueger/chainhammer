@@ -15,7 +15,7 @@
 ## Dependencies:
 
 import json
-
+from pprint import pprint
 import requests # pip3 install requests
 
 try:
@@ -113,7 +113,14 @@ def clientType(w3):
                 consensus = "PoW"  # dangerous assumption, because some day that might actually change. For now fine. 
         except MethodNotExistentError:
             pass
+    
     # TODO: Does geth also have a concept of chainName (e.g. for Morden/Ropsten/...)? How to query?
+    if nodeName=="Geth":
+        try:
+            chainName = curl_post(method="net_version") #  
+        except MethodNotExistentError:
+            pass
+
     
     return nodeName, nodeType, consensus, chainName
     
@@ -126,19 +133,20 @@ def test_clientType(w3):
     print ("nodeName: %s, nodeType: %s, consensus: %s, chainName: %s" % (nodeName, nodeType, consensus, chainName))
 
 
-def justTryingOutDifferentThings():
+def justTryingOutDifferentThings(ifPrint=False):
     """
     perhaps these calls can help, or a combination thereof?
     also see 
     https://github.com/jpmorganchase/quorum/blob/3d91976f08074c1f7f605beaadf4b37783026d85/internal/web3ext/web3ext.go#L600-L671
 
     """
-    for method in ("admin_nodeInfo", "net_version", "rpc_modules", 
+    for method in ("web3_clientVersion", "admin_nodeInfo", "net_version", "rpc_modules", 
                    "parity_chainId", "parity_chain", "parity_consensusCapability", 
                    "parity_nodeKind", "parity_versionInfo", ):
         print ("\n%s:" % method)
+    
         try:
-            pprint ( curl_post(method=method) )
+            pprint ( curl_post(method=method, ifPrint=ifPrint) )
         except:
             pass
         
@@ -151,5 +159,5 @@ if __name__ == '__main__':
     test_clientType(w3)
     
     print()
-    # justTryingOutDifferentThings()
+    justTryingOutDifferentThings() # ifPrint=True)
     
