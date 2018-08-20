@@ -367,3 +367,21 @@ Things to try:
 * send tx not all to 1 node :22001, but round-robin to :22001, :22002, :22003, :22004 
 
 ?
+
+
+## issues
+* [IT#110](https://github.com/getamis/istanbul-tools/issues/110) IBFT in parity?
+* [P#9298](https://github.com/paritytech/parity-ethereum/issues/9298) IBFT in parity?
+* [IT#111](https://github.com/getamis/istanbul-tools/issues/111) istanbul API not accessible from JSRE console?
+* [Q#466](https://github.com/jpmorganchase/quorum/issues/466) new release please
+* [Q#467](https://github.com/jpmorganchase/quorum/issues/467) txpool overflow issue [solved]
+* [Q#478](https://github.com/jpmorganchase/quorum/issues/478) please rename binary from `geth` to something else
+* [Q#479](https://github.com/jpmorganchase/quorum/issues/479) IBFT - 200 TPS max ? renamed to:
+* [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
+* [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions
+* [C#27](https://github.com/blk-io/crux/issues/27) 4nodes quorum-example ?  
+* [Q#497](https://github.com/jpmorganchase/quorum/issues/497) Please consider to catch up with geth
+
+
+### TODO: 
+try this out, to compare vagrant with docker: [C#27](https://github.com/blk-io/crux/issues/27) 
