@@ -39,7 +39,6 @@ etc
 
 ## credits
 
-
 Please credit this as:
 
 > benchmarking scripts "chainhammer"  
@@ -47,6 +46,11 @@ Please credit this as:
 > by Dr Andreas Krueger, Electron.org.uk, London 2018  
 
 Consider to submit your improvements & [usage](other-projects.md) as pull request. Thanks.
+
+### short summary
+
+> Electron created the open source tools chainhammer which submits a high load of smart contract transactions to an Ethereum based blockchain, and chainreader which reads in the whole chain, and produces diagrams of TPS, blocktime, gasUsed and gasLimit, and the blocksize.
+> https://gitlab.com/electronDLT/chainhammer
 
 ---
 
