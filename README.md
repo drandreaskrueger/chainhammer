@@ -1,16 +1,16 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v20
+# chainhammer v21
 TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain
 
 ## instructions
-* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md) and [tobalaba.md](tobalaba.md)
+* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md), [quorum-IBFT.md](quorum-IBFT.md), and [tobalaba.md](tobalaba.md)
 * `chainreader` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [chainreader/README.md](chainreader/README.md)
 
 ## faster wider more
 
 See 
 
-* logbook [log.md](log.md) for what I have done to get this faster *on Quorum*, step by step. 
+* logbook [log.md](log.md) for what I had done initially to get this faster *on Quorum*, step by step. 
 * some ideas what to try next: [TODO.md](TODO.md) = e.g. IBFT, geth/parity PoA, IPC not RPC, Crux not Constellation, etc.
 
 

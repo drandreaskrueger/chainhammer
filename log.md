@@ -318,3 +318,10 @@ I must pause this for now.  Last steps for wrapping it up:
 * added more infos to the [open issue #352](https://github.com/jpmorganchase/quorum/issues/352)
 * new [TODO.md](TODO.md) with possible next steps - feel free to fork this, and work on it. Thanks.
 
+## log is continued elsewhere
+see
+
+* [quorum.md](quorum.md)
+* [quorum-IBFT.md](quorum-IBFT.md)
+* [tobalaba.md](tobalaba.md)
+
