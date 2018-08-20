@@ -355,6 +355,9 @@ Looking at the later blocks 64 to 80 only, we see averages of **~270 TPS**.
 
 Unclear what exactly makes the rate collapse here, and after already approx 13000 - 14000 transactions. I have done several repetitions, they all look similar. Any ideas where this might come from?  
 
+(actually, [same behavior as in geth Clique PoA](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions))
+
+
 
 ## how to further increase the TPS?
 

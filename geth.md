@@ -102,6 +102,8 @@ The following averages are calculated in the zoomed in diagrams at the bottom of
 
 The reason for this drop is to be found out, see issue [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) "Sudden drop in TPS after total 14k transactions".
 
+(actually, [same behavior as in quorum IBFT](https://gitlab.com/electronDLT/chainhammer/blob/master/quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx))
+
 ## issues
 * [GD#13](https://github.com/javahippie/geth-dev/issues/13) chain is stuck at block 1 or block 2
 * [GD#14](https://github.com/javahippie/geth-dev/issues/14) account password?
