@@ -1,5 +1,18 @@
 # quorum IBFT benchmarking
 
+### environment used in this first part
+
+[jpmorganchase/quorum-examples](https://github.com/jpmorganchase/quorum-examples) is 
+
+* vagrant virtualbox
+* 7 nodes
+* using - see [bootstrap.sh L33 and L11](https://github.com/jpmorganchase/quorum-examples/blob/master/vagrant/bootstrap.sh#L11-L33):
+  * jpmorganchase/quorum and 
+  * jpmorganchase/constellation 
+
+
+## tweaking and benchmarking
+
 I have been trying to raise the TPS:
 
 ### mempool settings
@@ -103,6 +116,10 @@ https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-
 different from above:
 
 * crux instead of constellation
+* [consensys/quorum](https://github.com/blk-io/crux/blob/master/docker/quorum-crux/bootstrap.sh#L5) (instead of jpmc/quorum as above)
+  * Conor: "It uses Google’s protobuf for communication instead of a hand-coded serialisation library."
+  * me: "would that affect my benchmarking?"
+  * Conor: "it may be more efficient. but the data serialisation overhead is a small part of it - the crypto operations are far heavier"
 * docker instead of vagrant virtualbox
 * 4 nodes instead of 7 nodes
 
