@@ -2,7 +2,7 @@
 """
 @summary: settings
 
-@version: v19 (19/June/2018)
+@version: v22 (21/August/2018)
 @since:   8/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -15,8 +15,8 @@
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
 RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port, single node setup
-RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # if network of several nodes 
+RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # 8545 = default Ethereum RPC port, single node setup
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # if network of several nodes 
 
 # how many tx to send in send.py
 NUMBER_OF_TRANSACTIONS = 20000

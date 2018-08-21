@@ -43,7 +43,8 @@ DBFILE = "allblocks-istanbul-1s-gas20mio_run2.db"
 DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio.db"
 DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio-RPC_run8.db" # 13 workers
 DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio-RPC_run10.db" # 13 workers, repeated
-DBFILE = "allblocks-geth-clique-2s-gas40mio-RPC_run1.db" 
+DBFILE = "allblocks-geth-clique-2s-gas40mio-RPC_run1.db"
+DBFILE = "allblocks-parity-poa-playground_run1.db"  
 
 ################
 ## Dependencies:
