@@ -400,7 +400,7 @@ what else?
 * [Q#479](https://github.com/jpmorganchase/quorum/issues/479) IBFT - 200 TPS max ? renamed to:
 * [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
 * [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions
-* [C#27](https://github.com/blk-io/crux/issues/27) 4nodes quorum-example ?  
+* [BC#27](https://github.com/blk-io/crux/issues/27) 4nodes quorum-example ?  
 * [Q#497](https://github.com/jpmorganchase/quorum/issues/497) Please consider to catch up with geth
 * [BC#27](https://github.com/blk-io/crux/issues/27#issuecomment-414627138) 4nodes quorum-examples - how to? to compare vagrant with docker.
 
