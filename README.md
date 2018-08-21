@@ -79,4 +79,4 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 
 ![chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
 
-Calling all parity experts: How to improve this?
+Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.

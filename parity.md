@@ -240,14 +240,7 @@ Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but
 -->
 
 ## Please you help
-Calling all parity experts: How to improve this?
-
-
-
-
-
-
-
+Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
 
 
 ## issues
@@ -256,3 +249,4 @@ Calling all parity experts: How to improve this?
 * [PD#52](https://github.com/paritytech/parity-deploy/issues/52) Invalid node address format given for a boot node
 * [PPP#14](https://github.com/orbita-center/parity-poa-playground/issues/14) block interval?
 * [PPP#15](https://github.com/orbita-center/parity-poa-playground/issues/15) (FR) script which only deletes the blockchains from all nodes
+* [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393) 60 TPS ? (parity aura v1.11.8)
