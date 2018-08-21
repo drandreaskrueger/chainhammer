@@ -2,7 +2,7 @@
 """
 @summary: for the jupyter notebooks: tools, column creators, diagramming routines, etc. 
 
-@version: v20 (26/June/2018)
+@version: v22 (21/August/2018)
 @since:   26/June/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -29,7 +29,6 @@ def DB_query(SQL, conn):
     cur.execute(SQL)
     result = cur.fetchall()
     return result
-
 
 
 def DB_tableSize(tablename, conn):
@@ -185,3 +184,5 @@ def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, tps
 if __name__ == '__main__':
     
     print ("Don't start this directly. It is intended to be imported by the jupyer notebooks.")
+    
+    
