@@ -385,8 +385,9 @@ Actually, during the experiment my CPU is near 100% so I don't think this can be
 Things to try:
 
 * send tx not all to 1 node :22001, but round-robin to :22001, :22002, :22003, :22004 
+* compare *dockerized* 4nodes (blk-io/crux) with *vagrant-virtualbox* 4nodes branch, to get a grip on which virtualisation is faster. Environment is almost ready, just some last tweaks missing, see [the comments below this one](https://github.com/blk-io/crux/issues/27#issuecomment-414627138).
 
-?
+what else?
 
 
 ## issues
@@ -401,7 +402,7 @@ Things to try:
 * [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions
 * [C#27](https://github.com/blk-io/crux/issues/27) 4nodes quorum-example ?  
 * [Q#497](https://github.com/jpmorganchase/quorum/issues/497) Please consider to catch up with geth
-
+* [BC#27](https://github.com/blk-io/crux/issues/27#issuecomment-414627138) 4nodes quorum-examples - how to? to compare vagrant with docker.
 
 ### TODO: 
-try this out, to compare vagrant with docker: [C#27](https://github.com/blk-io/crux/issues/27) 
+try this out, to compare vagrant with docker: [BC#27](https://github.com/blk-io/crux/issues/27) 
