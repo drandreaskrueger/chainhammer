@@ -1,9 +1,9 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v21
+# chainhammer v22
 TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain
 
 ## instructions
-* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md), [quorum-IBFT.md](quorum-IBFT.md), and [tobalaba.md](tobalaba.md)
+* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md), [quorum-IBFT.md](quorum-IBFT.md), [tobalaba.md](tobalaba.md), and [parity.md](parity.md)
 * `chainreader` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [chainreader/README.md](chainreader/README.md)
 
 ## faster wider more
@@ -73,3 +73,10 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 [tobalaba.md](tobalaba.md) = Public "Tobalaba" chain of the EnergyWebFoundation (parity fork), PoA; 20k transactions; > 150 TPS if client is well-connected.
 
 ![chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
+
+### parity aura v1.11.8
+[parity.md](parity.md) = Initial unoptimized parity run; using `parity-poa-playground` dockerized network of 6 local nodes (3 authorities, 3 members) with 6 billion gasLimit, and mostly 3 seconds blocktime; 20k transactions; > 60 TPS. 
+
+![chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
+
+Calling all parity experts: How to improve this?
