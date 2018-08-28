@@ -2,6 +2,7 @@
 
 interesting next questions:
 
+* *summarizing manual how exactly to use chainhammer & chainreader* - this repo had organically grown in depth and width --> some refactoring would make sense soon. These 2 simple tools are really not difficult to use though, AND all infos are explicit already - it's only that the information is spread over several files right now.
 * Vanilla Ethereum PoW
   * to get the baseline TPS using my scripts
 * Vanilla Ethereum PoA
@@ -14,16 +15,14 @@ interesting next questions:
   * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
   * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. loop multiplication) instead of the SimpleStorage.sol
 * is the parity RPC server single-threaded??
-  * send TX via IPC instead of RPC - faster?
   * send TX via websockets instead of RPC - faster?
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed
   * perhaps try Crux not Constellation? 
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
 * [QuorumNetworkManager](https://github.com/ConsenSys/QuorumNetworkManager)
 * compare all results in a table / barchart, instead of chronological text log files.
-* refactor [chainreader/blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
 
-what else?
+what else? Please YOU make suggestions.
 
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
 
@@ -34,7 +33,8 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * [Crux](https://medium.com/blk-io/announcing-crux-a-secure-enclave-for-quorum-61afbfdb79e4) instead of `Constellation`
   * newly developed by blk.io / Conor Svenson
   * already has a "7nodes example", so should be easy to benchmark: [raft](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/raft-start.sh#L7), [IBFT](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/istanbul-start.sh#L7)
-
+* refactor [chainreader/blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
+* send TX via IPC instead of RPC - faster?
 
 
 # other places:
@@ -46,3 +46,4 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * [tobalaba.md](tobalaba.md) also benchmarked the parity fork of the EnergyWebFoundation: `--chain Tobalaba`
 * [chainreader/](chainreader/) traverse whole chain, display as 4 diagrams: TPS, size, gas, blocktime
 * [README.md](README.md) - entry point for this repo
+

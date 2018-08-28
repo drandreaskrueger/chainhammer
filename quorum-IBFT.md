@@ -1,5 +1,9 @@
 # quorum IBFT benchmarking
 
+... *the other consensus algorithm* that is shipped with quorum.
+
+Also see [general infos](quorum.md#general-infos) in previous document (which documents the initial raft consensus benchmarking).
+
 ### environment used in this first part
 
 [jpmorganchase/quorum-examples](https://github.com/jpmorganchase/quorum-examples) is 

@@ -1,17 +1,26 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
 # chainhammer v22
-TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain
+TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain; focus on PoA consensus
 
 ## instructions
-* `chainhammer` - submits many transactions to blockchain - see [quorum.md](quorum.md), [quorum-IBFT.md](quorum-IBFT.md), [tobalaba.md](tobalaba.md), and [parity.md](parity.md)
+* `chainhammer` - submits many transactions to blockchain - see next chapter 'chronology'
 * `chainreader` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [chainreader/README.md](chainreader/README.md)
+
+### chronology
+
+1. [log.md](log.md): initial steps; also tried *Quorum's private transactions*
+1. [quorum.md](quorum.md): raft consensus, geth fork
+1. [tobalaba.md](tobalaba.md): parity fork
+1. [quorum-IBFT.md](quorum-IBFT.md): other consensus algo in quorum
+1. [parity.md](parity.md): work in progress
+1. [eos.md](eos.md): not begun
 
 ## faster wider more
 
 See 
 
 * logbook [log.md](log.md) for what I had done initially to get this faster *on Quorum*, step by step. 
-* some ideas what to try next: [TODO.md](TODO.md) = e.g. IBFT, geth/parity PoA, IPC not RPC, Crux not Constellation, etc.
+* some ideas what to try next: [TODO.md](TODO.md) = e.g. geth/parity PoA, vary transaction size, run on host machine (not docker/vagrant), etc.
 
 
 Suggestions please: how can I speed this up further? 

@@ -2,6 +2,24 @@ Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), 
 # [chainhammer](README.md): quorum
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
+## general infos 
+
+
+about quorum
+
+* there are (at least) two Quorum variants now:
+  * (orig) by EEA/jpmc https://github.com/jpmorganchase/quorum 
+  * (fork) by ConsenSys https://github.com/ConsenSys/quorum
+* integrated whole networks:
+  * 7nodes `constellation` (vagrant virtualbox) https://github.com/jpmorganchase/quorum-examples
+  * 7nodes `crux` (vagrant virtualbox) https://github.com/blk-io/quorum-examples
+  * 4 nodes `crux` (docker) https://github.com/blk-io/crux/tree/master/docker/quorum-crux
+
+about this benchmarking
+
+* raft consensus: this document here
+* Istanbul BFT consensus: [quorum-IBFT.md](quorum-IBFT.md)
+
 ## initialize 7nodes
 
 edit `v.memory = 2048` into `v.memory = 4096` (see [#85](https://github.com/jpmorganchase/quorum-examples/issues/85)):
