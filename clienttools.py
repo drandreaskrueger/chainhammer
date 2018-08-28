@@ -72,8 +72,8 @@ def unlockAccount(duration=3600, account=None):
     if "TestRPC" in w3.version.node:
         return True # TestRPC does not need unlocking
     
-    if CHAINNAME=='500':
-        return True # https://github.com/javahippie/geth-dev already unlocked  
+    # if CHAINNAME=='500':
+    #     return True # https://github.com/javahippie/geth-dev already unlocked  
     
     if not account:
         account = w3.eth.defaultAccount
@@ -97,12 +97,14 @@ def setGlobalVariables_clientType(w3):
     Set global variables.
     And if it's a Quorum PoA node, apply bugfix 
     """
-    global NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    NODENAME, NODETYPE, CONSENSUS, CHAINNAME = clientType(w3)
+    global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     
-    print ("nodeName: %s, nodeType: %s, consensus: %s, chainName: %s" % (NODENAME, NODETYPE, CONSENSUS, CHAINNAME))
+    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = clientType(w3)
     
-    return NODENAME, NODETYPE, CONSENSUS, CHAINNAME # for when imported into other modules
+    formatter="nodeName: %s, nodeType: %s, consensus: %s, network: %s, chainName: %s, chainId: %s" 
+    print (formatter % (NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID))
+    
+    return NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID # for when imported into other modules
 
 
 def if_poa_then_bugfix(w3, NODENAME):
@@ -130,17 +132,23 @@ def web3connection(RPCaddress=RPCaddress, account=None):
     
     w3 = start_web3connection(RPCaddress=RPCaddress, account=account) 
 
-    NODENAME, NODETYPE, CONSENSUS, CHAINNAME = setGlobalVariables_clientType(w3)
+    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = setGlobalVariables_clientType(w3)
 
     if_poa_then_bugfix(w3, NODENAME)
     
-    return w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
+    chainInfos = NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    
+    return w3, chainInfos 
 
 
 if __name__ == '__main__':
+
+    # example how to call this:
     answer = web3connection(RPCaddress=RPCaddress, account=None)
-    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
+    w3, chainInfos  = answer
+    
+    global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 
     

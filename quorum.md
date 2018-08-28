@@ -220,6 +220,8 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [Q #369](https://github.com/jpmorganchase/quorum/issues/369) FR: new API endpoint/answer
 * [Web3.py #808](https://github.com/ethereum/web3.py/issues/808) --> solved
 * [Web3.py #898](https://github.com/ethereum/web3.py/issues/898) --> solved
+* [Q #505](https://github.com/jpmorganchase/quorum/issues/505) **please consider to return more standardized answers about consensus algorithms**
+
 
 ## alternative: dockerized quorum nodes
 Always used the 7nodes example as described above, but there is also https://github.com/ConsenSys/quorum-docker-Nnodes = Run a bunch of Quorum nodes, each in a separate Docker container. Untested.

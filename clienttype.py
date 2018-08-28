@@ -72,11 +72,21 @@ def clientType(w3):
     """
     queries several ethereum API endpoints, 
     to figure out which client type & consensus algorithm (e.g. RAFT)
+    
+    Sorry, very ugly, and probably faulty too 
+    but few people in Ethereum seems to be willing, interested, or compromising,
+    to create or adhere to any kind of standards, grrrrr.
     """
 
     consensus = "???"
+    networkId =-1
+    chainName,chainId ="???",-1
     
-    # Raft consensus?
+    # TODO: Does geth also have a concept of chainName (e.g. for Morden/Ropsten/...)? How to query?    
+    
+    # How to detect raft consensus? 
+    #        Unfortunately this fails with /quorum-example/7nodes 
+    #        because they forgot to open the RPC api "raft"
     try:
         answer = curl_post(method="raft_role") # , ifPrint=True)
         if answer:
@@ -87,6 +97,7 @@ def clientType(w3):
         # IBFT consensus?    
         try:
             answer = curl_post(method="admin_nodeInfo")
+            
             if 'istanbul' in answer.get('protocols', {}).keys():
                 consensus = "istanbul"
         except:
@@ -97,15 +108,25 @@ def clientType(w3):
     nodeType = nodeString.split("/")[0] 
     
     # Quorum pretends to be Geth - so how to distinguish vanillaGeth from QuorumGeth?
+    # (Actually I think Quorum should do something about that confusion - ) 
     nodeName = nodeType
+    
+    # TODO: Because raft RPC is not open (see above), this can still not distinguish between vanilla geth, and quorum RAFT. 
     if consensus in ('raft', 'istanbul'):
         nodeName = "Quorum"
         
     if nodeName == "Energy Web":
         nodeType = "Parity"
         consensus = "PoA"  # TODO: study the answers of typical commands, can say more? 
+
+
+    try:
+        answer = curl_post(method="net_version")
+        networkId = int(answer) 
+    except MethodNotExistentError:
+        pass
     
-    chainName="???"
+
     if nodeType=="Parity":
         try:
             chainName = curl_post(method="parity_chain") #  foundation, tobalaba
@@ -113,24 +134,39 @@ def clientType(w3):
                 consensus = "PoW"  # dangerous assumption, because some day that might actually change. For now fine. 
         except MethodNotExistentError:
             pass
-    
-    # TODO: Does geth also have a concept of chainName (e.g. for Morden/Ropsten/...)? How to query?
-    if nodeName=="Geth":
         try:
-            chainName = curl_post(method="net_version") #  
+            answer = curl_post(method="parity_chainId")
+            chainId = int(answer, 16) 
         except MethodNotExistentError:
             pass
 
     
-    return nodeName, nodeType, consensus, chainName
+    if nodeName=="Geth":
+        # TODO: This can still not distinguish between vanilla geth, and quorum RAFT. 
+        try:
+            answer = curl_post(method="admin_nodeInfo")
+            
+            answer_config = answer['protocols']['eth'].get('config', None)
+            if answer_config:
+                if "clique" in answer_config:
+                    consensus="clique"
+                if "ethash" in answer_config:
+                    consensus="ethash"
+                chainId = answer_config.get('chainId', None)
+                
+            # chainName = curl_post(method="net_version") #
+        except MethodNotExistentError:
+            pass
+    
+    return nodeName, nodeType, consensus, networkId, chainName, chainId
     
 
 def test_clientType(w3):
     """
     test the above
     """
-    nodeName, nodeType, consensus, chainName = clientType(w3)
-    print ("nodeName: %s, nodeType: %s, consensus: %s, chainName: %s" % (nodeName, nodeType, consensus, chainName))
+    nodeName, nodeType, consensus, networkId, chainName, chainId = clientType(w3)
+    print ("nodeName: %s, nodeType: %s, consensus: %s, network: %s, chainName: %s, chainId: %s" % (nodeName, nodeType, consensus, networkId, chainName, chainId))
 
 
 def justTryingOutDifferentThings(ifPrint=False):
@@ -142,7 +178,7 @@ def justTryingOutDifferentThings(ifPrint=False):
     """
     for method in ("web3_clientVersion", "admin_nodeInfo", "net_version", "rpc_modules", 
                    "parity_chainId", "parity_chain", "parity_consensusCapability", 
-                   "parity_nodeKind", "parity_versionInfo", ):
+                   "parity_nodeKind", "parity_versionInfo", "eth_chainId"):
         print ("\n%s:" % method)
     
         try:
