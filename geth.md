@@ -33,7 +33,25 @@ then start with
 docker-compose up
 ```
 
-N.B.: Whenever changing those parameters, I am brutally killing all docker images, for better ways see [this issue](https://github.com/javahippie/geth-dev/issues/15).
+At http://localhost:3000/ you can see an ethstats overview of the three nodes.
+
+### docker stuff
+
+If any changes in those ^ files are not reflected after restarting - try:
+
+    docker-compose build
+
+N.B.: It can take quite some time after restarting, until a new block is created. Before starting a benchmarking, I suggest to always open a JSRE console, and check that the blocknumber is increasing:
+
+    geth attach http://localhost:8545
+    eth.blockNumber
+
+To delete the blockchain and start new
+
+    docker-compose down
+    docker-compose up
+
+Also see [this issue](https://github.com/javahippie/geth-dev/issues/15).
 
 ## results
 log of run 1
