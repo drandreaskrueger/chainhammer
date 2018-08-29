@@ -417,6 +417,11 @@ to start the 4 nodes.
 
 Copy the password `paritytech_parity-deploy/deployment/1/password` into `chainhammer/account-passphrase.txt`
 
+Actually, ran the chainhammer now with 1000 multithreading workers:
+```
+./deploy.py notest; ./send.py threaded2 1000
+```
+
 Result log of run 6:
 
 ```
