@@ -354,9 +354,9 @@ def benchmark(numTransactions = NUMBER_OF_TRANSACTIONS):
 
 if __name__ == '__main__':
 
-    answer = web3connection(RPCaddress=RPCaddress, account=None)
-    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
+    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
+    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # test_argument_encoding(); exit()

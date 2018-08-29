@@ -4,7 +4,7 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v19 (19/June/2018)
+@version: v23 (29/August/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -141,9 +141,9 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
 
 if __name__ == '__main__':
     
-    answer = web3connection(RPCaddress=RPCaddress2, account=None)
-    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
+    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    w3, chainInfos = web3connection(RPCaddress=RPCaddress2, account=None)
+    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
     
     blockNumber_start = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
