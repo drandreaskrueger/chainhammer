@@ -250,3 +250,6 @@ Calling all parity experts: How to improve this? See issue [PE#9393](https://git
 * [PPP#14](https://github.com/orbita-center/parity-poa-playground/issues/14) block interval?
 * [PPP#15](https://github.com/orbita-center/parity-poa-playground/issues/15) (FR) script which only deletes the blockchains from all nodes
 * [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393) 60 TPS ? (parity aura v1.11.8)
+* [PE#9432](https://github.com/paritytech/parity-ethereum/issues/9432) (FR) new standardized RPC query with standardized answer
+
+

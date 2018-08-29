@@ -221,6 +221,9 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [Web3.py #808](https://github.com/ethereum/web3.py/issues/808) --> solved
 * [Web3.py #898](https://github.com/ethereum/web3.py/issues/898) --> solved
 * [Q #505](https://github.com/jpmorganchase/quorum/issues/505) **please consider to return more standardized answers about consensus algorithms**
+* [BQE #33](https://github.com/blk-io/crux/issues/33) Server does not implement chimera.ClientServer (missing Delete method)
+* [Q #507](https://github.com/jpmorganchase/quorum/issues/507) `Quorum/v2.1.0-stable-159d813f/linux-amd64/go1.9.3`
+
 
 
 ## alternative: dockerized quorum nodes
