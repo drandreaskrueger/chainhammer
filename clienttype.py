@@ -3,7 +3,7 @@
 @summary: Which client type do we have? 
           quorum-raft/ibft OR energyweb OR parity OR geth OR ...
 
-@version: v17 (19/June/2018)
+@version: v23 (29/August/2018)
 @since:   29/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -70,23 +70,38 @@ def curl_post(method, txParameters=None, RPCaddress=RPCaddress, ifPrint=False):
 
 def clientType(w3):
     """
-    queries several ethereum API endpoints, 
-    to figure out which client type & consensus algorithm (e.g. RAFT)
+    figure out which client (quorum, parity, geth, energyweb, etc.),
+    which client type (fork of geth, or fork of parity),
+    which consensus algorithm (e.g. RAFT, IBFT, aura, clique),
+    and networkId, and chainId, and chainName.
     
-    Sorry, very ugly, and probably faulty too 
-    but few people in Ethereum seems to be willing, interested, or compromising,
-    to create or adhere to any kind of standards, grrrrr.
+    Sorry, very ugly, and probably faulty too, and for sure will break some day. 
+    The fractions of the Ethereum world seem to have unsolved standardisation issues.
+    
+    See github issues
+    * https://github.com/jpmorganchase/quorum/issues/505
+    * https://github.com/jpmorganchase/quorum/issues/507
+    * https://github.com/paritytech/parity-ethereum/issues/9432
     """
 
     consensus = "???"
-    networkId =-1
-    chainName,chainId ="???",-1
+    chainName = "???"
+    networkId = -1
+    chainId = -1
     
-    # TODO: Does geth also have a concept of chainName (e.g. for Morden/Ropsten/...)? How to query?    
+    try:
+        answer = curl_post(method="net_version")
+        networkId = int(answer) 
+    except MethodNotExistentError:
+        pass
+
     
     # How to detect raft consensus? 
     #        Unfortunately this fails with /quorum-example/7nodes 
     #        because they forgot to open the RPC api "raft"
+    #        see issues 
+    #
+    #
     try:
         answer = curl_post(method="raft_role") # , ifPrint=True)
         if answer:
@@ -94,38 +109,35 @@ def clientType(w3):
     except MethodNotExistentError:
         pass
     
-        # IBFT consensus?    
-        try:
+        # IBFT consensus?
+        # There is a specific answer, just in an unusual place; see issue
+        #     https://github.com/jpmorganchase/quorum/issues/505
+        try: 
             answer = curl_post(method="admin_nodeInfo")
-            
             if 'istanbul' in answer.get('protocols', {}).keys():
                 consensus = "istanbul"
         except:
             pass
 
+
     # Geth / Parity / Energy Web:
     nodeString = w3.version.node
-    nodeType = nodeString.split("/")[0] 
-    
+    nodeName = nodeString.split("/")[0] 
+
     # Quorum pretends to be Geth - so how to distinguish vanillaGeth from QuorumGeth?
-    # (Actually I think Quorum should do something about that confusion - ) 
-    nodeName = nodeType
+    #  - see https://github.com/jpmorganchase/quorum/issues/507
+    nodeType = nodeName    
+
     
-    # TODO: Because raft RPC is not open (see above), this can still not distinguish between vanilla geth, and quorum RAFT. 
     if consensus in ('raft', 'istanbul'):
+        # TODO: Because raft RPC is not open in example (see above), this can 
+        #       still not distinguish between vanilla geth, and quorum RAFT. 
         nodeName = "Quorum"
         
     if nodeName == "Energy Web":
         nodeType = "Parity"
-        consensus = "PoA"  # TODO: study the answers of typical commands, can say more? 
+        consensus = "PoA"  # Dangerous assumption. TODO: ... after they took care of the open issues, this gets easier. 
 
-
-    try:
-        answer = curl_post(method="net_version")
-        networkId = int(answer) 
-    except MethodNotExistentError:
-        pass
-    
 
     if nodeType=="Parity":
         try:
@@ -154,7 +166,10 @@ def clientType(w3):
                     consensus="ethash"
                 chainId = answer_config.get('chainId', None)
                 
+            # TODO: 
+            # Does geth also have a concept of chainName (e.g. for Morden/Ropsten/...)? How to query?    
             # chainName = curl_post(method="net_version") #
+            
         except MethodNotExistentError:
             pass
     
