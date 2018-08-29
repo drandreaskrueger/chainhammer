@@ -223,7 +223,7 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [Q #505](https://github.com/jpmorganchase/quorum/issues/505) **please consider to return more standardized answers about consensus algorithms**
 * [BQE #33](https://github.com/blk-io/crux/issues/33) Server does not implement chimera.ClientServer (missing Delete method)
 * [Q #507](https://github.com/jpmorganchase/quorum/issues/507) `Quorum/v2.1.0-stable-159d813f/linux-amd64/go1.9.3`
-
+* [QE#121](https://github.com/jpmorganchase/quorum-examples/issues/121) --rpcapi ...,raft
 
 
 ## alternative: dockerized quorum nodes

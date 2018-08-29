@@ -15,7 +15,7 @@
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
 RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
-#RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground
 #RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev 
 
 # how many tx to send in send.py
