@@ -714,7 +714,7 @@ docker-compose up
 
 log of run 8:  
 
-(For the reason of all those `/    0 ms =   0.0 TPS`, see [this code comment](https://gitlab.com/electronDLT/chainhammer/commit/515033d42a0fab45cd53ae4e823501385344bf8f))
+(For the reason of all those `/    0 ms =   0.0 TPS_current`, see [this code comment](https://gitlab.com/electronDLT/chainhammer/commit/515033d42a0fab45cd53ae4e823501385344bf8f))
 
 ```
 ./tps.py 
@@ -760,6 +760,18 @@ but with only 1 node, and simplemost block sealing.
 
 --> **We need new ideas what is slowing down parity so much.**
 
+### run 9 
+identical to above run 8 but sending the smart contract transactions [via web3 not via RPC](https://gitlab.com/electronDLT/chainhammer/blob/5fa31f2999627f9a3858f443240fcaa1a2dfd23d/config.py#L30-31) ... slows it down a little bit:
+
+```
+...
+block 19668 | new #TX  24 / 1000 ms =  24.0 TPS_current | total: #TX 19970 / 294.8 s =  67.7 TPS_average
+block 19692 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX 19994 / 295.2 s =  67.7 TPS_average
+block 19716 | new #TX   7 /    0 ms =   0.0 TPS_current | total: #TX 20001 / 295.6 s =  67.7 TPS_average
+```
+--> omitting web3 completely and instead submitting the transaction directly via RPC call ... gives only 1.2% speed up when using `parity` (compare that to the +70% speed up (of RPC over web3) for the better optimized client `geth quorum IBFT-consensus`).
+
+
 ## Please you help
 
 Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
@@ -784,5 +796,5 @@ Then please alert us how you did it. Thanks.
 * [PPP#17](https://github.com/orbita-center/parity-poa-playground/issues/17) warnings and errors
 * [PD#55](https://github.com/paritytech/parity-deploy/issues/55) (FR) user defined parameters
 * [OD#58](https://github.com/paritytech/parity-deploy/issues/58) instantseal password empty
-
+* PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
 
