@@ -94,7 +94,14 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     
     blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) / timeunits
     
-    tps_current = txCount_new / blocktimeSeconds
+    try:
+        tps_current = txCount_new / blocktimeSeconds
+    except ZeroDivisionError:
+        # Odd: Parity seems to have a blocktime resolution of whole seconds??
+        # So if blocks come much faster (e.g. with instantseal), 
+        # then they end up having a blocktime of zero lol.
+        # Then, set TPS_CURRENT to something wrong but syntactically correct.  
+        tps_current = 0
 
     txCount += txCount_new
     elapsed = timeit.default_timer() - start_time
