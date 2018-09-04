@@ -699,7 +699,64 @@ diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/p
 N.B.: The CPU usage stays below 60%, so parity is not yet using all the computational resources available, even with `--jsonrpc-server-threads 100`. 
 
 
-**We need new ideas how to accelerate parity !!**
+### run 8: instantseal
+
+* only 1 node (not 4 or 7 like in the other benchmarks)
+* `--config dev` = instantseal 
+* password is empty, see issue [OD#58](https://github.com/paritytech/parity-deploy/issues/58)
+
+created like this with `parity-deploy`:
+```
+sudo ./clean.sh 
+./parity-deploy.sh --config dev --name instantseal
+docker-compose up
+```
+
+log of run 8:
+
+```
+./tps.py 
+
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 0, node version string =  Parity//v1.11.10-stable-31720e6-20180830/x86_64-linux-gnu/rustc1.28.0
+first account of node is 0x00a329c0648769A73afAc7F9381E08FB43dBEA72, balance is 1606938044258990275541962092341162602522202.993782792835301376 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: developmentchain, chainId: 17
+
+Block  0  - waiting for something to happen
+(filedate 1536066028) last contract address: 0xe1C4eFc0aa519745F929C0FE1744cce768CE6d87
+(filedate 1536066259) new contract address: 0x731a10897d267e19B34503aD902d0A29173Ba4B1
+
+starting timer, at block 1 which has  1  transactions; at timecode 18895.714550361
+block 1 | new #TX  11 /    0 ms =   0.0 TPS_current | total: #TX   12 /  0.6 s =  18.8 TPS_average
+block 12 | new #TX  23 /    0 ms =   0.0 TPS_current | total: #TX   35 /  1.0 s =  35.4 TPS_average
+block 35 | new #TX  24 / 1000 ms =  24.0 TPS_current | total: #TX   59 /  1.3 s =  44.2 TPS_average
+block 59 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX   83 /  1.7 s =  49.2 TPS_average
+block 83 | new #TX  25 / 1000 ms =  25.0 TPS_current | total: #TX  108 /  2.0 s =  53.0 TPS_average
+block 108 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  132 /  2.4 s =  55.2 TPS_average
+block 132 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  156 /  2.7 s =  56.8 TPS_average
+block 156 | new #TX  25 / 1000 ms =  25.0 TPS_current | total: #TX  181 /  3.1 s =  58.4 TPS_average
+block 181 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  205 /  3.4 s =  59.4 TPS_average
+block 205 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  229 /  3.8 s =  60.3 TPS_average
+block 229 | new #TX  24 / 1000 ms =  24.0 TPS_current | total: #TX  253 /  4.2 s =  61.0 TPS_average
+block 253 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  277 /  4.5 s =  61.5 TPS_average
+block 277 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  301 /  4.9 s =  62.0 TPS_average
+block 301 | new #TX  24 / 1000 ms =  24.0 TPS_current | total: #TX  325 /  5.2 s =  62.4 TPS_average
+block 325 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX  349 /  5.6 s =  62.8 TPS_average
+[...]
+block 19719 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX 19878 / 289.9 s =  68.6 TPS_average
+block 19743 | new #TX  24 / 1000 ms =  24.0 TPS_current | total: #TX 19902 / 290.2 s =  68.6 TPS_average
+block 19767 | new #TX  25 /    0 ms =   0.0 TPS_current | total: #TX 19927 / 290.6 s =  68.6 TPS_average
+block 19792 | new #TX  25 /    0 ms =   0.0 TPS_current | total: #TX 19952 / 291.0 s =  68.6 TPS_average
+block 19817 | new #TX  23 / 1000 ms =  23.0 TPS_current | total: #TX 19975 / 291.3 s =  68.6 TPS_average
+block 19840 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX 19999 / 291.7 s =  68.6 TPS_average
+block 19864 | new #TX   2 /    0 ms =   0.0 TPS_current | total: #TX 20001 / 292.0 s =  68.5 TPS_average
+```
+
+--> 69 TPS
+
+but with only 1 node, and simplemost block sealing. 
+
+--> **We need new ideas what is slowing down parity so much.**
 
 ## Please you help
 
@@ -724,4 +781,6 @@ Then please alert us how you did it. Thanks.
 * [PE#9432](https://github.com/paritytech/parity-ethereum/issues/9432) (FR) new standardized RPC query with standardized answer
 * [PPP#17](https://github.com/orbita-center/parity-poa-playground/issues/17) warnings and errors
 * [PD#55](https://github.com/paritytech/parity-deploy/issues/55) (FR) user defined parameters
+* [OD#58](https://github.com/paritytech/parity-deploy/issues/58) instantseal password empty
+
 
