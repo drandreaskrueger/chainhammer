@@ -712,7 +712,9 @@ sudo ./clean.sh
 docker-compose up
 ```
 
-log of run 8:
+log of run 8:  
+
+(For the reason of all those `/    0 ms =   0.0 TPS`, see [this code comment](https://gitlab.com/electronDLT/chainhammer/commit/515033d42a0fab45cd53ae4e823501385344bf8f))
 
 ```
 ./tps.py 
