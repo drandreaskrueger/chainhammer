@@ -38,13 +38,36 @@ source py3eth/bin/activate
 python3 -m pip install --upgrade pip==9.0.3
 pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests 
 ```
-all python scripts & jupyer notebooks must be run within that virtualenv:
+all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
 
 ```
 source py3eth/bin/activate
-./tps.py 
+./deploy.py 
 ```
-etc
+use this ^ to test whether communication with the ethereum node is working, incl. password correct, etc.
+
+## quickstart
+
+first terminal:
+```
+./tps.py
+```
+second terminal:
+```
+./deploy.py notest; ./send.py threaded2 23
+```
+
+Then, after all (e.g. 20,001) transactions have been seen, extract the whole chain into `allblocks-parity_run7.db` (example)
+```
+cd chainreader
+./blocksDB_create.py allblocks-parity_run7.db
+```
+and examine it with a jupyter notebook, to make the diagrams
+```
+jupyter notebook blocksDB_analyze_parity-aura_run7.ipynb
+```
+by menu --> Kernel --> Restart & Run All. 
+
 
 ## credits
 
