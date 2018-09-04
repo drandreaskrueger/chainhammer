@@ -799,4 +799,5 @@ Then please alert us how you did it. Thanks.
 * [PD#55](https://github.com/paritytech/parity-deploy/issues/55) (FR) user defined parameters
 * [OD#58](https://github.com/paritytech/parity-deploy/issues/58) instantseal password empty
 * [PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
+* [PE#9471](https://github.com/paritytech/parity-ethereum/issues/9471) `eth_sendTransactionAsync` to accelerate parity?
 
