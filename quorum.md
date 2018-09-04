@@ -146,6 +146,35 @@ block 4822 | new #TX 117 /  358 ms = 326.1 TPS_current | total: #TX 1000 / 10.8 
 
 See [log.md](log.md) for what I have tried to get this faster.
 
+### Much later repeat
+
+With newest chainhammer code (version [v24](https://gitlab.com/electronDLT/chainhammer/commit/69407bab63ca56fb62bae736c9cf3e6a7c32c6c0)), and with 10 multithreading workers, and with RPC calls instead of web3.contract calls, we are seeing around ~200 TPS now for raft consensus:
+
+```
+./tps.py 
+
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 1215, node version string =  Geth/v1.7.2-stable-99a83767/linux-amd64/go1.9.3
+first account of node is 0x0fBDc686b912d7722dc86510934589E0AAf3b55A, balance is 1000000000 Ether
+nodeName: Quorum, nodeType: Geth, consensus: raft, network: 10, chainName: ???, chainId: -1
+Block  1215  - waiting for something to happen
+(filedate 1536069903) last contract address: 0x055a8A01cbaCa453B7a6f1BBFfa9233710452dcd
+(filedate 1536069957) new contract address: 0x3358609DbD8718d8d7788E2971696a8d94a905aa
+blocknumber_start_here = 1216
+starting timer, at block 1216 which has  1  transactions; at timecode 22593.923337597
+
+block 1216 | new #TX  10 /  699 ms =  14.3 TPS_current | total: #TX   11 /  0.7 s =  16.3 TPS_average
+block 1219 | new #TX  52 /  213 ms = 244.5 TPS_current | total: #TX   63 /  1.1 s =  56.2 TPS_average
+block 1223 | new #TX  75 /  438 ms = 171.3 TPS_current | total: #TX  138 /  1.5 s =  89.1 TPS_average
+block 1231 | new #TX  51 /  204 ms = 250.6 TPS_current | total: #TX  189 /  2.0 s =  95.0 TPS_average
+[...]
+block 2418 | new #TX  80 /  688 ms = 116.3 TPS_current | total: #TX 17181 / 91.7 s = 187.4 TPS_average
+block 2428 | new #TX 103 /  464 ms = 222.1 TPS_current | total: #TX 17284 / 92.1 s = 187.6 TPS_average
+block 2434 | new #TX 136 /  932 ms = 145.9 TPS_current | total: #TX 17420 / 92.8 s = 187.7 TPS_average
+block 2448 | new #TX 130 /  300 ms = 433.5 TPS_current | total: #TX 17550 / 93.2 s = 188.2 TPS_average
+block 2453 | new #TX 2451 / 10706 ms = 228.9 TPS_current | total: #TX 20001 / 97.0 s = 206.1 TPS_average
+```
+
 ### suggestions please
 how can I speed this up?
 
