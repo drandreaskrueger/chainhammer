@@ -769,7 +769,9 @@ block 19668 | new #TX  24 / 1000 ms =  24.0 TPS_current | total: #TX 19970 / 294
 block 19692 | new #TX  24 /    0 ms =   0.0 TPS_current | total: #TX 19994 / 295.2 s =  67.7 TPS_average
 block 19716 | new #TX   7 /    0 ms =   0.0 TPS_current | total: #TX 20001 / 295.6 s =  67.7 TPS_average
 ```
---> omitting web3 completely and instead submitting the transaction directly via RPC call ... gives only 1.2% speed up when using `parity` (compare that to the +70% speed up (of RPC over web3) for the better optimized client `geth quorum IBFT-consensus`).
+--> omitting web3 completely and instead submitting the transaction directly via RPC call ... gives only 1.2% speed up when using `parity`.  
+
+(Compare that to the +70% speed up (of RPC over web3) for the better optimized client `geth quorum IBFT-consensus`).
 
 
 ## Please you help
@@ -796,5 +798,5 @@ Then please alert us how you did it. Thanks.
 * [PPP#17](https://github.com/orbita-center/parity-poa-playground/issues/17) warnings and errors
 * [PD#55](https://github.com/paritytech/parity-deploy/issues/55) (FR) user defined parameters
 * [OD#58](https://github.com/paritytech/parity-deploy/issues/58) instantseal password empty
-* PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
+* [PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
 
