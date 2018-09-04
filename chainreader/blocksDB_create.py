@@ -4,7 +4,7 @@
 
 @attention: MOST of the code in here (all the multithreaded stuff) is actually obsolete as surprisingly the fastest way to read from parity RPC is ... single-threaded
 
-@version: v19 (19/June/2018)
+@version: v23 (4/September/2018)
 @since:   16/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -28,8 +28,11 @@
 # execute & commit 4392280 SQL statements into DB took 37.91 seconds
 
 
-
+global DBFILE
 DBFILE = "allblocks.db"
+
+# obsolete: hard coded DB file names:
+"""
 DBFILE = "allblocks-quorum-raft.db"
 DBFILE = "allblocks-tobalaba.db"
 DBFILE = "allblocks-istanbul-gas40mio.db"
@@ -45,6 +48,11 @@ DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio-RPC_run8.db" # 13 workers
 DBFILE = "allblocks-istanbul-crux-docker-1s-gas20mio-RPC_run10.db" # 13 workers, repeated
 DBFILE = "allblocks-geth-clique-2s-gas40mio-RPC_run1.db"
 DBFILE = "allblocks-parity-poa-playground_run1.db"  
+"""
+
+### now instead call with a parameter, e.g.
+# ./blocksDB_create.py allblocks_clientX_runY.db
+
 
 ################
 ## Dependencies:
@@ -71,11 +79,11 @@ from clienttools import web3connection
 ###############################################################################
 
 
-def DB_createTable(dbfile=DBFILE):
+def DB_createTable():
     """
     creates a table with the needed columns  
     """
-    conn = sqlite3.connect(dbfile)
+    conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS 
                  blocks(
@@ -90,11 +98,11 @@ def DB_createTable(dbfile=DBFILE):
     conn.close()
 
 
-def DB_dropTable(dbfile=DBFILE):
+def DB_dropTable():
     """
     removes the table
     """
-    conn = sqlite3.connect(dbfile)
+    conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
     c.execute('''DROP TABLE IF EXISTS blocks''')
     conn.commit()
@@ -354,6 +362,7 @@ def DB_newFromFile():
     if you have many duplicates in allblocks.db.sql then this helps 
         sort allblocks.db.sql | uniq > allblocks_.db.sql; wc allblocks_.db.sql 
     """
+    print ("Creating new DB", DBFILE)
     conn = sqlite3.connect(DBFILE)
     DB_dropTable()
     DB_createTable()
@@ -363,11 +372,22 @@ def DB_newFromFile():
     conn.close()
 
 
+def CLI_params():
+    global DBFILE
+    if len(sys.argv)>2:
+        print ("Please give one argument, the filename DBFILE, or zero to choose the default ", DBFILE)
+    if len(sys.argv)==2:
+        DBFILE=sys.argv[1]
+        print ("changed DBFILE to ", DBFILE)
+
 if __name__ == '__main__':
     
-    answer = web3connection(RPCaddress=RPCaddress, account=None)
-    global w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME
-    w3, NODENAME, NODETYPE, CONSENSUS, CHAINNAME = answer
+    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
+    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+
+    CLI_params(); 
+    print ("Writing blocks information into", DBFILE)
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()
