@@ -355,7 +355,7 @@ block 101 | new #TX   0 / 110000 ms =   0.0 TPS_current | total: #TX 20001 / 435
 block 102 | new #TX   0 / 5000 ms =   0.0 TPS_current | total: #TX 20001 / 440.1 s =  45.4 TPS_average
 ```
 
-# run4
+### run4
 
 more  jsonrpc-server-threads
 
@@ -377,7 +377,7 @@ block 108 | new #TX  41 / 3000 ms =  13.7 TPS_current | total: #TX 20001 / 330.3
 and the CPU was only between 50% and 70%.
 
 
-# run5
+### run5
 [switching off 4 of the machines](https://github.com/drandreaskrueger/parity-poa-playground/commit/7728566e688b4ab910552d4f302c4621e135f105) (member1, member2, monitor, dashboard), to see whether that accelerates.
 
 ```
@@ -395,7 +395,7 @@ block 112 | new #TX  11 / 3000 ms =   3.7 TPS_current | total: #TX 20001 / 315.0
 
 --> only 2-3 TPS faster.
 
-# run6
+### run6
 
 With a different network tool, https://github.com/paritytech/parity-deploy/
 
@@ -523,16 +523,195 @@ block 88 | new #TX   0 / 114000 ms =   0.0 TPS_current | total: #TX 20001 / 426.
 again, **--> only 2-3 TPS faster.**
 
 
-**We need new ideas how to accelerate parity !!**
+### run7
 
+With inspiration from @ddorgan, see [issue#9393](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-416995893):
+
+> --gas-floor-target of something more realistic would be a good idea ... e.g. maybe 20m ...   
+
+explanation:
+
+> --gas-floor-target Amount of gas per block to target when sealing a new block (default: 4700000).  
+> https://hudsonjameson.com/2017-06-27-accounts-transactions-gas-ethereum/  
+
+New run with 40,000,000 gas-floor-target: 
+
+First, add all our parameters to [the 5 template files, see this feature request](https://github.com/paritytech/parity-deploy/issues/55#issuecomment-418290906), then delete whatever was there:
+
+```
+docker-compose down -v
+sudo rm -rf data/ deployment/ docker-compose.yml
+```
+and make a new deployment:
+```
+./parity-deploy.sh --config aura --name myaura --nodes 4 
+cat deployment/1/password
+docker-compose up
+```
+
+the password goes into `chainhammer/account-passphrase.txt`.
+
+(Just as a test) **single threaded**, i.e. calling the chainhammer with:
+
+```
+ ./deploy.py notest; ./send.py
+```
+we see more than 50 TPS:
+
+```
+./tps.py 
+[...]
+
+starting timer, at block 1 which has  1  transactions; at timecode 7680.982321106
+block 1 | new #TX  24 / 2000 ms =  12.0 TPS_current | total: #TX   25 /  2.1 s =  11.7 TPS_average
+block 2 | new #TX 101 / 4000 ms =  25.2 TPS_current | total: #TX  126 /  6.1 s =  20.7 TPS_average
+block 3 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX  326 / 10.0 s =  32.5 TPS_average
+[...]
+block 81 | new #TX 200 / 6000 ms =  33.3 TPS_current | total: #TX 16649 / 317.9 s =  52.4 TPS_average
+block 82 | new #TX  39 / 4000 ms =   9.8 TPS_current | total: #TX 16688 / 321.9 s =  51.8 TPS_average
+block 83 | new #TX 429 / 2000 ms = 214.5 TPS_current | total: #TX 17117 / 324.0 s =  52.8 TPS_average
+block 84 | new #TX 151 / 4000 ms =  37.8 TPS_current | total: #TX 17268 / 327.9 s =  52.7 TPS_average
+block 85 | new #TX  98 / 2000 ms =  49.0 TPS_current | total: #TX 17366 / 330.1 s =  52.6 TPS_average
+block 86 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 17566 / 334.0 s =  52.6 TPS_average
+block 87 | new #TX   5 / 2000 ms =   2.5 TPS_current | total: #TX 17571 / 336.2 s =  52.3 TPS_average
+block 88 | new #TX 314 / 4000 ms =  78.5 TPS_current | total: #TX 17885 / 340.1 s =  52.6 TPS_average
+block 89 | new #TX 137 / 4000 ms =  34.2 TPS_current | total: #TX 18022 / 344.1 s =  52.4 TPS_average
+block 90 | new #TX 125 / 2000 ms =  62.5 TPS_current | total: #TX 18147 / 346.2 s =  52.4 TPS_average
+block 91 | new #TX 188 / 4000 ms =  47.0 TPS_current | total: #TX 18335 / 350.1 s =  52.4 TPS_average
+block 92 | new #TX 187 / 4000 ms =  46.8 TPS_current | total: #TX 18522 / 354.1 s =  52.3 TPS_average
+block 93 | new #TX 187 / 4000 ms =  46.8 TPS_current | total: #TX 18709 / 358.0 s =  52.3 TPS_average
+block 94 | new #TX 167 / 4000 ms =  41.8 TPS_current | total: #TX 18876 / 362.0 s =  52.1 TPS_average
+block 95 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 19076 / 365.9 s =  52.1 TPS_average
+block 96 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 19276 / 370.2 s =  52.1 TPS_average
+block 97 | new #TX  16 / 4000 ms =   4.0 TPS_current | total: #TX 19292 / 373.8 s =  51.6 TPS_average
+block 98 | new #TX 187 / 2000 ms =  93.5 TPS_current | total: #TX 19479 / 376.0 s =  51.8 TPS_average
+block 99 | new #TX 323 / 4000 ms =  80.8 TPS_current | total: #TX 19802 / 380.0 s =  52.1 TPS_average
+block 100 | new #TX 138 / 4000 ms =  34.5 TPS_current | total: #TX 19940 / 383.9 s =  51.9 TPS_average
+block 101 | new #TX  61 / 4000 ms =  15.2 TPS_current | total: #TX 20001 / 387.9 s =  51.6 TPS_average
+```
+
+and **multithreaded with e.g. 10 workers**: 
+```
+./deploy.py notest; ./send.py threaded2 10
+```
+we can push that (only) about 20% higher:
+
+```
+./tps.py 
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.23+commit.124ca40d.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 2, node version string =  Parity//v1.11.8-stable-92776e4-20180728/x86_64-linux-gnu/rustc1.27.2
+first account of node is 0x50fa19134E0789E9257dF8A3E9c3dEb66053F0c6, balance is 0 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: myaura, chainId: 17
+
+Block  2  - waiting for something to happen
+(filedate 1536057340) last contract address: 0x85f8A6629eA4C68Ea3BF106D3Ca135Edf96D4aD9
+(filedate 1536057366) new contract address: 0x135fA586EC1aBe436A7a4677899947d3de522a35
+
+starting timer, at block 3 which has  1  transactions; at timecode 10002.910648046
+block 3 | new #TX  37 / 4000 ms =   9.2 TPS_current | total: #TX   38 /  3.9 s =   9.6 TPS_average
+block 4 | new #TX   2 / 2000 ms =   1.0 TPS_current | total: #TX   40 /  6.1 s =   6.6 TPS_average
+block 5 | new #TX 198 / 2000 ms =  99.0 TPS_current | total: #TX  238 /  8.2 s =  29.0 TPS_average
+block 6 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX  438 / 12.1 s =  36.1 TPS_average
+block 7 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX  638 / 14.3 s =  44.7 TPS_average
+block 8 | new #TX 513 / 4000 ms = 128.2 TPS_current | total: #TX 1151 / 18.2 s =  63.1 TPS_average
+block 9 | new #TX  61 / 4000 ms =  15.2 TPS_current | total: #TX 1212 / 21.9 s =  55.3 TPS_average
+block 10 | new #TX 466 / 4000 ms = 116.5 TPS_current | total: #TX 1678 / 26.2 s =  64.2 TPS_average
+block 11 | new #TX  40 / 4000 ms =  10.0 TPS_current | total: #TX 1718 / 30.1 s =  57.1 TPS_average
+block 12 | new #TX 200 / 6000 ms =  33.3 TPS_current | total: #TX 1918 / 36.2 s =  53.0 TPS_average
+block 13 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 2118 / 38.0 s =  55.7 TPS_average
+block 14 | new #TX 607 / 4000 ms = 151.8 TPS_current | total: #TX 2725 / 42.0 s =  64.9 TPS_average
+block 15 | new #TX  22 / 4000 ms =   5.5 TPS_current | total: #TX 2747 / 45.9 s =  59.8 TPS_average
+block 16 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 2947 / 48.1 s =  61.3 TPS_average
+block 17 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 3147 / 52.3 s =  60.1 TPS_average
+block 18 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 3347 / 56.0 s =  59.8 TPS_average
+block 19 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 3547 / 60.2 s =  58.9 TPS_average
+block 20 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 3747 / 64.2 s =  58.4 TPS_average
+block 21 | new #TX 557 / 2000 ms = 278.5 TPS_current | total: #TX 4304 / 66.0 s =  65.2 TPS_average
+block 22 | new #TX  63 / 4000 ms =  15.8 TPS_current | total: #TX 4367 / 70.0 s =  62.4 TPS_average
+block 23 | new #TX 460 / 4000 ms = 115.0 TPS_current | total: #TX 4827 / 74.2 s =  65.0 TPS_average
+block 24 | new #TX  60 / 4000 ms =  15.0 TPS_current | total: #TX 4887 / 77.9 s =  62.7 TPS_average
+block 25 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 5087 / 80.0 s =  63.6 TPS_average
+block 26 | new #TX 200 / 8000 ms =  25.0 TPS_current | total: #TX 5287 / 87.9 s =  60.1 TPS_average
+block 27 | new #TX   6 / 4000 ms =   1.5 TPS_current | total: #TX 5293 / 92.2 s =  57.4 TPS_average
+block 28 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 5493 / 96.1 s =  57.2 TPS_average
+block 29 | new #TX  27 / 4000 ms =   6.8 TPS_current | total: #TX 5520 / 100.1 s =  55.2 TPS_average
+block 30 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 5720 / 102.2 s =  56.0 TPS_average
+block 31 | new #TX 1194 / 4000 ms = 298.5 TPS_current | total: #TX 6914 / 106.2 s =  65.1 TPS_average
+block 32 | new #TX 532 / 8000 ms =  66.5 TPS_current | total: #TX 7446 / 114.1 s =  65.2 TPS_average
+block 33 | new #TX  66 / 4000 ms =  16.5 TPS_current | total: #TX 7512 / 118.1 s =  63.6 TPS_average
+block 34 | new #TX 200 / 6000 ms =  33.3 TPS_current | total: #TX 7712 / 124.2 s =  62.1 TPS_average
+block 35 | new #TX   3 / 4000 ms =   0.8 TPS_current | total: #TX 7715 / 128.2 s =  60.2 TPS_average
+block 36 | new #TX 770 / 2000 ms = 385.0 TPS_current | total: #TX 8485 / 130.3 s =  65.1 TPS_average
+block 37 | new #TX  43 / 4000 ms =  10.8 TPS_current | total: #TX 8528 / 134.0 s =  63.7 TPS_average
+block 38 | new #TX 470 / 4000 ms = 117.5 TPS_current | total: #TX 8998 / 137.9 s =  65.2 TPS_average
+block 39 | new #TX  36 / 4000 ms =   9.0 TPS_current | total: #TX 9034 / 142.2 s =  63.5 TPS_average
+block 40 | new #TX 489 / 4000 ms = 122.2 TPS_current | total: #TX 9523 / 146.1 s =  65.2 TPS_average
+block 41 | new #TX  26 / 4000 ms =   6.5 TPS_current | total: #TX 9549 / 150.1 s =  63.6 TPS_average
+block 42 | new #TX 200 / 6000 ms =  33.3 TPS_current | total: #TX 9749 / 156.2 s =  62.4 TPS_average
+block 43 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 9949 / 158.0 s =  63.0 TPS_average
+block 44 | new #TX 605 / 4000 ms = 151.2 TPS_current | total: #TX 10554 / 162.0 s =  65.2 TPS_average
+block 45 | new #TX 522 / 8000 ms =  65.2 TPS_current | total: #TX 11076 / 169.9 s =  65.2 TPS_average
+block 46 | new #TX  84 / 4000 ms =  21.0 TPS_current | total: #TX 11160 / 174.2 s =  64.1 TPS_average
+block 47 | new #TX 449 / 4000 ms = 112.2 TPS_current | total: #TX 11609 / 178.2 s =  65.2 TPS_average
+block 48 | new #TX  61 / 4000 ms =  15.2 TPS_current | total: #TX 11670 / 182.1 s =  64.1 TPS_average
+block 49 | new #TX 462 / 4000 ms = 115.5 TPS_current | total: #TX 12132 / 186.1 s =  65.2 TPS_average
+block 50 | new #TX  47 / 4000 ms =  11.8 TPS_current | total: #TX 12179 / 190.0 s =  64.1 TPS_average
+block 51 | new #TX 468 / 4000 ms = 117.0 TPS_current | total: #TX 12647 / 194.0 s =  65.2 TPS_average
+block 52 | new #TX  48 / 4000 ms =  12.0 TPS_current | total: #TX 12695 / 197.9 s =  64.1 TPS_average
+block 53 | new #TX 108 / 2000 ms =  54.0 TPS_current | total: #TX 12803 / 200.0 s =  64.0 TPS_average
+block 54 | new #TX 374 / 2000 ms = 187.0 TPS_current | total: #TX 13177 / 202.2 s =  65.2 TPS_average
+block 55 | new #TX  57 / 4000 ms =  14.2 TPS_current | total: #TX 13234 / 206.1 s =  64.2 TPS_average
+block 56 | new #TX 457 / 4000 ms = 114.2 TPS_current | total: #TX 13691 / 210.1 s =  65.2 TPS_average
+block 57 | new #TX   9 / 4000 ms =   2.2 TPS_current | total: #TX 13700 / 214.0 s =  64.0 TPS_average
+block 58 | new #TX 516 / 4000 ms = 129.0 TPS_current | total: #TX 14216 / 218.1 s =  65.2 TPS_average
+block 59 | new #TX  68 / 4000 ms =  17.0 TPS_current | total: #TX 14284 / 222.1 s =  64.3 TPS_average
+block 60 | new #TX 447 / 4000 ms = 111.8 TPS_current | total: #TX 14731 / 226.1 s =  65.2 TPS_average
+block 61 | new #TX  65 / 4000 ms =  16.2 TPS_current | total: #TX 14796 / 230.0 s =  64.3 TPS_average
+block 62 | new #TX 200 / 6000 ms =  33.3 TPS_current | total: #TX 14996 / 236.1 s =  63.5 TPS_average
+block 63 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 15196 / 240.0 s =  63.3 TPS_average
+block 64 | new #TX   5 / 4000 ms =   1.2 TPS_current | total: #TX 15201 / 244.0 s =  62.3 TPS_average
+block 65 | new #TX 195 / 2000 ms =  97.5 TPS_current | total: #TX 15396 / 246.1 s =  62.6 TPS_average
+block 66 | new #TX 897 / 4000 ms = 224.2 TPS_current | total: #TX 16293 / 250.1 s =  65.2 TPS_average
+block 67 | new #TX  30 / 4000 ms =   7.5 TPS_current | total: #TX 16323 / 254.0 s =  64.3 TPS_average
+block 68 | new #TX 503 / 4000 ms = 125.8 TPS_current | total: #TX 16826 / 258.0 s =  65.2 TPS_average
+block 69 | new #TX  23 / 4000 ms =   5.8 TPS_current | total: #TX 16849 / 261.9 s =  64.3 TPS_average
+block 70 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 17049 / 264.1 s =  64.6 TPS_average
+block 71 | new #TX 307 / 2000 ms = 153.5 TPS_current | total: #TX 17356 / 266.2 s =  65.2 TPS_average
+block 72 | new #TX  20 / 4000 ms =   5.0 TPS_current | total: #TX 17376 / 270.1 s =  64.3 TPS_average
+block 73 | new #TX 514 / 4000 ms = 128.5 TPS_current | total: #TX 17890 / 274.1 s =  65.3 TPS_average
+block 74 | new #TX  74 / 4000 ms =  18.5 TPS_current | total: #TX 17964 / 278.1 s =  64.6 TPS_average
+block 75 | new #TX 200 / 2000 ms = 100.0 TPS_current | total: #TX 18164 / 280.2 s =  64.8 TPS_average
+block 76 | new #TX 152 / 4000 ms =  38.0 TPS_current | total: #TX 18316 / 284.2 s =  64.5 TPS_average
+block 77 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 18516 / 288.1 s =  64.3 TPS_average
+block 78 | new #TX 426 / 2000 ms = 213.0 TPS_current | total: #TX 18942 / 290.2 s =  65.3 TPS_average
+block 79 | new #TX  66 / 4000 ms =  16.5 TPS_current | total: #TX 19008 / 294.2 s =  64.6 TPS_average
+block 80 | new #TX 454 / 4000 ms = 113.5 TPS_current | total: #TX 19462 / 298.1 s =  65.3 TPS_average
+block 81 | new #TX  54 / 4000 ms =  13.5 TPS_current | total: #TX 19516 / 302.1 s =  64.6 TPS_average
+block 82 | new #TX 481 / 4000 ms = 120.2 TPS_current | total: #TX 19997 / 306.0 s =  65.3 TPS_average
+block 83 | new #TX   4 / 4000 ms =   1.0 TPS_current | total: #TX 20001 / 310.1 s =  64.5 TPS_average
+```
+
+#### result run 7
+
+![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
+diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png
+
+N.B.: The CPU usage stays below 60%, so parity is not yet using all the computational resources available, even with `--jsonrpc-server-threads 100`. 
+
+
+**We need new ideas how to accelerate parity !!**
 
 ## Please you help
 
 Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
 
--->
-
 Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
+
+### There is a [README.md --> quickstart](README.md#quickstart) now ... 
+... so if you have any intution or knowledge how to accelerate this, please replicate my setup, and then start modifying the parameters of the network of parity nodes, with e.g. `parity-deploy.sh` - until you get to better TPS rates. 
+
+Then please alert us how you did it. Thanks.
+
 
 
 ## issues
@@ -544,5 +723,5 @@ Calling all parity experts: How to improve this? See issue [PE#9393](https://git
 * [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393) 60 TPS ? (parity aura v1.11.8)
 * [PE#9432](https://github.com/paritytech/parity-ethereum/issues/9432) (FR) new standardized RPC query with standardized answer
 * [PPP#17](https://github.com/orbita-center/parity-poa-playground/issues/17) warnings and errors
-
+* [PD#55](https://github.com/paritytech/parity-deploy/issues/55) (FR) user defined parameters
 
