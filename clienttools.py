@@ -84,6 +84,8 @@ def unlockAccount(duration=3600, account=None):
         with open(PASSPHRASE_FILE, "r") as f:
             passphrase=f.read().strip()
 
+    # print ("passphrase:", passphrase)
+
     if NODETYPE=="Parity":
         duration = w3.toHex(duration)
 
