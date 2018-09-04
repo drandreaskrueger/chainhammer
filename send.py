@@ -2,7 +2,7 @@
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v19 (19/June/2018)
+@version: v24 (4/September/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -27,7 +27,8 @@ from web3.utils.abi import filter_by_name, abi_to_signature
 from web3.utils.encoding import pad_hex
 
 from deploy import loadFromDisk
-from config import RAFT, NUMBER_OF_TRANSACTIONS
+# from config import RAFT
+from config import NUMBER_OF_TRANSACTIONS
 
 from clienttools import web3connection, unlockAccount
 
@@ -361,10 +362,13 @@ if __name__ == '__main__':
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # test_argument_encoding(); exit()
     
-    if RAFT:
-        contract = initialize_fromBlock()
-    else:
-        contract = initialize_fromAddress()
+    # obsolete because we now always first deploy our own contract:
+    # if RAFT:
+    #    contract = initialize_fromBlock()
+    #else:
+    #    contract = initialize_fromAddress()
+    
+    contract = initialize_fromAddress()
         
     # test_contract_set_via_web3(contract); exit()
     # test_contract_set_via_RPC(contract);  exit()

@@ -2,7 +2,7 @@
 """
 @summary: settings
 
-@version: v22 (21/August/2018)
+@version: v24 (4/September/2018)
 @since:   8/May/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -15,16 +15,23 @@
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
 RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
-RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground
-#RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev 
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev 
 
 # how many tx to send in send.py
 NUMBER_OF_TRANSACTIONS = 20000
 
+# obsolete now
+# initially the contract was deployed manually with ./runscript.sh private-contract.js  
+# And wait-for-something-to-happen was triggered by chain moving or not
+# (which only works for raft & instantseal).
+# Now obsolete because we can simply always deploy our own contract first,
+# see deploy.py
+# OLD:
 # if consensus algorithm is Quorum raft, then --> True
 # could be automated now ... from clienttype import clientType
 # TODO: replace this constant by  clienttype CONSENSUS query 
-RAFT=False
+# RAFT=False
 # RAFT=True
 
 ## submit transaction via web3 or directly via RPC

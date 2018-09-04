@@ -4,7 +4,7 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v23 (29/August/2018)
+@version: v24 (4/September/2018)
 @since:   17/April/2018
 @organization: electron.org.uk
 @author:  https://github.com/drandreaskrueger
@@ -16,7 +16,7 @@ import time, timeit, sys, os
 
 from web3 import Web3, HTTPProvider
 
-from config import RPCaddress2, RAFT
+from config import RPCaddress2 #, RAFT
 from deploy import loadFromDisk, CONTRACT_ADDRESS
 from clienttools import web3connection
     
@@ -69,11 +69,19 @@ def loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall = 0
 
 
 
-def loopUntilActionBegins(blockNumber_start, query_intervall = 0.1):
+def loopUntilActionBegins_OBSOLETE(blockNumber_start, query_intervall = 0.1):
+    """
+    obsolete as we now always deploy our own contract first
+    """
     if RAFT: # TODO - automate that hardcoded constant away with CONSENSUS query result  
         return loopUntilActionBegins_raft(blockNumber_start, query_intervall=query_intervall)
     else:
         return loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall=query_intervall)
+
+
+def loopUntilActionBegins(blockNumber_start, query_intervall = 0.1):
+    return loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall=query_intervall)
+
 
 
 def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
@@ -129,7 +137,7 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     print('starting timer, at block', blockNumber, 'which has ', txCount,' transactions; at timecode', start_time)
     
     while(True):
-        # wait for empty blocks (untested)
+        # OBSOLETE: wait for empty blocks (untested)
         # does not work in RAFT because there are no empty blocks
         # if(w3.eth.getBlockTransactionCount('latest')==0):
         #    break
@@ -156,6 +164,7 @@ if __name__ == '__main__':
     print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
     
     blocknumber_start_here = loopUntilActionBegins(blockNumber_start) 
+    print ("blocknumber_start_here =", blocknumber_start_here)
     
     measurement( blocknumber_start_here )
     
