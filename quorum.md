@@ -148,7 +148,11 @@ See [log.md](log.md) for what I have tried to get this faster.
 
 ### Much later repeat
 
-With newest chainhammer code (version [v24](https://gitlab.com/electronDLT/chainhammer/commit/69407bab63ca56fb62bae736c9cf3e6a7c32c6c0)), and with 10 multithreading workers, and with RPC calls instead of web3.contract calls, we are seeing around ~200 TPS now for raft consensus:
+With newest chainhammer code (version [v24](https://gitlab.com/electronDLT/chainhammer/commit/69407bab63ca56fb62bae736c9cf3e6a7c32c6c0)), 
+and with 10 multithreading workers, 
+and with RPC calls instead of web3.contract calls, 
+and with 7nodes in the standard constellation version of the [quorum-examples-->raft](https://github.com/jpmorganchase/quorum-examples),
+we are seeing around ~200 TPS now for raft consensus:
 
 ```
 ./tps.py 
