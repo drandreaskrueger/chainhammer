@@ -107,8 +107,8 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 ![chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
 
 ### parity aura v1.11.8
-[parity.md](parity.md) = Initial unoptimized parity run; using `parity-poa-playground` dockerized network of 6 local nodes (3 authorities, 3 members) with 6 billion gasLimit, and mostly 3 seconds blocktime; 20k transactions; > 60 TPS. 
+[parity.md](parity.md) = using [parity-deploy.sh](https://github.com/paritytech/parity-deploy) dockerized network of 4 local nodes with 40 million gasLimit, and 4-8 seconds blocktime; 20k transactions; ~ 65 TPS. 
 
-![chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
+![chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
 
-Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
+Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md). Thanks.
