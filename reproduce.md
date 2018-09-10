@@ -393,6 +393,7 @@ docker-compose down -v
 ```
 ssh chainhammer
 cd electronDLT_chainhammer && source py3eth/bin/activate
+
 ./deploy.py
 ```
 If there are connection problems, probably need to configure the correct ports in [config.py](config.py):
@@ -407,10 +408,10 @@ nano config.py
 ```
 
 ### chainhammer: send transactions
-... and create some local files
 ```
 ssh chainhammer
 cd electronDLT_chainhammer && source py3eth/bin/activate
+
 ./deploy.py notest; ./send.py threaded2 23
 ```
 
