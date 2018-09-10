@@ -1,5 +1,6 @@
 # chainhammer
 Actually, today I tried this again - tested on and optimized for Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-08-20-85640`) - all this really does work:
+
 ## How to replicate the results
 
 ### toolchain
@@ -194,8 +195,8 @@ geth version
 
 And about "not having the time" - these 2.5 hours happened on my FREE DAY. I must convince them now that I can take those hours off again.
 
-## quorum IBFT
-Compare the poor TPS performance of `parity aura` with the 6 times faster `quorum/geth IBFT`:
+## geth clique
+Compare the poor TPS performance of `parity aura` with the faster `geth clique`:
 
 #### stop parity
 Kill the above `parity-deploy.sh ...; docker-compose up` with:
@@ -205,42 +206,47 @@ Ctrl-C, then
 ```
 docker-compose down -v
 ```
-you might run out of disk space, so better delete all other docker stuff:
+you might run out of disk space, so better delete any docker stuff:
 ```
 docker kill $(docker ps -q) ; docker rm $(docker ps -a -q) ; docker rmi $(docker images -q)
 ```
 
-#### quorum IBFT network with 4 dockerized nodes
-for details see [quorum-IBFT.md#crux-docker-4nodes](https://gitlab.com/electronDLT/chainhammer/blob/db3ae5da577d9b9d44c2879434993f3e0d44899f/quorum-IBFT.md#crux-docker-4nodes).
+#### geth Clique network with dockerized nodes
+for details see [geth.md#javahippiegeth-dev](https://gitlab.com/electronDLT/chainhammer/blob/0bdcbedfeeb261c534ae3baeb0bd9a37054c9b28/geth.md#javahippiegeth-dev).
 
 ```
-git clone https://github.com/drandreaskrueger/crux.git drandreaskrueger_crux
-cd drandreaskrueger_crux
+git clone https://github.com/drandreaskrueger/geth-dev.git drandreaskrueger_geth-dev
+cd drandreaskrueger_geth-dev
 
-cd docker/quorum-crux/
-docker-compose -f docker-compose-local.yaml up --build
+docker-compose up
 ```
-wait until you see
+wait until you see healthy looking logging, like
 
 ```
-...
+monitor-frontend         | 2018-09-10 13:34:02.054 [API] [BLK] Block: 7 from: gethDev1
 ```
 
-(I am pausing this, [until blk-io have fixed their issue](https://github.com/blk-io/crux/issues/37). Then: )
+##### start benchmark
 
-new terminal
+new terminal: test connection
 ```
 cd electronDLT_chainhammer/
 source py3eth/bin/activate
+./deploy.py
+```
 
+
+new terminal: watcher
+```
+cd electronDLT_chainhammer/
+source py3eth/bin/activate
 ./tps.py
 ```
 
-new terminal
+new terminal: hammer
 ```
 cd electronDLT_chainhammer/
 source py3eth/bin/activate
-
 ./deploy.py notest; ./send.py 
 ```
 
@@ -271,7 +277,7 @@ This first part here you can safely ignore, it just logs what I have done to cre
 * create new security group, name it; allow ssh access
 * choose an existing ssh keypair `AndreasKeypairAWS.pem`
 
-simplify ssh access, by adding this block to your local machine's
+simplify `ssh` access, by adding this block to your local machine's
 
 ```
 nano ~/.ssh/config
@@ -279,7 +285,7 @@ nano ~/.ssh/config
 
 ```
 Host chainhammer
-  Hostname ec2-18-130-226-69.eu-west-2.compute.amazonaws.com
+  Hostname ec2-35-178-181-232.eu-west-2.compute.amazonaws.com
   StrictHostKeyChecking no
   User admin
   IdentityFile ~/.ssh/AndreasKeypairAWS.pem
@@ -288,14 +294,125 @@ now it becomes this simple to connect:
 ```
 ssh chainhammer
 ```
-Then in that machine, I executed all the above instructions - to install the toolchain, and chainhammer.
+Then in that machine I created a small swap to protect against lack of memory:
 
-### how you can use my AMI to quickstart your benchmarking
+```
+SWAPFILE=/swapfile
+sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=512 &&
+sudo chmod 600 $SWAPFILE &&
+sudo mkswap $SWAPFILE &&
 
-TODO.
+echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab &&
+sudo swapon -a &&
+free -m
+```
 
-Once the above "...pausing this..." is solved, I can wrap this machine into an AMI, for you to start it up in a mere 3 minutes.
+**Then I executed all the above instructions (install the toolchain, and chainhammer).**
 
+Then after removing all docker containers & images (to save space)
+```
+~/remove-all-docker.sh
+```
+I shutdown the instance, and created an AMI from it, and made it public.
+
+```
+sudo shutdown now
+```
+On [AWS console #Instances](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Instances) ... actions ... create image.
+
+On [AWS console #Images](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images) ... right click ... Modify Image Permissions ... public. And tag it, like above.
+
+--> AMI ID `ami-0aaa64f3e432e4a26`
+
+
+## readymade Amazon AMI 
+
+This will much accelerate your own benchmarking experiments. In my ready-made Amazon AWS image I have done all of the above.
+
+Use my AMI:
+
+* In the Public Images, [search for "chainhammer"](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:visibility=public-images;search=chainhammer;sort=name)
+* Right click ... Launch
+* Step 2: Choose an Instance Type --> at least `t2.small` ! otherwise you probably run out of memory
+* Step 4: Add Storage --> `12 GB` !
+* security group, choose an existing ssh keypair e.g. `AndreasKeypairAWS.pem` (obviously, your keypair instead)
+* launch, wait
+
+simplify the `ssh` access, by adding this (with *your* IP, obviously) to your local machine's
+```
+nano ~/.ssh/config
+```
+```
+Host chainhammer
+  Hostname ec2-35-178-181-232.eu-west-2.compute.amazonaws.com
+  StrictHostKeyChecking no
+  User admin
+  IdentityFile ~/.ssh/AndreasKeypairAWS.pem
+```
+now it becomes this simple to connect:
+```
+ssh chainhammer
+```
+
+
+### parity
+```
+ssh chainhammer
+
+cd ~/paritytech_parity-deploy
+sudo ./clean.sh
+./parity-deploy.sh --config dev --name instantseal --geth
+docker-compose up
+```
+For more complex setups than instantseal, see [parity.md](parity.md).
+
+If you want to end this ... 'Ctrl-c' and:
+
+```
+docker-compose down -v
+sudo ./clean.sh
+```
+
+### geth
+
+```
+ssh chainhammer
+
+cd ~/drandreaskrueger_geth-dev/
+docker-compose up
+```
+
+If you want to end this ... 'Ctrl-c' and:
+
+```
+docker-compose down -v
+```
+
+### chainhammer: test connection
+... and create some local files
+```
+ssh chainhammer
+cd electronDLT_chainhammer && source py3eth/bin/activate
+./deploy.py
+```
+If there are connection problems, probably need to configure the correct ports in [config.py](config.py):
+```
+nano config.py
+```
+
+
+### chainhammer: watcher
+```
+./tps.py
+```
+
+### chainhammer: send transactions
+... and create some local files
+```
+ssh chainhammer
+cd electronDLT_chainhammer && source py3eth/bin/activate
+./deploy.py notest; ./send.py threaded2 23
+```
 
 ## issues
 * [BC#37](https://github.com/blk-io/crux/issues/37) local docker build is failing: `Service 'node1' failed to build`
