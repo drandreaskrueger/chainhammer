@@ -109,7 +109,7 @@ def setGlobalVariables_clientType(w3):
     return NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID # for when imported into other modules
 
 
-def if_poa_then_bugfix(w3, NODENAME):
+def if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS):
     """
     bugfix for quorum web3.py problem, see
     https://github.com/ethereum/web3.py/issues/898#issuecomment-396701172
@@ -119,7 +119,7 @@ def if_poa_then_bugfix(w3, NODENAME):
     actually also appeared when using dockerized standard geth nodes with PoA   
     https://github.com/javahippie/geth-dev (net_version='500')
     """
-    if NODENAME == "Quorum" or CHAINNAME=='500':
+    if NODENAME == "Quorum" or CHAINNAME=='500' or CONSENSUS='clique':
         from web3.middleware import geth_poa_middleware
         # inject the poa compatibility middleware to the innermost layer
         w3.middleware_stack.inject(geth_poa_middleware, layer=0)
@@ -136,7 +136,7 @@ def web3connection(RPCaddress=RPCaddress, account=None):
 
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = setGlobalVariables_clientType(w3)
 
-    if_poa_then_bugfix(w3, NODENAME)
+    if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS)
     
     chainInfos = NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     
