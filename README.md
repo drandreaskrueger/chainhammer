@@ -30,23 +30,33 @@ See [other-projects.md](other-projects.md) using this, or projects which are sim
 
 Please report back when you have done other / new measurements. 
 
-## dependencies
+## run
+
+For more details e.g. how to run a network of parity nodes, see [reproduce.md](reproduce.md). This assumes it's already running.
+
+The focus here is on chainhammer itself:
+### dependencies
 ```
-pip install virtualenv
+sudo apt install python3-pip libssl-dev
+sudo pip3 install virtualenv 
 virtualenv -p python3 py3eth
 source py3eth/bin/activate
-python3 -m pip install --upgrade pip==9.0.3
-pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests 
+
+python3 -m pip install --upgrade pip==18.0
+pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests pandas jupyter ipykernel matplotlib
+ipython kernel install --user --name="Python.3.py3eth"
 ```
 all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
 
 ```
 source py3eth/bin/activate
+
+touch account-passphrase.txt
 ./deploy.py 
 ```
-use this ^ to test whether communication with the ethereum node is working, incl. password correct, etc.
+use this ^ to test whether communication with the ethereum node is working, and to create local files about the compiled and deployed contract. If there are connection problems, check the ports in [config.py](config.py) --> `RPCaddress, RPCaddress2`.
 
-## quickstart
+### quickstart
 
 first terminal:
 ```

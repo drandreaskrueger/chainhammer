@@ -29,16 +29,18 @@ log out and log back in, to enable those usergroup changes
 sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod 755 /usr/local/bin/docker-compose
 docker-compose --version
+docker --version
 ```
-> docker-compose version 1.22.0, build f46880fe
-
+> docker-compose version 1.22.0, build f46880fe  
+> docker version 18.06.1-ce, build e68fc7a  
 
 
 ```
 # parity-deploy
 # for a dockerized parity environment
 # this is instantseal, NOT a realistic network of nodes
-# for 8 different setups see chainhammer-->parity.md
+# but it already shows the problem - parity is very slow.
+# For a more realistic network of 4 aura nodes see chainhammer-->parity.md
 git clone https://github.com/paritytech/parity-deploy.git paritytech_parity-deploy
 cd paritytech_parity-deploy
 sudo ./clean.sh
@@ -115,8 +117,9 @@ or:
 # not blocking but with 23 multi-threading workers
 ./deploy.py notest; ./send.py threaded2 23
 ```
+---
 
-### everything below here is *not* necessary
+### everything below here is *not necessary*
 
 new terminal
 
@@ -142,7 +145,7 @@ geth attach http://localhost:8545
 
 ### geth
 
-( * ) I do *not* want to install `geth` locally, but start the geth console *from a docker container* - but I don't succeed:
+( * ) I actually do *not* want to install `geth` locally, but start the geth console *from a docker container* - but no success yet:
 
 ```
 docker run ethereum/client-go attach https://localhost:8545
@@ -153,9 +156,9 @@ docker run ethereum/client-go attach https://localhost:8545
 
 Please help me with ^ this, thanks.
 
----
+...
 
-Until that is sorted, I simply install `geth` locally:
+Until that is sorted, I simply install `geth` *locally*:
 
 ```
 wget https://dl.google.com/go/go1.11.linux-amd64.tar.gz
@@ -191,8 +194,8 @@ geth version
 
 And about "not having the time" - these 2.5 hours happened on my FREE DAY. I must convince them now that I can take those hours off again.
 
-### quorum IBFT
-now compare the poor TPS performance of `parity aura` with `quorum/geth IBFT`:
+## quorum IBFT
+Compare the poor TPS performance of `parity aura` with the 6 times faster `quorum/geth IBFT`:
 
 #### stop parity
 Kill the above `parity-deploy.sh ...; docker-compose up` with:
@@ -268,7 +271,7 @@ This first part here you can safely ignore, it just logs what I have done to cre
 * create new security group, name it; allow ssh access
 * choose an existing ssh keypair `AndreasKeypairAWS.pem`
 
-simplify ssh access, by adding this block to
+simplify ssh access, by adding this block to your local machine's
 
 ```
 nano ~/.ssh/config
@@ -281,12 +284,19 @@ Host chainhammer
   User admin
   IdentityFile ~/.ssh/AndreasKeypairAWS.pem
 ```
-now it's this simple to connect:
+now it becomes this simple to connect:
 ```
 ssh chainhammer
 ```
-Then I executed all the above instructions, to install the toolchain, and chainhammer.
+Then in that machine, I executed all the above instructions - to install the toolchain, and chainhammer.
 
 ### how you can use my AMI to quickstart your benchmarking
 
-TODO
+TODO.
+
+Once the above "...pausing this..." is solved, I can wrap this machine into an AMI, for you to start it up in a mere 3 minutes.
+
+
+## issues
+* [BC#37](https://github.com/blk-io/crux/issues/37) local docker build is failing: `Service 'node1' failed to build`
+
