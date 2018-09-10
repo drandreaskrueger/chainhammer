@@ -119,7 +119,7 @@ def if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS):
     actually also appeared when using dockerized standard geth nodes with PoA   
     https://github.com/javahippie/geth-dev (net_version='500')
     """
-    if NODENAME == "Quorum" or CHAINNAME=='500' or CONSENSUS='clique':
+    if NODENAME == "Quorum" or CHAINNAME=='500' or CONSENSUS=='clique':
         from web3.middleware import geth_poa_middleware
         # inject the poa compatibility middleware to the innermost layer
         w3.middleware_stack.inject(geth_poa_middleware, layer=0)
