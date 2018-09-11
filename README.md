@@ -1,5 +1,5 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v25
+# chainhammer v26
 TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain; focus on PoA consensus
 
 ## instructions
