@@ -3,16 +3,18 @@
 interesting next questions:
 
 
+* quorum: solve [this strange problem](https://gitlab.com/electronDLT/chainhammer/blob/d3b408d325e1089c54071aeceb4af06b75133dd2/reproduce_TODO-crux.md#problems) which seems to only appear on Amazon AWS; but no time for this now.
+* gas / transaction bytes / block size / ...
+  * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
+  * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. 
 * Vanilla Ethereum PoW
   * to get the baseline TPS using my scripts
-* Ethereum PoA
+* Ethereum PoA tools
   * `geth` perhaps via **--> puppeth** ?
   * [hackernoon](https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8)
   * [stackexchange](https://ethereum.stackexchange.com/questions/15644/setting-up-a-private-poa-clique-network-with-puppeth/15649#15649)
   * [puppeth hints](https://github.com/ethereum/go-ethereum/issues/15581)
-* gas / transaction bytes / block size / ...
-  * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
-  * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. loop multiplication) instead of the SimpleStorage.sol
+loop multiplication) instead of the SimpleStorage.sol
 * send TX via websockets instead of RPC - faster?
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed; see [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/e8a368fa5248400472dc1bb66f3de4f38c26d9a9/non-vagrant/README.md)
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
