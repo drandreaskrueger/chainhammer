@@ -457,10 +457,14 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 
 | hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
 |-----------	|-----------	|--------	|--------	|-------------	|--------------	|
-| t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	| 56.1         	|
+| t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
+| | | |    	|         	|          |
+| t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
 | t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
 | t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
+
+For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
 
 ### (A) parity aura  
 4 nodes via [paritytech/parity-deploy](https://github.com/paritytech/parity-deploy) with higher gasLimit and gasFloorTarget, and some CLI parameters changed (*you knowledgable parity experts, please experiment with those, to increase the TPS - thanks*):
