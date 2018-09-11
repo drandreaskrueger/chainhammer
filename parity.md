@@ -774,6 +774,11 @@ block 19716 | new #TX   7 /    0 ms =   0.0 TPS_current | total: #TX 20001 / 295
 (Compare that to the +70% speed up (of RPC over web3) for the better optimized client `geth quorum IBFT-consensus`).
 
 
+### runs 10 = Amazon AWS runs
+Because the [parity team was pressed with time](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-418689243), I've created an Amazon AWS image that can be spun up and benchmarked in about 8 minutes. 
+
+See [reproduce.md#results](reproduce.md#results) for measurements. Best TPS seen was 56 TPS (versus >300 TPS for geth).
+
 ## Please you help
 
 Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 

@@ -1,6 +1,19 @@
 # chainhammer
 Actually, today I tried this again - tested on and optimized for Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-08-20-85640`) - all this really does work:
 
+## TOC
+* How to replicate the results  
+  * toolchain: docker & -compose, solc
+  * parity-deploy
+  * chainhammer install (repo, virtualenv, dependencies)
+  * chainhammer config
+  * chainhammer start
+* check an individual transactions for success/failure
+  * geth docker - how to?
+  * geth install via golang
+* geth clique network to compare with parity network
+
+
 ## How to replicate the results
 
 ### toolchain
@@ -35,21 +48,6 @@ docker --version
 > docker-compose version 1.22.0, build f46880fe  
 > docker version 18.06.1-ce, build e68fc7a  
 
-
-```
-# parity-deploy
-# for a dockerized parity environment
-# this is instantseal, NOT a realistic network of nodes
-# but it already shows the problem - parity is very slow.
-# For a more realistic network of 4 aura nodes see chainhammer-->parity.md
-git clone https://github.com/paritytech/parity-deploy.git paritytech_parity-deploy
-cd paritytech_parity-deploy
-sudo ./clean.sh
-./parity-deploy.sh --config dev --name instantseal --geth
-docker-compose up
-```
-
-new terminal:
 ```
 # solc
 # someone should PLEASE create a Debian specific installation routine
@@ -62,10 +60,31 @@ sudo mv solc-static-linux /usr/local/bin/
 sudo ln -s /usr/local/bin/solc-static-linux /usr/local/bin/solc
 solc --version
 ```
-
 > Version: 0.4.24+commit.e67f0147.Linux.g++
 
+
+```
+# other tools
+sudo apt install jq
+```
+
+### dockerized parity network
+```
+# parity-deploy.sh
+# for a dockerized parity environment
+# this is instantseal, NOT a realistic network of nodes
+# but it already shows the problem - parity is very slow.
+# For a more realistic network of 4 aura nodes see chainhammer-->parity.md
+git clone https://github.com/paritytech/parity-deploy.git paritytech_parity-deploy
+cd paritytech_parity-deploy
+sudo ./clean.sh
+./parity-deploy.sh --config dev --name instantseal --geth
+docker-compose up
+```
+
+
 ### chainhammer
+new terminal:
 ```
 # chainhammer & dependencies
 git clone https://gitlab.com/electronDLT/chainhammer electronDLT_chainhammer
@@ -144,7 +163,7 @@ geth attach http://localhost:8545
 > 
 ```
 
-### geth
+### geth - dockerized: please help
 
 ( * ) I actually do *not* want to install `geth` locally, but start the geth console *from a docker container* - but no success yet:
 
@@ -360,11 +379,12 @@ ssh chainhammer
 ssh chainhammer
 
 cd ~/paritytech_parity-deploy
-sudo ./clean.sh
-./parity-deploy.sh --config dev --name instantseal --geth
+sed -i 's/0x1312D00/0x2625A00/g' config/spec/genesis/aura; cat config/spec/genesis/aura
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth --jsonrpc-server-threads 10 --tx-queue-size 20000 --cache-size 4096 --gas-floor-target 40000000 --tx-queue-mem-limit 0
+cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
 docker-compose up
 ```
-For more complex setups than instantseal, see [parity.md](parity.md).
+For the settings, see [parity.md](parity.md).
 
 If you want to end this ... 'Ctrl-c' and:
 
@@ -400,6 +420,10 @@ If there are connection problems, probably need to configure the correct ports i
 ```
 nano config.py
 ```
+or set the correct account passphrase:
+```
+cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
+```
 
 
 ### chainhammer: watcher
@@ -415,6 +439,43 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 ./deploy.py notest; ./send.py threaded2 23
 ```
 
+## results
+
+
+| hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
+|-----------	|-----------	|--------	|--------	|-------------	|--------------	|
+| t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	| 56.1         	|
+| t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
+
+### (A) parity aura  
+4 nodes via [paritytech/parity-deploy](https://github.com/paritytech/parity-deploy) with higher gasLimit and gasFloorTarget, and some CLI parameters changed (*you knowledgable parity experts, please experiment with those, to increase the TPS - thanks*):
+```
+cd ~/paritytech_parity-deploy
+sed -i 's/0x1312D00/0x2625A00/g' config/spec/genesis/aura; cat config/spec/genesis/aura
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth --jsonrpc-server-threads 10 --tx-queue-size 20000 --cache-size 4096 --gas-floor-target 40000000 --tx-queue-mem-limit 0
+cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
+docker-compose up
+```
+> Parity/v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
+
+### (B) geth clique
+1 bootnode, and 3 miners nodes, and ethstats client and server, all dockerized. 
+
+Two parameters changed: [gasLimit=40m and clique.period=2 seconds](https://github.com/drandreaskrueger/geth-dev/commit/e1fe5ab4c464e406e3898cbe0152d3c1aa4c6697).
+```
+cd ~/drandreaskrueger_geth-dev/
+docker-compose up
+```
+> Geth/v1.8.14-stable-316fc7ec/linux-amd64/go1.10.3
+
+### (C) geth quorum IBFT
+TODO, some unsolved issues. What worked fine on my local machine does not seem to work anymore on AWS. Strange.
+
+See [reproduce_TODO-crux.md](reproduce_TODO-crux.md).
+
+
 ## issues
 * [BC#37](https://github.com/blk-io/crux/issues/37) local docker build is failing: `Service 'node1' failed to build`
+* [PD#60](https://github.com/paritytech/parity-deploy/issues/60) make config pieces JSON compliant / (FR) allow to change spec parameters
+
 
