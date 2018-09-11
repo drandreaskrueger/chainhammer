@@ -459,6 +459,7 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 |-----------	|-----------	|--------	|--------	|-------------	|--------------	|
 | t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	| 56.1         	|
 | t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
+| t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 
 ### (A) parity aura  
