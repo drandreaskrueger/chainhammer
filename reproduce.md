@@ -11,7 +11,20 @@ Actually, today I tried this again - tested on and optimized for Debian AWS mach
 * check an individual transactions for success/failure
   * geth docker - how to?
   * geth install via golang
-* geth clique network to compare with parity network
+* geth clique network (for comparison with above parity network results)
+* AWS deployment - how I created the AMI
+* [readymade Amazon AMI](https://gitlab.com/electronDLT/chainhammer/blob/master/reproduce.md#readymade-amazon-ami) <-- start HERE if you have little time -->
+  * how to clone your own AWS machine from that image
+  * how to benchmark `parity`
+  * how to benchmark `geth`
+  * chainhammer:
+    * chainhammer: test connection
+    * chainhammer: TPS watcher
+    * chainhammer: send 20,000 transactions
+* AWS --> measurement results 
+  * numbers
+  * configurations used
+* issues raised while doing this
 
 
 ## How to replicate the results
