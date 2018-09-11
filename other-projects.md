@@ -12,6 +12,12 @@ To appear in the following lists, please [fork](https://gitlab.com/electronDLT/c
 [please add yours, and pull request]
 
 
+## theory
+* [ESE#58500](https://ethereum.stackexchange.com/questions/58500/how-well-do-proof-of-authority-poa-implementations-of-geth-clique-and-parity) - How well do Proof of Authority (PoA) implementations of Geth (Clique) and Parity (Aura) scale?
+  * [eprint](https://eprints.soton.ac.uk/415083/2/itasec18_main.pdf) - PBFT vs Proof-of-Authority: Applying the CAP Theorem to Permissioned Blockchain
+  * TODO: read
+
+
 ## projects using chainhammer
 * [initial results log.md](log.md); [quorum.md raft](quorum.md) and [quorum-IBFT.md](quorum-IBFT.md), [tobalaba.md](tobalaba.md)
 * "**Quorum stress-test 1: 140 TPS**" by vasa (@vaibhavsaini, @vasa-develop, @towardsblockchain) (May 2018)
