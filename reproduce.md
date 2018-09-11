@@ -22,7 +22,7 @@ Actually, today I tried this again - tested on and optimized for Debian AWS mach
     * chainhammer: TPS watcher
     * chainhammer: send 20,000 transactions
 * AWS --> measurement results 
-  * numbers
+  * [numbers](#results) <-- jump here if you have only 1 minute -->
   * configurations used
 * issues raised while doing this
 
@@ -465,6 +465,8 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 
 For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
+
+As the parity `stable` docker image suddenly switched from `stable` to `beta` today (see issue https://github.com/paritytech/parity-deploy/issues/61) ... I had to postpone the parity benchmarking on those larger machines, until they have fixed that hickup. And anyways ... hopefully - until I can continue next week - there will be new ideas how to accelerate parity!
 
 ### (A) parity aura  
 4 nodes via [paritytech/parity-deploy](https://github.com/paritytech/parity-deploy) with higher gasLimit and gasFloorTarget, and some CLI parameters changed (*you knowledgable parity experts, please experiment with those, to increase the TPS - thanks*):
