@@ -26,6 +26,15 @@ To appear in the following lists, please [fork](https://gitlab.com/electronDLT/c
 
 ## this project
 
+### tweets
+
+> Cool, checkout chainhammer, a toolset for benchmarking blockchain TPS by @drandreaskruger / @ElectronDLT
+> https://gitlab.com/electronDLT/chainhammer  
+
+https://twitter.com/5chdn/status/1032749019179765760  
+https://twitter.com/drandreaskruger/status/1032757116073848834  
+
+
 ### short summary
 
 > Electron created the open source tools `chainhammer` which submits a high load of smart contract transactions to an Ethereum based blockchain, and `chainreader` which reads in the whole chain, and produces diagrams of TPS, blocktime, gasUsed and gasLimit, and the blocksize.
