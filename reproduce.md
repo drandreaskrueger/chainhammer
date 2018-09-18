@@ -363,7 +363,7 @@ This will much accelerate your own benchmarking experiments. In my ready-made Am
 
 Use my AMI:
 
-* In the Public Images, [search for "chainhammer"](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:visibility=public-images;search=chainhammer;sort=name)
+* In the Public Images, [search for "chainhammer"](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:visibility=public-images;search=chainhammer;sort=name) in `eu-west-2` (London).
 * Right click ... Launch
 * Step 2: Choose an Instance Type --> at least `t2.small` ! otherwise you probably run out of memory
 * Step 4: Add Storage --> `12 GB` !
@@ -392,8 +392,17 @@ ssh chainhammer
 ssh chainhammer
 
 cd ~/paritytech_parity-deploy
-sed -i 's/0x1312D00/0x2625A00/g' config/spec/genesis/aura; cat config/spec/genesis/aura
-./parity-deploy.sh --nodes 4 --config aura --name myaura --geth --jsonrpc-server-threads 10 --tx-queue-size 20000 --cache-size 4096 --gas-floor-target 40000000 --tx-queue-mem-limit 0
+# sed -i 's/0x1312D00/0x2625A00/g' config/spec/genesis/aura; cat config/spec/genesis/aura # hardcoded now in parity-deploy https://github.com/paritytech/parity-deploy/issues/55#issuecomment-422309365
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 40000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
 cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
 docker-compose up
 ```
@@ -459,6 +468,7 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 |-----------	|-----------	|--------	|--------	|-------------	|--------------	|
 | t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
 | t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
+| t2.2xlarge 	| parity    	| 4      	| (D)    	| 57.6        	|  57.6        |
 | | | |    	|         	|          |
 | t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
 | t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
@@ -467,7 +477,7 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 
 For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
 
-As the parity `stable` docker image suddenly switched from `stable` to `beta` today (see issue https://github.com/paritytech/parity-deploy/issues/61) ... I had to postpone the parity benchmarking on those larger machines, until they have fixed that hickup. And anyways ... hopefully - until I can continue next week - there will be new ideas how to accelerate parity!
+We need completely new ideas how to accelerate parity.
 
 ### (A) parity aura  
 4 nodes via [paritytech/parity-deploy](https://github.com/paritytech/parity-deploy) with higher gasLimit and gasFloorTarget, and some CLI parameters changed (*you knowledgable parity experts, please experiment with those, to increase the TPS - thanks*):
@@ -500,7 +510,7 @@ See [reproduce_TODO-crux.md](reproduce_TODO-crux.md).
 
 Unfortunately, they have named `2.0.5` now into `stable` prematurely, so that `docker run parity/parity:stable` starts `parity:v2.0.x` and not `parity:v1.11.x` anymore. 
 
-That *broke everything, see [parity.md --> run 11](parity.md). 
+That *broke everything*, see [parity.md --> run 11](parity.md). 
 
 To correct that, replace `:stable` with the old version `:v1.11.11` *after* running `parity-deploy.sh` (I had also made a [feature request issue](https://github.com/paritytech/parity-deploy/issues/55) about this):
 ```
@@ -522,7 +532,7 @@ docker-compose up
 
 
 ## issues
-See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues), [quorum-IBFT.md](quorum-IBFT.md#issues)
+See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues), [quorum-IBFT.md](quorum-IBFT.md#issues).
 
 
 

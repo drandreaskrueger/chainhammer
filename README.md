@@ -21,13 +21,14 @@ TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Eth
 |-----------	|-----------	|--------	|--------	|-------------	|--------------	|
 | t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
 | t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
+| t2.2xlarge 	| parity    	| 4      	| (D)    	| 57.6        	|  57.6        |
 | | | |    	|         	|          |
 | t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
 | t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
 | t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 
-You can [reproduce](reproduce.md) these results easily. Or even quicker when you use my [Amazon AMI readymade image](reproduce.md#readymade-amazon-ami). See [parity.md](parity.md) and [geth.md](geth.md) for additional details.
+You can [reproduce](reproduce.md) these results easily. Or even quicker when you use my [Amazon AMI readymade image](reproduce.md#readymade-amazon-ami) - for the `config` column see there. And see [parity.md](parity.md) and [geth.md](geth.md) for additional details.
 
 ## faster wider more
 
