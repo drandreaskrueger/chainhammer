@@ -1053,4 +1053,5 @@ Thanks.
 * [PD#70](https://github.com/paritytech/parity-deploy/issues/70) deployment/chain/spec.json: Is a directory
 * [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582) broken parity 2.0.5-stable - refuses to accept new transactions after ~500 tx
 * [PD#71](https://github.com/paritytech/parity-deploy/issues/71) ethkey: error while loading shared libraries: libboost_filesystem.so.1.55.0: cannot open shared object file: No such file or directory
+* [PE#9586](https://github.com/paritytech/parity-ethereum/issues/9586) parity aura almost always ignores the stepDuration=2 seconds, blocks come slower
 
