@@ -1051,4 +1051,5 @@ Thanks.
 * [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help [not a github issue but **ethereum.stackexchange.com**]
 * [PD#61](https://github.com/paritytech/parity-deploy/issues/61) (FR) fix a certain version 
 * [PD#70](https://github.com/paritytech/parity-deploy/issues/70) deployment/chain/spec.json: Is a directory
+* [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582) broken parity 2.0.5-stable - refuses to accept new transactions after ~500 tx
 
