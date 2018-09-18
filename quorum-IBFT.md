@@ -407,6 +407,7 @@ what else?
 * [BC#27](https://github.com/blk-io/crux/issues/27) 4nodes quorum-example ?  
 * [Q#497](https://github.com/jpmorganchase/quorum/issues/497) Please consider to catch up with geth
 * [BC#27](https://github.com/blk-io/crux/issues/27#issuecomment-414627138) 4nodes quorum-examples - how to? to compare vagrant with docker.
+* [BC#37](https://github.com/blk-io/crux/issues/37) local docker build is failing: `Service 'node1' failed to build`
 
 ### TODO: 
 try this out, to compare vagrant with docker: [BC#27](https://github.com/blk-io/crux/issues/27) 

@@ -819,7 +819,7 @@ block 9 | new #TX   0 / 12000 ms =   0.0 TPS_current | total: #TX  506 / 138.1 s
 block 10 | new #TX   0 / 42000 ms =   0.0 TPS_current | total: #TX  506 / 180.2 s =   2.8 TPS_average
 ```
 
-That seems to be because they have made a *faulty parity version 2.0.5* into `stable` prematurely. 
+That seems to be because they have made a *faulty parity version 2.0.5* into `stable` prematurely. So:
 
 #### how to downgrade to a `stable stable` version
 
@@ -986,15 +986,14 @@ block 98 | new #TX   0 / 4000 ms =   0.0 TPS_current | total: #TX 20001 / 595.9 
 
 so now it works again - just as slow as always.
 
-I am giving up now.  
+#### I am giving up now
 
 If you still believe `parity` is faster then prove it: See 
 
 * [reproduce.md](reproduce.md) for how to get my scripts up and running *within less than half an hour*, or  
 * [reproduce.md --> Amazon AMI](reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*. 
 
-Or agree with me that `parity` is *6 times slower* than `geth`.
-
+Or ... agree with me that `parity` is *6 times slower* than `geth`.
 
 
 ## Please you help
@@ -1011,16 +1010,17 @@ So far, nothing really helped. Here's a list of (the few) suggestions that I got
 * `can u try with this settings` suggested by [tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151)
 
 
-Other than that, the parity team seems clueless how to accelerate their own client. Looks like the final verdict for now:
+Other than that, the parity team seems surprisingly clueless how to accelerate their own client. Looks like the final verdict for now is:
 
-`parity aura` seems to be 5-6 times slower than its PoA competitors. 
+`parity aura` seems to be 5-6 times slower than `geth clique`. 
 
 
-
-### There is a [README.md --> quickstart](README.md#quickstart) now ... 
+### There is a [README.md --> quickstart](README.md#quickstart), and a [reproduce.md](reproduce.md) ... 
 ... so if you have any intution or knowledge how to accelerate this, please replicate my setup, and then start modifying the parameters of the network of parity nodes, with e.g. `parity-deploy.sh` - until you get to better TPS rates. 
 
-Then please alert us how you did it. Thanks.
+Then please alert us how you did it. 
+
+Thanks.
 
 
 
@@ -1037,4 +1037,8 @@ Then please alert us how you did it. Thanks.
 * [OD#58](https://github.com/paritytech/parity-deploy/issues/58) instantseal password empty
 * [PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
 * [PE#9471](https://github.com/paritytech/parity-ethereum/issues/9471) `eth_sendTransactionAsync` to accelerate parity?
+* [PD#60](https://github.com/paritytech/parity-deploy/issues/60) make config pieces JSON compliant / (FR) allow to change spec parameters
+* [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help [not a github issue but **ethereum.stackexchange.com**]
 * [PD#61](https://github.com/paritytech/parity-deploy/issues/61) (FR) fix a certain version 
+* [PD#70](https://github.com/paritytech/parity-deploy/issues/70) deployment/chain/spec.json: Is a directory
+
