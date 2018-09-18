@@ -3,7 +3,39 @@
 #### quorum IBFT network with 4 dockerized nodes
 for details see [quorum-IBFT.md#crux-docker-4nodes](https://gitlab.com/electronDLT/chainhammer/blob/db3ae5da577d9b9d44c2879434993f3e0d44899f/quorum-IBFT.md#crux-docker-4nodes).
 
+Edit the given `blk-io/crux`, so that it builds a local docker container, instead of using `blkio10/quorum-crux:v1.0.0` from dockerhub:
 ```
+git clone  https://github.com/blk-io/crux blk-io_crux
+cd blk-io_crux/docker/quorum-crux/
+cp docker-compose.yaml docker-compose-local.yaml
+nano docker-compose-local.yaml 
+```
+Follow the instructions, so that it looks like this:
+
+```
+...
+  node1: &quorum_crux_node
+    # Pull image down from Docker Hub
+    # image: blkio10/quorum-crux:v1.0.0
+    # Uncomment the below, and comment out the above line to build the Docker images yourself
+    image: blk.io/quorum/quorum-crux
+    build:
+      context: .
+    container_name: quorum1
+...
+```
+
+then build the container, and start the network:
+```
+docker-compose -f docker-compose-local.yaml up --build
+```
+
+
+
+
+
+```
+
 git clone https://github.com/drandreaskrueger/crux.git drandreaskrueger_crux
 cd drandreaskrueger_crux
 
