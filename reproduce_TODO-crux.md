@@ -11,7 +11,6 @@ cp docker-compose.yaml docker-compose-local.yaml
 nano docker-compose-local.yaml 
 ```
 Follow the instructions, so that it looks like this:
-
 ```
 ...
   node1: &quorum_crux_node
@@ -24,24 +23,19 @@ Follow the instructions, so that it looks like this:
     container_name: quorum1
 ...
 ```
+Edit the settings: Higher gas limit, larger txpool, blockperiod 1 second
+```
+sudo apt install jq
+jq '.gasLimit = "0x1312D00"' istanbul-genesis.json > tmp && mv tmp istanbul-genesis.json
+
+sed -i 's/PRIVATE_CONFIG/ARGS=$ARGS"--txpool.globalslots 20000 --txpool.globalqueue 20000 --istanbul.blockperiod 1 "\nPRIVATE_CONFIG/g' istanbul-start.sh 
+```
 
 then build the container, and start the network:
 ```
 docker-compose -f docker-compose-local.yaml up --build
 ```
 
-
-
-
-
-```
-
-git clone https://github.com/drandreaskrueger/crux.git drandreaskrueger_crux
-cd drandreaskrueger_crux
-
-cd docker/quorum-crux/
-docker-compose -f docker-compose-local.yaml up --build
-```
 wait until you see something like
 
 ```
@@ -53,6 +47,11 @@ quorum1  | set +v
 ```
 
 ##### problems
+
+(A) https://github.com/blk-io/crux/issues/39
+
+
+(B) (last week)  
 something isn't working yet. Cannot connect to node, when installed on AWS:
 
 ```
@@ -63,6 +62,9 @@ Fatal: Failed to start the JavaScript console: api modules: Post http://localhos
 no time for that now. 
 
 not using quorum-crux for now; instead use plain vanilla `geth`.
+
+
+(C)
 
 new attempt. but something is really odd with this:
 
@@ -103,8 +105,3 @@ ValueError: Contract does not appear to be deployable within the current network
 
 The .set function is running out of gas? Odd.
 
-#### useful bits and pieces
-
-```
-jq '.gasLimit = "0x2625A00"' istanbul-genesis.json > tmp; mv tmp istanbul-genesis.json; cat istanbul-genesis.json
-```
