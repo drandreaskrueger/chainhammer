@@ -779,11 +779,37 @@ Because the [parity team was pressed with time](https://github.com/paritytech/pa
 
 See [reproduce.md#results](reproduce.md#results) for measurements. Best TPS seen was 56 TPS (versus >300 TPS for geth).
 
+### run 11 
+[tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151) suggested this:
+
+```
+ARGS="--db-compaction ssd --tracing off --gasprice 1000 --gas-floor-target 100000000000 --pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp --jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http --cache-size 4096 --scale-verifiers --num-verifiers 16"
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+```
+
+Let's hope this will be faster.
+
+
 ## Please you help
 
 Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
 
 Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
+
+So far, nothing really helped. Here's a list of (the few) suggestions that I got:
+
+* `--jsonrpc-server-threads` and `--tx-queue-size` and `--scale-verifiers` suggested by [ddorgan](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-415333434)
+* "start with a lower block gas limit as it moves slowly up to the target" by [5chdn](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-415594872)
+* `--gas-floor-target 20000000` suggested by [ddorgan](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-416995893)
+* `can u try with this settings` suggested by [tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151)
+
+
+Other than that, the parity team seems clueless how to accelerate their own client. Looks like the final verdict for now:
+
+`parity aura` seems to be 5-6 times slower than its PoA competitors. 
+
+
 
 ### There is a [README.md --> quickstart](README.md#quickstart) now ... 
 ... so if you have any intution or knowledge how to accelerate this, please replicate my setup, and then start modifying the parameters of the network of parity nodes, with e.g. `parity-deploy.sh` - until you get to better TPS rates. 
