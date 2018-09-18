@@ -986,6 +986,16 @@ block 98 | new #TX   0 / 4000 ms =   0.0 TPS_current | total: #TX 20001 / 595.9 
 
 so now it works again - just as slow as always.
 
+#### it is not a gas limit issue:
+```
+geth attach http://localhost:8545
+
+> web3.eth.getBlock(50)["gasLimit"]
+40000000
+> web3.eth.getBlock(50)["gasUsed"]
+7393407
+```
+
 #### I am giving up now
 
 If you still believe `parity` is faster then prove it: See 
