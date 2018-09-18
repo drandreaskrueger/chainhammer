@@ -779,16 +779,222 @@ Because the [parity team was pressed with time](https://github.com/paritytech/pa
 
 See [reproduce.md#results](reproduce.md#results) for measurements. Best TPS seen was 56 TPS (versus >300 TPS for geth).
 
-### run 11 
-[tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151) suggested this:
+### run 11 on Amazon t2.large
+[tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151) suggested this  (my only change is `--gasprice 0` - because parity-deploy can not prefund accounts yet?):
 
 ```
-ARGS="--db-compaction ssd --tracing off --gasprice 1000 --gas-floor-target 100000000000 --pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp --jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http --cache-size 4096 --scale-verifiers --num-verifiers 16"
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 "
 
 ./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
 ```
 
-Let's hope this will be faster.
+#### faulty `parity:2.0.5-stable`:
+
+It's not working anymore after ~500 transactions:
+
+```
+./tps.py 
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 2, node version string =  Parity-Ethereum//v2.0.5-stable-7dc4d34-20180917/x86_64-linux-gnu/rustc1.29.0
+first account of node is 0xEb86A4cfFab80f49BDFDaaf79A62B6758C33ec1F, balance is 0 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: myaura, chainId: 17
+
+Block  2  - waiting for something to happen
+(filedate 1537261258) last contract address: 0x03acc0f0E68eD6f18CF96fE5d1Db0471E26174e7
+(filedate 1537261304) new contract address: 0x22212B7cE4d528E9B6989411D56b4E8Ff930B65D
+
+blocknumber_start_here = 3
+starting timer, at block 3 which has  1  transactions; at timecode 1878.234423932
+block 3 | new #TX 153 / 2000 ms =  76.5 TPS_current | total: #TX  154 /  2.2 s =  71.0 TPS_average
+block 4 | new #TX 327 / 4000 ms =  81.8 TPS_current | total: #TX  481 /  6.5 s =  74.5 TPS_average
+block 5 | new #TX  25 / 4000 ms =   6.2 TPS_current | total: #TX  506 / 10.1 s =  50.0 TPS_average
+
+block 6 | new #TX   0 / 42000 ms =   0.0 TPS_current | total: #TX  506 / 52.3 s =   9.7 TPS_average
+block 7 | new #TX   0 / 68000 ms =   0.0 TPS_current | total: #TX  506 / 120.2 s =   4.2 TPS_average
+block 8 | new #TX   0 / 6000 ms =   0.0 TPS_current | total: #TX  506 / 126.2 s =   4.0 TPS_average
+block 9 | new #TX   0 / 12000 ms =   0.0 TPS_current | total: #TX  506 / 138.1 s =   3.7 TPS_average
+block 10 | new #TX   0 / 42000 ms =   0.0 TPS_current | total: #TX  506 / 180.2 s =   2.8 TPS_average
+```
+
+That seems to be because they have made a *faulty parity version 2.0.5* into `stable` prematurely. 
+
+#### how to downgrade to a `stable stable` version
+
+Fortunately, there is still an older version:
+
+```
+curl -s 'https://registry.hub.docker.com/v2/repositories/parity/parity/tags/' | jq -r '."results"[]["name"]'
+v2.0.5
+stable
+v2.0.5-rc0
+nightly
+v2.0.4
+v1.11.11
+beta
+v2.0.3
+v2.0.3-rc0
+v1.11.10
+```
+
+so AFTER running `parity-deploy.sh` I can downgrade to a functioning version v1.11.11:
+
+```
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+```
+
+#### best suggested switches:
+
+All together that gives now:
+
+```
+cd paritytech_parity-deploy
+sudo ./clean.sh
+
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
+docker-compose up
+```
+
+now, with old version `v1.11.11` instead of new faulty `2.0.5` ("stable") ... it does run fine:
+
+```
+./tps.py 
+
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 0, node version string =  Parity//v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
+first account of node is 0x6C57917e8E646Ac68C52C5e373d7895301FFfc7C, balance is 0 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: myaura, chainId: 17
+
+Block  0  - waiting for something to happen
+(filedate 1537261304) last contract address: 0x22212B7cE4d528E9B6989411D56b4E8Ff930B65D
+(filedate 1537262538) new contract address: 0x25Af8348735f6395fb9eD330488f3c893515A1d3
+
+blocknumber_start_here = 1
+starting timer, at block 1 which has  1  transactions; at timecode 3112.341840626
+block 1 | new #TX 129 / 4000 ms =  32.2 TPS_current | total: #TX  130 /  4.0 s =  32.5 TPS_average
+block 2 | new #TX 215 / 4000 ms =  53.8 TPS_current | total: #TX  345 /  8.3 s =  41.8 TPS_average
+block 3 | new #TX 213 / 4000 ms =  53.2 TPS_current | total: #TX  558 / 12.3 s =  45.5 TPS_average
+block 4 | new #TX 214 / 4000 ms =  53.5 TPS_current | total: #TX  772 / 16.2 s =  47.6 TPS_average
+block 5 | new #TX 215 / 4000 ms =  53.8 TPS_current | total: #TX  987 / 20.2 s =  48.9 TPS_average
+block 6 | new #TX 284 / 4000 ms =  71.0 TPS_current | total: #TX 1271 / 24.2 s =  52.5 TPS_average
+block 7 | new #TX 204 / 4000 ms =  51.0 TPS_current | total: #TX 1475 / 28.2 s =  52.4 TPS_average
+block 8 | new #TX 210 / 4000 ms =  52.5 TPS_current | total: #TX 1685 / 32.1 s =  52.4 TPS_average
+block 9 | new #TX 209 / 4000 ms =  52.2 TPS_current | total: #TX 1894 / 36.1 s =  52.5 TPS_average
+block 10 | new #TX 210 / 4000 ms =  52.5 TPS_current | total: #TX 2104 / 40.1 s =  52.5 TPS_average
+block 11 | new #TX 211 / 4000 ms =  52.8 TPS_current | total: #TX 2315 / 44.0 s =  52.6 TPS_average
+block 12 | new #TX 142 / 2000 ms =  71.0 TPS_current | total: #TX 2457 / 46.2 s =  53.2 TPS_average
+block 13 | new #TX 211 / 4000 ms =  52.8 TPS_current | total: #TX 2668 / 50.2 s =  53.2 TPS_average
+block 14 | new #TX 222 / 4000 ms =  55.5 TPS_current | total: #TX 2890 / 54.1 s =  53.4 TPS_average
+block 15 | new #TX 196 / 4000 ms =  49.0 TPS_current | total: #TX 3086 / 58.1 s =  53.1 TPS_average
+block 16 | new #TX 226 / 4000 ms =  56.5 TPS_current | total: #TX 3312 / 62.0 s =  53.4 TPS_average
+block 17 | new #TX 193 / 4000 ms =  48.2 TPS_current | total: #TX 3505 / 66.3 s =  52.8 TPS_average
+block 18 | new #TX 237 / 4000 ms =  59.2 TPS_current | total: #TX 3742 / 70.0 s =  53.5 TPS_average
+block 19 | new #TX 183 / 4000 ms =  45.8 TPS_current | total: #TX 3925 / 74.3 s =  52.9 TPS_average
+block 20 | new #TX 243 / 4000 ms =  60.8 TPS_current | total: #TX 4168 / 77.9 s =  53.5 TPS_average
+block 21 | new #TX  98 / 2000 ms =  49.0 TPS_current | total: #TX 4266 / 80.1 s =  53.3 TPS_average
+block 22 | new #TX 211 / 4000 ms =  52.8 TPS_current | total: #TX 4477 / 84.0 s =  53.3 TPS_average
+block 23 | new #TX 126 / 2000 ms =  63.0 TPS_current | total: #TX 4603 / 86.2 s =  53.4 TPS_average
+block 24 | new #TX 152 / 4000 ms =  38.0 TPS_current | total: #TX 4755 / 90.1 s =  52.8 TPS_average
+block 25 | new #TX 279 / 4000 ms =  69.8 TPS_current | total: #TX 5034 / 94.1 s =  53.5 TPS_average
+block 26 | new #TX 420 / 8000 ms =  52.5 TPS_current | total: #TX 5454 / 102.1 s =  53.4 TPS_average
+block 27 | new #TX 436 / 8000 ms =  54.5 TPS_current | total: #TX 5890 / 110.3 s =  53.4 TPS_average
+block 28 | new #TX 186 / 4000 ms =  46.5 TPS_current | total: #TX 6076 / 114.3 s =  53.2 TPS_average
+block 29 | new #TX 241 / 4000 ms =  60.2 TPS_current | total: #TX 6317 / 118.2 s =  53.4 TPS_average
+block 30 | new #TX 179 / 4000 ms =  44.8 TPS_current | total: #TX 6496 / 122.2 s =  53.2 TPS_average
+block 31 | new #TX 249 / 4000 ms =  62.2 TPS_current | total: #TX 6745 / 126.2 s =  53.5 TPS_average
+block 32 | new #TX 170 / 4000 ms =  42.5 TPS_current | total: #TX 6915 / 130.1 s =  53.1 TPS_average
+block 33 | new #TX 257 / 4000 ms =  64.2 TPS_current | total: #TX 7172 / 134.1 s =  53.5 TPS_average
+block 34 | new #TX 161 / 4000 ms =  40.2 TPS_current | total: #TX 7333 / 138.1 s =  53.1 TPS_average
+block 35 | new #TX 270 / 4000 ms =  67.5 TPS_current | total: #TX 7603 / 142.1 s =  53.5 TPS_average
+block 36 | new #TX 431 / 8000 ms =  53.9 TPS_current | total: #TX 8034 / 150.3 s =  53.4 TPS_average
+block 37 | new #TX 203 / 4000 ms =  50.8 TPS_current | total: #TX 8237 / 154.3 s =  53.4 TPS_average
+block 38 | new #TX 217 / 4000 ms =  54.2 TPS_current | total: #TX 8454 / 158.0 s =  53.5 TPS_average
+block 39 | new #TX 199 / 4000 ms =  49.8 TPS_current | total: #TX 8653 / 162.3 s =  53.3 TPS_average
+block 40 | new #TX 230 / 4000 ms =  57.5 TPS_current | total: #TX 8883 / 166.2 s =  53.4 TPS_average
+block 41 | new #TX 183 / 4000 ms =  45.8 TPS_current | total: #TX 9066 / 170.2 s =  53.3 TPS_average
+block 42 | new #TX 235 / 4000 ms =  58.8 TPS_current | total: #TX 9301 / 174.0 s =  53.5 TPS_average
+block 43 | new #TX 181 / 4000 ms =  45.2 TPS_current | total: #TX 9482 / 178.2 s =  53.2 TPS_average
+block 44 | new #TX 243 / 4000 ms =  60.8 TPS_current | total: #TX 9725 / 182.0 s =  53.4 TPS_average
+block 45 | new #TX 168 / 4000 ms =  42.0 TPS_current | total: #TX 9893 / 186.3 s =  53.1 TPS_average
+block 46 | new #TX 258 / 4000 ms =  64.5 TPS_current | total: #TX 10151 / 189.9 s =  53.4 TPS_average
+block 47 | new #TX 160 / 4000 ms =  40.0 TPS_current | total: #TX 10311 / 194.2 s =  53.1 TPS_average
+block 48 | new #TX 268 / 4000 ms =  67.0 TPS_current | total: #TX 10579 / 197.9 s =  53.4 TPS_average
+block 49 | new #TX 149 / 4000 ms =  37.2 TPS_current | total: #TX 10728 / 202.2 s =  53.1 TPS_average
+block 50 | new #TX 284 / 4000 ms =  71.0 TPS_current | total: #TX 11012 / 206.2 s =  53.4 TPS_average
+block 51 | new #TX 196 / 4000 ms =  49.0 TPS_current | total: #TX 11208 / 210.1 s =  53.3 TPS_average
+block 52 | new #TX 227 / 4000 ms =  56.8 TPS_current | total: #TX 11435 / 214.1 s =  53.4 TPS_average
+block 53 | new #TX 190 / 4000 ms =  47.5 TPS_current | total: #TX 11625 / 218.1 s =  53.3 TPS_average
+block 54 | new #TX 232 / 4000 ms =  58.0 TPS_current | total: #TX 11857 / 222.1 s =  53.4 TPS_average
+block 55 | new #TX 186 / 4000 ms =  46.5 TPS_current | total: #TX 12043 / 226.3 s =  53.2 TPS_average
+block 56 | new #TX 242 / 4000 ms =  60.5 TPS_current | total: #TX 12285 / 230.0 s =  53.4 TPS_average
+block 57 | new #TX 171 / 4000 ms =  42.8 TPS_current | total: #TX 12456 / 234.0 s =  53.2 TPS_average
+block 58 | new #TX 255 / 4000 ms =  63.8 TPS_current | total: #TX 12711 / 238.0 s =  53.4 TPS_average
+block 59 | new #TX 154 / 4000 ms =  38.5 TPS_current | total: #TX 12865 / 242.0 s =  53.2 TPS_average
+block 60 | new #TX 274 / 4000 ms =  68.5 TPS_current | total: #TX 13139 / 246.3 s =  53.4 TPS_average
+block 61 | new #TX 143 / 4000 ms =  35.8 TPS_current | total: #TX 13282 / 250.3 s =  53.1 TPS_average
+block 62 | new #TX 272 / 4000 ms =  68.0 TPS_current | total: #TX 13554 / 254.0 s =  53.4 TPS_average
+block 63 | new #TX   0 / 6000 ms =   0.0 TPS_current | total: #TX 13554 / 260.1 s =  52.1 TPS_average
+block 64 | new #TX 327 / 4000 ms =  81.8 TPS_current | total: #TX 13881 / 264.4 s =  52.5 TPS_average
+block 65 | new #TX 327 / 4000 ms =  81.8 TPS_current | total: #TX 14208 / 268.3 s =  52.9 TPS_average
+block 66 | new #TX 241 / 4000 ms =  60.2 TPS_current | total: #TX 14449 / 272.3 s =  53.1 TPS_average
+block 67 | new #TX 207 / 4000 ms =  51.8 TPS_current | total: #TX 14656 / 276.0 s =  53.1 TPS_average
+block 68 | new #TX 208 / 4000 ms =  52.0 TPS_current | total: #TX 14864 / 280.3 s =  53.0 TPS_average
+block 69 | new #TX 279 / 4000 ms =  69.8 TPS_current | total: #TX 15143 / 284.3 s =  53.3 TPS_average
+block 70 | new #TX 207 / 4000 ms =  51.8 TPS_current | total: #TX 15350 / 288.0 s =  53.3 TPS_average
+block 71 | new #TX 207 / 4000 ms =  51.8 TPS_current | total: #TX 15557 / 292.2 s =  53.2 TPS_average
+block 72 | new #TX 204 / 4000 ms =  51.0 TPS_current | total: #TX 15761 / 296.2 s =  53.2 TPS_average
+block 73 | new #TX 204 / 4000 ms =  51.0 TPS_current | total: #TX 15965 / 300.2 s =  53.2 TPS_average
+block 74 | new #TX 206 / 4000 ms =  51.5 TPS_current | total: #TX 16171 / 304.2 s =  53.2 TPS_average
+block 75 | new #TX 207 / 4000 ms =  51.8 TPS_current | total: #TX 16378 / 308.1 s =  53.2 TPS_average
+block 76 | new #TX 206 / 4000 ms =  51.5 TPS_current | total: #TX 16584 / 312.1 s =  53.1 TPS_average
+block 77 | new #TX 210 / 4000 ms =  52.5 TPS_current | total: #TX 16794 / 316.1 s =  53.1 TPS_average
+block 78 | new #TX 200 / 4000 ms =  50.0 TPS_current | total: #TX 16994 / 320.0 s =  53.1 TPS_average
+block 79 | new #TX 206 / 4000 ms =  51.5 TPS_current | total: #TX 17200 / 324.3 s =  53.0 TPS_average
+block 80 | new #TX 208 / 4000 ms =  52.0 TPS_current | total: #TX 17408 / 328.3 s =  53.0 TPS_average
+block 81 | new #TX 206 / 4000 ms =  51.5 TPS_current | total: #TX 17614 / 332.2 s =  53.0 TPS_average
+block 82 | new #TX 207 / 4000 ms =  51.8 TPS_current | total: #TX 17821 / 336.2 s =  53.0 TPS_average
+block 83 | new #TX 275 / 4000 ms =  68.8 TPS_current | total: #TX 18096 / 340.2 s =  53.2 TPS_average
+block 84 | new #TX 203 / 4000 ms =  50.8 TPS_current | total: #TX 18299 / 344.2 s =  53.2 TPS_average
+block 85 | new #TX 331 / 6000 ms =  55.2 TPS_current | total: #TX 18630 / 350.0 s =  53.2 TPS_average
+block 86 | new #TX 149 / 4000 ms =  37.2 TPS_current | total: #TX 18779 / 354.2 s =  53.0 TPS_average
+block 87 | new #TX 277 / 4000 ms =  69.2 TPS_current | total: #TX 19056 / 358.2 s =  53.2 TPS_average
+block 88 | new #TX 204 / 4000 ms =  51.0 TPS_current | total: #TX 19260 / 362.2 s =  53.2 TPS_average
+block 89 | new #TX 209 / 4000 ms =  52.2 TPS_current | total: #TX 19469 / 366.1 s =  53.2 TPS_average
+block 90 | new #TX 197 / 4000 ms =  49.2 TPS_current | total: #TX 19666 / 370.1 s =  53.1 TPS_average
+block 91 | new #TX 225 / 4000 ms =  56.2 TPS_current | total: #TX 19891 / 374.1 s =  53.2 TPS_average
+block 92 | new #TX 110 / 4000 ms =  27.5 TPS_current | total: #TX 20001 / 378.0 s =  52.9 TPS_average
+
+block 93 | new #TX   0 / 90000 ms =   0.0 TPS_current | total: #TX 20001 / 468.0 s =  42.7 TPS_average
+block 94 | new #TX   0 / 4000 ms =   0.0 TPS_current | total: #TX 20001 / 471.9 s =  42.4 TPS_average
+block 95 | new #TX   0 / 30000 ms =   0.0 TPS_current | total: #TX 20001 / 501.9 s =  39.8 TPS_average
+block 96 | new #TX   0 / 4000 ms =   0.0 TPS_current | total: #TX 20001 / 506.2 s =  39.5 TPS_average
+block 97 | new #TX   0 / 86000 ms =   0.0 TPS_current | total: #TX 20001 / 592.2 s =  33.8 TPS_average
+block 98 | new #TX   0 / 4000 ms =   0.0 TPS_current | total: #TX 20001 / 595.9 s =  33.6 TPS_average
+```
+
+so now it works again - just as slow as always.
+
+I am giving up now.  
+
+If you still believe `parity` is faster then prove it: See 
+
+* [reproduce.md](reproduce.md) for how to get my scripts up and running *within less than half an hour*, or  
+* [reproduce.md --> Amazon AMI](reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*. 
+
+Or agree with me that `parity` is *6 times slower* than `geth`.
+
 
 
 ## Please you help

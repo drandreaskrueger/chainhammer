@@ -1,5 +1,5 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v28
+# chainhammer v29
 TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain; focus on PoA consensus
 
 ## instructions
@@ -15,6 +15,20 @@ TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Eth
 1. [parity.md](parity.md): work in progress
 1. [eos.md](eos.md): not begun
 
+## results
+
+| hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
+|-----------	|-----------	|--------	|--------	|-------------	|--------------	|
+| t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
+| t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
+| | | |    	|         	|          |
+| t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
+| t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
+| t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
+| t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
+
+You can [reproduce](reproduce.md) these results easily. Or even quicker when you use my [Amazon AMI readymade image](reproduce.md#readymade-amazon-ami). See [parity.md](parity.md) and [geth.md](geth.md) for additional details.
+
 ## faster wider more
 
 See 
@@ -22,19 +36,22 @@ See
 * logbook [log.md](log.md) for what I had done initially to get this faster *on Quorum*, step by step. 
 * some ideas what to try next: [TODO.md](TODO.md) = e.g. geth/parity PoA, vary transaction size, run on host machine (not docker/vagrant), etc.
 
-
-Suggestions please: how can I speed this up further? 
-
-## you
+### you
 See [other-projects.md](other-projects.md) using this, or projects which are similar to this. 
 
-Please report back when you have done other / new measurements. 
+*Please report back when you have done other / new measurements.*
+
+#### Suggestions please: how can I speed this up further? 
+
+* parity [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393) 60 TPS ? (parity aura v1.11.11)
+* parity [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help - stackexchange.com
+* geth [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions.
+* quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
+
 
 ## run
 
-For more details e.g. how to run a network of parity nodes, see [reproduce.md](reproduce.md). This assumes it's already running.
-
-The focus here is on chainhammer itself:
+For more details e.g. how to run a network of parity nodes, see [reproduce.md](reproduce.md). This assumes it's already running. The focus here is on chainhammer itself:
 ### dependencies
 ```
 sudo apt install python3-pip libssl-dev
@@ -54,9 +71,10 @@ source py3eth/bin/activate
 touch account-passphrase.txt
 ./deploy.py 
 ```
-use this ^ to test whether communication with the ethereum node is working, and to create local files about the compiled and deployed contract. If there are connection problems, check the ports in [config.py](config.py) --> `RPCaddress, RPCaddress2`.
+Always use this first. It tests whether communication with the ethereum node is working, **and initially creates local files about the compiled and deployed contract**. If there are connection problems, check the ports in [config.py](config.py) --> `RPCaddress, RPCaddress2`.
 
 ### quickstart
+
 
 first terminal:
 ```
@@ -121,4 +139,6 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 
 ![chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
 
-Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md). Thanks.
+Calling all parity experts: How to improve these too slow TPS results?    
+See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md), and the 2 shortest routes to reproducing the results: [reproduce.md](reproduce.md).    
+Thanks.

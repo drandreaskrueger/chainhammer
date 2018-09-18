@@ -457,6 +457,7 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 
 | hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
 |-----------	|-----------	|--------	|--------	|-------------	|--------------	|
+| t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
 | t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
 | | | |    	|         	|          |
 | t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
@@ -494,6 +495,30 @@ docker-compose up
 TODO, some unsolved issues. What worked fine on my local machine does not seem to work anymore on AWS. Strange.
 
 See [reproduce_TODO-crux.md](reproduce_TODO-crux.md).
+
+### (D) parity v1.11.11 because 2.0.5 is broken
+
+Unfortunately, they have named `2.0.5` now into `stable` prematurely, so that `docker run parity/parity:stable` starts `parity:v2.0.x` and not `parity:v1.11.x` anymore. 
+
+That *broke everything, see [parity.md --> run 11](parity.md). 
+
+To correct that, replace `:stable` with the old version `:v1.11.11` *after* running `parity-deploy.sh` (I had also made a [feature request issue](https://github.com/paritytech/parity-deploy/issues/55) about this):
+```
+cd paritytech_parity-deploy
+sudo ./clean.sh
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
+docker-compose up
+```
 
 
 ## issues
