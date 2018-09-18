@@ -532,7 +532,7 @@ docker-compose up
 
 
 ## issues
-See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues), [quorum-IBFT.md](quorum-IBFT.md#issues).
+See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues-raised), [quorum-IBFT.md](quorum-IBFT.md#issues).
 
 
 
