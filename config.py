@@ -15,7 +15,7 @@
 RPCaddress, RPCaddress2 = None, None # just for testing, with TestRPCProvider 
 RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
 RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground
+RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev 
 
 # how many tx to send in send.py
@@ -35,8 +35,17 @@ NUMBER_OF_TRANSACTIONS = 20000
 # RAFT=True
 
 ## submit transaction via web3 or directly via RPC
-ROUTE = "RPC"  # "web3" "RPC"
+ROUTE = "web3" # "RPC"  # "web3" "RPC"
   
+# parity's idiosyncracy:
+# 'Time-unlocking is only supported in --geth compatibility mode.'
+PARITY_UNLOCK_EACH_TRANSACTION=True
+
+if PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC":
+    print ("Sorry, this parameter combination is not implemented:")
+    print ('PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC"')
+    print ('change config.py, then restart.')
+    exit(0)  
 
 # set this to a list of public keys for privateFor-transactions, 
 # or to None for public transactions 

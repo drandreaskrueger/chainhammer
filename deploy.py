@@ -26,7 +26,7 @@ except:
     exit()
 
 from config import RPCaddress, CONTRACT_SOURCE, CONTRACT_ABI, CONTRACT_ADDRESS
-from config import PRIVATE_FOR, PASSPHRASE_FILE
+from config import PRIVATE_FOR, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
 
 from clienttools import web3connection, unlockAccount
 
@@ -115,6 +115,9 @@ def testMethods(myContract):
     """
     answer = myContract.functions.get().call()
     print('.get(): {}'.format(answer))
+    
+    if PARITY_UNLOCK_EACH_TRANSACTION:
+        print ("unlockAccount:", unlockAccount())
     
     print('.set()')
     tx_hash = w3.toHex( myContract.functions.set(answer + 1).transact() )

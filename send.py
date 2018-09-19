@@ -28,7 +28,7 @@ from web3.utils.encoding import pad_hex
 
 from deploy import loadFromDisk
 # from config import RAFT
-from config import NUMBER_OF_TRANSACTIONS
+from config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
 
 from clienttools import web3connection, unlockAccount
 
@@ -81,6 +81,11 @@ def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
         txParameters['privateFor'] = privateFor  # untested
         
     # pprint (txParameters)
+    
+    
+    if PARITY_UNLOCK_EACH_TRANSACTION:
+        unlockAccount()
+    
         
     tx = contract.functions.set( x=arg ).transact(txParameters)
     print ("[sent via web3]", end=" ")

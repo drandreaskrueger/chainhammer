@@ -19,7 +19,7 @@ except:
     print ("Dependencies unavailable. Start virtualenv first!")
     exit()
 
-from config import RPCaddress, PASSPHRASE_FILE
+from config import RPCaddress, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
 from clienttype import clientType
 
 
@@ -86,13 +86,17 @@ def unlockAccount(duration=3600, account=None):
 
     # print ("passphrase:", passphrase)
 
-    if NODETYPE=="Parity":
-        duration = w3.toHex(duration)
-
-    return w3.personal.unlockAccount(account=account, 
-                                     passphrase=passphrase,  
-                                     duration=duration)
-
+    if PARITY_UNLOCK_EACH_TRANSACTION:
+        answer = w3.personal.unlockAccount(account=account, 
+                                           passphrase=passphrase)
+    else:
+        if NODETYPE=="Parity": 
+            duration = w3.toHex(duration)
+        answer = w3.personal.unlockAccount(account=account, 
+                                           passphrase=passphrase,
+                                           duration=duration)
+    return answer
+     
 
 def setGlobalVariables_clientType(w3):
     """
