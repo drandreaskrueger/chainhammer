@@ -400,6 +400,7 @@ ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp
 ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
 ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
 
+sudo ./clean.sh 
 ./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
 
 sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
@@ -415,6 +416,11 @@ If you later want to end this ... 'Ctrl-c' and:
 ```
 docker-compose down -v
 sudo ./clean.sh
+```
+
+or even
+```
+~/remove-all-docker.sh 
 ```
 
 ### geth
@@ -436,7 +442,7 @@ docker-compose down -v
 ... and create some local files
 ```
 ssh chainhammer
-cd electronDLT_chainhammer && source py3eth/bin/activate
+cd ~/electronDLT_chainhammer && source py3eth/bin/activate
 
 ./deploy.py
 ```
