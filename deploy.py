@@ -120,7 +120,10 @@ def testMethods(myContract):
         print ("unlockAccount:", unlockAccount())
     
     print('.set()')
-    tx_hash = w3.toHex( myContract.functions.set(answer + 1).transact() )
+    gas=90000
+    txParameters = {'from': w3.eth.defaultAccount,
+                    'gas' : gas}
+    tx_hash = w3.toHex( myContract.functions.set(answer + 1).transact(txParameters) )
     print ("transaction", tx_hash, "... "); sys.stdout.flush()
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     print ("... mined. Receipt --> gasUsed={gasUsed}". format(**tx_receipt) )
