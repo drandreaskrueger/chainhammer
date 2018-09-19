@@ -482,6 +482,9 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 | t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
 | t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
+| | | |    	|         	|          |
+| t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
+
 
 For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
 
@@ -561,6 +564,9 @@ jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json >
 docker-compose up
 ```
 This ^ (E) is the newest set of suggested settings, but they actually do not accelerate over the results of the already measured settings (D).
+
+### (F) quorum IBFT
+Work in progress. Initial results >>400 TPS on amazon `t2.2xlarge` !!!
 
 ## you
 Please inspire us what could make `parity aura` faster. Thanks.
