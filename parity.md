@@ -1326,7 +1326,12 @@ Then please alert us how you did it.
 
 Thanks.
 
-
+## background info on Aura
+* https://wiki.parity.io/Aura
+* https://wiki.parity.io/Permissioning
+* https://github.com/blk-io/crux/issues/39#issuecomment-422835878
+  * http://ceur-ws.org/Vol-2058/paper-06.pdf
+  * https://github.com/poanetwork/wiki/wiki/Aura-Consensus-Protocol-Audit
 
 ## issues
 * [PD#51](https://github.com/paritytech/parity-deploy/issues/51) libstdc++.so.6: version `GLIBCXX_3.4.22' not found
