@@ -1,7 +1,17 @@
 
 
+status of this file: 
+
+* solved issue https://github.com/blk-io/crux/issues/39 but solution is not committed to their master yet
+* preliminary results, one quick run: Fastest so far: 423-435 TPS !!!
+* continue not before next week
+* part of this then goes into the main [reproduce.md](reproduce.md), part into [quorum-IBFT.md](quorum-IBFT.md).
+
 #### quorum IBFT network with 4 dockerized nodes
 for details see [quorum-IBFT.md#crux-docker-4nodes](https://gitlab.com/electronDLT/chainhammer/blob/db3ae5da577d9b9d44c2879434993f3e0d44899f/quorum-IBFT.md#crux-docker-4nodes).
+
+##### amazon AMI
+use the same AWS image --> [reproduce.md#readymade-amazon-ami](reproduce.md#readymade-amazon-ami)
 
 ##### local build
 
@@ -112,6 +122,9 @@ The tiny `.set()` function is running out of gas? Odd.  Why?
 
 For now fixed with [hardcoding 90000 gas](https://gitlab.com/electronDLT/chainhammer/commit/c3ad840761cb769118a6b6074f9f4229c5b6eba8).
 
+
+## results!!
+preliminary, but see this post https://github.com/blk-io/crux/issues/39#issuecomment-422841365
 
 
 
