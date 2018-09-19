@@ -3,6 +3,8 @@
 #### quorum IBFT network with 4 dockerized nodes
 for details see [quorum-IBFT.md#crux-docker-4nodes](https://gitlab.com/electronDLT/chainhammer/blob/db3ae5da577d9b9d44c2879434993f3e0d44899f/quorum-IBFT.md#crux-docker-4nodes).
 
+##### local build
+
 Edit the given `blk-io/crux`, so that it builds a local docker container, instead of using `blkio10/quorum-crux:v1.0.0` from dockerhub:
 ```
 git clone  https://github.com/blk-io/crux blk-io_crux
@@ -23,6 +25,9 @@ Follow the instructions, so that it looks like this:
     container_name: quorum1
 ...
 ```
+
+##### TPS-optimized network settings 
+
 Edit the settings: Higher gas limit, larger txpool, blockperiod 1 second
 ```
 sudo apt install jq
@@ -48,7 +53,7 @@ quorum1  | set +v
 
 ##### problems
 
-(A) https://github.com/blk-io/crux/issues/39
+(A) https://github.com/blk-io/crux/issues/39 [solved]
 
 
 (B) (last week)  
@@ -103,5 +108,10 @@ Traceback (most recent call last):
 ValueError: Contract does not appear to be deployable within the current network gas limits.  Estimated: 40029300. Current gas limit: 40019531
 ```
 
-The .set function is running out of gas? Odd.
+The tiny `.set()` function is running out of gas? Odd.  Why?
+
+For now fixed with [hardcoding 90000 gas](https://gitlab.com/electronDLT/chainhammer/commit/c3ad840761cb769118a6b6074f9f4229c5b6eba8).
+
+
+
 
