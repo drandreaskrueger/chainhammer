@@ -35,11 +35,11 @@ NUMBER_OF_TRANSACTIONS = 20000
 # RAFT=True
 
 ## submit transaction via web3 or directly via RPC
-ROUTE = "web3" # "RPC"  # "web3" "RPC"
+ROUTE = "RPC"  # "web3" "RPC"
   
 # parity's idiosyncracy:
 # 'Time-unlocking is only supported in --geth compatibility mode.'
-PARITY_UNLOCK_EACH_TRANSACTION=True
+PARITY_UNLOCK_EACH_TRANSACTION=False
 
 if PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC":
     print ("Sorry, this parameter combination is not implemented:")
