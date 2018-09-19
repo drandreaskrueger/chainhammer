@@ -530,6 +530,31 @@ sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
 docker-compose up
 ```
 
+### (E) include all current recommendations of parity team:
+
+Use (D) plus `--force-sealing` plus change the blocktime `stepDuration` to 5 seconds, because [5chdn said so](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091):
+
+```
+cd ~/paritytech_parity-deploy
+sudo ./clean.sh
+
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
+sudo apt install jq
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
+
+docker-compose up
+```
+
 
 ## issues
 See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues-raised), [quorum-IBFT.md](quorum-IBFT.md#issues).

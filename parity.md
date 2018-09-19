@@ -996,6 +996,166 @@ geth attach http://localhost:8545
 7393407
 ```
 
+### run 12
+
+5chdn [suggested](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091) `--force-sealing` so added that to `ARGS`:
+
+```
+cd paritytech_parity-deploy
+sudo ./clean.sh
+
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
+docker-compose up
+```
+
+It does create a more steady tick of empty blocks:
+```
+... | grep host1
+host1    | 2018-09-19 09:54:04 UTC Imported #21 0x5c6c…cec1 (0 txs, 0.00 Mgas, 1 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:08 UTC Imported #22 0xe4eb…3f11 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:10 UTC Imported #23 0x9506…ee5a (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:12 UTC Imported #24 0x8e9c…db99 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:16 UTC Imported #25 0xea86…bb77 (0 txs, 0.00 Mgas, 2 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:18 UTC Imported #26 0x3e4e…5450 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:20 UTC Imported #27 0xf81c…8c8c (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:24 UTC Imported #28 0x7c60…3606 (0 txs, 0.00 Mgas, 1 ms, 0.56 KiB)
+host1    | 2018-09-19 09:54:26 UTC Imported #29 0xf7d2…9a8f (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+```
+blocktimes are 4s, 2s, 2s, 4s, 2s, 2s, 4s, 2s. 
+
+So it is *not* regular - but *more regular*.
+
+benchmarking result:
+
+```
+./tps.py 
+
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 86, node version string =  Parity//v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
+first account of node is 0xeB07bbAc139F85De42BA628c3696f3e4DAfc8FA4, balance is 0 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: myaura, chainId: 17
+Block  86  - waiting for something to happen
+(filedate 1537351034) last contract address: 0x15B5Eaf9452D52C8796A628C772AAE346Db02Eb4
+(filedate 1537351054) new contract address: 0xF4e45450F08cE688BFa4E87090B523e4a084f2ea
+
+blocknumber_start_here = 91
+starting timer, at block 91 which has  1  transactions; at timecode 1682.322105557
+block 91 | new #TX 129 / 4000 ms =  32.2 TPS_current | total: #TX  130 /  4.0 s =  32.8 TPS_average
+block 92 | new #TX 213 / 4000 ms =  53.2 TPS_current | total: #TX  343 /  8.2 s =  41.7 TPS_average
+block 93 | new #TX 211 / 4000 ms =  52.8 TPS_current | total: #TX  554 / 12.2 s =  45.4 TPS_average
+block 94 | new #TX 211 / 4000 ms =  52.8 TPS_current | total: #TX  765 / 16.2 s =  47.3 TPS_average
+block 95 | new #TX 212 / 4000 ms =  53.0 TPS_current | total: #TX  977 / 20.1 s =  48.6 TPS_average
+block 96 | new #TX 211 / 4000 ms =  52.8 TPS_current | total: #TX 1188 / 24.1 s =  49.3 TPS_average
+block 97 | new #TX 210 / 4000 ms =  52.5 TPS_current | total: #TX 1398 / 28.1 s =  49.7 TPS_average
+block 98 | new #TX 210 / 4000 ms =  52.5 TPS_current | total: #TX 1608 / 32.1 s =  50.1 TPS_average
+block 99 | new #TX 181 / 2000 ms =  90.5 TPS_current | total: #TX 1789 / 34.2 s =  52.3 TPS_average
+block 100 | new #TX 163 / 4000 ms =  40.8 TPS_current | total: #TX 1952 / 38.2 s =  51.1 TPS_average
+block 101 | new #TX 258 / 4000 ms =  64.5 TPS_current | total: #TX 2210 / 41.9 s =  52.7 TPS_average
+block 102 | new #TX 165 / 4000 ms =  41.2 TPS_current | total: #TX 2375 / 46.2 s =  51.4 TPS_average
+block 103 | new #TX 265 / 4000 ms =  66.2 TPS_current | total: #TX 2640 / 49.9 s =  52.9 TPS_average
+block 104 | new #TX 327 / 10000 ms =  32.7 TPS_current | total: #TX 2967 / 60.2 s =  49.3 TPS_average
+block 105 | new #TX 327 / 4000 ms =  81.8 TPS_current | total: #TX 3294 / 64.2 s =  51.3 TPS_average
+block 106 | new #TX 275 / 4000 ms =  68.8 TPS_current | total: #TX 3569 / 68.2 s =  52.3 TPS_average
+block 107 | new #TX 206 / 4000 ms =  51.5 TPS_current | total: #TX 3775 / 72.2 s =  52.3 TPS_average
+block 108 | new #TX 165 / 2000 ms =  82.5 TPS_current | total: #TX 3940 / 74.0 s =  53.2 TPS_average
+block 109 | new #TX 183 / 4000 ms =  45.8 TPS_current | total: #TX 4123 / 78.3 s =  52.7 TPS_average
+block 110 | new #TX 244 / 4000 ms =  61.0 TPS_current | total: #TX 4367 / 82.0 s =  53.3 TPS_average
+block 111 | new #TX 178 / 4000 ms =  44.5 TPS_current | total: #TX 4545 / 86.3 s =  52.7 TPS_average
+block 112 | new #TX 254 / 4000 ms =  63.5 TPS_current | total: #TX 4799 / 90.2 s =  53.2 TPS_average
+block 113 | new #TX 165 / 4000 ms =  41.2 TPS_current | total: #TX 4964 / 94.2 s =  52.7 TPS_average
+block 114 | new #TX 268 / 4000 ms =  67.0 TPS_current | total: #TX 5232 / 98.2 s =  53.3 TPS_average
+block 115 | new #TX 150 / 4000 ms =  37.5 TPS_current | total: #TX 5382 / 102.1 s =  52.7 TPS_average
+block 116 | new #TX 281 / 4000 ms =  70.2 TPS_current | total: #TX 5663 / 106.1 s =  53.4 TPS_average
+block 117 | new #TX 136 / 4000 ms =  34.0 TPS_current | total: #TX 5799 / 110.1 s =  52.7 TPS_average
+block 118 | new #TX 285 / 4000 ms =  71.2 TPS_current | total: #TX 6084 / 114.1 s =  53.3 TPS_average
+block 119 | new #TX 210 / 4000 ms =  52.5 TPS_current | total: #TX 6294 / 118.3 s =  53.2 TPS_average
+...
+```
+
+Looks a bit more steady than before - **but not faster**.
+
+### run 13
+
+Quorum can even do sub-second blocktimes for raft, and geth runs fine at 2 seconds - but ... 
+
+parity should be run with blocktimes at least 5 seconds, [5chdn says](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091)  - so:
+
+```
+cd ~/paritytech_parity-deploy
+sudo ./clean.sh
+
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
+sudo apt install jq
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
+
+docker-compose up
+```
+
+blocks come very regular now, exactly every 5 seconds:
+```
+... | grep host1
+host1    | 2018-09-19 10:09:55 UTC Imported #2 0x246a…6f0d (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:00 UTC Imported #3 0x275b…d3c0 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:05 UTC Imported #4 0x2278…d1a2 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:10 UTC Imported #5 0x3a68…faec (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:15 UTC Imported #6 0x0adc…f94a (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:17 UTC    3/25 peers      8 KiB chain    8 KiB db  0 bytes queue   11 KiB sync  RPC:  0 conn,  0 req/s,   0 µs
+host1    | 2018-09-19 10:10:20 UTC Imported #7 0x89fe…9e11 (0 txs, 0.00 Mgas, 4 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:25 UTC Imported #8 0x0fef…c91b (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:30 UTC Imported #9 0x81da…9f23 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:35 UTC Imported #10 0x9d0c…a3d8 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:40 UTC Imported #11 0xebfd…fcd9 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:45 UTC Imported #12 0xba94…a0fa (0 txs, 0.00 Mgas, 1 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:47 UTC    3/25 peers      9 KiB chain    8 KiB db  0 bytes queue   11 KiB sync  RPC:  0 conn,  0 req/s,  86 µs
+host1    | 2018-09-19 10:10:50 UTC Imported #13 0x5a79…2007 (0 txs, 0.00 Mgas, 0 ms, 0.56 KiB)
+host1    | 2018-09-19 10:10:55 UTC Imported #14 0xe887…d608 (0 txs, 0.00 Mgas, 1 ms, 0.56 KiB)
+```
+
+benchmarking results:
+```
+block 43 | new #TX 227 / 5000 ms =  45.4 TPS_current | total: #TX  228 /  5.2 s =  44.0 TPS_average
+block 44 | new #TX 213 / 5000 ms =  42.6 TPS_current | total: #TX  441 / 10.1 s =  43.8 TPS_average
+block 45 | new #TX   0 / 5000 ms =   0.0 TPS_current | total: #TX  441 / 15.3 s =  28.9 TPS_average
+block 46 | new #TX 615 / 5000 ms = 123.0 TPS_current | total: #TX 1056 / 20.2 s =  52.4 TPS_average
+block 47 | new #TX 233 / 5000 ms =  46.6 TPS_current | total: #TX 1289 / 25.4 s =  50.8 TPS_average
+block 48 | new #TX 282 / 5000 ms =  56.4 TPS_current | total: #TX 1571 / 30.2 s =  51.9 TPS_average
+block 49 | new #TX 279 / 5000 ms =  55.8 TPS_current | total: #TX 1850 / 35.4 s =  52.2 TPS_average
+block 50 | new #TX 294 / 5000 ms =  58.8 TPS_current | total: #TX 2144 / 40.3 s =  53.2 TPS_average
+block 51 | new #TX 200 / 5000 ms =  40.0 TPS_current | total: #TX 2344 / 45.2 s =  51.8 TPS_average
+block 52 | new #TX 284 / 5000 ms =  56.8 TPS_current | total: #TX 2628 / 50.1 s =  52.5 TPS_average
+block 53 | new #TX 284 / 5000 ms =  56.8 TPS_current | total: #TX 2912 / 55.3 s =  52.7 TPS_average
+block 54 | new #TX 314 / 5000 ms =  62.8 TPS_current | total: #TX 3226 / 60.2 s =  53.6 TPS_average
+block 55 | new #TX 250 / 5000 ms =  50.0 TPS_current | total: #TX 3476 / 65.4 s =  53.2 TPS_average
+block 56 | new #TX 276 / 5000 ms =  55.2 TPS_current | total: #TX 3752 / 70.3 s =  53.4 TPS_average
+block 57 | new #TX 210 / 5000 ms =  42.0 TPS_current | total: #TX 3962 / 75.1 s =  52.7 TPS_average
+```
+
+Again: now very steady blocktimes. But **not faster**.
+
+
+
+
+
 #### I am giving up now
 
 If you still believe `parity` is faster then prove it: See 
