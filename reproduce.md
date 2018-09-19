@@ -94,7 +94,9 @@ sudo ./clean.sh
 ./parity-deploy.sh --config dev --name instantseal --geth
 docker-compose up
 ```
+That starts one `instantseal` node - but that already shows that parity cannot get faster than ~70 TPS. Use this for now.
 
+(Later, you can try `aura` networks of 4 nodes instead - see instructions here: [parity.md --> run 13](parity.md#run-13) )
 
 ### chainhammer
 new terminal:
@@ -153,6 +155,7 @@ or:
 ---
 
 ### everything below here is *not necessary*
+(it just provides a local `geth` installation, for `geth attach http://localhost:8545`)
 
 new terminal
 
@@ -222,10 +225,6 @@ geth version
 > GOPATH=  
 > GOROOT=/usr/local/go  
 
-
-### please you now try this
-
-And about "not having the time" - these 2.5 hours happened on my FREE DAY. I must convince them now that I can take those hours off again.
 
 ## geth clique
 Compare the poor TPS performance of `parity aura` with the faster `geth clique`:
@@ -356,10 +355,12 @@ On [AWS console #Images](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?re
 
 --> AMI ID `ami-0aaa64f3e432e4a26`
 
+By now that AMI is superseded. Use the "search for public AMIs --> chainhammer" instead, next chapter:
 
 ## readymade Amazon AMI 
 
-This will much accelerate your own benchmarking experiments. In my ready-made Amazon AWS image I have done all of the above.
+This will much accelerate your own benchmarking experiments. In my ready-made Amazon AWS image I have done all of the above 
+(Plus some unlogged updates, of the toolchain & chainhammer).
 
 Use my AMI:
 
@@ -394,21 +395,22 @@ ssh chainhammer
 cd ~/paritytech_parity-deploy
 # sed -i 's/0x1312D00/0x2625A00/g' config/spec/genesis/aura; cat config/spec/genesis/aura # hardcoded now in parity-deploy https://github.com/paritytech/parity-deploy/issues/55#issuecomment-422309365
 
-ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 40000000 "
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
 ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
 ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
-ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
 
 ./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
 
 sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
 
 cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
 docker-compose up
 ```
-For the settings, see [parity.md](parity.md).
+For explanations of all those settings, see [parity.md](parity.md). 
 
-If you want to end this ... 'Ctrl-c' and:
+If you later want to end this ... 'Ctrl-c' and:
 
 ```
 docker-compose down -v
@@ -548,16 +550,15 @@ ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealin
 ./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
 
 sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
-
-sudo apt install jq
 jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
 
 docker-compose up
 ```
+This ^ (E) is the newest set of suggested settings, but they actually do not accelerate over the results of the already measured settings (D).
 
+## you
+Please inspire us what could make `parity aura` faster. Thanks.
 
 ## issues
 See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues-raised), [quorum-IBFT.md](quorum-IBFT.md#issues).
-
-
 

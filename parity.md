@@ -1,5 +1,9 @@
 # parity PoA benchmarking
 
+This is a long text because it is the almost complete log of what I tried to get `parity` as fast as `geth`. So far no success.
+
+The most elaborate set of configuration switches is **--> [run 13](#run-13) <--** near the bottom of this file.
+
 ## parity docker
 Following informative wiki page https://github.com/paritytech/wiki/blob/master/Docker.md
 
@@ -1088,7 +1092,7 @@ Looks a bit more steady than before - **but not faster**.
 
 Quorum can even do sub-second blocktimes for raft, and geth runs fine at 2 seconds - but ... 
 
-parity should be run with blocktimes at least 5 seconds, [5chdn says](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091)  - so:
+... parity should be run with blocktimes at least 5 seconds, [5chdn says](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091)  - so:
 
 ```
 cd ~/paritytech_parity-deploy
@@ -1150,11 +1154,13 @@ block 56 | new #TX 276 / 5000 ms =  55.2 TPS_current | total: #TX 3752 / 70.3 s 
 block 57 | new #TX 210 / 5000 ms =  42.0 TPS_current | total: #TX 3962 / 75.1 s =  52.7 TPS_average
 ```
 
-Again: now very steady blocktimes. But **not faster**.
+Again: now very steady blocktimes. But again **not faster**.
 
 ### run 14
 
 #### without the `--geth` compatibility switch
+
+*Summary: This is just another test, to make sure that the `--geth` switch doesn't slow everything down.*
 
 When running my chainhammer scripts with a default parity, it gives me a 
 ```
@@ -1166,24 +1172,24 @@ ValueError: {'message': 'Time-unlocking is only supported in --geth compatibilit
 and [my code is using](https://gitlab.com/electronDLT/chainhammer/blob/b6fbbddf859009e68fbe2a620c3f1558988572df/clienttools.py#L67-94) 
 
 ```
-w3.personal.unlockAccount(account=account, 
-                          passphrase=passphrase,  
+w3.personal.unlockAccount(account=account, passphrase=passphrase,  
                           duration=duration)
 ```
 with a long enough `duration` to keep the account open for the whole experiment. To save calls.
 
-The alternative: Unlock for each of the 20,000 transactions - 
-which obviously looses a lot of time, because then there need to be 2 RPC calls for each smart contract call transaction.
+The alternative would be to *unlock for each of the 20,000 transactions* - 
+which obviously looses a lot of time, because then there need 
+to be 2 RPC calls for each smart contract call transaction.
 
 As we want fast not slow, I opted instead for always using the compatibility mode, i.e. always calling `parity --geth ...`.
 
 BUT:
 
-To now be absolutely sure, that the parity people have not (inadvertently?)
+To now be absolutely sure, that the parity coders have not (inadvertently)
 created an artificially slow parity-client when using that `--geth` switch, 
 I tested parity **without that `--geth` switch**.
 
-It needed [a few changes](https://gitlab.com/electronDLT/chainhammer/commit/47711cbce9def97d3b61ee8edd00107245de42fa) to my code, but now there is a new switch `PARITY_UNLOCK_EACH_TRANSACTION` in [config.py](https://gitlab.com/electronDLT/chainhammer/blob/47711cbce9def97d3b61ee8edd00107245de42fa/config.py#L40-42) which allows to start parity without that `--geth`.
+It needed [a changes to my code in several places](https://gitlab.com/electronDLT/chainhammer/commit/47711cbce9def97d3b61ee8edd00107245de42fa), but now I provide a new switch `PARITY_UNLOCK_EACH_TRANSACTION` in [config.py](https://gitlab.com/electronDLT/chainhammer/blob/47711cbce9def97d3b61ee8edd00107245de42fa/config.py#L40-42) which allows to start parity without that `--geth` CLI argument.
 
 Full log, new start:
 ```
@@ -1269,33 +1275,33 @@ block 147 | new #TX 116 / 5000 ms =  23.2 TPS_current | total: #TX 6734 / 295.0 
 block 148 | new #TX 116 / 5000 ms =  23.2 TPS_current | total: #TX 6850 / 300.2 s =  22.8 TPS_average
 ```
 
-So ... starting parity without `--geth` switch does not suddenly turn it into a faster client.
+So ... starting parity without `--geth` switch does **not** suddenly turn it into a faster client.
 
-And, as expected, needing 2 calls for 1 transaction (personal_unlockAccount, eth_sendTransaction)... roughly halves the TPS performance. 
+And -as expected- needing 2 calls for 1 transaction (first `personal_unlockAccount`, then `eth_sendTransaction`)... roughly halves the TPS performance. 
 
-Good that I tried - but this also did not help. No further idea what to do - apart from giving up, rewriting all our inhouse code which had been using `parity` - and turning to the much faster `geth`.
+Good that I tried - but this also did not help. No further idea what to do - apart from giving up, rewriting all our inhouse code which had been using `parity` - and turning to the much faster `geth`? Not what we hoped though. We would rather love a faster parity!
 
-Or? -->
+-->
 
-## Please you help
+## Please *you* help
 
 
 #### I am giving up now
 
-If you still believe `parity` is faster then prove it: See 
+Because I am running out of ideas.
+
+If you still believe `parity` is faster - then prove it: See 
 
 * [reproduce.md](reproduce.md) for how to get my scripts up and running *within less than half an hour*, or  
-* [reproduce.md --> Amazon AMI](reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*. 
+* [reproduce.md --> Amazon AMI](reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*!!!
 
-Or ... agree with me that `parity` is *6 times slower* than `geth`.
-
-#### why I ask for your help:
+#### Why I ask for your help:
 
 Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
 
 Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
 
-So far, nothing really helped. Here's a list of the (**few**) suggestions that I got:
+Here's a list of the (*few*) suggestions that I got from the parity team:
 
 * `--jsonrpc-server-threads` and `--tx-queue-size` and `--scale-verifiers` suggested by [ddorgan](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-415333434)
 * "start with a lower block gas limit as it moves slowly up to the target" by [5chdn](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-415594872)
@@ -1303,7 +1309,7 @@ So far, nothing really helped. Here's a list of the (**few**) suggestions that I
 * "can u try with this settings" suggested by [tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151)
 * "Please use `--force-sealing`. Also, block times less than 5 seconds are not recommended."by [5chdn](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091)
 
-Other than that, the parity team seems surprisingly clueless how to accelerate their own client. Looks like ...
+Other than that, the parity team seems clueless how to accelerate their own client. Looks like ...
 
 ## ... the final verdict for now is:
 
@@ -1314,7 +1320,7 @@ Other than that, the parity team seems surprisingly clueless how to accelerate t
 
 ##### There is a [README.md --> quickstart](README.md#quickstart), and a [reproduce.md](reproduce.md) ... 
 
-... so if you have any intution or knowledge how to accelerate parity or how I am using it, then please replicate my setup, and then start modifying the parameters of the network of parity nodes, with e.g. `parity-deploy.sh` - until you get to better TPS rates. 
+... so if you have any intution or knowledge how to accelerate parity -or how I am using it wrong-, then please replicate my setup, and then start modifying the parameters of the network of parity nodes, with e.g. `parity-deploy.sh ...` - until you get to better TPS rates. 
 
 Then please alert us how you did it. 
 

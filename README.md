@@ -1,6 +1,6 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v30
-TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Ethereum type chain; focus on PoA consensus
+# chainhammer v31
+TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
 * `chainhammer` - submits many transactions to blockchain - see next chapter 'chronology'
@@ -12,7 +12,8 @@ TPS measurements of Quorum, EnergyWebFoundation, etc. - should work with any Eth
 1. [quorum.md](quorum.md): raft consensus, geth fork
 1. [tobalaba.md](tobalaba.md): parity fork
 1. [quorum-IBFT.md](quorum-IBFT.md): other consensus algo in quorum
-1. [parity.md](parity.md): work in progress
+1. [geth.md](geth.md): geth clique PoA algorithm
+1. [parity.md](parity.md): now out of ideas. Still 5 times slower than geth.
 1. [eos.md](eos.md): not begun
 
 ## results
@@ -140,6 +141,6 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 
 ![chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
 
-Calling all parity experts: How to improve these too slow TPS results?    
-See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md), and the 2 shortest routes to reproducing the results: [reproduce.md](reproduce.md).    
+Calling all parity experts: How to improve these too slow TPS results?    See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md), and the 2 shortest routes to reproducing the results: [reproduce.md](reproduce.md).    
+
 Thanks.
