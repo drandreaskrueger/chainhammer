@@ -1281,19 +1281,226 @@ And -as expected- needing 2 calls for 1 transaction (first `personal_unlockAccou
 
 Good that I tried - but this also did not help. No further idea what to do - apart from giving up, rewriting all our inhouse code which had been using `parity` - and turning to the much faster `geth`? Not what we hoped though. We would rather love a faster parity!
 
--->
+### run 15
+#### older parity versions: 1.7.13 and instantseal
+
+
+There was a hint in our parity github issue [#9393 "60 TPS ? (parity aura v1.11.11)"](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-423364834):
+
+> worth trying older version of parity (e.g. 1.8.x or 1.9.x or 1.10.x) and see if there is any difference at all.  
+> There was some change in code signing in 1.10 or in 1.9 (not sure though).  
+
+As I get errors about non-existing CLI switches, and a wrongly formatted authority.toml file, I am not repeating the same experiment as run 14 above. Instead I compare this to the one-node-instantseal runs  - which were also below 70 TPS on any newer version 1.11.xx.
+
+Problems to solve:
+```
+Recreating host1 ... done
+Attaching to host1
+host1    | Loading config file from /parity/authority.toml
+host1    | You might have supplied invalid parameters in config file.
+host1    | invalid type: sequence, expected a string for key `rpc.cors`
+host1 exited with code 2
+```
+
+```
+sudo ./clean.sh
+./parity-deploy.sh --config dev --name instantseal --geth
+
+sed -i 's/parity:stable/parity:v1.7.13/g' docker-compose.yml
+```
+because there were changes in parameter type it needed "all" not ["all"] back then:
+```
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/is_authority/authority.toml 
+```
+
+and then it starts 1.7.13
+```
+docker-compose up
+
+Starting host1 ... done
+Attaching to host1
+host1    | Loading config file from /parity/authority.toml
+host1    | 2018-09-25 08:16:34 UTC Starting Parity/v1.7.13-stable-8b74936-20180122/x86_64-linux-gnu/rustc1.23.0
+```
+now benchmarking:
+
+```
+cd ~/electronDLT_chainhammer && source py3eth/bin/activate
+./deploy.py
+./tps.py
+```
+
+```
+ssh chainhammer # new terminal
+cd ~/electronDLT_chainhammer && source py3eth/bin/activate
+./deploy.py notest; ./send.py threaded2 23
+```
+
+unfortunately, the viewer terminal (`./tps.py`) gets locked out during the whole experiment (as if the parity RPC server is unable to serve both, viewer `tps.py` and hammerer `send.py`), so I try with less transactions than 20,000:
+
+```
+nano config.py
+NUMBER_OF_TRANSACTIONS = 1000
+```
+
+And these 1000 transactions ... are 18 seconds apart:
+
+```
+...
+host1    | 2018-09-25 08:34:47 UTC Transaction mined (hash f286b9b6fc6f7f7b679890500cd43c33395ff300b83b9cbc254160bd74896da3)
+...
+host1    | 2018-09-25 08:35:05 UTC Transaction mined (hash cf5d38d180377b9716dc33aed2d289a306ccc2fc0b877793bb8e9d3d12294741)
+host1    | 2018-09-25 08:35:05 UTC Transaction mined (hash 3eeb59e0833924e5267b07dfac3063cdef2912d93f9d5ee5c5c063057d871a5e)
+```
+
+1000 / 18 = 55 TPS.
+
+So ... no improvement at all.
+
+To be 100% sure, trying aura instead of instantseal.
+
+### run 16
+#### old parity versions: 1.7.13 and aura
+
+changes:
+
+* Had to take out: `--no-secretstore-http`
+* and `cors = ["all"]` into  `cors = "all"` 
+
+then using these slightly adapted 'run 13' settings ... worked with the old parity v1.7.13:
+
+```
+sudo ./clean.sh
+
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps  "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+sed -i 's/parity:stable/parity:v1.7.13/g' docker-compose.yml
+
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
+
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/1/authority.toml 
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/2/authority.toml 
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/3/authority.toml 
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/4/authority.toml 
+
+docker-compose up
+```
+
+there is some json structure change problem:
+```
+Exception in thread Thread-23:
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/threading.py", line 914, in _bootstrap_inner
+    self.run()
+  File "/usr/lib/python3.5/threading.py", line 862, in run
+    self._target(*self._args, **self._kwargs)
+  File "./send.py", line 267, in worker
+    contract_set(contract, item)
+  File "./send.py", line 180, in contract_set_via_RPC
+    tx = response.json()['result']
+KeyError: 'result'
+```
+but the transactions do get accepted:
+```
+host1    | 2018-09-25 09:13:00 UTC Transaction mined (hash 78d51af0a013812211d0ebe5c70d1e942d571112cfc243be82c6d3af5d9f022c)
+host1    | 2018-09-25 09:13:00 UTC Transaction mined (hash d4b92e4ee11679110e4a72021e0085e5539b8127770c02411e842b3d78e66ed7)
+....
+host1    | 2018-09-25 09:13:20 UTC Transaction mined (hash f7c02fc52c6bf9280ed4f78cd51031be2223d9498bf8a1a6161ded7af3786f97)
+host1    | 2018-09-25 09:13:20 UTC Transaction mined (hash a6af3c90842e96460309a71c599c8314b80be27a4ece00029518549732bfba73)
+```
+
+the 1000 tx take ~20 seconds, so ... 50 TPS.
+
+
+### run 17
+#### old parity versions: 1.8.11 and aura
+
+changes to run 13 settings:
+
+* Had to change `cors = ["all"]` into  `cors = "all"` 
+
+then using these slightly adapted 'run 13' settings ... worked with the old parity:
+
+```
+sudo ./clean.sh
+
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
+
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
+sed -i 's/parity:stable/parity:v1.8.11/g' docker-compose.yml
+
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/1/authority.toml 
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/2/authority.toml 
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/3/authority.toml 
+sed -i 's/cors = \[\"all\"\]/cors = \"all\"/g' ./deployment/4/authority.toml 
+
+docker-compose up
+```
+
+It works, but not faster:
+
+```
+./tps.py 
+versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
+web3 connection established, blockNumber = 13, node version string =  Parity//v1.8.11-stable-21522ff-20180227/x86_64-linux-gnu/rustc1.24.0
+first account of node is 0x0210a773cf4aFbf633991F4D3d05111E2e3Aa4B2, balance is 0 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: myaura, chainId: 17
+Block  13  - waiting for something to happen
+(filedate 1537867240) last contract address: 0xeD4Abeb044bA775558446c0042413637b0a7F0FF
+(filedate 1537867300) new contract address: 0xe842B89a126a2939A217Ae7606d86Bd3b4908FD7
+
+blocknumber_start_here = 16
+starting timer, at block 16 which has  1  transactions; at timecode 5101.436961324
+block 16 | new #TX 181 / 5000 ms =  36.2 TPS_current | total: #TX  182 /  4.9 s =  37.2 TPS_average
+block 17 | new #TX 249 / 5000 ms =  49.8 TPS_current | total: #TX  431 / 10.1 s =  42.8 TPS_average
+block 18 | new #TX 249 / 5000 ms =  49.8 TPS_current | total: #TX  680 / 15.3 s =  44.6 TPS_average
+block 19 | new #TX 274 / 5000 ms =  54.8 TPS_current | total: #TX  954 / 19.9 s =  48.0 TPS_average
+block 20 | new #TX 218 / 5000 ms =  43.6 TPS_current | total: #TX 1172 / 25.1 s =  46.7 TPS_average
+block 21 | new #TX 250 / 5000 ms =  50.0 TPS_current | total: #TX 1422 / 30.3 s =  47.0 TPS_average
+block 22 | new #TX 249 / 5000 ms =  49.8 TPS_current | total: #TX 1671 / 35.1 s =  47.6 TPS_average
+block 23 | new #TX 278 / 5000 ms =  55.6 TPS_current | total: #TX 1949 / 40.0 s =  48.7 TPS_average
+block 24 | new #TX  52 / 5000 ms =  10.4 TPS_current | total: #TX 2001 / 44.9 s =  44.6 TPS_average
+```
+
+Less than 50 TPS.
 
 ## Please *you* help
 
+Because I am running out of simple ( * ) ideas. 
+
+**For a nonsimple ( * ) idea  = see [codyborn.md](codyborn.md).**
+
+But his approach is exotic: bypassing nonce lookup, manual transaction signing, dropping tx verification, etc. 
+
+We are probably better off switching from `parity` to `geth` instead, because `geth` (or `quorum`) can do (more than) 400 tps out of the box, without manual transaction signing etc ...
 
 #### I am giving up now
 
-Because I am running out of ideas.
-
-If you still believe `parity` is faster - then prove it: See 
+If you still believe `parity` is faster - then try it yourself: See 
 
 * [reproduce.md](reproduce.md) for how to get my scripts up and running *within less than half an hour*, or  
 * [reproduce.md --> Amazon AMI](reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*!!!
+
+And then 
+
+* experiment with it,
+* and report the CLI switches which help to accelerate it.
+
+
 
 #### Why I ask for your help:
 
@@ -1309,14 +1516,18 @@ Here's a list of the (*few*) suggestions that I got from the parity team:
 * "can u try with this settings" suggested by [tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151)
 * "Please use `--force-sealing`. Also, block times less than 5 seconds are not recommended."by [5chdn](https://github.com/paritytech/parity-ethereum/issues/9586#issuecomment-422717091)
 
-Other than that, the parity team seems clueless how to accelerate their own client. Looks like ...
+Other than that, the parity team seems a bit clueless how to accelerate their own client. Looks like ...
 
 ## ... the final verdict for now is:
 
 `parity aura` seems to be 5-6 times slower than `geth clique`. 
 
 
-## BUT:
+
+
+
+
+## BUT perhaps there is a third way:
 
 ##### There is a [README.md --> quickstart](README.md#quickstart), and a [reproduce.md](reproduce.md) ... 
 
