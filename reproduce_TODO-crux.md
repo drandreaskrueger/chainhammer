@@ -1,6 +1,9 @@
 
+# OBSOLETE
 
-status of this file: 
+is now tested part of [reproduce.md](reproduce.md).
+
+## status of this file: 
 
 * solved issue https://github.com/blk-io/crux/issues/39 but solution is not committed to their master yet
 * preliminary results, one quick run: Fastest so far: 423-435 TPS !!!

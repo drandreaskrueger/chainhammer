@@ -98,6 +98,7 @@ That starts one `instantseal` node - but that already shows that parity cannot g
 
 (Later, you can try `aura` networks of 4 nodes instead - see instructions here: [parity.md --> run 13](parity.md#run-13) )
 
+
 ### chainhammer
 new terminal:
 ```
@@ -155,6 +156,8 @@ or:
 ---
 
 ### everything below here is *not necessary*
+... to improve parity's speed.
+
 (it just provides a local `geth` installation, for `geth attach http://localhost:8545`)
 
 new terminal
@@ -282,6 +285,61 @@ source py3eth/bin/activate
 ```
 
 
+## quorum-crux-IBFT
+
+A dockerized quorum-crux network of 4 nodes using IBFT (*Istanbul Byzantine Fault Tolerance*) consensus:
+
+### local build
+
+Edit the given `blk-io/crux`, so that it builds a local docker container, instead of using `blkio10/quorum-crux:v1.0.0` from dockerhub:
+
+```
+cd ~
+git clone  https://github.com/blk-io/crux blk-io_crux
+cd ~/blk-io_crux/docker/quorum-crux/
+cp docker-compose.yaml docker-compose-local.yaml
+
+nano docker-compose-local.yaml 
+```
+Follow the instructions "to build the Docker images yourself", so that it looks like this:
+```
+...
+  node1: &quorum_crux_node
+    # Pull image down from Docker Hub
+    # image: blkio10/quorum-crux:v1.0.0
+    # Uncomment the below, and comment out the above line to build the Docker images yourself
+    image: blk.io/quorum/quorum-crux
+    build:
+      context: .
+    container_name: quorum1
+...
+```
+
+### TPS-optimized network settings 
+
+Edit the settings: Higher gas limit, larger txpool, blockperiod 1 second
+```
+sudo apt install jq
+jq '.gasLimit = "0x1312D00"' istanbul-genesis.json > tmp && mv tmp istanbul-genesis.json
+
+sed -i 's/PRIVATE_CONFIG/ARGS=$ARGS"--txpool.globalslots 20000 --txpool.globalqueue 20000 --istanbul.blockperiod 1 "\nPRIVATE_CONFIG/g' istanbul-start.sh 
+```
+
+### build and start
+then build the container, and start the network:
+```
+docker-compose -f docker-compose-local.yaml up --build
+```
+
+wait until you see something like
+
+```
+...
+quorum1  | [*] Starting Crux nodes
+quorum3  | [*] Starting Ethereum nodes
+...
+quorum1  | set +v
+```
 
 ## AWS deployment
 
@@ -438,6 +496,40 @@ If you want to end this ... 'Ctrl-c' and:
 docker-compose down -v
 ```
 
+### quorum-crux IBFT
+
+```
+ssh chainhammer
+```
+
+note the `-local` in the docker-compose command! -->
+```
+cd ~/blk-io_crux/docker/quorum-crux/
+docker-compose -f docker-compose-local.yaml up --build
+```
+
+If you want to end this ... 'Ctrl-c' and:
+
+```
+docker-compose -f docker-compose-local.yaml down -v
+```
+
+and possibly destroy all docker
+```
+~/remove-all-docker.sh
+```
+
+N.B.: Port is changed from 8545 to 22001:
+
+```
+nano ~/electronDLT_chainhammer/config.py
+```
+change to
+```
+RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002'
+```
+
+
 ### chainhammer: test connection
 ... and create some local files
 ```
@@ -483,6 +575,7 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 | t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 | | | |    	|         	|          |
+| t2.large 	| quorum crux IBFT      	| 4    	| (F)    	| 207.7      	| 199.9        	|
 | t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
 
 
@@ -566,7 +659,22 @@ docker-compose up
 This ^ (E) is the newest set of suggested settings, but they actually do not accelerate over the results of the already measured settings (D).
 
 ### (F) quorum IBFT
-Work in progress. Initial results >>400 TPS on amazon `t2.2xlarge` !!!
+
+Standard dockerized quorum-crux but with a local build, so that these parameters can be tuned before the docker containers are built:
+
+```
+gasLimit = "0x1312D00"
+
+--txpool.globalslots 20000 
+--txpool.globalqueue 20000 
+--istanbul.blockperiod 1
+```
+
+See above [#quorum-crux-IBFT](#quorum-crux-IBFT) for how to do that.
+
+
+
+
 
 ## you
 Please inspire us what could make `parity aura` faster. Thanks.
