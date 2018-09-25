@@ -823,7 +823,20 @@ block 9 | new #TX   0 / 12000 ms =   0.0 TPS_current | total: #TX  506 / 138.1 s
 block 10 | new #TX   0 / 42000 ms =   0.0 TPS_current | total: #TX  506 / 180.2 s =   2.8 TPS_average
 ```
 
-That seems to be because they have made a *faulty parity version 2.0.5* into `stable` prematurely. So:
+That seems to be because they have made a *faulty parity version 2.0.5* into `stable` prematurely. 
+
+---
+
+EDIT: Also tried with 2.0.6 and 2.1.1:
+
+* v2.0.6 https://github.com/paritytech/parity-ethereum/issues/9582#issuecomment-424314231  
+* v2.1.1 https://github.com/paritytech/parity-ethereum/issues/9582#issuecomment-424315542  
+
+Same results. Node stops accepting new transactions, before the experiment has ended.
+
+---
+
+So:
 
 #### how to downgrade to a `stable stable` version
 
