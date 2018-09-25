@@ -235,7 +235,7 @@ def many_transactions_threaded(contract, numTx):
     threads = []
     for i in range(numTx):
         t = Thread(target = contract_set,
-                   args   = (contract, 7))
+                   args   = (contract, i))
         threads.append(t)
         print (".", end="")
     print ("%d transaction threads created." % len(threads))
@@ -276,7 +276,7 @@ def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=100):
     print ("%d worker threads created." % num_worker_threads)
 
     for i in range(numTx):
-        q.put (7)
+        q.put (i)
         print (".", end=""); sys.stdout.flush()
     print ("%d items queued." % numTx)
 
@@ -299,7 +299,7 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
         threads = []
         for i in range(batchSize):
             t = Thread(target = contract_set,
-                       args   = (contract, 7))
+                       args   = (contract, i))
             threads.append(t)
             print (".", end="")
         print ("%d transaction threads created." % len(threads))
