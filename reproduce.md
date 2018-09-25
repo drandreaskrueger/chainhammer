@@ -659,7 +659,7 @@ docker-compose up
 ```
 This ^ (E) is the newest set of suggested settings, but they actually do not accelerate over the results of the already measured settings (D).
 
-### (F) quorum IBFT
+### (F) quorum IBFT settings
 
 Standard dockerized quorum-crux but with a local build, so that these parameters can be tuned before the docker containers are built:
 
@@ -671,9 +671,9 @@ gasLimit = "0x1312D00"
 --istanbul.blockperiod 1
 ```
 
-See above [#quorum-crux-IBFT](#quorum-crux-IBFT) for how to do that.
+See above [reproduce.md#quorum-crux-ibft](reproduce.md#quorum-crux-ibft) for how to do that.
 
-Tried the same with increasing machine sizes, up to ``. Best result
+Tried the same with increasing machine sizes, up to 16 vCPUs. Best result 524-536 TPS.
 
 
 ## you
