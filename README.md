@@ -1,5 +1,5 @@
 Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
-# chainhammer v33
+# chainhammer v34
 TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
@@ -29,7 +29,9 @@ TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. 
 | t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 | | | |    	|         	|          |
+| t2.large 	| quorum crux IBFT      	| 4    	| (F)    	| 207.7      	| 199.9        	|
 | t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
+
 
 You can [reproduce](reproduce.md) these results easily. Or even quicker when you use my [Amazon AMI readymade image](reproduce.md#readymade-amazon-ami) - for the `config` column see there. And see [parity.md](parity.md) and [geth.md](geth.md) for additional details.
 
