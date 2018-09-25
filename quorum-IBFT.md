@@ -421,141 +421,69 @@ start docker build & run network:
 docker-compose -f docker-compose-local.yaml up 
 ```
 
-#### Amazon AWS `t2.medium`
-Exact same settings as above, running on a `t2.medium`:
+#### Amazon AWS results
+
+Exact same settings as above, running on a powerful `c5.4xlarge` machine:
 
 ```
 ./tps.py 
+
 versions: web3 4.3.0, py-solc: 2.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.4, python 3.5.3 (default, Jan 19 2017, 14:11:04) [GCC 6.3.0 20170118]
-web3 connection established, blockNumber = 116, node version string =  Geth/v1.7.2-stable-3f1817ea/linux-amd64/go1.10.1
+web3 connection established, blockNumber = 22, node version string =  Geth/v1.7.2-stable-3f1817ea/linux-amd64/go1.10.1
 first account of node is 0xcA843569e3427144cEad5e4d5999a3D0cCF92B8e, balance is 1000000000 Ether
 nodeName: Quorum, nodeType: Geth, consensus: istanbul, network: 1, chainName: ???, chainId: -1
-Block  116  - waiting for something to happen
-(filedate 1537878744) last contract address: 0x1932c48b2bF8102Ba33B4A6B545C32236e342f34
-(filedate 1537878756) new contract address: 0x9d13C6D3aFE1721BEef56B55D303B09E021E27ab
+Block  22  - waiting for something to happen
+(filedate 1537882490) last contract address: 0x1932c48b2bF8102Ba33B4A6B545C32236e342f34
+(filedate 1537882504) new contract address: 0x9d13C6D3aFE1721BEef56B55D303B09E021E27ab
 
-blocknumber_start_here = 123
-starting timer, at block 123 which has  1  transactions; at timecode 16557.199249937
-block 123 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX    1 /  1.2 s =   0.8 TPS_average
-block 124 | new #TX  68 / 1000 ms =  68.0 TPS_current | total: #TX   69 /  2.2 s =  31.8 TPS_average
-block 125 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX  248 /  3.5 s =  70.9 TPS_average
-block 126 | new #TX 178 / 1000 ms = 178.0 TPS_current | total: #TX  426 /  4.2 s = 102.1 TPS_average
-block 127 | new #TX 178 / 1000 ms = 178.0 TPS_current | total: #TX  604 /  5.4 s = 111.1 TPS_average
-block 128 | new #TX 178 / 1000 ms = 178.0 TPS_current | total: #TX  782 /  6.1 s = 128.5 TPS_average
-block 129 | new #TX 178 / 1000 ms = 178.0 TPS_current | total: #TX  960 /  7.7 s = 125.1 TPS_average
-block 130 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 1139 /  8.3 s = 137.0 TPS_average
-block 131 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 1318 /  9.6 s = 137.5 TPS_average
-block 132 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 1497 / 10.3 s = 146.0 TPS_average
-block 133 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 1676 / 11.2 s = 149.3 TPS_average
-block 134 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 1855 / 12.5 s = 148.0 TPS_average
-block 135 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 2034 / 13.5 s = 150.7 TPS_average
-block 136 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 2213 / 14.2 s = 156.0 TPS_average
-block 137 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 2392 / 15.4 s = 155.0 TPS_average
-block 138 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 2571 / 16.4 s = 156.9 TPS_average
-block 139 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 2750 / 17.4 s = 158.5 TPS_average
-block 140 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 2929 / 18.0 s = 162.6 TPS_average
-block 141 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 3108 / 19.9 s = 156.2 TPS_average
-block 142 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 3287 / 20.5 s = 160.1 TPS_average
-block 143 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 3466 / 21.9 s = 158.4 TPS_average
-block 144 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 3645 / 22.3 s = 163.7 TPS_average
-block 145 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 3824 / 23.9 s = 160.2 TPS_average
-block 146 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 4003 / 24.5 s = 163.3 TPS_average
-block 147 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 4182 / 25.8 s = 162.1 TPS_average
-block 148 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 4361 / 26.2 s = 166.7 TPS_average
-block 149 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 4540 / 27.7 s = 163.7 TPS_average
-block 150 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 4719 / 28.4 s = 166.4 TPS_average
-block 151 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 4898 / 29.4 s = 166.4 TPS_average
-block 152 | new #TX 179 / 1000 ms = 179.0 TPS_current | total: #TX 5077 / 30.1 s = 168.4 TPS_average
-block 153 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 5257 / 31.4 s = 167.4 TPS_average
-block 154 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 5437 / 32.4 s = 167.7 TPS_average
-block 155 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 5617 / 33.4 s = 168.4 TPS_average
-block 156 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 5797 / 34.0 s = 170.3 TPS_average
-block 157 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 5977 / 35.6 s = 167.8 TPS_average
-block 158 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 6157 / 36.7 s = 167.9 TPS_average
-block 159 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 6337 / 37.6 s = 168.3 TPS_average
-block 160 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 6517 / 38.4 s = 169.6 TPS_average
-block 161 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 6697 / 39.4 s = 170.0 TPS_average
-block 162 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 6877 / 40.4 s = 170.3 TPS_average
-block 163 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 7057 / 41.3 s = 170.7 TPS_average
-block 164 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 7237 / 42.4 s = 170.9 TPS_average
-block 165 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 7417 / 44.0 s = 168.6 TPS_average
-block 166 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 7597 / 44.6 s = 170.2 TPS_average
-block 167 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 7777 / 45.6 s = 170.5 TPS_average
-block 168 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 7957 / 46.4 s = 171.5 TPS_average
-block 169 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 8137 / 47.4 s = 171.6 TPS_average
-block 170 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 8317 / 48.4 s = 171.9 TPS_average
-block 171 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 8497 / 50.0 s = 170.0 TPS_average
-block 172 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 8677 / 50.4 s = 172.2 TPS_average
-block 173 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 8857 / 51.4 s = 172.4 TPS_average
-block 174 | new #TX 180 / 1000 ms = 180.0 TPS_current | total: #TX 9037 / 52.4 s = 172.4 TPS_average
-block 175 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 9218 / 54.0 s = 170.7 TPS_average
-block 176 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 9399 / 54.4 s = 172.8 TPS_average
-block 177 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 9580 / 55.3 s = 173.1 TPS_average
-block 178 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 9761 / 56.6 s = 172.5 TPS_average
-block 179 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 9942 / 57.9 s = 171.7 TPS_average
-block 180 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 10123 / 58.2 s = 173.8 TPS_average
-block 181 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 10304 / 59.5 s = 173.0 TPS_average
-block 182 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 10485 / 60.8 s = 172.4 TPS_average
-block 183 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 10666 / 61.5 s = 173.5 TPS_average
-block 184 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 10847 / 62.1 s = 174.6 TPS_average
-block 185 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 11028 / 63.7 s = 173.1 TPS_average
-block 186 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 11209 / 64.4 s = 174.2 TPS_average
-block 187 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 11390 / 65.7 s = 173.5 TPS_average
-block 188 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 11571 / 66.0 s = 175.2 TPS_average
-block 189 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 11752 / 67.6 s = 173.7 TPS_average
-block 190 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 11933 / 68.6 s = 174.0 TPS_average
-block 191 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 12114 / 69.6 s = 174.1 TPS_average
-block 192 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 12295 / 70.3 s = 175.0 TPS_average
-block 193 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 12476 / 71.5 s = 174.5 TPS_average
-block 194 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 12657 / 72.8 s = 173.9 TPS_average
-block 195 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 12838 / 74.4 s = 172.6 TPS_average
-block 196 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 13019 / 74.7 s = 174.3 TPS_average
-block 197 | new #TX 181 / 1000 ms = 181.0 TPS_current | total: #TX 13200 / 75.7 s = 174.3 TPS_average
-block 198 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 13382 / 76.4 s = 175.3 TPS_average
-block 199 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 13564 / 77.3 s = 175.5 TPS_average
-block 200 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 13746 / 78.3 s = 175.6 TPS_average
-block 201 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 13928 / 79.3 s = 175.7 TPS_average
-block 202 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 14110 / 80.6 s = 175.1 TPS_average
-block 203 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 14292 / 81.5 s = 175.3 TPS_average
-block 204 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 14474 / 82.2 s = 176.0 TPS_average
-block 205 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 14656 / 83.5 s = 175.6 TPS_average
-block 206 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 14838 / 84.4 s = 175.8 TPS_average
-block 207 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 15020 / 85.5 s = 175.7 TPS_average
-block 208 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 15202 / 86.1 s = 176.5 TPS_average
-block 209 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 15384 / 87.4 s = 175.9 TPS_average
-block 210 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 15566 / 88.7 s = 175.4 TPS_average
-block 211 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 15748 / 89.4 s = 176.1 TPS_average
-block 212 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 15930 / 90.2 s = 176.6 TPS_average
-block 213 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 16112 / 91.8 s = 175.6 TPS_average
-block 214 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 16294 / 92.4 s = 176.3 TPS_average
-block 215 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 16476 / 93.7 s = 175.8 TPS_average
-block 216 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 16658 / 94.4 s = 176.5 TPS_average
-block 217 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 16840 / 95.3 s = 176.7 TPS_average
-block 218 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 17022 / 96.9 s = 175.6 TPS_average
-block 219 | new #TX 182 / 1000 ms = 182.0 TPS_current | total: #TX 17204 / 98.2 s = 175.2 TPS_average
-block 220 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 17387 / 98.6 s = 176.4 TPS_average
-block 221 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 17570 / 99.2 s = 177.1 TPS_average
-block 222 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 17753 / 100.2 s = 177.3 TPS_average
-block 223 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 17936 / 101.4 s = 176.9 TPS_average
-block 224 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 18119 / 102.1 s = 177.5 TPS_average
-block 225 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 18302 / 103.3 s = 177.2 TPS_average
-block 226 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 18485 / 104.2 s = 177.3 TPS_average
-block 227 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 18668 / 105.2 s = 177.5 TPS_average
-block 228 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 18851 / 106.2 s = 177.6 TPS_average
-block 229 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 19034 / 107.1 s = 177.7 TPS_average
-block 230 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 19217 / 108.3 s = 177.4 TPS_average
-block 231 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 19400 / 109.3 s = 177.6 TPS_average
-block 232 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 19583 / 110.2 s = 177.7 TPS_average
-block 233 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 19766 / 111.1 s = 177.9 TPS_average
-block 234 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 19949 / 112.4 s = 177.6 TPS_average
-block 235 | new #TX  52 / 1000 ms =  52.0 TPS_current | total: #TX 20001 / 113.3 s = 176.5 TPS_average
-block 236 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 114.2 s = 175.1 TPS_average
+blocknumber_start_here = 27
+starting timer, at block 27 which has  1  transactions; at timecode 179.104554098
+block 27 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX    1 /  1.2 s =   0.8 TPS_average
+block 28 | new #TX 266 / 1000 ms = 266.0 TPS_current | total: #TX  267 /  2.1 s = 124.9 TPS_average
+block 29 | new #TX 624 / 1000 ms = 624.0 TPS_current | total: #TX  891 /  3.4 s = 264.1 TPS_average
+block 30 | new #TX 639 / 1000 ms = 639.0 TPS_current | total: #TX 1530 /  4.3 s = 354.3 TPS_average
+block 31 | new #TX 571 / 1000 ms = 571.0 TPS_current | total: #TX 2101 /  5.3 s = 399.3 TPS_average
+block 32 | new #TX 559 / 1000 ms = 559.0 TPS_current | total: #TX 2660 /  6.2 s = 428.8 TPS_average
+block 33 | new #TX 572 / 1000 ms = 572.0 TPS_current | total: #TX 3232 /  7.4 s = 434.1 TPS_average
+block 34 | new #TX 571 / 1000 ms = 571.0 TPS_current | total: #TX 3803 /  8.4 s = 453.5 TPS_average
+block 35 | new #TX 574 / 1000 ms = 574.0 TPS_current | total: #TX 4377 /  9.3 s = 469.3 TPS_average
+block 36 | new #TX 572 / 1000 ms = 572.0 TPS_current | total: #TX 4949 / 10.3 s = 481.9 TPS_average
+block 37 | new #TX 560 / 1000 ms = 560.0 TPS_current | total: #TX 5509 / 11.2 s = 491.4 TPS_average
+block 38 | new #TX 570 / 1000 ms = 570.0 TPS_current | total: #TX 6079 / 12.5 s = 488.1 TPS_average
+block 39 | new #TX 569 / 1000 ms = 569.0 TPS_current | total: #TX 6648 / 13.4 s = 496.2 TPS_average
+block 40 | new #TX 575 / 1000 ms = 575.0 TPS_current | total: #TX 7223 / 14.0 s = 514.4 TPS_average
+block 41 | new #TX 556 / 1000 ms = 556.0 TPS_current | total: #TX 7779 / 15.3 s = 509.0 TPS_average
+block 42 | new #TX 563 / 1000 ms = 563.0 TPS_current | total: #TX 8342 / 16.2 s = 514.1 TPS_average
+block 43 | new #TX 579 / 1000 ms = 579.0 TPS_current | total: #TX 8921 / 17.5 s = 510.7 TPS_average
+block 44 | new #TX 591 / 1000 ms = 591.0 TPS_current | total: #TX 9512 / 18.1 s = 525.2 TPS_average
+block 45 | new #TX 548 / 1000 ms = 548.0 TPS_current | total: #TX 10060 / 19.4 s = 519.8 TPS_average
+block 46 | new #TX 566 / 1000 ms = 566.0 TPS_current | total: #TX 10626 / 20.3 s = 523.6 TPS_average
+block 47 | new #TX 588 / 1000 ms = 588.0 TPS_current | total: #TX 11214 / 21.2 s = 528.0 TPS_average
+block 48 | new #TX 552 / 1000 ms = 552.0 TPS_current | total: #TX 11766 / 22.2 s = 530.4 TPS_average
+block 49 | new #TX 561 / 1000 ms = 561.0 TPS_current | total: #TX 12327 / 23.4 s = 526.2 TPS_average
+block 50 | new #TX 571 / 1000 ms = 571.0 TPS_current | total: #TX 12898 / 24.4 s = 529.3 TPS_average
+block 51 | new #TX 562 / 1000 ms = 562.0 TPS_current | total: #TX 13460 / 25.3 s = 531.8 TPS_average
+block 52 | new #TX 573 / 1000 ms = 573.0 TPS_current | total: #TX 14033 / 26.3 s = 534.5 TPS_average
+block 53 | new #TX 526 / 1000 ms = 526.0 TPS_current | total: #TX 14559 / 27.2 s = 535.3 TPS_average
+block 54 | new #TX 503 / 1000 ms = 503.0 TPS_current | total: #TX 15062 / 28.4 s = 529.6 TPS_average
+block 55 | new #TX 509 / 1000 ms = 509.0 TPS_current | total: #TX 15571 / 29.4 s = 529.9 TPS_average
+block 56 | new #TX 535 / 1000 ms = 535.0 TPS_current | total: #TX 16106 / 30.0 s = 536.4 TPS_average
+block 57 | new #TX 507 / 1000 ms = 507.0 TPS_current | total: #TX 16613 / 31.3 s = 531.3 TPS_average
+block 58 | new #TX 501 / 1000 ms = 501.0 TPS_current | total: #TX 17114 / 32.2 s = 531.4 TPS_average
+block 59 | new #TX 510 / 1000 ms = 510.0 TPS_current | total: #TX 17624 / 33.4 s = 526.9 TPS_average
+block 60 | new #TX 481 / 1000 ms = 481.0 TPS_current | total: #TX 18105 / 34.1 s = 531.0 TPS_average
+block 61 | new #TX 474 / 1000 ms = 474.0 TPS_current | total: #TX 18579 / 35.3 s = 525.7 TPS_average
+block 62 | new #TX 524 / 1000 ms = 524.0 TPS_current | total: #TX 19103 / 36.3 s = 526.6 TPS_average
+block 63 | new #TX 541 / 1000 ms = 541.0 TPS_current | total: #TX 19644 / 37.2 s = 527.9 TPS_average
+block 64 | new #TX 357 / 1000 ms = 357.0 TPS_current | total: #TX 20001 / 38.1 s = 524.3 TPS_average
+block 65 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 39.1 s = 512.0 TPS_average
 ```
 
-peak TPS_average is 177.9 TPS, final TPS_average is 177.6
+fastest seen so far:
 
-See [reproduce.md#results](reproduce.md#results) for faster results, on larger machines.
+**peak TPS_average is 536 TPS, final TPS_average is 524 TPS.**
 
+See [reproduce.md#results](reproduce.md#results) for results on differently sized Amazon machines.
 
 
 ## how to further increase the TPS?

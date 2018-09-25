@@ -576,8 +576,9 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 | | | |    	|         	|          |
 | t2.large 	| quorum crux IBFT      	| 4    	| (F)    	| 207.7      	| 199.9        	|
+| t2.xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 395.7      	| 439.5        	|
 | t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
-
+| c5.4xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 536.4      	|  524.3       	|
 
 For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
 
@@ -672,8 +673,7 @@ gasLimit = "0x1312D00"
 
 See above [#quorum-crux-IBFT](#quorum-crux-IBFT) for how to do that.
 
-
-
+Tried the same with increasing machine sizes, up to ``. Best result
 
 
 ## you
