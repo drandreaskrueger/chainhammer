@@ -29,22 +29,26 @@ TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. 
 
 ## results
 
-| hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
-|-----------	|-----------	|--------	|--------	|-------------	|--------------	|
-| t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
-| t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
-| t2.2xlarge 	| parity    	| 4      	| (D)    	| 57.6        	|  57.6        |
-| | | |    	|         	|          |
-| t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
-| t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
-| t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
-| t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
-| | | |    	|         	|          |
-| t2.micro 	| quorum crux IBFT      	| 4    	| (F)     	| lack of RAM      	|         	|
-| t2.large 	| quorum crux IBFT      	| 4    	| (F)    	| 207.7      	| 199.9        	|
-| t2.xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 439.5      	| 395.7        	|
-| t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
-| c5.4xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 536.4      	|  524.3       	|
+| hardware  	| node type 	    | #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
+|-----------	|-----------	    |--------	|--------	|-------------	|--------------	|
+| t2.micro 	    | parity aura   	| 4      	| (D)    	| 45.5        	|  44.3        |
+| t2.large 	    | parity aura   	| 4      	| (D)    	| 53.5        	|  52.9        |
+| t2.xlarge 	| parity aura   	| 4      	| (A)    	| 56.5        	|  56.1        |
+| t2.2xlarge 	| parity aura   	| 4      	| (D)    	| 57.6        	|  57.6        |
+|               |                   |           |        	|         	    |              |
+| t2.micro 	    | parity instantseal | 1      	| (G)    	| 42.3        	|  42.3        |
+|               |                   |           |        	|         	    |              |
+| t2.2xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 421.6       	| 400.0        |
+| t2.xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 386.1       	| 321.5        |
+| t2.large 	    | geth clique     	| 3+1 +2    | (B)    	| 170.7       	| 169.4        |
+| t2.small 	    | geth clique     	| 3+1 +2    | (B)    	| 96.8       	| 96.5         |
+| t2.micro 	    | geth clique     	| 3+1       | (H)    	| 124.3       	| 122.4        |
+|               |                   |           |        	|         	    |              |
+| t2.micro 	    | quorum crux IBFT 	| 4    	    | (F)     	| lack of RAM   |         	   |
+| t2.large 	    | quorum crux IBFT 	| 4    	    | (F)    	| 207.7      	| 199.9        |
+| t2.xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 439.5      	| 395.7        |
+| t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
+| c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	|  524.3       |
 
 You can [reproduce](reproduce.md) these results easily. Or even quicker when you use my [Amazon AMI readymade image](reproduce.md#readymade-amazon-ami) - for the `config` column see there. And see [parity.md](parity.md) and [geth.md](geth.md) and [quorum-IBFT.md](quorum-IBFT.md) for additional details.
 

@@ -112,9 +112,11 @@ virtualenv -p python3 py3eth
 source py3eth/bin/activate
 
 python3 -m pip install --upgrade pip==18.0
-pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests pandas jupyter ipykernel matplotlib
-ipython kernel install --user --name="Python.3.py3eth"
+
+pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests pandas matplotlib
 ```
+
+(also tried these autumn versions: `pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0` which *seems* to work; not yet tested much though)
 
 ```
 # configure chainhammer
@@ -478,7 +480,7 @@ sudo ./clean.sh
 
 or even
 ```
-~/remove-all-docker.sh 
+~/remove-all-docker.sh docker-compose -f docker-compose-local.yaml up --build
 ```
 
 ### geth
@@ -567,24 +569,30 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 
 ## results
 
-| hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
-|-----------	|-----------	|--------	|--------	|-------------	|--------------	|
-| t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
-| t2.xlarge 	| parity    	| 4      	| (A)    	| 56.5        	|  56.1        |
-| t2.2xlarge 	| parity    	| 4      	| (D)    	| 57.6        	|  57.6        |
-| | | |    	|         	|          |
-| t2.2xlarge 	| geth      	| 3+1    	| (B)    	| 421.6       	| 400.0        	|
-| t2.xlarge 	| geth      	| 3+1    	| (B)    	| 386.1       	| 321.5        	|
-| t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
-| t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
-| | | |    	|         	|          |
-| t2.micro 	| quorum crux IBFT      	| 4    	| (F)     	| lack of RAM      	|         	|
-| t2.large 	| quorum crux IBFT      	| 4    	| (F)    	| 207.7      	| 199.9        	|
-| t2.xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 439.5      	| 395.7        	|
-| t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
-| c5.4xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 536.4      	|  524.3       	|
+| hardware  	| node type 	    | #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
+|-----------	|-----------	    |--------	|--------	|-------------	|--------------	|
+| t2.micro 	    | parity aura   	| 4      	| (D)    	| 45.5        	|  44.3        |
+| t2.large 	    | parity aura   	| 4      	| (D)    	| 53.5        	|  52.9        |
+| t2.xlarge 	| parity aura   	| 4      	| (A)    	| 56.5        	|  56.1        |
+| t2.2xlarge 	| parity aura   	| 4      	| (D)    	| 57.6        	|  57.6        |
+|               |                   |           |        	|         	    |              |
+| t2.micro 	    | parity instantseal | 1      	| (G)    	| 42.3        	|  42.3        |
+|               |                   |           |        	|         	    |              |
+| t2.2xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 421.6       	| 400.0        |
+| t2.xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 386.1       	| 321.5        |
+| t2.large 	    | geth clique     	| 3+1 +2    | (B)    	| 170.7       	| 169.4        |
+| t2.small 	    | geth clique     	| 3+1 +2    | (B)    	| 96.8       	| 96.5         |
+| t2.micro 	    | geth clique     	| 3+1       | (H)    	| 124.3       	| 122.4        |
+|               |                   |           |        	|         	    |              |
+| t2.micro 	    | quorum crux IBFT 	| 4    	    | (F)     	| lack of RAM   |         	   |
+| t2.large 	    | quorum crux IBFT 	| 4    	    | (F)    	| 207.7      	| 199.9        |
+| t2.xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 439.5      	| 395.7        |
+| t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
+| c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	|  524.3       |
 
 For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
+
+Only `t2.micro` is *"free tier"*, i.e. please contact me, if you can support me financially, so I can keep testing this on larger machines.
 
 We need completely new ideas how to accelerate parity.
 
@@ -679,9 +687,39 @@ See above [#quorum-crux-ibft](#quorum-crux-ibft) for how to do that.
 
 Tried the same with increasing machine sizes, up to 16 vCPUs. Best result 524-536 TPS.
 
+### (G) parity instantseal
+```
+cd ~/paritytech_parity-deploy
+sudo ./clean.sh
+docker kill $(docker ps -q); docker rm $(docker ps -a -q); docker rmi $(docker images -q)
+
+./parity-deploy.sh --config dev --name instantseal --geth 
+
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+
+docker-compose up
+```
+
+#### interesting observation:
+The blocking version of `send.py` is actually a bit *faster* than the multi-threaded, i.e. hammering with `./deploy.py notest; ./send.py` (instead of `./deploy.py notest; ./send.py threaded2 23`) results in the fastest TPS. 
+
+Is parity essentially single-threaded? 
+
+Also, the go client `geth` benefits greatly from larger machines, i.e. more CPUs; but `parity` shows only very mildly faster TPS on larger machines.
+
+### (H) geth on t2.micro
+to make it work on the AWS "free tier" machine, I removed the ethstats docker "geth-monitor-front/backend" - see issue [GD#33](https://github.com/javahippie/geth-dev/issues/33):
+
+```
+cd ~/drandreaskrueger_geth-dev
+nano docker-compose-without-ethstats.yml
+docker-compose -f docker-compose-without-ethstats.yml up --build
+```
+
+and even on that small machine I could see well over 100 TPS with geth clique!
 
 ## you
-Please inspire us what could make `parity aura` faster. Thanks.
+Please inspire us what could make `parity aura` faster. Or actually ... what could make any of this faster. Thanks.
 
 ## issues
 See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues-raised), [quorum-IBFT.md](quorum-IBFT.md#issues).

@@ -128,3 +128,4 @@ The reason for this drop is to be found out, see issue [GE#17447](https://github
 * [GD#15](https://github.com/javahippie/geth-dev/issues/15) remove chain without rebuilding whole container 
 * [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions
 * [GE#17535](https://github.com/ethereum/go-ethereum/issues/17535) how to detect which consensus algorithm is driving the chain?
+* [GD#33](https://github.com/javahippie/geth-dev/issues/33) Feature request: options with smaller footprint
