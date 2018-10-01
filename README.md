@@ -1,4 +1,15 @@
-Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/).
+
+---
+
+news 2018-Oct-01
+
+## New Maintainer:
+
+* github --> drandreaskrueger --> [chainhammer](https://github.com/drandreaskrueger/chainhammer)
+* `git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer`
+
+---
+
 # chainhammer v35
 TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. It should work with any Ethereum type chain; we focused on PoA consensus.
 
