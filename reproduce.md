@@ -528,7 +528,11 @@ change to
 ```
 RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002'
 ```
-
+##### careful
+Until `blk-io/crux` have also included a [docker-compose-local.yaml](#local-build) into their own repo, pay attention whether the two .yaml are still in sync:
+```
+diff docker-compose-local.yaml docker-compose.yaml
+```
 
 ### chainhammer: test connection
 ... and create some local files
@@ -563,7 +567,6 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 
 ## results
 
-
 | hardware  	| node type 	| #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
 |-----------	|-----------	|--------	|--------	|-------------	|--------------	|
 | t2.large 	| parity    	| 4      	| (D)    	| 53.5        	|  52.9        |
@@ -575,8 +578,9 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 | t2.large 	    | geth      	| 3+1    	| (B)    	| 170.7       	| 169.4        	|
 | t2.small 	    | geth      	| 3+1    	| (B)    	| 96.8       	| 96.5        	|
 | | | |    	|         	|          |
+| t2.micro 	| quorum crux IBFT      	| 4    	| (F)     	| lack of RAM      	|         	|
 | t2.large 	| quorum crux IBFT      	| 4    	| (F)    	| 207.7      	| 199.9        	|
-| t2.xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 395.7      	| 439.5        	|
+| t2.xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 439.5      	| 395.7        	|
 | t2.2xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 435.4      	| 423.1        	|
 | c5.4xlarge 	| quorum crux IBFT      	| 4    	| (F)    	| 536.4      	|  524.3       	|
 
@@ -671,7 +675,7 @@ gasLimit = "0x1312D00"
 --istanbul.blockperiod 1
 ```
 
-See above [reproduce.md#quorum-crux-ibft](reproduce.md#quorum-crux-ibft) for how to do that.
+See above [#quorum-crux-ibft](#quorum-crux-ibft) for how to do that.
 
 Tried the same with increasing machine sizes, up to 16 vCPUs. Best result 524-536 TPS.
 
