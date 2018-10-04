@@ -7,11 +7,17 @@ news 2018-Oct-01
 
 * github --> drandreaskrueger --> [chainhammer](https://github.com/drandreaskrueger/chainhammer)
 * `git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer`
-* Funding needed! Contact me please.
+* News: Funding needed! Contact me. Or simply: [ETH] 0x008B32b996745b89bfdED64488DeA074EF52f4b8
+
+Thx.
 
 ---
 
-# chainhammer v36
+![chainhammer-logo.png](chainhammer-logo.png)
+
+---
+
+# chainhammer v37
 TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
