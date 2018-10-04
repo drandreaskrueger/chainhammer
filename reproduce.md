@@ -589,14 +589,16 @@ cd electronDLT_chainhammer && source py3eth/bin/activate
 | t2.2xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 421.6       	| 400.0        |
 | t2.xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 386.1       	| 321.5        |
 | t2.large 	    | geth clique     	| 3+1 +2    | (B)    	| 170.7       	| 169.4        |
-| t2.small 	    | geth clique     	| 3+1 +2    | (B)    	| 96.8       	| 96.5         |
+| t2.small 	    | geth clique     	| 3+1 +2    | (B)    	|  96.8       	|  96.5        |
 | t2.micro 	    | geth clique     	| 3+1       | (H)    	| 124.3       	| 122.4        |
+|               |                   |           |        	|         	    |              |
+| t2.micro SWAP | quorum crux IBFT 	| 4    	    | (I) SWAP! |  98.1         |  98.1   	   |
 |               |                   |           |        	|         	    |              |
 | t2.micro 	    | quorum crux IBFT 	| 4    	    | (F)     	| lack of RAM   |         	   |
 | t2.large 	    | quorum crux IBFT 	| 4    	    | (F)    	| 207.7      	| 199.9        |
 | t2.xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 439.5      	| 395.7        |
 | t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
-| c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	|  524.3       |
+| c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	| 524.3        |
 
 For the hardware types, number of CPUs etc - see https://aws.amazon.com/ec2/instance-types/t2/#Product_Details
 
@@ -726,8 +728,28 @@ docker-compose -f docker-compose-without-ethstats.yml up --build
 
 and even on that small machine I could see well over 100 TPS with geth clique!
 
+### (I) quorum-crux on t2.micro with swapping
+To run this 4 nodes dockerized blk-io/crux setup is more difficult because each node runs an instance of geth_quorum AND an instance of crux. I have already posted a [feature request BC#48](https://github.com/blk-io/crux/issues/48) = it would be nice to still be able to run this on a t2.micro all in RAM. For now, you can enlarge the swapfile:
+```
+sudo swapoff -a && SWAPFILE=/swapfile; sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1500 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && sudo swapon -a && free -m
+```
+and keep an instance of `htop` open to notice when the ceiling is hit (the you get connection problems because node 1 or 2 has run out of memory, and crashed):
+```
+ssh chainhammer
+htop
+```
+
+other than that, this is identical to (F) above:
+
+```
+cd ~/blk-io_crux/docker/quorum-crux
+docker-compose -f docker-compose-local.yaml up --build
+```
+
+**beware that these results are artifically slow** because swapping not RAM. But I could get it running on an AWS `t2.micro` which is "free tier" - so you can reproduce it without paying!!!
+
 ## you
-Please inspire us what could make `parity aura` faster. Or actually ... what could make any of this faster. Thanks.
+Please inspire us what could make `parity aura` faster. Or actually ... what could make *any* of this faster. Thanks.
 
 ## issues
 See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues-raised), [quorum-IBFT.md](quorum-IBFT.md#issues).
