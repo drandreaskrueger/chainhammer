@@ -29,6 +29,19 @@ Actually, today I tried this again - tested on and optimized for Debian AWS mach
 
 ## How to replicate the results
 
+### VPS machine
+#### swap - in case the RAM is not sufficient:
+```
+SWAPFILE=/swapfile; sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1024 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
+```
+
+#### useful tools
+```
+sudo apt-get update && sudo apt-get -y upgrade
+sudo apt-get install -y wget htop jq
+```
+
+
 ### toolchain
 ```
 # docker
@@ -75,11 +88,6 @@ solc --version
 ```
 > Version: 0.4.24+commit.e67f0147.Linux.g++
 
-
-```
-# other tools
-sudo apt install jq
-```
 
 ### dockerized parity network
 ```
