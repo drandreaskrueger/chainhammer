@@ -2,7 +2,8 @@
 
 interesting next questions:
 
-
+* [a first issue](https://github.com/drandreaskrueger/chainhammer/issues/1) with python library dependencies for chainhammer was reported 
+* add this repo to https://github.com/ConsenSys/ethereum-developer-tools-list
 * quorum: solve [this strange problem](https://gitlab.com/electronDLT/chainhammer/blob/d3b408d325e1089c54071aeceb4af06b75133dd2/reproduce_TODO-crux.md#problems) which seems to only appear on Amazon AWS; but no time for this now.
 * gas / transaction bytes / block size / ...
   * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
