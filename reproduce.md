@@ -130,10 +130,8 @@ source py3eth/bin/activate
 
 python3 -m pip install --upgrade pip==18.0
 
-pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests pandas matplotlib
+pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0
 ```
-
-(also tried these autumn versions: `pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0` which *seems* to work; not yet tested much though)
 
 ```
 # configure chainhammer
@@ -315,7 +313,9 @@ Edit the given `blk-io/crux`, so that it builds a local docker container, instea
 ```
 cd ~
 git clone  https://github.com/blk-io/crux blk-io_crux
-cd ~/blk-io_crux/docker/quorum-crux/
+git checkout f39db2345cf9d82e76d3905468e6e5ea1469b09d
+
+cd blk-io_crux/docker/quorum-crux/
 cp docker-compose.yaml docker-compose-local.yaml
 
 nano docker-compose-local.yaml 

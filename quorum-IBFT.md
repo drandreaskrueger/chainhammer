@@ -516,6 +516,7 @@ what else?
 * [BC#37](https://github.com/blk-io/crux/issues/37) local docker build is failing: `Service 'node1' failed to build`
 * [BC#39](https://github.com/blk-io/crux/issues/39) ERROR: Service 'node1' failed to build: The command '/bin/sh -c chmod +x start.sh ...' returned a non-zero code: 2
 * [BC#48](https://github.com/blk-io/crux/issues/48) (feature request) quorum docker setup with 2-3 not 4 nodes (to run on small VPS)
+* [BC#50](https://github.com/blk-io/crux/issues/50) local build fails to start geth s
 
 ### TODO: 
 try this out, to compare vagrant with docker: [BC#27](https://github.com/blk-io/crux/issues/27) 

@@ -92,7 +92,10 @@ virtualenv -p python3 py3eth
 source py3eth/bin/activate
 
 python3 -m pip install --upgrade pip==18.0
-pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests pandas jupyter ipykernel matplotlib
+pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0
+
+# only when using chainreader notebooks:
+pip3 install --upgrade jupyter ipykernel 
 ipython kernel install --user --name="Python.3.py3eth"
 ```
 all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
