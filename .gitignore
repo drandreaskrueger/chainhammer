@@ -1,3 +1,6 @@
+# virtualenv
+py3eth
+
 # block database files allblocks.db.sql and allblocks.db
 *.db.sql
 *.db
