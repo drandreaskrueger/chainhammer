@@ -9,9 +9,14 @@
 @see: https://gitlab.com/electronDLT/chainhammer for updates
 """
 
+#global DBFILE, NAME_PREFIX
+#DBFILE = "temp.db"
+#NAME_PREFIX = "TEMP"
+
 ################
 ## Dependencies:
 
+import sys
 import sqlite3
 import pandas
 import numpy
@@ -19,7 +24,8 @@ import matplotlib
 
 
 ################
-## DB queries
+
+
 
 def DB_query(SQL, conn):
     """
@@ -106,27 +112,155 @@ def add_GLPS(df, numBlocks):
 
 
 ##################################################
-## diagramming
+## diagramming stand-alone
+## does the same as the jupyter notebook
+## but more convenient for cloud server 
+## ... on the command line
 ##
-## TODO: also get the simpler step-by-step ones, 
+##################################################
+## TODOs: 
+##     * also get the simpler single diagrams ? 
 ##       from the original blocksDB_analyze.ipynb
+##     * doc strings for the following routines:
 ##################################################
 
-def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, tps_logy=False):
+def load_dependencies():
+    
+    import sqlite3; print("sqlite3 version", sqlite3.version)
+    import pandas; print("pandas version", pandas.__version__)
+    import numpy; print("numpy version", numpy.__version__)
+    import matplotlib; print("matplotlib version", matplotlib.__version__)
+    from matplotlib import pyplot as plt
+    
+    # get_ipython().run_line_magic('matplotlib', 'inline')
     
     # https://github.com/matplotlib/matplotlib/issues/5907#issuecomment-179001811
     matplotlib.rcParams['agg.path.chunksize'] = 10000
     
+    # my own routines are now all in separate .py file:
+    from blocksDB_diagramming import DB_query, DB_tableSize, maxBlockNumber, check_whether_complete
+    from blocksDB_diagramming import add_blocktime, add_TPS, add_GUPS, add_GLPS
+
+
+def load_db_and_check_complete(DBFILE):
+    print ("\nReading blocks table from", DBFILE)
+    
+    # open database connection
+    conn = sqlite3.connect(DBFILE)
+    
+    print ("DB table names: ", DB_query("SELECT name FROM sqlite_master WHERE type='table';", conn)[0])
+    
+    # number of rows?
+    _=DB_tableSize("blocks", conn)
+    
+    # what is the first & last block we have?
+    minblock, maxblock = maxBlockNumber(conn)[0]
+    
+    blocknumbers = DB_query("SELECT blocknumber FROM blocks ORDER BY blocknumber", conn) 
+    print ("len(blocknumbers)=", len(blocknumbers))
+    
+    # do we have consecutive blocks, none missing?
+    check_whether_complete(blocknumbers)
+    print ()
+
+    return conn, blocknumbers
+
+
+def simple_stats(conn):
+    
+    # simple statistics
+    
+    size_max = DB_query("SELECT MAX(size) FROM blocks", conn); print ("(block)size_max", size_max[0][0])
+    txcount_max = DB_query("SELECT MAX(txcount) FROM blocks", conn); print ("txcount_max", txcount_max[0][0])
+    txcount_av = DB_query("SELECT AVG(txcount) FROM blocks", conn); print ("txcount_av", txcount_av[0][0])
+    txcount_sum = DB_query("SELECT SUM(txcount) FROM blocks", conn); print ("txcount_sum", txcount_sum[0][0])
+    blocks_nonempty_count = DB_query("SELECT COUNT(blocknumber) FROM blocks WHERE txcount != 0", conn); print ("blocks_nonempty_count", blocks_nonempty_count[0][0])
+    print ("av tx per nonempty blocks = ", txcount_sum[0][0] / blocks_nonempty_count[0][0] )
+    print ()
+    
+    
+def read_whole_table_into_dataframe(conn):
+    
+    # SQL="SELECT * FROM blocks WHERE 48500<blocknumber and blocknumber<49000 ORDER BY blocknumber"
+    SQL="SELECT * FROM blocks ORDER BY blocknumber"
+    df = pandas.read_sql(SQL, conn)
+
+    return df
+    
+
+def check_timestamp_format(df):
+        
+    print ("example- first 4 rows:")
+    print (df[0:4])
+    print ("             is timestamp in seconds?")
+    
+    # ### `geth` based clients have a nanosecond timestamp
+    # not anymore?
+
+    # transform nanoseconds to seconds
+    # df["timestamp"]=df["timestamp"]/1000000000
+
+
+def add_columns(df):
+
+    # blocktime = timestamp[n] - timestamp[n-1]
+    add_blocktime(df)
+    
+    
+    #df["TPS_1"]=df['txcount']/df['blocktime']
+    #df
+    
+    
+    # transactions per second
+    # with differently sized (rectangular) windows
+    add_TPS(df, numBlocks=1)
+    add_TPS(df, numBlocks=3)
+    add_TPS(df, numBlocks=5)
+    add_TPS(df, numBlocks=10)
+    
+    
+    # gasUsed and gasLimit per second
+    add_GUPS(df, numBlocks=1)
+    add_GUPS(df, numBlocks=3)
+    add_GUPS(df, numBlocks=5)
+    
+    add_GLPS(df, numBlocks=1)
+    add_GLPS(df, numBlocks=3)
+    add_GLPS(df, numBlocks=5)
+
+    print ("\nColumns added. Now: ", df.columns.tolist() )
+    print ()
+    
+    
+def show_peak_TPS(df):
+
+    print ("peak TPS single block:")
+    print (df.sort_values(by=['TPS_1blk'], ascending=False)[0:10])
+    
+    
+    print ("\npeak TPS over ten blocks:")
+    print (df.sort_values(by=['TPS_10blks'], ascending=False)[0:10])
+
+    print ()
+    
+
+def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True):
+    
+    from matplotlib import pyplot as plt
+    
+    # https://github.com/matplotlib/matplotlib/issues/5907#issuecomment-179001811
+    matplotlib.rcParams['agg.path.chunksize'] = 10000
+        
+    ###################################################
     # prepare 2x2 subplots
-    plt = matplotlib.pyplot
+    # plt = matplotlib.pyplot
     fig, axes = plt.subplots(nrows=2, ncols=2,figsize=(15,10))
     plt.tight_layout(pad=6.0, w_pad=6.0, h_pad=7.5)
     title = prefix + " blocks %d to %d" % (blockFrom, blockTo)
     plt.suptitle(title, fontsize=16)
     
-    # bar charts are too expensive when too many blocks
-    numBlocks =  blockTo - blockFrom
-    kind = 'bar' if numBlocks<2000 else 'line'
+    ####################################
+    # TPS
     
     # TPS averages --> legend
     cols=['TPS_1blk', 'TPS_3blks', 'TPS_5blks', 'TPS_10blks']
@@ -136,30 +270,34 @@ def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, tps
     
     # TPS diagram
     cols = ['blocknumber'] + cols
-    ax=df[cols][blockFrom:blockTo].plot(x='blocknumber', rot=90, ax=axes[0,0],  logy=tps_logy)
+    ax=df[cols][blockFrom:blockTo].plot(x='blocknumber', rot=90, ax=axes[0,0])
     ax.set_title("transactions per second")
     ax.get_xaxis().get_major_formatter().set_useOffset(False)
     ax.legend(legend);
     
-    # BT
-    ax=df[['blocknumber', 'blocktime']][blockFrom:blockTo].plot(x='blocknumber', 
-                                                                kind=kind, 
-                                                                ax=axes[0,1],
-                                                                logy=bt_logy)
-    ax.set_title("blocktime since last block")
-    ## TODO: how to reduce the number of ticks on the x-axis??? nbins=10 is not working correctly
-    # ax.locator_params(nbins=10, axis='x')
-    # xlength=blockTo+1-blockFrom 
-    # ticks = numpy.arange(blockFrom, blockTo+1, round(xlength/10))
-    # print (ticks)
+    ###########################################
+    # bar charts or line charts
     
+    # bar charts are too expensive when too many blocks
+    numBlocks =  blockTo - blockFrom
+    kind = 'bar' if numBlocks<2000 else 'line'
         
+    #############################################
+    # BT
+    ax=df[['blocknumber', 'blocktime']][blockFrom:blockTo].plot(x='blocknumber', kind=kind, ax=axes[0,1],
+                                                               logy=bt_logy)
+    ax.set_title("blocktime since last block")
+    ax.locator_params(nbins=1, axis='x')  # TODO: matplotlib's ticks - how to autoselect few? Any idea welcome
+        
+    #############################################
     # blocksize
     ax=df[['blocknumber', 'size']][blockFrom:blockTo].plot(x='blocknumber', rot=90, kind=kind, ax=axes[1,0])
     # ax.get_xaxis().get_major_formatter().set_useOffset(False)
     ax.get_yaxis().get_major_formatter().set_scientific(False)
     ax.set_title("blocksize in bytes")
+    ax.locator_params(nbins=1, axis='x')  # TODO: matplotlib's ticks - how to autoselect few? Any idea welcome
     
+    ####################################
     # gas
     ax=df[['blocknumber', 'GLPS_1blk', 'GUPS_1blk']][blockFrom:blockTo].plot(x='blocknumber', 
                                                                              rot=90, ax=axes[1,1], 
@@ -169,20 +307,75 @@ def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, tps
         ax.get_yaxis().get_major_formatter().set_scientific(False)
     ax.set_title("gasUsed and gasLimit per second")
     
+    ##############################################
     # save diagram to PNG file
-    fig.savefig("img/%s_tps-bt-bs-gas_blks%d-%d.png" % (prefix,blockFrom,blockTo))
-
+    filename = "img/%s_tps-bt-bs-gas_blks%d-%d.png" % (prefix,blockFrom,blockTo)
+    fig.savefig(filename)
     
+    return filename
 
 
 
 
 ###############################################################################
 
+def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK):
+    
+    load_dependencies()
+    conn, blocknumbers = load_db_and_check_complete(DBFILE)
+    simple_stats(conn)
+    df = read_whole_table_into_dataframe(conn)
+    conn.close()
+    check_timestamp_format(df)
+    add_columns(df)
+    show_peak_TPS(df)
+    
+    if FROM_BLOCK==-1: FROM_BLOCK = min(blocknumbers)[0]
+    if TO_BLOCK==-1: TO_BLOCK = max(blocknumbers)[0]
+    # print (FROM_BLOCK, TO_BLOCK); exit()
+    
+    fn = diagrams(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True)
+    print ("\ndiagrams saved to: ", fn)
 
+
+###############################################################################
+
+def CLI_params():
+
+    if len(sys.argv)not in (3, 5):
+        print ("Please give FOUR arguments, \n"
+               "the filename DBFILE ___.db, \n"
+               "a PREFIX for characterising the diagram output files; \n"
+               "and FROM_BLOCK and TO_BLOCK for where to zoom,\n"
+               "or\n"
+               "give only the first TWO arguments, for the whole chain\n\n"
+               "examples:\n"
+               "%s temp.db TEMP 115 230\n"
+               "%s temp.db TEMP\n" % (sys.argv[0], sys.argv[0]))
+        exit(1)
+        
+    DBFILE=sys.argv[1]
+    NAME_PREFIX=sys.argv[2]
+    print ("using  DBFILE=%s  NAME_PREFIX=%s" % (DBFILE, NAME_PREFIX))
+
+    if len(sys.argv)==3:
+        FROM_BLOCK=-1
+        TO_BLOCK=-1
+        print ("for the whole chain, first to last block")
+    else:
+        FROM_BLOCK=int(sys.argv[3])
+        TO_BLOCK  =int(sys.argv[4])
+        print ("from block %d to block %d" % (FROM_BLOCK, TO_BLOCK) )        
+
+    print ()
+    return DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK
 
 if __name__ == '__main__':
     
-    print ("Don't start this directly. It is intended to be imported by the jupyer notebooks.")
+    params = CLI_params(); 
+
+    load_prepare_plot_save(*params)
+
+    print ("Done.")
     
-    
+        
