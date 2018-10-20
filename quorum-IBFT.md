@@ -486,6 +486,69 @@ fastest seen so far:
 See [reproduce.md#results](reproduce.md#results) for results on differently sized Amazon machines.
 
 
+### run 11
+* purpose: new diagrams
+* Amazon t2.xlarge AWS machine = 4 vCPUs, 16 GB RAM
+* chainhammer v38 with: `./send.py threaded2 23`
+* quorum-crux commit `f39db2345cf9d82e76d3905468e6e5ea1469b09d`
+
+```
+./tps.py 
+versions: web3 4.7.2, py-solc: 3.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.5, python 3.5.3 (default, Sep 27 2018, 17:25:39) [GCC 6.3.0 20170516]
+web3 connection established, blockNumber = 52, node version string =  Geth/v1.7.2-stable-3f1817ea/linux-amd64/go1.10.1
+first account of node is 0xcA843569e3427144cEad5e4d5999a3D0cCF92B8e, balance is 1000000000 Ether
+nodeName: Quorum, nodeType: Geth, consensus: istanbul, network: 1, chainName: ???, chainId: -1
+Block  52  - waiting for something to happen
+(filedate 1540076417) last contract address: 0x1932c48b2bF8102Ba33B4A6B545C32236e342f34
+(filedate 1540076703) new contract address: 0x9d13C6D3aFE1721BEef56B55D303B09E021E27ab
+
+blocknumber_start_here = 323
+starting timer, at block 323 which has  1  transactions; at timecode 1536.297552707
+block 323 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX    1 /  0.9 s =   1.1 TPS_average
+block 324 | new #TX 103 / 1000 ms = 103.0 TPS_current | total: #TX  104 /  2.2 s =  47.8 TPS_average
+block 325 | new #TX 487 / 1000 ms = 487.0 TPS_current | total: #TX  591 /  3.5 s = 170.2 TPS_average
+block 326 | new #TX 554 / 1000 ms = 554.0 TPS_current | total: #TX 1145 /  4.5 s = 255.9 TPS_average
+block 327 | new #TX 552 / 1000 ms = 552.0 TPS_current | total: #TX 1697 /  5.8 s = 292.6 TPS_average
+block 328 | new #TX 365 / 1000 ms = 365.0 TPS_current | total: #TX 2062 /  6.2 s = 334.9 TPS_average
+block 329 | new #TX 175 / 1000 ms = 175.0 TPS_current | total: #TX 2237 /  7.1 s = 313.4 TPS_average
+block 330 | new #TX 412 / 1000 ms = 412.0 TPS_current | total: #TX 2649 /  8.4 s = 314.6 TPS_average
+...
+block 351 | new #TX 649 / 1000 ms = 649.0 TPS_current | total: #TX 11430 / 30.0 s = 381.3 TPS_average
+block 352 | new #TX 383 / 1000 ms = 383.0 TPS_current | total: #TX 11813 / 30.4 s = 389.1 TPS_average
+block 353 | new #TX 249 / 1000 ms = 249.0 TPS_current | total: #TX 12062 / 31.6 s = 381.5 TPS_average
+block 354 | new #TX 231 / 1000 ms = 231.0 TPS_current | total: #TX 12293 / 32.2 s = 381.2 TPS_average
+block 355 | new #TX 479 / 1000 ms = 479.0 TPS_current | total: #TX 12772 / 33.6 s = 380.0 TPS_average
+block 356 | new #TX 489 / 1000 ms = 489.0 TPS_current | total: #TX 13261 / 34.3 s = 386.6 TPS_average
+block 357 | new #TX 391 / 1000 ms = 391.0 TPS_current | total: #TX 13652 / 35.6 s = 383.0 TPS_average
+block 358 | new #TX 292 / 1000 ms = 292.0 TPS_current | total: #TX 13944 / 36.4 s = 383.5 TPS_average
+block 359 | new #TX 708 / 2000 ms = 354.0 TPS_current | total: #TX 14652 / 38.0 s = 385.8 TPS_average
+block 361 | new #TX 172 / 1000 ms = 172.0 TPS_current | total: #TX 14824 / 39.3 s = 377.4 TPS_average
+block 362 | new #TX 225 / 1000 ms = 225.0 TPS_current | total: #TX 15049 / 40.3 s = 373.7 TPS_average
+block 363 | new #TX 322 / 1000 ms = 322.0 TPS_current | total: #TX 15371 / 41.5 s = 370.0 TPS_average
+block 364 | new #TX 236 / 1000 ms = 236.0 TPS_current | total: #TX 15607 / 42.2 s = 369.8 TPS_average
+block 365 | new #TX 183 / 1000 ms = 183.0 TPS_current | total: #TX 15790 / 43.5 s = 363.1 TPS_average
+block 366 | new #TX 298 / 1000 ms = 298.0 TPS_current | total: #TX 16088 / 44.5 s = 361.8 TPS_average
+block 367 | new #TX 318 / 1000 ms = 318.0 TPS_current | total: #TX 16406 / 45.5 s = 360.9 TPS_average
+block 368 | new #TX 173 / 1000 ms = 173.0 TPS_current | total: #TX 16579 / 46.1 s = 359.3 TPS_average
+block 369 | new #TX 292 / 1000 ms = 292.0 TPS_current | total: #TX 16871 / 47.7 s = 353.5 TPS_average
+...
+block 380 | new #TX 256 / 1000 ms = 256.0 TPS_current | total: #TX 19855 / 58.1 s = 341.8 TPS_average
+block 381 | new #TX 146 / 1000 ms = 146.0 TPS_current | total: #TX 20001 / 59.0 s = 338.9 TPS_average
+block 382 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 59.9 s = 333.7 TPS_average
+```
+**Amazon t2.xlarge - TPS_average: peak 389.1 TPS, final 338.9 TPS**
+
+now with the new CLI tool, immediately create images:
+
+```
+./blocksDB_create.py temp.db
+./blocksDB_diagramming.py temp.db quorum-crux-IBFT_t2xlarge 320 395
+```
+
+![quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png](chainreader/img/quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png)
+
+
+
 ## how to further increase the TPS?
 
 any ideas? Please tell us --> [quorum/issues/479](https://github.com/jpmorganchase/quorum/issues/479)
