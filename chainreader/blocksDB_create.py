@@ -29,7 +29,7 @@
 
 
 global DBFILE
-DBFILE = "allblocks.db"
+DBFILE = "temp.db"
 
 # obsolete: hard coded DB file names:
 """
