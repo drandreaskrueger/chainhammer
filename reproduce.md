@@ -590,13 +590,15 @@ cd drandreaskrueger_chainhammer && source py3eth/bin/activate
 |-----------	|-----------	    |--------	|--------	|-------------	|--------------	|
 | t2.micro 	    | parity aura   	| 4      	| (D)    	| 45.5        	|  44.3        |
 | t2.large 	    | parity aura   	| 4      	| (D)    	| 53.5        	|  52.9        |
-| t2.xlarge 	| parity aura   	| 4      	| (A)    	| 56.5        	|  56.1        |
+| t2.xlarge 	| parity aura   	| 4      	| (J)    	| 57.1        	|  56.4        |
 | t2.2xlarge 	| parity aura   	| 4      	| (D)    	| 57.6        	|  57.6        |
 |               |                   |           |        	|         	    |              |
 | t2.micro 	    | parity instantseal | 1      	| (G)    	| 42.3        	|  42.3        |
+| t2.xlarge	    | parity instantseal | 1      	| (J)    	| 48.1        	|  48.1        |
 |               |                   |           |        	|         	    |              |
 | t2.2xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 421.6       	| 400.0        |
 | t2.xlarge 	| geth clique     	| 3+1 +2    | (B)    	| 386.1       	| 321.5        |
+| t2.xlarge 	| geth clique     	| 3+1       | (K)    	| 372.6       	| 325.3        |
 | t2.large 	    | geth clique     	| 3+1 +2    | (B)    	| 170.7       	| 169.4        |
 | t2.small 	    | geth clique     	| 3+1 +2    | (B)    	|  96.8       	|  96.5        |
 | t2.micro 	    | geth clique     	| 3+1       | (H)    	| 124.3       	| 122.4        |
@@ -606,6 +608,7 @@ cd drandreaskrueger_chainhammer && source py3eth/bin/activate
 | t2.micro 	    | quorum crux IBFT 	| 4    	    | (F)     	| lack of RAM   |         	   |
 | t2.large 	    | quorum crux IBFT 	| 4    	    | (F)    	| 207.7      	| 199.9        |
 | t2.xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 439.5      	| 395.7        |
+| t2.xlarge 	| quorum crux IBFT 	| 4    	    | (L)    	| 389.1      	| 338.9        |
 | t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
 | c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	| 524.3        |
 
@@ -756,6 +759,22 @@ docker-compose -f docker-compose-local.yaml up --build
 ```
 
 **beware that these results are artifically slow** because swapping not RAM. But I could get it running on an AWS `t2.micro` which is "free tier" - so you can reproduce it without paying!!!
+
+### (J) parity v1.11.11 on AWS t2.xlarge
+Repeated recent run, to get *chainreader diagrams* for parity on a fast AWS machine.  
+See [parity.md#run-18](parity.md#run-18) for details. Almost identical to (D) above, just newer versions of some dependencies.
+
+### (K) geth v1.8.14 on AWS t2.xlarge
+Repeated recent run, to get *chainreader diagrams* for geth clique on a fast AWS machine. See [geth.md#run-2](geth.md#run-2) for details. Almost identical to (B), but without the ethstats docker instances.
+
+Interesting new observation, now that I ran it for 50k transactions not 20k. See issue comment  https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-431629285
+
+
+### (L) IBFT quorum-crux on AWS t2.xlarge
+Repeated recent run, to get *chainreader diagrams* for quorum IBFT on a fast AWS machine. See [quorum-IBFT.md#run-11](quorum-IBFT.md#run-11) for details. Almost identical to (F), so I don't know why it is suddenly 15% slower. 
+
+Perhaps it is a newer version of quorum? Unfortunately I don't know as [quorum pretends to be geth](https://github.com/jpmorganchase/quorum/issues/507), and is stuck on version `Geth/v1.7.2` for a very long time now.
+
 
 ## you
 Please inspire us what could make `parity aura` faster. Or actually ... what could make *any* of this faster. Thanks.

@@ -1561,23 +1561,6 @@ run log:
 ./tps.py 
 versions: web3 4.7.2, py-solc: 3.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.5, python 3.5.3 (default, Sep 27 2018, 17:25:39) [GCC 6.3.0 20170516]
 web3 connection established, blockNumber = 2, node version string =  Parity//v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
-first account of node is 0x00a329c0648769A73afAc7F9381E08FB43dBEA72, balance is 1606938044258990275541962092341162602522202.993782792835301376 Ether
-nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: developmentchain, chainId: 17
-Block  2  - waiting for something to happen
-(filedate 1540079287) last contract address: 0x731a10897d267e19B34503aD902d0A29173Ba4B1
-(filedate 1540079303) new contract address: 0x62d69f6867A0A084C6d313943dC22023Bc263691
-
-blocknumber_start_here = 3
-starting timer, at block 3 which has  1  transactions; at timecode 4136.416353506
-block 3 | new #TX   3 /    0 ms =   0.0 TPS_current | total: #TX    4 /  0.6 s =   6.4 TPS_average
-block 6 | new #TX  16 / 1000 ms =  16.0 TPS_current | total: #TX   20 /  1.0 s =  20.8 TPS_average
-block 22 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX   36 /  1.3 s =  27.7 TPS_average
-block 38 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX   52 /  1.6 s =  31.8 TPS_average
-block 54 | new #TX  17 / 1000 ms =  17.0 TPS_current | total: #TX   69 /  2.0 s =  34.9 TPS_average
-block 71 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX   85 /  2.3 s =  36.8 TPS_average
-block 87 | new #TX  17 /    0 ms =   0.0 TPS_current | total: #TX  102 /  2.7 s =  38.5 TPS_average
-block 104 | new #TX  17 / 1000 ms =  17.0 TPS_current | total: #TX  119 /  3.0 s =  39.8 TPS_average
-block 121 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX  135 /  3.3 s =  40.6 TPS_average
 ...
 ```
 
