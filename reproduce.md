@@ -13,7 +13,7 @@ Actually, today I tried this again - tested on and optimized for Debian AWS mach
   * geth install via golang
 * geth clique network (for comparison with above parity network results)
 * AWS deployment - how I created the AMI
-* [readymade Amazon AMI](https://gitlab.com/electronDLT/chainhammer/blob/master/reproduce.md#readymade-amazon-ami) <-- start HERE if you have little time -->
+* [readymade Amazon AMI](https://github.com/drandreaskrueger/chainhammer/blob/master/reproduce.md#readymade-amazon-ami) <-- start HERE if you have little time -->
   * how to clone your own AWS machine from that image
   * how to benchmark `parity`
   * how to benchmark `geth`
@@ -46,7 +46,7 @@ sudo apt-get install -y wget htop jq
 [remove-ssh-host-key-pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs), update chainhammer repo to newest commit, then power down:
 ```
 sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
-cd ~/electronDLT_chainhammer; git pull
+cd ~/drandreaskrueger_chainhammer; git pull
 sudo shutdown now
 ```
 
@@ -120,8 +120,8 @@ That starts one `instantseal` node - but that already shows that parity cannot g
 new terminal:
 ```
 # chainhammer & dependencies
-git clone https://gitlab.com/electronDLT/chainhammer electronDLT_chainhammer
-cd electronDLT_chainhammer/
+git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer
+cd drandreaskrueger_chainhammer/
 
 sudo apt install python3-pip libssl-dev
 sudo pip3 install virtualenv 
@@ -157,7 +157,7 @@ new terminal
 
 ```
 # same virtualenv
-cd electronDLT_chainhammer/
+cd drandreaskrueger_chainhammer
 source py3eth/bin/activate
 
 # start the chainhammer send routine
@@ -263,7 +263,7 @@ docker kill $(docker ps -q) ; docker rm $(docker ps -a -q) ; docker rmi $(docker
 ```
 
 #### geth Clique network with dockerized nodes
-for details see [geth.md#javahippiegeth-dev](https://gitlab.com/electronDLT/chainhammer/blob/0bdcbedfeeb261c534ae3baeb0bd9a37054c9b28/geth.md#javahippiegeth-dev).
+for details see [geth.md#javahippiegeth-dev](https://github.com/drandreaskrueger/chainhammer/blob/0bdcbedfeeb261c534ae3baeb0bd9a37054c9b28/geth.md#javahippiegeth-dev).
 
 ```
 git clone https://github.com/drandreaskrueger/geth-dev.git drandreaskrueger_geth-dev
@@ -281,7 +281,7 @@ monitor-frontend         | 2018-09-10 13:34:02.054 [API] [BLK] Block: 7 from: ge
 
 new terminal: test connection
 ```
-cd electronDLT_chainhammer/
+cd drandreaskrueger_chainhammer/
 source py3eth/bin/activate
 ./deploy.py
 ```
@@ -289,14 +289,14 @@ source py3eth/bin/activate
 
 new terminal: watcher
 ```
-cd electronDLT_chainhammer/
+cd drandreaskrueger_chainhammer/
 source py3eth/bin/activate
 ./tps.py
 ```
 
 new terminal: hammer
 ```
-cd electronDLT_chainhammer/
+cd drandreaskrueger_chainhammer/
 source py3eth/bin/activate
 ./deploy.py notest; ./send.py 
 ```
@@ -483,7 +483,7 @@ sudo ./clean.sh
 sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
 jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
 
-cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
+cp ~/paritytech_parity-deploy/deployment/1/password ~/drandreaskrueger_chainhammer/account-passphrase.txt
 docker-compose up
 ```
 For explanations of all those settings, see [parity.md](parity.md). 
@@ -541,7 +541,7 @@ and possibly destroy all docker
 N.B.: Port is changed from 8545 to 22001:
 
 ```
-nano ~/electronDLT_chainhammer/config.py
+nano ~/drandreaskrueger_chainhammer/config.py
 ```
 change to
 ```
@@ -557,7 +557,7 @@ diff docker-compose-local.yaml docker-compose.yaml
 ... and create some local files
 ```
 ssh chainhammer
-cd ~/electronDLT_chainhammer && source py3eth/bin/activate
+cd ~/drandreaskrueger_chainhammer && source py3eth/bin/activate
 
 ./deploy.py
 ```
@@ -567,7 +567,7 @@ nano config.py
 ```
 or set the correct account passphrase:
 ```
-cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
+cp ~/paritytech_parity-deploy/deployment/1/password ~/drandreaskrueger_chainhammer/account-passphrase.txt
 ```
 
 
@@ -579,7 +579,7 @@ cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/ac
 ### chainhammer: send transactions
 ```
 ssh chainhammer
-cd electronDLT_chainhammer && source py3eth/bin/activate
+cd drandreaskrueger_chainhammer && source py3eth/bin/activate
 
 ./deploy.py notest; ./send.py threaded2 23
 ```
@@ -622,7 +622,7 @@ cd ~/paritytech_parity-deploy
 # sed -i 's/0x1312D00/0x2625A00/g' config/spec/genesis/aura; cat config/spec/genesis/aura # hardcoded now in parity-deploy https://github.com/paritytech/parity-deploy/issues/55#issuecomment-422309365
 
 ./parity-deploy.sh --nodes 4 --config aura --name myaura --geth --jsonrpc-server-threads 10 --tx-queue-size 20000 --cache-size 4096 --gas-floor-target 40000000 --tx-queue-mem-limit 0
-cp ~/paritytech_parity-deploy/deployment/1/password ~/electronDLT_chainhammer/account-passphrase.txt
+cp ~/paritytech_parity-deploy/deployment/1/password ~/drandreaskrueger_chainhammer/account-passphrase.txt
 docker-compose up
 ```
 > Parity/v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
