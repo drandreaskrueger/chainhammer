@@ -1537,10 +1537,132 @@ Other than that, the parity team seems a bit clueless how to accelerate their ow
 
 
 
+### run 18
+
+* purpose: new diagrams
+* Amazon t2.xlarge AWS machine = 4 vCPUs, 16 GB RAM
+* chainhammer v38 with: `./send.py` (single-threaded!)
+* parity-deploy commit `9f8bf874a6c947da61a4d495e3389f5ec9998fb1`
+* parity version `v1.11.11`
+
+Bug [PD#76](https://github.com/paritytech/parity-deploy/issues/76). Needs to be patched to not run with newest stable, but with v1.11.11:
+```
+git clone https://github.com/paritytech/parity-deploy.git paritytech_parity-deploy
+cd paritytech_parity-deploy
+./parity-deploy.sh --config dev --name instantseal --geth
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+docker-compose up
+```
+
+#### instantseal:
+
+run log:
+```
+./tps.py 
+versions: web3 4.7.2, py-solc: 3.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.5, python 3.5.3 (default, Sep 27 2018, 17:25:39) [GCC 6.3.0 20170516]
+web3 connection established, blockNumber = 2, node version string =  Parity//v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
+first account of node is 0x00a329c0648769A73afAc7F9381E08FB43dBEA72, balance is 1606938044258990275541962092341162602522202.993782792835301376 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: developmentchain, chainId: 17
+Block  2  - waiting for something to happen
+(filedate 1540079287) last contract address: 0x731a10897d267e19B34503aD902d0A29173Ba4B1
+(filedate 1540079303) new contract address: 0x62d69f6867A0A084C6d313943dC22023Bc263691
+
+blocknumber_start_here = 3
+starting timer, at block 3 which has  1  transactions; at timecode 4136.416353506
+block 3 | new #TX   3 /    0 ms =   0.0 TPS_current | total: #TX    4 /  0.6 s =   6.4 TPS_average
+block 6 | new #TX  16 / 1000 ms =  16.0 TPS_current | total: #TX   20 /  1.0 s =  20.8 TPS_average
+block 22 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX   36 /  1.3 s =  27.7 TPS_average
+block 38 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX   52 /  1.6 s =  31.8 TPS_average
+block 54 | new #TX  17 / 1000 ms =  17.0 TPS_current | total: #TX   69 /  2.0 s =  34.9 TPS_average
+block 71 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX   85 /  2.3 s =  36.8 TPS_average
+block 87 | new #TX  17 /    0 ms =   0.0 TPS_current | total: #TX  102 /  2.7 s =  38.5 TPS_average
+block 104 | new #TX  17 / 1000 ms =  17.0 TPS_current | total: #TX  119 /  3.0 s =  39.8 TPS_average
+block 121 | new #TX  16 /    0 ms =   0.0 TPS_current | total: #TX  135 /  3.3 s =  40.6 TPS_average
+...
+```
+
+**TPS_average: peak and final 48.1 TPS on Amazon t2.xlarge**
+
+#### aura 
+
+same as above but 
+
+* `./send.py threaded2 23`
+* **aura** (not *instantseal*) with supposedly optimal parameters (please you try your luck, finding a better=faster combination of parameters):
+```
+sudo ./clean.sh
+ARGS="--db-compaction ssd --tracing off --gasprice 0 --gas-floor-target 100000000000 "
+ARGS=$ARGS"--pruning fast --tx-queue-size 32768 --tx-queue-mem-limit 0 --no-warp "
+ARGS=$ARGS"--jsonrpc-threads 8 --no-hardware-wallets --no-dapps --no-secretstore-http "
+ARGS=$ARGS"--cache-size 4096 --scale-verifiers --num-verifiers 16 --force-sealing "
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth $ARGS
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
+docker-compose up
+```
+
+run log:
+```
+./tps.py 
+versions: web3 4.7.2, py-solc: 3.1.0, solc 0.4.24+commit.e67f0147.Linux.gpp, testrpc 1.3.5, python 3.5.3 (default, Sep 27 2018, 17:25:39) [GCC 6.3.0 20170516]
+web3 connection established, blockNumber = 2, node version string =  Parity//v1.11.11-stable-cb03f38-20180910/x86_64-linux-gnu/rustc1.28.0
+first account of node is 0x663F3eC218f5c2A19A4feE4206A68e05feD2a7EC, balance is 0 Ether
+nodeName: Parity, nodeType: Parity, consensus: ???, network: 17, chainName: myaura, chainId: 17
+
+Block  2  - waiting for something to happen
+(filedate 1540079740) last contract address: 0x136EfA9B9f8982537D769EB8400E124af3A4Fb1F
+(filedate 1540079760) new contract address: 0xEa0fb3A5066A1c627B07fA6146Fa304F7605cAE2
+
+blocknumber_start_here = 5
+starting timer, at block 5 which has  1  transactions; at timecode 4593.508166609
+block 5 | new #TX 229 / 5000 ms =  45.8 TPS_current | total: #TX  230 /  5.2 s =  44.4 TPS_average
+block 6 | new #TX 224 / 5000 ms =  44.8 TPS_current | total: #TX  454 / 10.1 s =  45.2 TPS_average
+block 7 | new #TX 292 / 5000 ms =  58.4 TPS_current | total: #TX  746 / 14.9 s =  50.0 TPS_average
+block 8 | new #TX 361 / 5000 ms =  72.2 TPS_current | total: #TX 1107 / 20.1 s =  55.0 TPS_average
+block 9 | new #TX 238 / 5000 ms =  47.6 TPS_current | total: #TX 1345 / 25.0 s =  53.8 TPS_average
+...
+block 47 | new #TX 296 / 5000 ms =  59.2 TPS_current | total: #TX 12216 / 215.0 s =  56.8 TPS_average
+block 48 | new #TX 339 / 5000 ms =  67.8 TPS_current | total: #TX 12555 / 219.9 s =  57.1 TPS_average
+block 49 | new #TX 255 / 5000 ms =  51.0 TPS_current | total: #TX 12810 / 225.1 s =  56.9 TPS_average
+block 50 | new #TX 299 / 5000 ms =  59.8 TPS_current | total: #TX 13109 / 230.0 s =  57.0 TPS_average
+block 51 | new #TX 223 / 5000 ms =  44.6 TPS_current | total: #TX 13332 / 234.9 s =  56.8 TPS_average
+block 52 | new #TX 365 / 5000 ms =  73.0 TPS_current | total: #TX 13697 / 240.0 s =  57.1 TPS_average
+block 53 | new #TX   0 / 5000 ms =   0.0 TPS_current | total: #TX 13697 / 244.9 s =  55.9 TPS_average
+block 54 | new #TX 327 / 5000 ms =  65.4 TPS_current | total: #TX 14024 / 250.1 s =  56.1 TPS_average
+block 55 | new #TX 327 / 5000 ms =  65.4 TPS_current | total: #TX 14351 / 255.0 s =  56.3 TPS_average
+block 56 | new #TX 488 / 5000 ms =  97.6 TPS_current | total: #TX 14839 / 259.9 s =  57.1 TPS_average
+block 57 | new #TX 272 / 5000 ms =  54.4 TPS_current | total: #TX 15111 / 265.1 s =  57.0 TPS_average
+block 58 | new #TX 223 / 5000 ms =  44.6 TPS_current | total: #TX 15334 / 270.0 s =  56.8 TPS_average
+block 59 | new #TX 298 / 5000 ms =  59.6 TPS_current | total: #TX 15632 / 274.9 s =  56.9 TPS_average
+block 60 | new #TX 349 / 5000 ms =  69.8 TPS_current | total: #TX 15981 / 280.1 s =  57.1 TPS_average
+block 61 | new #TX 242 / 5000 ms =  48.4 TPS_current | total: #TX 16223 / 285.0 s =  56.9 TPS_average
+block 62 | new #TX 299 / 5000 ms =  59.8 TPS_current | total: #TX 16522 / 290.1 s =  56.9 TPS_average
+block 63 | new #TX 298 / 5000 ms =  59.6 TPS_current | total: #TX 16820 / 295.0 s =  57.0 TPS_average
+...
+block 69 | new #TX 261 / 5000 ms =  52.2 TPS_current | total: #TX 18528 / 324.9 s =  57.0 TPS_average
+block 70 | new #TX 297 / 5000 ms =  59.4 TPS_current | total: #TX 18825 / 330.1 s =  57.0 TPS_average
+block 71 | new #TX 223 / 5000 ms =  44.6 TPS_current | total: #TX 19048 / 335.0 s =  56.9 TPS_average
+block 72 | new #TX 353 / 5000 ms =  70.6 TPS_current | total: #TX 19401 / 339.8 s =  57.1 TPS_average
+block 73 | new #TX 238 / 5000 ms =  47.6 TPS_current | total: #TX 19639 / 345.0 s =  56.9 TPS_average
+block 74 | new #TX 298 / 5000 ms =  59.6 TPS_current | total: #TX 19937 / 350.2 s =  56.9 TPS_average
+block 75 | new #TX  64 / 5000 ms =  12.8 TPS_current | total: #TX 20001 / 354.8 s =  56.4 TPS_average
+block 76 | new #TX   0 / 5000 ms =   0.0 TPS_current | total: #TX 20001 / 360.0 s =  55.6 TPS_average
+```
+
+**TPS_average: peak 57.1 TPS final 56.4 TPS on Amazon t2.xlarge**
+
+with the new CLI tool, immediately make diagrams:
+```
+rm temp.db*
+./blocksDB_create.py temp.db
+./blocksDB_diagramming.py temp.db parity-v1.11.11-aura_t2xlarge 5 85
+```
+
+![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](chainreader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
+parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 
 
-
-## BUT perhaps there is a third way:
+## please help making parity faster:
 
 ##### There is a [README.md --> quickstart](README.md#quickstart), and a [reproduce.md](reproduce.md) ... 
 
@@ -1577,4 +1699,5 @@ Thanks.
 * [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582) broken parity 2.0.5-stable - refuses to accept new transactions after ~500 tx
 * [PD#71](https://github.com/paritytech/parity-deploy/issues/71) ethkey: error while loading shared libraries: libboost_filesystem.so.1.55.0: cannot open shared object file: No such file or directory
 * [PE#9586](https://github.com/paritytech/parity-ethereum/issues/9586) parity aura almost always ignores the stepDuration=2 seconds, blocks come slower
+* [PD#76](https://github.com/paritytech/parity-deploy/issues/76) Error upgrading parity data: CannotCreateConfigPath 
 
