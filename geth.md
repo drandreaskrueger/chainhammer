@@ -219,9 +219,7 @@ block 83 | new #TX 718 / 2000 ms = 359.0 TPS_current | total: #TX 48770 / 144.7 
 block 84 | new #TX 846 / 2000 ms = 423.0 TPS_current | total: #TX 49616 / 146.0 s = 339.8 TPS_average
 block 85 | new #TX 385 / 2000 ms = 192.5 TPS_current | total: #TX 50001 / 148.2 s = 337.4 TPS_average
 block 86 | new #TX   0 / 2000 ms =   0.0 TPS_current | total: #TX 50001 / 150.0 s = 333.3 TPS_average
-
 ```
-
 
 **TPS_average: peak 372.6 TPS - intermediate low 322.2 TPS - final 337.4 TPS on Amazon t2.xlarge**
 
@@ -234,7 +232,7 @@ rm temp.db*
 ```
 
 ![geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png](chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png)  
-img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png
+chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png
 
 
 
