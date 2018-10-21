@@ -234,7 +234,11 @@ rm temp.db*
 ![geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png](chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png)  
 chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png
 
+Interesting behaviour, no?
 
+I have reported it to the `geth` team --> https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-431629285
+
+*The TPS is dropping considerably after ~14k transactions - but then it actually recovers. Odd.* 
 
 ## issues
 * [GD#13](https://github.com/javahippie/geth-dev/issues/13) chain is stuck at block 1 or block 2
