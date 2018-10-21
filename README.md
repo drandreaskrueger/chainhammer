@@ -158,24 +158,56 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 
 ## chainhammer --> chainreader -->  diagrammer
 
+Newsflash October 2018:
+
+#### diagramming now in 4 CLI lines:
+
+```
+cd chainreader
+rm temp.db*
+./blocksDB_create.py temp.db
+./blocksDB_diagramming.py temp.db name-prefix fromBlock toBlock
+```
+
+### geth clique on AWS t2.xlarge 
+[geth.md](geth.md) = geth (go ethereum client), "Clique" consensus.
+
+50,000 transactions to an Amazon t2.xlarge machine.
+
+Interesting artifact that after ~14k transactions, the speed drops considerably - but recovers again. [Reported](https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-431629285).
+
+![geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png](chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png)  
+chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png
+
+### quorum IBFT on AWS t2.xlarge 
+
+[quorum-IBFT.md](quorum-IBFT.md) = Quorum (geth fork), IBFT consensus, 20 millions gasLimit, 1 second istanbul.blockperiod; 20000 transactions multi-threaded with 23 workers. Initial average >400 TPS then drops to below 300 TPS, see [quorum issue](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316))
+
+![quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png](chainreader/img/quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png)
+
+
 ### quorum raft
+OLD RUN on a desktop machine.  
+
 [quorum.md](quorum.md) = Quorum (geth fork), raft consensus, 1000 transactions multi-threaded with 23 workers, average TPS around 160 TPS, and 20 raft blocks per second)
 ![chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png](chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png)
 
-### quorum IBFT
-[quorum-IBFT.md](quorum-IBFT.md) = Quorum (geth fork), IBFT consensus, 20 millions gasLimit, 1 second istanbul.blockperiod; 20000 transactions multi-threaded with 13 workers. Initial average >450 TPS then drops to ~270 TPS, see [quorum issue](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316))
-
-![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
 
 ### tobalaba
+OLD RUN on a desktop machine.
+
 [tobalaba.md](tobalaba.md) = Public "Tobalaba" chain of the EnergyWebFoundation (parity fork), PoA; 20k transactions; > 150 TPS if client is well-connected.
 
 ![chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
 
-### parity aura v1.11.8
-[parity.md](parity.md) = using [parity-deploy.sh](https://github.com/paritytech/parity-deploy) dockerized network of 4 local nodes with 40 million gasLimit, and 4-8 seconds blocktime; 20k transactions; ~ 65 TPS. 
+### parity aura v1.11.11 on AWS t2.xlarge 
+[parity.md#run-18](parity.md#run-18) = using [parity-deploy.sh](https://github.com/paritytech/parity-deploy) dockerized network of 4 local nodes with increased gasLimit, and 5 seconds blocktime; 20k transactions; ~ 60 TPS on an Amazon t2.xlarge machine.
 
-![chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
+N.B.: Could not work with parity v2 yet because of bugs [PD#76](https://github.com/paritytech/parity-deploy/issues/76) and [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582) --> everything still on parity v1.11.11
+
+![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](chainreader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
+parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
+
 
 Calling all parity experts: How to improve these too slow TPS results?    See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md), and the 2 shortest routes to reproducing the results: [reproduce.md](reproduce.md).    
 
