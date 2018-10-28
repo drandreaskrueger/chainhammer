@@ -3,12 +3,13 @@ https://gitlab.com/electronDLT/chainhammer has helped to create these measuremen
 
 To appear in the following lists, please [fork](https://gitlab.com/electronDLT/chainhammer/forks/new) this repo, add your information, and then "pull request". Thanks.
 
-## other blockchain benchmarking projects
+## other blockchain benchmarking & simulation projects
 
 * [Cryptocurrency: Scaling Ethereum to 1.5 million TPS](https://steemit.com/blockchain/@andrecronje/cryptocurrency-scaling-ethereum-to-1-5-million-tps)
 * IBFT 800 TPS preliminary results - slide 35 in https://www.slideshare.net/YuTeLin1/istanbul-bft 
 * CodyBorn Microsoft - signing transactions himself, each transaction comes from a different account --> 400 TPS even with parity, see these answers: [codyborn.md](codyborn.md)
 * poanetwork HonebadgerBFT [network-simulation](https://github.com/poanetwork/hbbft/#example-network-simulation) linked in their [comment here](https://github.com/paritytech/parity-ethereum/issues/9298#issuecomment-432204098)
+* [bigchainDB BEP 23](https://github.com/bigchaindb/BEPs/tree/master/23) - Performance Study: Analysis of Transaction Throughput in a BigchainDB Network
 * ...
 
 [please add yours, and pull request]
