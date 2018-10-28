@@ -9,7 +9,7 @@ news 2018-Oct-01
 * `git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer`
 * News: Funding needed! Contact me. Or simply: [ETH] 0x008B32b996745b89bfdED64488DeA074EF52f4b8
 
-Thx.
+Thx
 
 ---
 
