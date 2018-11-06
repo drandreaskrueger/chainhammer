@@ -36,7 +36,10 @@ I switch between those two routes here
 
 choice constant `ROUTE` is defined in [`config.py`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/config.py#L38)
 
-Now I have actually raised an issue in the web3.py repo.
+I have now actually raised an 
+
+### issue 
+* [w3p#1133](https://github.com/ethereum/web3.py/issues/1133): *huge difference in TPS performance when bypassing web3.py in favor of a direct RPC call* 
 
 ---
 
