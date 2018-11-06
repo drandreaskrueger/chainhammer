@@ -8,7 +8,7 @@ This question was asked here: https://github.com/paritytech/parity-ethereum/issu
 
 > because the web3 library is too slow
 
-Yes, for low (two digit) TPS it does not make a big difference, only ~20% faster. But when I get into the hundreds of TPS, I see considerable gains (~ twice as fast) when bypassing web3 completely.  Please have a quick look at these old experiments: https://github.com/drandreaskrueger/chainhammer/blob/master/log.md#sending-via-web3-versus-sending-via-rpc
+Yes, for low (two digit) TPS it does not make a big difference, only ~20% faster. But when I get into the hundreds of TPS, I see considerable gains (~twice as fast) when bypassing web3 completely.  Please have a quick look at these old experiments: https://github.com/drandreaskrueger/chainhammer/blob/master/log.md#sending-via-web3-versus-sending-via-rpc
 
 ---
 
