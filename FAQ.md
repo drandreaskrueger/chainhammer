@@ -2,7 +2,7 @@
 frequently asked questions, explaining approach, or code
 ---
 
-## send via `web3.py` versus send via direct RPC call 'eth_sendTransaction`
+## send via `web3.py` versus send via direct RPC call `eth_sendTransaction`
  
 This question was asked here: https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-436294454
 
