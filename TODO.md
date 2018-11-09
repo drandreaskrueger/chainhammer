@@ -2,6 +2,9 @@
 
 interesting next questions:
 
+* in [Ethereum Core Devs Meeting 49, on Nov 9th 2018](https://github.com/ethereum/pm/issues/60), @Afri mentioned that some people are working on porting `Clique` (the `geth` PoA) to `parity`
+  * so soon there can be a cross-client PoA algorithm! Good news. 
+  * Will be interesting to combine https://github.com/javahippie/geth-dev and https://github.com/paritytech/parity-deploy !
 * [a first issue](https://github.com/drandreaskrueger/chainhammer/issues/1) with python library dependencies for chainhammer was reported 
 * add this repo to https://github.com/ConsenSys/ethereum-developer-tools-list
 * quorum: solve [this strange problem](https://gitlab.com/electronDLT/chainhammer/blob/d3b408d325e1089c54071aeceb4af06b75133dd2/reproduce_TODO-crux.md#problems) which seems to only appear on Amazon AWS; but no time for this now.
