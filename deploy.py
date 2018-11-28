@@ -60,7 +60,7 @@ def deployContract(contract_interface, ifPrint=True):
                                  bytecode=contract_interface['bin'])
     tx_hash = w3.toHex( myContract.constructor().transact() )
     print ("tx_hash = ", tx_hash, "--> waiting for receipt ...")
-    tx_receipt = w3.eth.waitForTransacgit push --set-upstream origin cleanuptionReceipt(tx_hash)
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     
     contractAddress = tx_receipt["contractAddress"]
     if ifPrint:
