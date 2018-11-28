@@ -32,6 +32,8 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 
 # TODO while work in progress
 * update documentation: `deploy.py notest` --> `deploy.py`; get-set-get test is now run with `deploy.py andtests` 
+* move old parity.md quorum.md geth.md etc into historical/ folder, BUT link to them at top of the new ones
+
 
 ## done
 * `IBFT` instead of `raft`
