@@ -30,6 +30,9 @@ what else? Please YOU make suggestions.
 
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
 
+# TODO while work in progress
+* update documentation: `deploy.py notest` --> `deploy.py`; get-set-get test is now run with `deploy.py andtests` 
+
 ## done
 * `IBFT` instead of `raft`
   * generic [7nodes example](https://github.com/drandreaskrueger/quorum-examples/blob/master/examples/7nodes/README.md#7-nodes) contains IBFT already; so that part *should be* easy (however, some issues reported bugs with IBFT ?)

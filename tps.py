@@ -4,11 +4,11 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v24 (4/September/2018)
+@version: v40 (28/November/2018)
 @since:   17/April/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
 
@@ -16,41 +16,24 @@ import time, timeit, sys, os
 
 from web3 import Web3, HTTPProvider
 
-from config import RPCaddress2 #, RAFT
-from deploy import loadFromDisk, CONTRACT_ADDRESS
+from config import RPCaddress2 
+from deploy import loadFromDisk, FILE_CONTRACT_ADDRESS
 from clienttools import web3connection
     
 
-def loopUntilActionBegins_raft(blockNumber_start, query_intervall = 0.1):
+def loopUntil_NewContract(query_intervall = 0.1):
     """
-    raft:  polls until chain moves forward
-    other: polls until a non-empty block appears (untested)
-    """
-    while(True):
-        blockNumber=w3.eth.blockNumber
-        
-        # relies on chain moving forward only with new transaction, 
-        # doesn't work for PoW, works for raft
-        if (blockNumber != blockNumber_start):
-            break
-        
-        time.sleep(query_intervall)
-      
-    print('')
-    return blockNumber_start + 1
-
-
-def loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall = 0.1):
-    """
-    polls file "CONTRACT_ADDRESS".
-    Continues when overwritten file.
+    Wait for new smart contract to be deployed.
     
-    N.B.: It can actually happen that the same ethereum contract address is chosen again, 
+    Continuously polls file "FILE_CONTRACT_ADDRESS".
+    Returns when overwritten file has different address or new filedate.
+    
+    N.B.: It actually happens that same Ethereum contract address is created again, 
           if blockchain is deleted, and everything restarted. So: Check filedate too.
     """
     
     address, _ = loadFromDisk()
-    when = os.path.getmtime(CONTRACT_ADDRESS) 
+    when = os.path.getmtime(FILE_CONTRACT_ADDRESS) 
     print ("(filedate %d) last contract address: %s" %(when, address)) 
     
     while(True):
@@ -59,28 +42,13 @@ def loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall = 0
         # checks whether a new contract has been deployed
         # because then a new address has been saved to file:
         newAddress, _ = loadFromDisk()
-        newWhen = os.path.getmtime(CONTRACT_ADDRESS)
+        newWhen = os.path.getmtime(FILE_CONTRACT_ADDRESS)
         if (newAddress != address or newWhen != when):
             print ("(filedate %d) new contract address: %s" %(newWhen, newAddress))  
             break
         
     print('')
-    return w3.eth.blockNumber # ignore blockNumber_start
-
-
-
-def loopUntilActionBegins_OBSOLETE(blockNumber_start, query_intervall = 0.1):
-    """
-    obsolete as we now always deploy our own contract first
-    """
-    if RAFT: # TODO - automate that hardcoded constant away with CONSENSUS query result  
-        return loopUntilActionBegins_raft(blockNumber_start, query_intervall=query_intervall)
-    else:
-        return loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall=query_intervall)
-
-
-def loopUntilActionBegins(blockNumber_start, query_intervall = 0.1):
-    return loopUntilActionBegins_withNewContract(blockNumber_start, query_intervall=query_intervall)
+    return w3.eth.blockNumber
 
 
 
@@ -91,14 +59,14 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     """
     
     txCount_new = 0
-    for bl in range(blockNumber+1, newBlockNumber+1):
+    for bl in range(blockNumber+1, newBlockNumber+1): # TODO check range again - shift by one? 
         txCount_new += w3.eth.getBlockTransactionCount(bl)
 
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
     
     # quorum raft consensus ... returns not seconds but nanoseconds?  
-    timeunits = 1000000000.0 if CONSENSUS=="raft" else 1.0
+    timeunits = 1.0 if CONSENSUS!="raft" else 1000000000.0
     
     blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) / timeunits
     
@@ -114,8 +82,10 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     txCount += txCount_new
     elapsed = timeit.default_timer() - start_time
     tps = txCount / elapsed
-    line = "block %d | new #TX %3d / %4.0f ms = %5.1f TPS_current | total: #TX %4d / %4.1f s = %5.1f TPS_average" 
-    line = line % ( blockNumber, txCount_new, blocktimeSeconds * 1000, tps_current, txCount, elapsed, tps) 
+    line = "block %d | new #TX %3d / %4.0f ms = " \
+           "%5.1f TPS_current | total: #TX %4d / %4.1f s = %5.1f TPS_average" 
+    line = line % ( blockNumber, txCount_new, blocktimeSeconds * 1000, 
+                    tps_current, txCount, elapsed, tps) 
     print (line)
     
     return txCount
@@ -131,27 +101,23 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     # N.B.: slight inaccurracy of time measurement, because not measured how long those needed
     txCount=w3.eth.getBlockTransactionCount(blockNumber)
     
-    # perhaps instead of elapsed system time, use blocktime?
-    start_time = timeit.default_timer() 
+    start_time = timeit.default_timer()
+    # TODO: perhaps additional to elapsed system time, show blocktime? 
     
-    print('starting timer, at block', blockNumber, 'which has ', txCount,' transactions; at timecode', start_time)
+    print('starting timer, at block', blockNumber, 'which has ', 
+          txCount,' transactions; at timecode', start_time)
     
     while(True):
-        # OBSOLETE: wait for empty blocks (untested)
-        # does not work in RAFT because there are no empty blocks
-        # if(w3.eth.getBlockTransactionCount('latest')==0):
-        #    break
-        
-        # when a new block appears:
         newBlockNumber=w3.eth.blockNumber
-        if(blockNumber!=newBlockNumber):
+        if(blockNumber!=newBlockNumber): # when a new block appears:
             txCount = analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time)
             blockNumber = newBlockNumber
 
         time.sleep(pauseBetweenQueries) # do not query too often; as little side effect on node as possible 
-    
-    # In case of RAFT (no empty blocks), it never gets here !
-    print ("end")
+
+        # TODO: allow for an exit condition? 7 consecutive empty blocks?
+        
+    print ("end")   # N.B.: it never gets here !
 
 
 if __name__ == '__main__':
@@ -160,10 +126,10 @@ if __name__ == '__main__':
     w3, chainInfos = web3connection(RPCaddress=RPCaddress2, account=None)
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
     
-    blockNumber_start = w3.eth.blockNumber
-    print ("\nBlock ",blockNumber_start," - waiting for something to happen") 
+    blockNumber_before = w3.eth.blockNumber
+    print ("\nBlock ",blockNumber_before," - waiting for something to happen") 
     
-    blocknumber_start_here = loopUntilActionBegins(blockNumber_start) 
+    blocknumber_start_here = loopUntil_NewContract() 
     print ("blocknumber_start_here =", blocknumber_start_here)
     
     measurement( blocknumber_start_here )

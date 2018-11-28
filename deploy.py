@@ -2,7 +2,7 @@
 """
 @summary: deploy contract
 
-@version: v32 (28/November/2018)
+@version: v40 (28/November/2018)
 @since:   2/May/2018
 @organization: 
 @author:  https://github.com/drandreaskrueger
@@ -60,7 +60,7 @@ def deployContract(contract_interface, ifPrint=True):
                                  bytecode=contract_interface['bin'])
     tx_hash = w3.toHex( myContract.constructor().transact() )
     print ("tx_hash = ", tx_hash, "--> waiting for receipt ...")
-    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    tx_receipt = w3.eth.waitForTransacgit push --set-upstream origin cleanuptionReceipt(tx_hash)
     
     contractAddress = tx_receipt["contractAddress"]
     if ifPrint:
@@ -93,14 +93,14 @@ def saveToDisk(contractAddress, abi):
 
 def loadFromDisk():
     """
-    load address & abi from previous run of 'deployTheContract'
+    load address & abi from previous run of 'contract_CompileDeploySave'
     """
     contractAddress = json.load(open(FILE_CONTRACT_ADDRESS, 'r'))
     abi = json.load(open(FILE_CONTRACT_ABI, 'r'))
     return contractAddress["address"], abi
 
 
-def deployTheContract(contract_source_file):
+def contract_CompileDeploySave(contract_source_file):
     """
     compile, deploy, save
     """
@@ -145,14 +145,13 @@ if __name__ == '__main__':
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-    deployTheContract(contract_source_file=FILE_CONTRACT_SOURCE)
+    contract_CompileDeploySave(contract_source_file=FILE_CONTRACT_SOURCE)
     
-    if len(sys.argv)>1 and sys.argv[1]=="notest":
-        exit() # argument "notest" allows to skip the .set() test transaction 
-        
-    contractAddress, abi = loadFromDisk()
-    myContract = contractObject(contractAddress, abi)
-    testMethods(myContract)
+    # argument "test" runs the .set() test transaction
+    if len(sys.argv)>1 and sys.argv[1]=="andtests":
+        contractAddress, abi = loadFromDisk()
+        myContract = contractObject(contractAddress, abi)
+        testMethods(myContract)
     
     
     
