@@ -2,11 +2,11 @@
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v32 (19/September/2018)
+@version: v40 (28/November/2018)
 @since:   17/April/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
 
@@ -15,21 +15,21 @@ from config import RPCaddress, ROUTE, PRIVATE_FOR, ABI
 ################
 ## Dependencies:
 
+# standard library:
 import sys, time, random
 from threading import Thread
 from queue import Queue
 from pprint import pprint
 
+# pypi:
 import requests # pip3 install requests
-
 from web3 import Web3, HTTPProvider # pip3 install web3
 from web3.utils.abi import filter_by_name, abi_to_signature
 from web3.utils.encoding import pad_hex
 
-from deploy import loadFromDisk
-# from config import RAFT
+# chainhammer:
 from config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
-
+from deploy import loadFromDisk
 from clienttools import web3connection, unlockAccount
 
 
@@ -37,32 +37,9 @@ from clienttools import web3connection, unlockAccount
 ## smart contract related:
 
 
-def initialize_fromBlock(contractTx_blockNumber=1, contractTx_transactionIndex=0):
-    """
-    use example contract from 7 nodes example
-    if called without arguments, it assumes that the very first transaction was done by
-    ./runscript.sh script1.js
-    (only works with raft consensus)
-    """
-    abi = ABI
-    print ("Getting the address of the example contract that was deployed")
-    block = w3.eth.getBlock(contractTx_blockNumber)
-    transaction0=block["transactions"][contractTx_transactionIndex]
-    print ("transaction hash = ", w3.toHex(transaction0))
-    address=w3.eth.getTransactionReceipt(transaction0)["contractAddress"]
-    print ("contract address = ", address)
-    contract = w3.eth.contract(address=address, abi=abi)
-    print (contract)
-   
-    print("unlock account:", unlockAccount())
-
-    # pprint (dir(contract))
-    return contract
-
-
 def initialize_fromAddress():
     """
-    initialize contract object from address
+    initialise contract object from address, stored in disk file by deploy.py
     """
     contractAddress, abi = loadFromDisk()
     myContract = w3.eth.contract(address=contractAddress,
@@ -82,13 +59,11 @@ def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
         
     # pprint (txParameters)
     
-    
     if PARITY_UNLOCK_EACH_TRANSACTION:
         unlockAccount()
-    
         
     tx = contract.functions.set( x=arg ).transact(txParameters)
-    print ("[sent via web3]", end=" ")
+    print ("[sent via web3]", end=" ")  # TODO: not print this here but at start
     tx = w3.toHex(tx)
     return tx
 
@@ -106,8 +81,9 @@ def test_contract_set_via_web3(contract):
 ## Manually build & submit transaction, i.e. not going though web3
 ## (the hope of @jpmsam was that this would speed it up) 
 ## 
-## Later I realized that data compilation steps are already implemented as
+## Note that the data compilation steps are already implemented as
 ## myContract.functions.myMethod(*args, **kwargs).buildTransaction(transaction)
+## but the following bypasses web3.py completely!
 
 
 def contract_method_ID(methodname, abi):
@@ -160,7 +136,7 @@ def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968
     """
     
-    method_ID = contract_method_ID("set", contract.abi)
+    method_ID = contract_method_ID("set", contract.abi) # TODO: make this "set" flexible for any method name
     data = argument_encoding(method_ID, arg)
     txParameters = {'from': w3.eth.defaultAccount, 
                     'to' : contract.address,
@@ -179,7 +155,7 @@ def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     # print('raw json response: {}'.format(response.json()))
     tx = response.json()['result']
         
-    print ("[sent directly via RPC]", end=" ")
+    print ("[sent directly via RPC]", end=" ") # TODO: not print this here but at start
     return tx
 
 
@@ -228,8 +204,11 @@ def many_transactions(contract, numTx):
 def many_transactions_threaded(contract, numTx):
     """
     submit many transactions multi-threaded.
+    
+    N.B.: 1 thread / transaction 
+          --> machine can run out of threads, then crash
     """
-
+    
     print ("send %d transactions, multi-threaded, one thread per tx:\n" % (numTx))
 
     threads = []
@@ -251,13 +230,14 @@ def many_transactions_threaded(contract, numTx):
     print ("all threads ended.")
     
 
-def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=100):
+def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=25):
     """
     submit many transactions multi-threaded, 
     with size limited threading Queue
     """
 
-    print ("send %d transactions, via multi-threading queue with %d workers:\n" % (numTx, num_worker_threads))
+    line = "send %d transactions, via multi-threading queue with %d workers:\n"
+    print (line % (numTx, num_worker_threads))
 
     q = Queue()
     
@@ -265,20 +245,20 @@ def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=100):
         while True:
             item = q.get()
             contract_set(contract, item)
-            print (".", end=""); sys.stdout.flush()
+            print ("T", end=""); sys.stdout.flush()
             q.task_done()
 
     for i in range(num_worker_threads):
          t = Thread(target=worker)
          t.daemon = True
          t.start()
-         print (".", end=""); sys.stdout.flush()
-    print ("%d worker threads created." % num_worker_threads)
+         print ("W", end=""); sys.stdout.flush()
+    print ("\n%d worker threads created." % num_worker_threads)
 
     for i in range(numTx):
         q.put (i)
-        print (".", end=""); sys.stdout.flush()
-    print ("%d items queued." % numTx)
+        print ("I", end=""); sys.stdout.flush()
+    print ("\n%d items queued." % numTx)
 
     q.join()
     print ("\nall items - done.")
@@ -287,28 +267,34 @@ def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=100):
 def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
     """
     submit many transactions multi-threaded;
-    But in batches of rather small numbers.
-    Does not give an advantage --> OBSOLETE, probably. 
+    but in batches of rather small numbers.
+    
+    OBSOLETE <-- not faster than threaded2.  
     """
 
-    print ("send %d transactions, multi-threaded, one thread per tx, in batches of %d parallel threads:\n" % (numTx, batchSize))
+    line = "send %d transactions, multi-threaded, one thread per tx, " \
+           "in batches of %d parallel threads:\n"
+    print (line % (numTx, batchSize))
+    
     howManyLeft=numTx
     while howManyLeft>0:
-            
-        print ("Next batch of %d transactions ... %d left to do" % (batchSize, howManyLeft))
+    
+        line = "Next batch of %d transactions ... %d left to do"    
+        print (line % (batchSize, howManyLeft))
+        
         threads = []
         for i in range(batchSize):
             t = Thread(target = contract_set,
                        args   = (contract, i))
             threads.append(t)
             print (".", end="")
-        print ("%d transaction threads created." % len(threads))
+        print ("\n%d transaction threads created." % len(threads))
     
         for t in threads:
             t.start()
             print (".", end="")
             sys.stdout.flush()
-        print ("all threads started.")
+        print ("\nall threads started.")
         
         for t in threads: 
             t.join()
@@ -327,7 +313,13 @@ def benchmark(numTransactions = NUMBER_OF_TRANSACTIONS):
 
     print("\nBlockNumber = ", w3.eth.blockNumber)
     
-    if len(sys.argv)>1:
+    if len(sys.argv)==1:
+        
+        # blocking, non-async
+        many_transactions(contract, numTransactions)  
+        
+    else:
+        
         if sys.argv[1]=="threaded1":
             many_transactions_threaded(contract, numTransactions)
             
@@ -352,9 +344,9 @@ def benchmark(numTransactions = NUMBER_OF_TRANSACTIONS):
           
         else:
             print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
-    else:
+
         
-        many_transactions(contract, numTransactions)  # blocking, non-async
+        
 
 
 
@@ -367,12 +359,7 @@ if __name__ == '__main__':
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # test_argument_encoding(); exit()
     
-    # obsolete because we now always first deploy our own contract:
-    # if RAFT:
-    #    contract = initialize_fromBlock()
-    #else:
-    #    contract = initialize_fromAddress()
-    
+   
     contract = initialize_fromAddress()
         
     # test_contract_set_via_web3(contract); exit()
