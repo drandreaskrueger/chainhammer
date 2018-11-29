@@ -1,0 +1,1 @@
+v40 29/11/2018  initial cleaning while planning methodology chapter; make more readable, remove obsolete code, add some TODOs 
