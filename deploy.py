@@ -2,11 +2,11 @@
 """
 @summary: deploy contract
 
-@version: v32 (19/September/2018)
+@version: v40 (28/November/2018)
 @since:   2/May/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
 
@@ -25,8 +25,8 @@ except:
     print ("Dependencies unavailable. Start virtualenv first!")
     exit()
 
-from config import RPCaddress, CONTRACT_SOURCE, CONTRACT_ABI, CONTRACT_ADDRESS
-from config import PRIVATE_FOR, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
+from config import RPCaddress, PARITY_UNLOCK_EACH_TRANSACTION
+from config import FILE_CONTRACT_SOURCE, FILE_CONTRACT_ABI, FILE_CONTRACT_ADDRESS
 
 from clienttools import web3connection, unlockAccount
 
@@ -46,6 +46,7 @@ def compileContract(contract_source_file):
         contract_source_code = f.read()
     compiled_sol = compile_source(contract_source_code) # Compiled source code
     assert(len(compiled_sol)==1) # assert source file has only one contract object
+    
     contractName = list(compiled_sol.keys())[0] 
     contract_interface = compiled_sol[contractName]
     return contractName.replace("<stdin>:", ""), contract_interface 
@@ -60,9 +61,11 @@ def deployContract(contract_interface, ifPrint=True):
     tx_hash = w3.toHex( myContract.constructor().transact() )
     print ("tx_hash = ", tx_hash, "--> waiting for receipt ...")
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    
     contractAddress = tx_receipt["contractAddress"]
     if ifPrint:
-        print ( "Deployed. gasUsed={gasUsed} contractAddress={contractAddress}".format(**tx_receipt) )
+        line = "Deployed. gasUsed={gasUsed} contractAddress={contractAddress}"
+        print ( line.format(**tx_receipt) )
     return contractAddress 
 
     
@@ -84,20 +87,20 @@ def saveToDisk(contractAddress, abi):
     """
     save address & abi, for usage in the other script
     """
-    json.dump({"address": contractAddress}, open(CONTRACT_ADDRESS, 'w'))
-    json.dump(abi, open(CONTRACT_ABI, 'w'))
+    json.dump({"address": contractAddress}, open(FILE_CONTRACT_ADDRESS, 'w'))
+    json.dump(abi, open(FILE_CONTRACT_ABI, 'w'))
 
 
 def loadFromDisk():
     """
-    load address & abi from previous run of 'deployTheContract'
+    load address & abi from previous run of 'contract_CompileDeploySave'
     """
-    contractAddress = json.load(open(CONTRACT_ADDRESS, 'r'))
-    abi = json.load(open(CONTRACT_ABI, 'r'))
+    contractAddress = json.load(open(FILE_CONTRACT_ADDRESS, 'r'))
+    abi = json.load(open(FILE_CONTRACT_ABI, 'r'))
     return contractAddress["address"], abi
 
 
-def deployTheContract(contract_source_file):
+def contract_CompileDeploySave(contract_source_file):
     """
     compile, deploy, save
     """
@@ -108,26 +111,29 @@ def deployTheContract(contract_source_file):
     return contractName, contract_interface, contractAddress
 
 
-def testMethods(myContract):
+def testMethods(myContract, gasForSetCall=90000):
     """
     just a test if the contract's methods are working
     --> call getter then setter then getter  
     """
+
+    # get
     answer = myContract.functions.get().call()
     print('.get(): {}'.format(answer))
     
+    # set
     if PARITY_UNLOCK_EACH_TRANSACTION:
         print ("unlockAccount:", unlockAccount())
-    
     print('.set()')
-    gas=90000
     txParameters = {'from': w3.eth.defaultAccount,
-                    'gas' : gas}
-    tx_hash = w3.toHex( myContract.functions.set(answer + 1).transact(txParameters) )
+                    'gas' : gasForSetCall}
+    tx = myContract.functions.set(answer + 1).transact(txParameters)
+    tx_hash = w3.toHex( tx )
     print ("transaction", tx_hash, "... "); sys.stdout.flush()
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     print ("... mined. Receipt --> gasUsed={gasUsed}". format(**tx_receipt) )
     
+    # get
     answer = myContract.functions.get().call()
     print('.get(): {}'.format(answer))
 
@@ -139,14 +145,13 @@ if __name__ == '__main__':
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-    deployTheContract(contract_source_file=CONTRACT_SOURCE)
+    contract_CompileDeploySave(contract_source_file=FILE_CONTRACT_SOURCE)
     
-    if len(sys.argv)>1 and sys.argv[1]=="notest":
-        exit() # argument "notest" allows to skip the .set() test transaction 
-        
-    contractAddress, abi = loadFromDisk()
-    myContract = contractObject(contractAddress, abi)
-    testMethods(myContract)
+    # argument "test" runs the .set() test transaction
+    if len(sys.argv)>1 and sys.argv[1]=="andtests":
+        contractAddress, abi = loadFromDisk()
+        myContract = contractObject(contractAddress, abi)
+        testMethods(myContract)
     
     
     

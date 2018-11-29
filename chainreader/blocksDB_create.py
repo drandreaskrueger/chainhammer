@@ -2,27 +2,30 @@
 """
 @summary: query all blocks of the whole chain, to get historical TPS, etc
 
-@attention: MOST of the code in here (all the multithreaded stuff) is actually obsolete as surprisingly the fastest way to read from parity RPC is ... single-threaded
-
-@version: v23 (4/September/2018)
+@version: v40 (28/November/2018)
 @since:   16/May/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+
+@attention: MOST of code in here (all multi-threaded stuff) is actually obsolete
+            as surprisingly the fastest way to read from (parity) RPC is ... 
+            ... single-threaded!
+@todo:      kick out all obsolete stuff, perhaps into obsolete/ folder?
 """
 
 # some preliminary speed comparisons:
 #
 # 10 worker threads Queue:
-# multithreaded into DB:     1000 blocks took 6.02 seconds
-# multithreaded into file:   1000 blocks took 2.46 seconds
+# multi-threaded into DB:     1000 blocks took 6.02 seconds
+# multi-threaded into file:   1000 blocks took 2.46 seconds
 #                            execute & commit 1000 SQL statements into DB took 0.01 seconds
 #
 # single threaded into file: 1000 blocks took 2.09 seconds
 #
-# big surprise multithreaded slower than singlethreaded !!!
+# big surprise multi-threaded slower than single-threaded !!!
 #
-# multithreaded but 1 worker into file: 1000000 blocks took 1892.22 seconds
+# multi-threaded but 1 worker into file: 1000000 blocks took 1892.22 seconds
 # manyBlocks_singlethreaded into file:  1970342 blocks took 4237.88 seconds
 #
 # execute & commit 4392280 SQL statements into DB took 37.91 seconds
@@ -57,22 +60,24 @@ DBFILE = "allblocks-parity-poa-playground_run1.db"
 ################
 ## Dependencies:
 
+# python standard library:
 import sys, time, os
-from pprint import pprint
-
 import sqlite3
-
+from pprint import pprint
 from queue import Queue
 from threading import Thread
 
+# pypi:
 from web3 import Web3, HTTPProvider # pip3 install web3
 
-# import from parent folder: 
+# allow to import from parent folder: 
 import inspect
-currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+currentfile = inspect.getfile(inspect.currentframe())
+currentdir = os.path.dirname(os.path.abspath(currentfile))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 
+# chainhammer
 from config import RPCaddress
 from clienttools import web3connection
 
@@ -212,12 +217,14 @@ def DB_blocknumberMinMax(conn):
     result = DB_query("SELECT MIN(blocknumber), MAX(blocknumber) FROM blocks", conn)
     print ("MIN(blocknumber), MAX(blocknumber) = %s " % (result) )
     return result
-    
-
+   
+ 
+# TODO: obsolete?
+'''
 def start_web3connection(RPCaddress=None, 
                          IPCpath="TODO"): # how to enable IPC in parity ???
     """
-    get a global web3 object
+    # get a global web3 object
     """
     global w3
     w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
@@ -226,7 +233,7 @@ def start_web3connection(RPCaddress=None,
     print ("node version string = ", w3.version.node)
     
     return w3
-
+'''
 
 def getBlock(blockNumber):
     """
@@ -240,7 +247,9 @@ def getBlock(blockNumber):
 
 def getBlock_then_store(blockNumber, conn=None, ifPrint=True):
     """
-    query web3 block, immediately write into DB
+    query web3 block, 
+    (do NOT immediately write into DB but) 
+    write INSERT statement into text file, for later processing
     """
     b = getBlock(blockNumber)
     
@@ -268,7 +277,7 @@ def multithreadedQueue(blockNumberFrom, blockNumberTo, num_worker_threads=10):
         while True:
             try:
                 item = q.get()
-            except Exception as e:
+            except Exception as e:            
                 print (type(e), e)
             getBlock_then_store(item, conn)
             q.task_done()
@@ -379,6 +388,7 @@ def CLI_params():
     if len(sys.argv)==2:
         DBFILE=sys.argv[1]
         print ("changed DBFILE to ", DBFILE)
+        
 
 if __name__ == '__main__':
     
