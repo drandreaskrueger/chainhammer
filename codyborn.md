@@ -1,3 +1,5 @@
+TODO: rename/restructure this into "performance-optimizations.md"
+
 # CodyBorn's benchmarking
 
 ## perhaps working, but exotic:
@@ -54,7 +56,7 @@ and in a direct message to me:
 
 However, if all transaction then are sent from the same account I would have conflicts of wrong nonces if I send transactions multi-threaded - so I cannot use Cody's approach without massive changes to my simple benchmarking code.
 
-Cody writes in another DM:
+Cody writes in another DM:https://ethereum.stackexchange.com/a/62691/2937
 
 
 > Cody Born
@@ -69,4 +71,5 @@ So my current chainhammer-code -which works fast with `geth` but slow with `pari
 Replicate his exact approach but using `geth clique`, see [geth.md#results](geth.md#results).
 
 
-
+# other optimization suggestions
+* see https://ethereum.stackexchange.com/a/62691/2937
