@@ -61,16 +61,22 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     txCount_new = 0
     for bl in range(blockNumber+1, newBlockNumber+1): # TODO check range again - shift by one? 
         # txCount_new += w3.eth.getBlockTransactionCount(bl)
-        txCount_new += getBlockTransactionCount(w3, bl)
+        blktx = getBlockTransactionCount(w3, bl)
+        txCount_new += blktx 
 
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
     
-    # quorum raft consensus ... returns not seconds but nanoseconds?  
-    timeunits = 1.0 if CONSENSUS!="raft" else 1000000000.0
+    # most ethereum clients return block timestamps as whole seconds:
+    timeunits = 1.0
+    # quorum raft consensus ... returns not seconds but nanoseconds?
+    if CONSENSUS=="raft": timeunits = 1000000000.0
+    # testrpc-py is really odd though ;-)
+    # reported: https://github.com/pipermerriam/eth-testrpc/issues/117
+    if NODENAME=="TestRPC": timeunits = 205.0
     
     blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) / timeunits
-    
+
     try:
         tps_current = txCount_new / blocktimeSeconds
     except ZeroDivisionError:
@@ -114,6 +120,7 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     
     while(True):
         newBlockNumber=w3.eth.blockNumber
+        
         if(blockNumber!=newBlockNumber): # when a new block appears:
             txCount = analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time)
             blockNumber = newBlockNumber
