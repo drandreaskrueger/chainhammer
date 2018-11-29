@@ -4,7 +4,7 @@
 """
 @summary: Timing transactions that are getting into the chain
 
-@version: v40 (28/November/2018)
+@version: v41 (29/November/2018)
 @since:   17/April/2018
 @organization: 
 @author:  https://github.com/drandreaskrueger
