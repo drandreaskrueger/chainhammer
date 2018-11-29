@@ -22,6 +22,7 @@ except:
 from config import RPCaddress, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
 from clienttype import clientType
 
+from pprint import pprint
 
 ################
 ## Tools:
@@ -64,6 +65,15 @@ def start_web3connection(RPCaddress=None, account=None):
     return w3
 
 
+def getBlockTransactionCount(w3, blockNumber):
+    """
+    testRPC does not provide this endpoint yet, so replicate its functionality:
+    """
+    block=w3.eth.getBlock(blockNumber)
+    # pprint (block)
+    return len(block["transactions"])
+    
+
 def unlockAccount(duration=3600, account=None):
     """
     unlock once, then leave open, to later not loose time for unlocking
@@ -101,7 +111,6 @@ def unlockAccount(duration=3600, account=None):
 def setGlobalVariables_clientType(w3):
     """
     Set global variables.
-    And if it's a Quorum PoA node, apply bugfix 
     """
     global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     

@@ -18,7 +18,7 @@ from web3 import Web3, HTTPProvider
 
 from config import RPCaddress2 
 from deploy import loadFromDisk, FILE_CONTRACT_ADDRESS
-from clienttools import web3connection
+from clienttools import web3connection, getBlockTransactionCount
     
 
 def loopUntil_NewContract(query_intervall = 0.1):
@@ -60,7 +60,8 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     
     txCount_new = 0
     for bl in range(blockNumber+1, newBlockNumber+1): # TODO check range again - shift by one? 
-        txCount_new += w3.eth.getBlockTransactionCount(bl)
+        # txCount_new += w3.eth.getBlockTransactionCount(bl)
+        txCount_new += getBlockTransactionCount(w3, bl)
 
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
@@ -99,7 +100,11 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
 
     # the block we had been waiting for already contains the first transaction/s
     # N.B.: slight inaccurracy of time measurement, because not measured how long those needed
-    txCount=w3.eth.getBlockTransactionCount(blockNumber)
+    
+    # txCount=w3.eth.getBlockTransactionCount(blockNumber)
+    txCount=getBlockTransactionCount(w3, blockNumber)
+    
+    
     
     start_time = timeit.default_timer()
     # TODO: perhaps additional to elapsed system time, show blocktime? 
