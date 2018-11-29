@@ -2,11 +2,13 @@
 """
 @summary: for the jupyter notebooks: tools, column creators, diagramming routines, etc. 
 
-@version: v22 (21/August/2018)
+@version: v40 (29/November/2018)
 @since:   26/June/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+
+@TODO:    this needs usage comments; not every function has a docstring yet 
 """
 
 #global DBFILE, NAME_PREFIX
@@ -192,8 +194,10 @@ def check_timestamp_format(df):
         
     print ("example- first 4 rows:")
     print (df[0:4])
-    print ("             is timestamp in seconds?")
     
+    # TODO: better come up with an automated test, not just visual inspection: 
+    print ("             is timestamp in seconds?")
+        
     # ### `geth` based clients have a nanosecond timestamp
     # not anymore?
 
