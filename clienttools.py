@@ -51,6 +51,7 @@ def start_web3connection(RPCaddress=None, account=None):
         # (TODO: also try whether IPC provider is faster, when quorum-outside-vagrant starts working)
         w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
     else:
+        # w3 = Web3(Web3.EthereumTesterProvider()) # does NOT work!
         w3 = Web3(Web3.TestRPCProvider()) 
     
     print ("web3 connection established, blockNumber =", w3.eth.blockNumber, end=", ")
@@ -138,7 +139,8 @@ def if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS):
         w3.middleware_stack.inject(geth_poa_middleware, layer=0)
 
 
-def web3connection(RPCaddress=RPCaddress, account=None):
+# def web3connection(RPCaddress=RPCaddress, account=None):
+def web3connection(RPCaddress=None, account=None):    
     """
     prints dependency versions, starts web3 connection, identifies client node type, if quorum then bugfix
     """
@@ -159,7 +161,10 @@ def web3connection(RPCaddress=RPCaddress, account=None):
 if __name__ == '__main__':
 
     # example how to call this:
-    answer = web3connection(RPCaddress=RPCaddress, account=None)
+    answer = web3connection()
+    # answer = web3connection(RPCaddress=RPCaddress, account=None)
+    
+    
     w3, chainInfos  = answer
     
     global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID

@@ -27,15 +27,6 @@ except:
 from config import RPCaddress
 
 
-def start_web3connection(RPCaddress=None):
-    """
-    get a web3 object.
-    """
-    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
-    print ("web3 connection established, blockNumber =", w3.eth.blockNumber, end=", ")
-    print ("node version string = ", w3.version.node)
-    return w3
-
 
 class Error(Exception):
     pass
@@ -212,12 +203,23 @@ def justTryingOutDifferentThings(ifPrint=False):
             pprint ( curl_post(method=method, ifPrint=ifPrint) )
         except:
             pass
-        
-        
+            
+
+def simple_web3connection(RPCaddress):
+    """
+    get a web3 object. 
+    simple, just for this demo here, 
+    do not use elsewhere, instead use clienttools.start_web3connection
+    """
+    w3 = Web3(HTTPProvider(RPCaddress, request_kwargs={'timeout': 120}))
+    print ("web3 connection established, blockNumber =", w3.eth.blockNumber, end=", ")
+    print ("node version string = ", w3.version.node)
+    return w3
+
 
 if __name__ == '__main__':
 
-    w3 = start_web3connection(RPCaddress=RPCaddress) 
+    w3 = simple_web3connection(RPCaddress=RPCaddress) 
 
     test_clientType(w3)
     

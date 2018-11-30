@@ -133,6 +133,15 @@ python3 -m pip install --upgrade pip==18.0
 pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0
 ```
 
+or if you are adventurous:
+```
+virtualenv -p python3 env/py3eth
+source env/py3eth/bin/activate
+python3 -m pip install --upgrade pip==18.0
+pip3 install --upgrade rlp==0.6.0 eth-testrpc py-solc web3 web3[tester] requests pandas matplotlib
+```
+The rlp==0.6.0 is reported https://github.com/pipermerriam/eth-testrpc/issues/118
+
 ```
 # configure chainhammer
 nano config.py
