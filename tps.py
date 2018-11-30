@@ -51,6 +51,24 @@ def loopUntil_NewContract(query_intervall = 0.1):
     return w3.eth.blockNumber
 
 
+def timestampToSeconds(timestamp, NODENAME, CONSENSUS):
+    """
+    turn timestamp into (float of) seconds
+    as a separate function so that it can be recycled in blocksDB_create.py
+    """
+        
+    # most ethereum clients return block timestamps as whole seconds:
+    timeunits = 1.0
+    
+    # quorum raft consensus ... returns not seconds but nanoseconds?
+    if CONSENSUS=="raft": timeunits = 1000000000.0
+    
+    # testrpc-py has odd timestamp units ;-)
+    # do check for updates: https://github.com/pipermerriam/eth-testrpc/issues/117
+    if NODENAME=="TestRPC": timeunits = 205.0
+    
+    return timestamp / timeunits
+ 
 
 def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     """
@@ -66,16 +84,9 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
 
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
+    ts_diff = ts_newBlockNumber - ts_blockNumber
     
-    # most ethereum clients return block timestamps as whole seconds:
-    timeunits = 1.0
-    # quorum raft consensus ... returns not seconds but nanoseconds?
-    if CONSENSUS=="raft": timeunits = 1000000000.0
-    # testrpc-py is really odd though ;-)
-    # reported: https://github.com/pipermerriam/eth-testrpc/issues/117
-    if NODENAME=="TestRPC": timeunits = 205.0
-    
-    blocktimeSeconds = (ts_newBlockNumber - ts_blockNumber) / timeunits
+    blocktimeSeconds = timestampToSeconds(ts_diff, NODENAME, CONSENSUS) 
 
     try:
         tps_current = txCount_new / blocktimeSeconds

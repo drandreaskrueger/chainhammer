@@ -67,6 +67,13 @@ def curl_post(method, txParameters=None, RPCaddress=RPCaddress, ifPrint=False):
     else:
         return response_json['result']
         
+        
+def clientTypeWarnings(nodeName, nodeType, consensus, networkId, chainName, chainId):
+    if nodeName=="TestRPC":
+        print ("WARN: TestRPC has odd timestamp units, check 'tps.timestampToSeconds()' for updates")
+    if consensus=="raft":
+        print ("WARN: raft consensus did report timestamps in nanoseconds. Is that still the case?")
+
 
 def clientType(w3):
     """
@@ -175,6 +182,8 @@ def clientType(w3):
             
         except MethodNotExistentError:
             pass
+    
+    clientTypeWarnings(nodeName, nodeType, consensus, networkId, chainName, chainId)
     
     return nodeName, nodeType, consensus, networkId, chainName, chainId
     

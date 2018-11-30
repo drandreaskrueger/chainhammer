@@ -80,6 +80,7 @@ sys.path.insert(0,parentdir)
 # chainhammer
 from config import RPCaddress
 from clienttools import web3connection
+from tps import timestampToSeconds
 
 ###############################################################################
 
@@ -93,7 +94,7 @@ def DB_createTable():
     c.execute('''CREATE TABLE IF NOT EXISTS 
                  blocks(
                      blocknumber INTEGER UNIQUE,
-                     timestamp INTEGER,
+                     timestamp DECIMAL,
                      size INTEGER,
                      gasUsed INTEGER,
                      gasLimit INTEGER,
@@ -122,6 +123,7 @@ def DB_writeRow_SQL(block):
 
     b = dict(block)
     b["txcount"] = len(block["transactions"])
+    b["timestamp"] = timestampToSeconds( b["timestamp"], NODENAME, CONSENSUS)
     
     values = valuesstring.format(**b)
     
@@ -245,7 +247,7 @@ def getBlock(blockNumber):
     return b
     
 
-def getBlock_then_store(blockNumber, conn=None, ifPrint=True):
+def getBlock_then_store(blockNumber, conn=None, ifPrint=True, printEvery=500):
     """
     query web3 block, 
     (do NOT immediately write into DB but) 
@@ -258,7 +260,7 @@ def getBlock_then_store(blockNumber, conn=None, ifPrint=True):
     
     if ifPrint:
         print ("*", end="")
-        if blockNumber % 1000 == 0:
+        if blockNumber % printEvery == 0:
             print ("\n", blockNumber, end=" ") # newline
             sys.stdout.flush()  
     
