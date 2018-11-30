@@ -40,6 +40,9 @@ def printVersions():
     print ("versions: web3 %s, py-solc: %s, solc %s, testrpc %s, python %s" % (web3version, pysolcversion, get_solc_version(), ethtestrpcversion, sys.version.replace("\n", "")))
 
 
+################################################################################
+# get a connection, and find out as much as possible
+
 
 def start_web3connection(RPCaddress=None, account=None):
     """
@@ -65,49 +68,6 @@ def start_web3connection(RPCaddress=None, account=None):
     
     return w3
 
-
-def getBlockTransactionCount(w3, blockNumber):
-    """
-    testRPC does not provide this endpoint yet, so replicate its functionality:
-    """
-    block=w3.eth.getBlock(blockNumber)
-    # pprint (block)
-    return len(block["transactions"])
-    
-
-def unlockAccount(duration=3600, account=None):
-    """
-    unlock once, then leave open, to later not loose time for unlocking
-    """
-    
-    if "TestRPC" in w3.version.node:
-        return True # TestRPC does not need unlocking
-    
-    # if CHAINNAME=='500':
-    #     return True # https://github.com/javahippie/geth-dev already unlocked  
-    
-    if not account:
-        account = w3.eth.defaultAccount
-
-    if NODENAME=="Quorum":
-        passphrase=""
-    else:
-        with open(PASSPHRASE_FILE, "r") as f:
-            passphrase=f.read().strip()
-
-    # print ("passphrase:", passphrase)
-
-    if PARITY_UNLOCK_EACH_TRANSACTION:
-        answer = w3.personal.unlockAccount(account=account, 
-                                           passphrase=passphrase)
-    else:
-        if NODETYPE=="Parity": 
-            duration = w3.toHex(duration)
-        answer = w3.personal.unlockAccount(account=account, 
-                                           passphrase=passphrase,
-                                           duration=duration)
-    return answer
-     
 
 def setGlobalVariables_clientType(w3):
     """
@@ -158,12 +118,59 @@ def web3connection(RPCaddress=None, account=None):
     return w3, chainInfos 
 
 
+################################################################################
+# generally useful tools
+
+
+def getBlockTransactionCount(w3, blockNumber):
+    """
+    testRPC does not provide this endpoint yet, so replicate its functionality:
+    """
+    block=w3.eth.getBlock(blockNumber)
+    # pprint (block)
+    return len(block["transactions"])
+    
+
+def unlockAccount(duration=3600, account=None):
+    """
+    unlock once, then leave open, to later not loose time for unlocking
+    """
+    
+    if "TestRPC" in w3.version.node:
+        return True # TestRPC does not need unlocking
+    
+    # if CHAINNAME=='500':
+    #     return True # https://github.com/javahippie/geth-dev already unlocked  
+    
+    if not account:
+        account = w3.eth.defaultAccount
+
+    if NODENAME=="Quorum":
+        passphrase=""
+    else:
+        with open(PASSPHRASE_FILE, "r") as f:
+            passphrase=f.read().strip()
+
+    # print ("passphrase:", passphrase)
+
+    if PARITY_UNLOCK_EACH_TRANSACTION:
+        answer = w3.personal.unlockAccount(account=account, 
+                                           passphrase=passphrase)
+    else:
+        if NODETYPE=="Parity": 
+            duration = w3.toHex(duration)
+        answer = w3.personal.unlockAccount(account=account, 
+                                           passphrase=passphrase,
+                                           duration=duration)
+    return answer
+     
+
+
 if __name__ == '__main__':
 
     # example how to call this:
-    answer = web3connection()
-    # answer = web3connection(RPCaddress=RPCaddress, account=None)
-    
+    # answer = web3connection()
+    answer = web3connection(RPCaddress=RPCaddress, account=None)
     
     w3, chainInfos  = answer
     
