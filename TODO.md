@@ -33,7 +33,9 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 # TODO while work in progress
 * update documentation: `deploy.py notest` --> `deploy.py`; get-set-get test is now run with `deploy.py andtests` 
 * move old parity.md quorum.md geth.md etc into historical/ folder, BUT link to them at top of the new ones
-
+* timestamp transformation = different units depending on client, see tps.timestampToSeconds():
+  * next time when trying 'raft' consensus - test whether timestamp transformation is working correctly
+  * check back with https://github.com/pipermerriam/eth-testrpc/issues/117 if problem is solved now
 
 ## done
 * `IBFT` instead of `raft`
