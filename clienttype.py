@@ -179,7 +179,7 @@ def clientType(w3):
     return nodeName, nodeType, consensus, networkId, chainName, chainId
     
 
-def test_clientType(w3):
+def run_clientType(w3):
     """
     test the above
     """
@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
     w3 = simple_web3connection(RPCaddress=RPCaddress) 
 
-    test_clientType(w3)
+    run_clientType(w3)
     
     print()
     justTryingOutDifferentThings() # ifPrint=True)

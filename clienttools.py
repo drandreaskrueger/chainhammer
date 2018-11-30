@@ -144,6 +144,7 @@ def unlockAccount(duration=3600, account=None):
     
     if not account:
         account = w3.eth.defaultAccount
+        # print (account)
 
     if NODENAME=="Quorum":
         passphrase=""
@@ -162,6 +163,7 @@ def unlockAccount(duration=3600, account=None):
         answer = w3.personal.unlockAccount(account=account, 
                                            passphrase=passphrase,
                                            duration=duration)
+    print ("unlocked:", answer)
     return answer
      
 
