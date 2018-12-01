@@ -68,14 +68,15 @@ def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     return tx
 
 
-def test_contract_set_via_web3(contract):
+def try_contract_set_via_web3(contract, arg=42):
     """
     test the above
     """
-    tx = contract_set_via_web3(contract, arg=2)
+    tx = contract_set_via_web3(contract, arg=arg)
     print (tx)
     storedData = contract.functions.get().call()
     print (storedData) 
+    return storedData
 
 
 ## Manually build & submit transaction, i.e. not going though web3
@@ -110,7 +111,7 @@ def argument_encoding(contract_method_ID, arg):
     return data
     
     
-def test_argument_encoding():
+def timeit_argument_encoding():
     """
     test the above:
     'Doing that 10000 times ... took 0.45 seconds'
@@ -159,7 +160,7 @@ def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     return tx
 
 
-def test_contract_set_via_RPC(contract, steps=3):
+def try_contract_set_via_RPC(contract, steps=3):
     """
     test the above, write 3 transactions, and check the storedData
     """
@@ -357,13 +358,13 @@ if __name__ == '__main__':
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
-    # test_argument_encoding(); exit()
+    # timeit_argument_encoding(); exit()
     
    
     contract = initialize_fromAddress()
         
-    # test_contract_set_via_web3(contract); exit()
-    # test_contract_set_via_RPC(contract);  exit()
+    # try_contract_set_via_web3(contract); exit()
+    # try_contract_set_via_RPC(contract);  exit()
 
     benchmark()
 

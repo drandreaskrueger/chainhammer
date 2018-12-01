@@ -111,15 +111,15 @@ def contract_CompileDeploySave(contract_source_file):
     return contractName, contract_interface, contractAddress
 
 
-def testMethods(myContract, gasForSetCall=90000):
+def trySmartContractMethods(myContract, gasForSetCall=90000):
     """
     just a test if the contract's methods are working
     --> call getter then setter then getter  
     """
 
     # get
-    answer = myContract.functions.get().call()
-    print('.get(): {}'.format(answer))
+    answer1 = myContract.functions.get().call()
+    print('.get(): {}'.format(answer1))
     
     # set
     if PARITY_UNLOCK_EACH_TRANSACTION:
@@ -127,17 +127,17 @@ def testMethods(myContract, gasForSetCall=90000):
     print('.set()')
     txParameters = {'from': w3.eth.defaultAccount,
                     'gas' : gasForSetCall}
-    tx = myContract.functions.set(answer + 1).transact(txParameters)
+    tx = myContract.functions.set(answer1 + 1).transact(txParameters)
     tx_hash = w3.toHex( tx )
     print ("transaction", tx_hash, "... "); sys.stdout.flush()
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
     print ("... mined. Receipt --> gasUsed={gasUsed}". format(**tx_receipt) )
     
     # get
-    answer = myContract.functions.get().call()
-    print('.get(): {}'.format(answer))
+    answer2 = myContract.functions.get().call()
+    print('.get(): {}'.format(answer2))
 
-
+    return answer1, tx_receipt, answer2
 
 if __name__ == '__main__':
 
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     if len(sys.argv)>1 and sys.argv[1]=="andtests":
         contractAddress, abi = loadFromDisk()
         myContract = contractObject(contractAddress, abi)
-        testMethods(myContract)
+        trySmartContractMethods(myContract)
     
     
     
