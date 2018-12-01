@@ -35,7 +35,7 @@ def test_initialize_fromAddress():
 def test_contract_set_via_web3():
     arg = 1000
     stored = send.try_contract_set_via_web3(contract, arg)
-    assert arg == stored # hmmm ... don't we have to wait for the receipt?
+    assert arg == stored 
 
 
 def test_contract_method_ID():
@@ -57,6 +57,7 @@ def test_contract_set_via_RPC():
     tx = send.contract_set_via_RPC(contract, arg=arg)
     print (tx)
     assert tx.startswith("0x")
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx)
     stored = contract.functions.get().call()
     assert arg == stored
 

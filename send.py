@@ -74,6 +74,7 @@ def try_contract_set_via_web3(contract, arg=42):
     """
     tx = contract_set_via_web3(contract, arg=arg)
     print (tx)
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx)
     storedData = contract.functions.get().call()
     print (storedData) 
     return storedData
@@ -168,7 +169,7 @@ def try_contract_set_via_RPC(contract, steps=3):
     for number in range(rand, rand+steps):
         tx = contract_set_via_RPC(contract, number)
         print ("after set(%d) tx" % number, tx, " the storedData now is", end=" ")
-        
+        # TODO: wait for receipt!
         storedData = contract.functions.get().call()
         print (storedData) 
     
