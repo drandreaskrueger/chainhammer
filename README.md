@@ -89,13 +89,13 @@ See [other-projects.md](other-projects.md) using this, or projects which are sim
 For more details e.g. how to run a network of parity nodes, see [reproduce.md](reproduce.md). This assumes it's already running. The focus here is on chainhammer itself:
 ### dependencies
 ```
-sudo apt install python3-pip libssl-dev
+sudo apt install python3-pip libssl-dev expect-dev
 sudo pip3 install virtualenv 
 virtualenv -p python3 py3eth
 source py3eth/bin/activate
 
 python3 -m pip install --upgrade pip==18.0
-pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0
+pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0 pytest pytest-cov
 
 # only when using chainreader notebooks:
 pip3 install --upgrade jupyter ipykernel 
@@ -134,6 +134,17 @@ jupyter notebook blocksDB_analyze_parity-aura_run7.ipynb
 ```
 by menu --> Kernel --> Restart & Run All. 
 
+### unittests
+```
+./pytest.sh
+```
+enables the virtualenv, then first starts a `testrpc-py` Ethereum simulator on http://localhost:8545 in the background, logging into `tests/logs/`, then runs all the tests.
+
+If you want to run tests with another node, just start that; and run the tests:
+```
+source env/py3eth/bin/activate
+py.test -v
+```
 
 ## credits
 
