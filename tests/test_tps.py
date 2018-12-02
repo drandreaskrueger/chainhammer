@@ -30,16 +30,23 @@ def test_timestampToSeconds_testrpc():
     assert 1 == tps.timestampToSeconds(205, NODENAME="TestRPC", CONSENSUS="whatever")
     
     
-def sendMoney_andWaitForReceipt():
+def sendMoney_andWaitForReceipt(how_often=1):
     """
-    without ANY transaction, (in e.g. testRPC or raft) there would not be a second block
-    so ... make a block 
+    Send a tiny amount of money. Possibly many times. 
+    Used for testing:
+    
+    Without ANY transaction, (in e.g. testRPC or raft) 
+    there would not be a second block
+    so ... make a block. 
     """
     txParameters = {'from': w3.eth.defaultAccount,
                     'to':   w3.eth.defaultAccount,
                     'gas' : 90000,
                     'value': 1}
-    hash = w3.eth.sendTransaction(txParameters)
+    for i in range(how_often):
+        hash = w3.eth.sendTransaction(txParameters)
+    if i>1:
+        print ("%d transactions sent, the last one being:" % how_often)
     print ("tx sent, hash:", w3.toHex(hash))
     print ("waiting for receipt ...")
     tx_receipt = w3.eth.waitForTransactionReceipt(hash)
