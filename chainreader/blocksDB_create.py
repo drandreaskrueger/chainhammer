@@ -132,7 +132,7 @@ def DB_writeRow_SQL(block):
 
 def DB_writeRow(block, conn):
     """
-    given an Ethereum block, INSERT into DB as row
+    given an Ethereum block, directly INSERT into DB as row
     """
     
     SQL = DB_writeRow_SQL(block)
@@ -210,7 +210,7 @@ def DB_tableSize(conn):
     """
     cur = conn.cursor()
     cur.execute("SELECT COUNT(*) FROM blocks")
-    count = cur.fetchone()
+    count = cur.fetchone()[0]
     print ("TABLE blocks has %d rows" % count)
     return count
     
