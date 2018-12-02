@@ -43,7 +43,7 @@ def test_deployContract():
     assertThatAddress(address)
 
     
-def test_contractObject():
+def test_contractObject_TestedLaterInCombination():
     """
     no need to test this, it is just one web3py call
     

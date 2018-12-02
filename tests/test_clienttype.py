@@ -1,3 +1,5 @@
+import pytest
+
 from clienttype import *
 from config import RPCaddress
 import web3
@@ -16,13 +18,12 @@ def test_curl_post():
     assert type(answer)==type("") # that the answer (blocknumber) is a string
 
 
-import pytest
-
 def test_curl_post_MethodNotExistentError():
     method="eth_thisMethodDoesNotExist"
     with pytest.raises(MethodNotExistentError):
         answer = curl_post(method, ifPrint=True)
         print (answer)
+
 
 def test_clientType():
     answer = clientType(w3)

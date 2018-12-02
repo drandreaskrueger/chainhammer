@@ -9,10 +9,10 @@ NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 import tps
 
-def test_loopUntil_NewContract():
+def test_loopUntil_NewContract_HowtoTestThisNoIdea():
     """
     cannot be tested easily because infinite loop 
-    until a contract is deployed, from second script
+    until a contract is deployed, from the second script?
     """
     # loopUntil_NewContract(query_intervall = 0.1) 
     assert True
@@ -59,8 +59,10 @@ def test_analyzeNewBlocks():
     assert answer >= 0
     
     
-def test_measurement():
+def test_measurement_HowtoTestThisNoIdea():
     """
-    cannot be tested as it is an infinite loop
+    cannot be tested? as it is an infinite loop
     """
     assert True
+    
+    

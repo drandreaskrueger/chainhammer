@@ -38,7 +38,7 @@ def test_web3connection():
     assert (type(w3) == web3.main.Web3)
 
 
-def test_if_poa_then_bugfix():
+def test_if_poa_then_bugfix_HowtoTestThisNoIdea():
     # nope, cannot run this twice, and already run in web3connection() above
     # if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS)
     assert True

@@ -191,16 +191,19 @@ contract_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RP
 ################################################################
 
 
-def many_transactions(contract, numTx):
+def many_transactions_consecutive(contract, numTx):
     """
     naive approach, blocking --> 15 TPS
     """
     
     print ("send %d transactions, non-async, one after the other:\n" % (numTx))
-
+    txs = []
     for i in range(numTx):
         tx = contract_set(contract, i)
         print ("set() transaction submitted: ", tx) # Web3.toHex(tx)) # new web3
+        txs.append(tx)
+    return txs
+        
 
 
 def many_transactions_threaded(contract, numTx):
@@ -300,7 +303,7 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
         
         for t in threads: 
             t.join()
-        print ("all threads ended.")
+        print ("\nall threads ended.")
 
         howManyLeft -= batchSize
 
@@ -311,14 +314,14 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
 ###
 ###########################################################
 
-def benchmark(numTransactions = NUMBER_OF_TRANSACTIONS):
+def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
 
     print("\nBlockNumber = ", w3.eth.blockNumber)
     
     if len(sys.argv)==1:
         
         # blocking, non-async
-        many_transactions(contract, numTransactions)  
+        many_transactions_consecutive(contract, numTransactions)  
         
     else:
         
@@ -367,5 +370,5 @@ if __name__ == '__main__':
     # try_contract_set_via_web3(contract); exit()
     # try_contract_set_via_RPC(contract);  exit()
 
-    benchmark()
+    sendmany()
 
