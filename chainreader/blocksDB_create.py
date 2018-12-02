@@ -142,7 +142,7 @@ def DB_writeRow(block, conn):
     conn.commit()
 
 
-def writeRowIntoFile(block):
+def writeRowSQLIntoFile(block):
     """
     write sql INSERT command as row into textfile
     (because DB concurrency slowed it down much)
@@ -255,8 +255,8 @@ def getBlock_then_store(blockNumber, conn=None, ifPrint=True, printEvery=500):
     """
     b = getBlock(blockNumber)
     
-    # DB_writeRow(b, conn) # no, concurrent DB writes slow it down much
-    writeRowIntoFile(b)    # yes, simply dump into file
+    # DB_writeRow(b, conn) # no,  concurrent DB writes slow it down much
+    writeRowSQLIntoFile(b) # yes, simply dump into a text file first
     
     if ifPrint:
         print ("*", end="")
