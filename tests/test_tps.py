@@ -1,5 +1,7 @@
-import os, timeit
+import os, timeit, shutil, threading, json, time
 from config import RPCaddress
+import tps
+from deploy import FILE_CONTRACT_ADDRESS
 
 from clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
@@ -7,15 +9,48 @@ global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
 w3, chainInfos  = answer
 NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-import tps
+# path for the contract sourcecode file
+# unfortunately path if different depending on how py.test is called
+path=os.path.abspath(os.curdir)
+if os.path.split(path)[-1]=="tests":
+    os.chdir("..") 
+    
 
-def test_loopUntil_NewContract_HowtoTestThisNoIdea():
+def test_loopUntil_NewContract():
     """
-    cannot be tested easily because infinite loop 
-    until a contract is deployed, from the second script?
+    sorry for complex test
+    
+    It cannot be tested easily because it's an infinite loop 
+    until a contract is deployed, from the second script deploy.py
+    
+    BUT
+    I found a clever way, using another thread to start the looping.
     """
-    # loopUntil_NewContract(query_intervall = 0.1) 
-    assert True
+    # better make backup perhaps 
+    try: shutil.move(FILE_CONTRACT_ADDRESS, FILE_CONTRACT_ADDRESS+".backup")
+    except: pass
+
+    json.dump({"address": "address-dummy ONE"}, open(FILE_CONTRACT_ADDRESS, 'w'))
+    
+    print ("start loopUntil_NewContract() in its own thread")
+    T = threading.Thread(target=tps.loopUntil_NewContract)
+    T.start()
+    time.sleep(0.2)
+    print ("t.is_alive()", T.is_alive())
+    
+    assert T.is_alive() # endless loop IS running
+
+    # overwriting the file with new content should trigger the thread T to end    
+    json.dump({"address": "address-dummy TWO"}, open(FILE_CONTRACT_ADDRESS, 'w'))
+    time.sleep(0.3) # perhaps not long enough, for slow filesystems?
+    print ("T.is_alive()", T.is_alive())
+    
+    assert not T.is_alive() # loop is finished
+    
+    # remove dummy file, and possibly recover backup
+    os.remove (FILE_CONTRACT_ADDRESS)
+    try: shutil.move(FILE_CONTRACT_ADDRESS+".backup", FILE_CONTRACT_ADDRESS)
+    except: pass
     
     
 def test_timestampToSeconds_default():
@@ -66,10 +101,9 @@ def test_analyzeNewBlocks():
     assert answer >= 0
     
     
-def test_measurement_HowtoTestThisNoIdea():
+def test_measurement_NotTestableBecauseInfiniteLoop():
     """
     cannot be tested? as it is an infinite loop
     """
     assert True
-    
     

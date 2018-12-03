@@ -46,9 +46,8 @@ def loopUntil_NewContract(query_intervall = 0.1):
         if (newAddress != address or newWhen != when):
             print ("(filedate %d) new contract address: %s" %(newWhen, newAddress))  
             break
-        
-    print('')
-    return w3.eth.blockNumber
+    return
+
 
 
 def timestampToSeconds(timestamp, NODENAME, CONSENSUS):
@@ -121,8 +120,6 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     # txCount=w3.eth.getBlockTransactionCount(blockNumber)
     txCount=getBlockTransactionCount(w3, blockNumber)
     
-    
-    
     start_time = timeit.default_timer()
     # TODO: perhaps additional to elapsed system time, show blocktime? 
     
@@ -152,8 +149,9 @@ if __name__ == '__main__':
     blockNumber_before = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_before," - waiting for something to happen") 
     
-    blocknumber_start_here = loopUntil_NewContract() 
-    print ("blocknumber_start_here =", blocknumber_start_here)
+    loopUntil_NewContract()
+    blocknumber_start_here = w3.eth.blockNumber 
+    print ("\nblocknumber_start_here =", blocknumber_start_here)
     
     measurement( blocknumber_start_here )
     
