@@ -146,7 +146,7 @@ source env/py3eth/bin/activate
 py.test -v --cov
 ```
 
-December 3rd, there were 64 tests, all 64 PASSED, see this [logfile](tests/logs/tests-with_testrpc-py.log.txt). Tested successfully with these localhost:8545 providers:  
+December 3rd, there were 64 tests, all 64 PASSED, see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi) (`cat tests/logs/*.ansi` because colors). Tested successfully with these localhost:8545 providers:  
 
 * 'testrpc-py' 
 

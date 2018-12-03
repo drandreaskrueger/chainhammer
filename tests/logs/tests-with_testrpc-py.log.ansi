@@ -1,0 +1,102 @@
+[1m======================================= test session starts ========================================[0m
+platform linux -- Python 3.5.3, pytest-4.0.1, py-1.7.0, pluggy-0.8.0 -- /home/andreas/Documents/LiClipseWorkspace/drandreaskrueger/chainhammer/env/py3eth/bin/python3
+cachedir: .pytest_cache
+rootdir: /home/andreas/Documents/LiClipseWorkspace/drandreaskrueger/chainhammer, inifile:
+plugins: cov-2.6.0
+[1mcollecting ... [0m[1mcollecting 22 items                                                                                [0m[1mcollecting 49 items                                                                                [0m[1mcollected 64 items                                                                                 [0m
+
+tests/test_blocksDB_create.py::test_DB_createTable [32mPASSED[0m[36m                                    [  1%][0m
+tests/test_blocksDB_create.py::test_DB_createTable_ifAlreadyThere [32mPASSED[0m[36m                     [  3%][0m
+tests/test_blocksDB_create.py::test_DB_dropTable [32mPASSED[0m[36m                                      [  4%][0m
+tests/test_blocksDB_create.py::test_DB_dropTable_whatIfNotThere [32mPASSED[0m[36m                       [  6%][0m
+tests/test_blocksDB_create.py::test_DB_writeRow_SQL [32mPASSED[0m[36m                                   [  7%][0m
+tests/test_blocksDB_create.py::test_DB_writeRow [32mPASSED[0m[36m                                       [  9%][0m
+tests/test_blocksDB_create.py::test_DB_writeRow_duplicate [32mPASSED[0m[36m                             [ 10%][0m
+tests/test_blocksDB_create.py::test_writeRowIntoFile [32mPASSED[0m[36m                                  [ 12%][0m
+tests/test_blocksDB_create.py::test_SQLfileIntoDB [32mPASSED[0m[36m                                     [ 14%][0m
+tests/test_blocksDB_create.py::test_SQLfileIntoDB_duplicates_caught [32mPASSED[0m[36m                   [ 15%][0m
+tests/test_blocksDB_create.py::test_DB_query [32mPASSED[0m[36m                                          [ 17%][0m
+tests/test_blocksDB_create.py::test_DB_readTable [32mPASSED[0m[36m                                      [ 18%][0m
+tests/test_blocksDB_create.py::test_DB_tableSize [32mPASSED[0m[36m                                      [ 20%][0m
+tests/test_blocksDB_create.py::test_DB_blocknumberMinMax [32mPASSED[0m[36m                              [ 21%][0m
+tests/test_blocksDB_create.py::test_getBlock [32mPASSED[0m[36m                                          [ 23%][0m
+tests/test_blocksDB_create.py::test_getBlock_then_store [32mPASSED[0m[36m                               [ 25%][0m
+tests/test_blocksDB_create.py::test_multithreadedQueue_block0 [32mPASSED[0m[36m                         [ 26%][0m
+tests/test_blocksDB_create.py::test_multithreadedQueue_blocks [32mPASSED[0m[36m                         [ 28%][0m
+tests/test_blocksDB_create.py::test_manyBlocks_multithreaded [32mPASSED[0m[36m                          [ 29%][0m
+tests/test_blocksDB_create.py::test_manyBlocks_singlethreaded [32mPASSED[0m[36m                         [ 31%][0m
+tests/test_blocksDB_create.py::test_DB_newFromFile [32mPASSED[0m[36m                                    [ 32%][0m
+tests/test_blocksDB_create.py::test_CLI_params [32mPASSED[0m[36m                                        [ 34%][0m
+tests/test_blocksDB_diagramming.py::test_DB_query [32mPASSED[0m[36m                                     [ 35%][0m
+tests/test_blocksDB_diagramming.py::test_DB_tableSize [32mPASSED[0m[36m                                 [ 37%][0m
+tests/test_blocksDB_diagramming.py::test_check_whether_complete [32mPASSED[0m[36m                       [ 39%][0m
+tests/test_blocksDB_diagramming.py::test_add_colums [32mPASSED[0m[36m                                   [ 40%][0m
+tests/test_blocksDB_diagramming.py::test_load_dependencies [32mPASSED[0m[36m                            [ 42%][0m
+tests/test_blocksDB_diagramming.py::test_load_db_and_check_complete [32mPASSED[0m[36m                   [ 43%][0m
+tests/test_blocksDB_diagramming.py::test_simple_stats [32mPASSED[0m[36m                                 [ 45%][0m
+tests/test_blocksDB_diagramming.py::test_read_whole_table_into_df [32mPASSED[0m[36m                     [ 46%][0m
+tests/test_blocksDB_diagramming.py::test_check_timestamp_format [32mPASSED[0m[36m                       [ 48%][0m
+tests/test_blocksDB_diagramming.py::test_show_peak_TPS [32mPASSED[0m[36m                                [ 50%][0m
+tests/test_blocksDB_diagramming.py::test_load_prepare_plot_save [32mPASSED[0m[36m                       [ 51%][0m
+tests/test_blocksDB_diagramming.py::test_CLI_params [32mPASSED[0m[36m                                   [ 53%][0m
+tests/test_clienttools.py::test_printVersions [32mPASSED[0m[36m                                         [ 54%][0m
+tests/test_clienttools.py::test_web3connection [32mPASSED[0m[36m                                        [ 56%][0m
+tests/test_clienttools.py::test_if_poa_then_bugfix_HowtoTestThisNoIdea [32mPASSED[0m[36m                [ 57%][0m
+tests/test_clienttools.py::test_getBlockTransactionCount [32mPASSED[0m[36m                              [ 59%][0m
+tests/test_clienttools.py::test_unlockAccount [32mPASSED[0m[36m                                         [ 60%][0m
+tests/test_clienttype.py::test_simple_web3connection [32mPASSED[0m[36m                                  [ 62%][0m
+tests/test_clienttype.py::test_curl_post [32mPASSED[0m[36m                                              [ 64%][0m
+tests/test_clienttype.py::test_curl_post_MethodNotExistentError [32mPASSED[0m[36m                       [ 65%][0m
+tests/test_clienttype.py::test_clientType [32mPASSED[0m[36m                                             [ 67%][0m
+tests/test_deploy.py::test_compileContract [32mPASSED[0m[36m                                            [ 68%][0m
+tests/test_deploy.py::test_deployContract [32mPASSED[0m[36m                                             [ 70%][0m
+tests/test_deploy.py::test_contractObject_TestedLaterInCombination [32mPASSED[0m[36m                    [ 71%][0m
+tests/test_deploy.py::test_saveTo_and_loadFromDisk [32mPASSED[0m[36m                                    [ 73%][0m
+tests/test_deploy.py::test_contract_CompileDeploySave [32mPASSED[0m[36m                                 [ 75%][0m
+tests/test_deploy.py::test_trySmartContractMethods [32mPASSED[0m[36m                                    [ 76%][0m
+tests/test_send.py::test_initialize_fromAddress [32mPASSED[0m[36m                                       [ 78%][0m
+tests/test_send.py::test_contract_set_via_web3 [32mPASSED[0m[36m                                        [ 79%][0m
+tests/test_send.py::test_contract_method_ID [32mPASSED[0m[36m                                           [ 81%][0m
+tests/test_send.py::test_argument_encoding [32mPASSED[0m[36m                                            [ 82%][0m
+tests/test_send.py::test_contract_set_via_RPC [32mPASSED[0m[36m                                         [ 84%][0m
+tests/test_send.py::test_many_transactions_consecutive [32mPASSED[0m[36m                                [ 85%][0m
+tests/test_send.py::test_many_transactions_threaded [32mPASSED[0m[36m                                   [ 87%][0m
+tests/test_send.py::test_many_transactions_threaded_in_batches [32mPASSED[0m[36m                        [ 89%][0m
+tests/test_send.py::test_sendmany_HowtoTestThisNoIdea [32mPASSED[0m[36m                                 [ 90%][0m
+tests/test_tps.py::test_loopUntil_NewContract [32mPASSED[0m[36m                                         [ 92%][0m
+tests/test_tps.py::test_timestampToSeconds_default [32mPASSED[0m[36m                                    [ 93%][0m
+tests/test_tps.py::test_timestampToSeconds_raft [32mPASSED[0m[36m                                       [ 95%][0m
+tests/test_tps.py::test_timestampToSeconds_testrpc [32mPASSED[0m[36m                                    [ 96%][0m
+tests/test_tps.py::test_analyzeNewBlocks [32mPASSED[0m[36m                                              [ 98%][0m
+tests/test_tps.py::test_measurement_NotTestableBecauseInfiniteLoop [32mPASSED[0m[36m                    [100%][0m
+
+[33m========================================= warnings summary =========================================[0m
+env/py3eth/lib/python3.5/site-packages/eth_utils/applicators.py:32
+  /home/andreas/Documents/LiClipseWorkspace/drandreaskrueger/chainhammer/env/py3eth/lib/python3.5/site-packages/eth_utils/applicators.py:32: DeprecationWarning: combine_argument_formatters(formatter1, formatter2)([item1, item2])has been deprecated and will be removed in a subsequent major version release of the eth-utils library. Update your calls to use apply_formatters_to_sequence([formatter1, formatter2], [item1, item2]) instead.
+    "combine_argument_formatters(formatter1, formatter2)([item1, item2])"
+
+-- Docs: https://docs.pytest.org/en/latest/warnings.html
+
+----------- coverage: platform linux, python 3.5.3-final-0 -----------
+Name                                  Stmts   Miss  Cover
+---------------------------------------------------------
+chainreader/blocksDB_create.py          180     35    81%
+chainreader/blocksDB_diagramming.py     188     19    90%
+clienttools.py                           69     22    68%
+clienttype.py                           108     49    55%
+config.py                                22      5    77%
+deploy.py                                70     11    84%
+send.py                                 170     54    68%
+tests/__init__.py                         0      0   100%
+tests/test_blocksDB_create.py           177      1    99%
+tests/test_blocksDB_diagramming.py       90      3    97%
+tests/test_clienttools.py                23      1    96%
+tests/test_clienttype.py                 21      1    95%
+tests/test_deploy.py                     59      4    93%
+tests/test_send.py                       61      3    95%
+tests/test_tps.py                        55      3    95%
+tps.py                                   63     20    68%
+---------------------------------------------------------
+TOTAL                                  1356    231    83%
+
+[1m[33m============================== 64 passed, 1 warnings in 9.14 seconds ===============================[0m
