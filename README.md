@@ -148,7 +148,9 @@ py.test -v --cov
 
 December 3rd, there were 64 tests, all 64 PASSED, see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi) (`cat tests/logs/*.ansi` because colors). Tested successfully with these localhost:8545 providers:  
 
-* 'testrpc-py' 
+* `testrpc-py`  9 seconds 
+* `geth-dev` (geth Clique) 54 seconds
+* `blk-io/crux` (quorum IBFT) 31 seconds
 
 ## credits
 

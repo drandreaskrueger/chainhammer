@@ -1,3 +1,9 @@
+echo
+echo =====================================
+echo  test suite, with testrpc-py backend
+echo =====================================
+echo 
+
 # BOTH testrpc-py AND pytest must be run in the virtualenv!
 source env/py3eth/bin/activate
 
@@ -12,6 +18,20 @@ PID=$!
 echo testrpc-py started in background, logging into tests/logs/
 echo you can watch it with tail -f tests/logs/testrpc-py.log
 echo kill it with: kill $PID
+echo
+echo =====================================
+echo
+
+echo now run ./deploy.py once, to 
+echo A make sure there is a connection to a node
+echo B print all the versions 
+echo C create some files needed locally
+echo
+./deploy.py
+
+echo
+echo now the tests can start:
+echo 
 
 # start tests, colored output to screen AND to file
 unbuffer py.test -v --cov | tee tests/logs/py.test.log 
