@@ -18,12 +18,15 @@
 ################
 ## Dependencies:
 
-import sys
+# standard library
+import sys, os
 import sqlite3
+from pprint import pprint
+
+# pypi:
 import pandas
 import numpy
 import matplotlib
-
 
 ################
 
@@ -45,7 +48,7 @@ def DB_tableSize(tablename, conn):
     """
     count = DB_query("SELECT COUNT(*) FROM %s" % tablename, conn)
     print ("TABLE %s has %d rows" % (tablename, count[0][0]))
-    return count
+    return count[0][0]
 
 
 def maxBlockNumber(conn):
@@ -73,9 +76,11 @@ def check_whether_complete(blocknumbers):
             total+=missing
         old = bn
     print()
-    print ("complete" if not total else "some %d blocks missing" % total, end=" ")
+    complete = (not total)
+    print ("complete" if complete else "some %d blocks missing" % total, end=" ")
     print ("between blocks %d and %d." %(min(blocknumbers)[0], max(blocknumbers)[0]))
 
+    return complete
 
 ##################
 ## add columns
@@ -140,8 +145,8 @@ def load_dependencies():
     matplotlib.rcParams['agg.path.chunksize'] = 10000
     
     # my own routines are now all in separate .py file:
-    from blocksDB_diagramming import DB_query, DB_tableSize, maxBlockNumber, check_whether_complete
-    from blocksDB_diagramming import add_blocktime, add_TPS, add_GUPS, add_GLPS
+    # from blocksDB_diagramming import DB_query, DB_tableSize, maxBlockNumber, check_whether_complete
+    # from blocksDB_diagramming import add_blocktime, add_TPS, add_GUPS, add_GLPS
 
 
 def load_db_and_check_complete(DBFILE):
@@ -191,18 +196,41 @@ def read_whole_table_into_dataframe(conn):
     
 
 def check_timestamp_format(df):
-        
-    print ("example- first 4 rows:")
-    print (df[0:4])
-    
-    # TODO: better come up with an automated test, not just visual inspection: 
-    print ("             is timestamp in seconds?")
-        
+    """
+    some clients report absolute blocktime as epochtime in seconds, 
+    some in nanoseconds
+    that should have been handled already, in the timestampToSeconds() function
+    but if it hasn't, the problem would show up here.
+    """
+    # print ("example- first 4 rows:")
+    # print (df[0:4])
+    # better come up with an automated test, not just visual inspection: 
+    # print ("             is timestamp in seconds?")
     # ### `geth` based clients have a nanosecond timestamp
     # not anymore?
-
     # transform nanoseconds to seconds
     # df["timestamp"]=df["timestamp"]/1000000000
+
+    problematic = []
+    for ts in df["timestamp"]:
+        #        year 2001         year 2255
+        if not (1000000000 < ts < 9000000000):   
+            problematic.append(ts)
+            
+    if problematic:
+        print ("%d problematic timestamps = probably not in unit of seconds" % len(problematic))
+        try:# try, for the case that the list is short
+            problematic = problematic[:3] + problematic[-3:]
+            problematic = sorted(list(set(problematic))) # remove duplicates
+        except:
+            pass
+        print ("examples:", problematic)
+    
+    assert not problematic 
+    # hello year 2255, you might have a Y2286 problem 
+    # when epochtime goes from 9999999999 to 10000000000
+    # someone warned you 30 years earlier. Hahaha :-)
+    return not problematic
 
 
 def add_columns(df):
@@ -237,18 +265,28 @@ def add_columns(df):
     
     
 def show_peak_TPS(df):
+    
+    columns = ['blocknumber', 
+               'TPS_1blk', 'TPS_3blks', 'TPS_5blks', 'TPS_10blks',
+               'txcount', 'size', 'gasUsed', 'gasLimit', 'timestamp', 'blocktime']  
 
     print ("peak TPS single block:")
-    print (df.sort_values(by=['TPS_1blk'], ascending=False)[0:10])
+    df1 = df.sort_values(by=['TPS_1blk'], ascending=False)[0:10]
+    max1 = max(df1['TPS_1blk'])
+    pprint (df1[columns])
     
     
     print ("\npeak TPS over ten blocks:")
-    print (df.sort_values(by=['TPS_10blks'], ascending=False)[0:10])
+    df10 = df.sort_values(by=['TPS_10blks'], ascending=False)[0:10]
+    max10 = max(df10['TPS_10blks'])
+    pprint (df10[columns])
 
-    print ()
+    print ("\nSingle block, vs averaged over 10 blocks:")
+    print ("peak( TPS_1blk) = %.2f \npeak(TPS_10blk) = %.2f" % (max1,max10))
+    return max1, max10
     
 
-def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True):
+def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, imgpath="img"):
     
     from matplotlib import pyplot as plt
     
@@ -313,17 +351,18 @@ def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True):
     
     ##############################################
     # save diagram to PNG file
-    filename = "img/%s_tps-bt-bs-gas_blks%d-%d.png" % (prefix,blockFrom,blockTo)
-    fig.savefig(filename)
+    filename = "%s_tps-bt-bs-gas_blks%d-%d.png" % (prefix,blockFrom,blockTo)
+    filepath = os.path.join(imgpath, filename)
+    fig.savefig(filepath)
     
-    return filename
+    return filepath
 
 
 
 
 ###############################################################################
 
-def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK):
+def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="img"):
     
     load_dependencies()
     conn, blocknumbers = load_db_and_check_complete(DBFILE)
@@ -338,9 +377,9 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK):
     if TO_BLOCK==-1: TO_BLOCK = max(blocknumbers)[0]
     # print (FROM_BLOCK, TO_BLOCK); exit()
     
-    fn = diagrams(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True)
+    fn = diagrams(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
     print ("\ndiagrams saved to: ", fn)
-
+    return fn
 
 ###############################################################################
 
