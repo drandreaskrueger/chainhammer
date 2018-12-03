@@ -143,8 +143,12 @@ enables the virtualenv, then first starts a `testrpc-py` Ethereum simulator on h
 If you want to run tests with another node, just start that; and run the tests:
 ```
 source env/py3eth/bin/activate
-py.test -v
+py.test -v --cov
 ```
+
+December 3rd, there were 64 tests, all 64 PASSED, see this [logfile](tests/logs/tests-with_testrpc-py.log.txt). Tested successfully with these localhost:8545 providers:  
+
+* 'testrpc-py' 
 
 ## credits
 
