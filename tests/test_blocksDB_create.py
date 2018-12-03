@@ -34,6 +34,13 @@ def delete_DB_and_SQL_file():
         except FileNotFoundError:
             pass
         
+        
+@pytest.fixture(scope="session", autouse=True)
+def do_something(request):
+    # prepare something ahead of all tests:
+    pass
+    # prepare something to be run after all tests:
+    request.addfinalizer(delete_DB_and_SQL_file)
     
 ###############################################################
 # tests:
