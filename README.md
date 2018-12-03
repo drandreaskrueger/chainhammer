@@ -151,6 +151,11 @@ December 3rd, there were 64 tests, all 64 PASSED, see this [logfile](tests/logs/
 * `testrpc-py`  9 seconds 
 * `geth-dev` (geth Clique) 54 seconds
 * `blk-io/crux` (quorum IBFT) 31 seconds
+* `parity-deploy` (instantseal) 8 seconds
+
+This is still failing: 
+* `parity-deploy` (aura)  "10 failed, 54 passed, 1 warnings in 607.65 seconds"
+
 
 ## credits
 

@@ -17,9 +17,9 @@ RPCaddress, RPCaddress2 = None, None
 
 # or this for experiment runs OR for unittesting with real Ethereum nodes:
 # RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
-RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
+# RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground; parity-deploy
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev; use two different nodes for writing and reading  
+RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev; use two different nodes for writing and reading  
 
 # how many tx to send in send.py
 NUMBER_OF_TRANSACTIONS = 20000

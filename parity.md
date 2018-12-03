@@ -1644,7 +1644,6 @@ rm temp.db*
 ![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](chainreader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
 parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 
-
 ## please help making parity faster:
 
 ##### There is a [README.md --> quickstart](README.md#quickstart), and a [reproduce.md](reproduce.md) ... 
@@ -1654,6 +1653,33 @@ parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 Then please alert us how you did it. 
 
 Thanks.
+
+## unittests
+now that there are unittests, let's try them also with parity (checkout old commit because of [PD#85](https://github.com/paritytech/parity-deploy/issues/85))
+
+### unittests with instantseal
+```
+cd paritytech_parity-deploy
+git checkout a76a2f1b7173ff5d138e0cb66efdb939bfe33aab 
+sudo ./clean.sh
+./parity-deploy.sh --config dev -r v1.11.11 --geth
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+docker-compose up
+```
+
+### unittests with aura
+with 5 seconds blocktime
+```
+cd paritytech_parity-deploy
+git checkout a76a2f1b7173ff5d138e0cb66efdb939bfe33aab 
+sudo ./clean.sh
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth
+sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
+jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
+
+cp deployment/1/password ../chainhammer/account-passphrase.txt 
+docker-compose up
+```
 
 ## background info on Aura
 * https://wiki.parity.io/Aura
@@ -1673,8 +1699,8 @@ Thanks.
 * [PPP#17](https://github.com/orbita-center/parity-poa-playground/issues/17) warnings and errors
 * [PD#55](https://github.com/paritytech/parity-deploy/issues/55) (FR) user defined parameters
 * [OD#58](https://github.com/paritytech/parity-deploy/issues/58) instantseal password empty
-* [PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
 * [PE#9471](https://github.com/paritytech/parity-ethereum/issues/9471) `eth_sendTransactionAsync` to accelerate parity?
+* [PE#9468](https://github.com/paritytech/parity-ethereum/issues/9468) finer time resolution please 
 * [PD#60](https://github.com/paritytech/parity-deploy/issues/60) make config pieces JSON compliant / (FR) allow to change spec parameters
 * [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help [not a github issue but **ethereum.stackexchange.com**]
 * [PD#61](https://github.com/paritytech/parity-deploy/issues/61) (FR) fix a certain version 
@@ -1683,4 +1709,5 @@ Thanks.
 * [PD#71](https://github.com/paritytech/parity-deploy/issues/71) ethkey: error while loading shared libraries: libboost_filesystem.so.1.55.0: cannot open shared object file: No such file or directory
 * [PE#9586](https://github.com/paritytech/parity-ethereum/issues/9586) parity aura almost always ignores the stepDuration=2 seconds, blocks come slower
 * [PD#76](https://github.com/paritytech/parity-deploy/issues/76) Error upgrading parity data: CannotCreateConfigPath 
-
+* [PD#85](https://github.com/paritytech/parity-deploy/issues/85) Invalid argument: generate
+* [PD#86](https://github.com/paritytech/parity-deploy/issues/86) (FR) give account balance to default account 
