@@ -1531,7 +1531,7 @@ Here's a list of the (*few*) suggestions that I got from the parity team:
 
 Other than that, the parity team seems a bit clueless how to accelerate their own client. Looks like ...
 
-## ... the final verdict for now is:
+#### ... the final verdict for now is:
 
 `parity aura` seems to be 5-6 times slower than `geth clique`. 
 
