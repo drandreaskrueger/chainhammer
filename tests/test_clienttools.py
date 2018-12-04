@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+"""
+@summary: testing clienttools.py
+
+@version: v42 (4/December/2018)
+@since:   30/November/2018
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+"""
+
 import os
 from clienttools import *
 from config import RPCaddress
@@ -43,7 +54,7 @@ def test_if_poa_then_bugfix_HowtoTestThisNoIdea():
     # if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS)
     assert True
     
-    
+
 def test_getBlockTransactionCount():
     txcount=getBlockTransactionCount(w3, 0)
     assert (txcount >= 0)
@@ -58,10 +69,7 @@ def test_unlockAccount():
         
     answer = unlockAccount()
     print ("unlock answer:", answer)
-    # yes, I know the following is problematic. 
-    # but e.g. geth-dev returns False even though account is unlocked
-    assert True
-    # but at least the above would FAIL if an exception is thrown, right?
+    assert answer
     
   
     

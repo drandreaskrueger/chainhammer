@@ -139,9 +139,6 @@ def unlockAccount(duration=3600, account=None):
     if "TestRPC" in w3.version.node:
         return True # TestRPC does not need unlocking
     
-    # if CHAINNAME=='500':
-    #     return True # https://github.com/javahippie/geth-dev already unlocked  
-    
     if not account:
         account = w3.eth.defaultAccount
         # print (account)
@@ -151,6 +148,9 @@ def unlockAccount(duration=3600, account=None):
     else:
         with open(PASSPHRASE_FILE, "r") as f:
             passphrase=f.read().strip()
+
+    if NODENAME=="Geth" and CONSENSUS=="clique" and NETWORKID==500:
+        passphrase="pass" # hardcoded in geth-dev/docker-compose.yml
 
     # print ("passphrase:", passphrase)
 
