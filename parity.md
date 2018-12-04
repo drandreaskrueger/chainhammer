@@ -1681,6 +1681,19 @@ cp deployment/1/password ../chainhammer/account-passphrase.txt
 docker-compose up
 ```
 
+#### other versions of parity:
+show all versions on dockerhub
+
+    curl -s 'https://registry.hub.docker.com/v2/repositories/parity/parity/tags/?page_size=1000'  | jq -r '."results"[]["name"]' | sort -t. -k 1,1n -k 2,2n -k 3,3n
+
+in the above, swap out two lines for:
+
+```
+./parity-deploy.sh -r v2.2.3 --nodes 4 --config aura --name myaura --geth --gasprice 0 --tx-queue-mem-limit 0
+sed -i 's/parity:stable/parity:v2.2.3/g' docker-compose.yml
+```
+
+
 ## background info on Aura
 * https://wiki.parity.io/Aura
 * https://wiki.parity.io/Permissioning
@@ -1711,3 +1724,4 @@ docker-compose up
 * [PD#76](https://github.com/paritytech/parity-deploy/issues/76) Error upgrading parity data: CannotCreateConfigPath 
 * [PD#85](https://github.com/paritytech/parity-deploy/issues/85) Invalid argument: generate
 * [PD#86](https://github.com/paritytech/parity-deploy/issues/86) (FR) give account balance to default account 
+* [PD#87](https://github.com/paritytech/parity-deploy/issues/87) (v2.2.3) Spec json is invalid: unknown field `gasLimitBoundDivisor`
