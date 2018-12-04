@@ -17,7 +17,7 @@ Thx
 
 ---
 
-# chainhammer v41
+# chainhammer v42
 TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
