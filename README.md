@@ -134,28 +134,25 @@ jupyter notebook blocksDB_analyze_parity-aura_run7.ipynb
 ```
 by menu --> Kernel --> Restart & Run All. 
 
-### unittests
+## unittests
 ```
 ./pytest.sh
 ```
-enables the virtualenv, then first starts a `testrpc-py` Ethereum simulator on http://localhost:8545 in the background, logging into `tests/logs/`, then runs all the tests.
-
-If you want to run tests with another node, just start that; and run the tests:
+enables the virtualenv, then starts a `testrpc-py` Ethereum simulator on http://localhost:8545 in the background, logging into `tests/logs/`; then runs `./deploy.py andtests`; and finally runs all the unittests, also logging into `tests/logs/`.  
+(Instead of testrpc-py) if you want to run tests with another node, just start that; and run `pytest` manually:
 ```
 source env/py3eth/bin/activate
+./deploy.py andtests
 py.test -v --cov
 ```
 
-December 3rd, there were 64 tests, all 64 PASSED, see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi) (`cat tests/logs/*.ansi` because colors). Tested successfully with these localhost:8545 providers:  
+December 4th, there were 64 tests, all 64 PASSED (see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi)  --> `cat tests/logs/*.ansi` because colors) on these different Ethereum providers:  
 
-* `testrpc-py`  9 seconds 
-* `geth-dev` (geth Clique) 54 seconds
-* `blk-io/crux` (quorum IBFT) 31 seconds
-* `parity-deploy` (instantseal) 8 seconds
-
-This is still failing: 
-* `parity-deploy` (aura)  "10 failed, 54 passed, 1 warnings in 607.65 seconds"
-
+* testrpc instantseal (`testrpc-py`)  9 seconds 
+* geth Clique (`geth-dev`) 54 seconds
+* quorum IBFT (`blk-io/crux`) 31 seconds
+* parity instantseal (`parity-deploy`) 8 seconds
+* parity aura (`parity-deploy`) 74 seconds
 
 ## credits
 

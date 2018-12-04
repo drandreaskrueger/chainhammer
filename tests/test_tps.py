@@ -65,19 +65,22 @@ def test_timestampToSeconds_testrpc():
     assert 1 == tps.timestampToSeconds(205, NODENAME="TestRPC", CONSENSUS="whatever")
     
     
-def sendMoney_andWaitForReceipt(how_often=1):
+def sendMoney_andWaitForReceipt(how_often=1, 
+                                amount=0): # amount zero because in parity-deploy 
+                                           # the default account has no money yet, see  
+                                           # https://github.com/paritytech/parity-deploy/issues/86
     """
     Send a tiny amount of money. Possibly many times. 
     Used for testing:
     
     Without ANY transaction, (in e.g. testRPC or raft) 
-    there would not be a second block
-    so ... make a block. 
+    there would not be a second block.
+    So ... make block/s by sending transaction/s. 
     """
     txParameters = {'from': w3.eth.defaultAccount,
                     'to':   w3.eth.defaultAccount,
                     'gas' : 90000,
-                    'value': 1}
+                    'value': amount}
     for i in range(how_often):
         hash = w3.eth.sendTransaction(txParameters)
     if i>1:

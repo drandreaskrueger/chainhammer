@@ -1668,12 +1668,12 @@ docker-compose up
 ```
 
 ### unittests with aura
-with 5 seconds blocktime
+with gasprice 0 (as the default account has no balance), and 5 seconds blocktime
 ```
 cd paritytech_parity-deploy
 git checkout a76a2f1b7173ff5d138e0cb66efdb939bfe33aab 
 sudo ./clean.sh
-./parity-deploy.sh --nodes 4 --config aura --name myaura --geth
+./parity-deploy.sh --nodes 4 --config aura --name myaura --geth --gasprice 0 --tx-queue-mem-limit 0
 sed -i 's/parity:stable/parity:v1.11.11/g' docker-compose.yml
 jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json > tmp; mv tmp deployment/chain/spec.json
 
