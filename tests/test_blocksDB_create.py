@@ -1,10 +1,21 @@
+#!/usr/bin/env python3
+"""
+@summary: testing blocksDB_create.py
+
+@version: v42 (4/December/2018)
+@since:   2/December/2018
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+"""
+
 import os, sqlite3, pytest
 
 import chainreader.blocksDB_create as DBcreate
 from .test_tps import sendMoney_andWaitForReceipt
 
 ###############################################################
-# web3 connection 
+# web3 connection and nodetype 
 
 from config import RPCaddress
 from clienttools import web3connection
@@ -26,6 +37,7 @@ if os.path.split(path)[-1]=="tests":
 def set_DB_throwaway():
     DBcreate.DBFILE = os.path.join("tests", "testing_TEMP.db") 
     DBcreate.DB_dropTable()
+    
     
 def delete_DB_and_SQL_file():
     for fn in (DBcreate.DBFILE, DBcreate.DBFILE+".sql"):
@@ -74,6 +86,7 @@ def test_DB_dropTable_whatIfNotThere():
     DBcreate.DB_dropTable() # no problem, the IF EXISTS solves that
     
     assert True # no return value; just check that it raised no exception
+    
     
 # fixture: example block
 block_example = {"number":1,"timestamp":2,"size":3,"gasUsed":4,"gasLimit":5,
@@ -283,3 +296,5 @@ def test_DB_newFromFile():
 def test_CLI_params():
     DBcreate.CLI_params()
     assert True # How to test this, any idea?
+    
+    

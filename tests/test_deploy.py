@@ -1,9 +1,21 @@
+#!/usr/bin/env python3
+"""
+@summary: testing deploy.py
+
+@version: v42 (4/December/2018)
+@since:   1/December/2018
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+"""
+
 import os, timeit
 from pprint import pprint
 import web3
 
 from config import RPCaddress, FILE_CONTRACT_SOURCE, ABI
 
+# web3 connection and nodetype
 from clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 

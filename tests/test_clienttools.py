@@ -37,6 +37,7 @@ def test_start_web3connection_external():
 # and thus it has to become a global object? 
 """
 
+# web3 connection and nodetype
 answer = web3connection(RPCaddress=RPCaddress)
 w3, chainInfos  = answer
 global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID

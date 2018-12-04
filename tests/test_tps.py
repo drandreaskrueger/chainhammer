@@ -108,5 +108,6 @@ def test_measurement_NotTestableBecauseInfiniteLoop():
     """
     cannot be tested? as it is an infinite loop
     """
+    # loop = tps.measurement(blockNumber, pauseBetweenQueries=0.3)
     assert True
     

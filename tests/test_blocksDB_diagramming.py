@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+"""
+@summary: testing blocksDB_diagramming.py
+
+@version: v42 (4/December/2018)
+@since:   3/December/2018
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+"""
+
 import os, sqlite3, pytest
 from pprint import pprint
 
@@ -78,7 +89,6 @@ def test_load_db_and_check_complete():
     conn.close()
     assert type(blocknumbers) == list
     assert len(blocknumbers) > 0
-    
     
     
 def test_simple_stats():

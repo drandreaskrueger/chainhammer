@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+"""
+@summary: testing clienttype.py
+
+@version: v42 (4/December/2018)
+@since:   30/November/2018
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+"""
+
 import pytest
 
 from clienttype import *
@@ -7,9 +18,11 @@ import web3
 global w3
 w3=simple_web3connection(RPCaddress)
 
+
 def test_simple_web3connection():
     global w3
     assert type(w3) == web3.main.Web3
+
     
 def test_curl_post():
     method="eth_blockNumber"
@@ -29,3 +42,5 @@ def test_clientType():
     answer = clientType(w3)
     print (answer)
     assert len(answer) == 6
+    
+    
