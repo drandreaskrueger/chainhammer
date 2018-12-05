@@ -1,13 +1,27 @@
-v42 30/11/2018  testRPC and unittesting with pytest - non-trivial, because
-    Web3.TestRPCProvider() can be started but not ended again, raised an issue;
-    something (can be testrpc-py) has to be manually started before "py.test -v"
-    --> new compound testing script 'pytest.sh', which keeps logs & shows color
-    altogether 64 tests for 
-    clienttools, clienttype, tps, deploy, send, blocksDB_create, blocksDB_diagramming
-    all PASSED on testrpc-py, quorum IBFT, geth-dev, parity instantseal & aura!
-    tps.loopUntil_NewContract because loop needed clever 2 threads approach 
-    selected coverage only using .coveragerc; parity aura has no balance, send 0
-    and much more ... unittesting is ~ready, hooray.
+v43 5/12/2018- 
+    Reog everything into subfolders for better overview
+      docs & results for human readable, 
+      networks for scripts to configure and start several nodes, and
+      chainhammer for the core code
+    BUT now all links are broken, sorry refactoring had to be done;
+     do this to find the old structure: 
+      git checkout f7d9e81e4ce9f81d3ad3ad67b7f92c477b9b7419
+      TODO - make this a release tag perhaps
+    Initial skeleton for run.sh
+
+v42 30/11/2018 - 4/12/2018  
+    testRPC and unittesting with pytest - non-trivial, because
+     Web3.TestRPCProvider() can be started but not ended again, raised an issue;
+    Something (can be testrpc-py) has to be manually started before "py.test -v"
+     --> new compound testing script 'pytest.sh', which keeps logs & shows color.
+    Altogether 64 tests for 
+     clienttools, clienttype, tps, deploy, send, blocksDB_create, blocksDB_diagramming
+    All 64 PASSED on testrpc-py, quorum IBFT, geth-dev, parity instantseal & aura!
+     incl tps.loopUntil_NewContract (because loop) needed clever 2 threads approach 
+    Selected coverage only using .coveragerc
+    Issue: parity aura has no balance, send 0
+    and much more ... 
+    Unittesting is ~ready, hooray.
 
 v41 29/11/2018  experiments with testrpc-py https://pypi.org/project/eth-testrpc/ 
     = got it running, but odd timestamps, see https://github.com/pipermerriam/eth-testrpc/issues/117
