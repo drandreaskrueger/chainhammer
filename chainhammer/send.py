@@ -318,37 +318,35 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
 
     print("\nBlockNumber = ", w3.eth.blockNumber)
     
-    if len(sys.argv)==1:
+    if len(sys.argv)==1 or sys.argv[1]=="sequential":
         
         # blocking, non-async
         many_transactions_consecutive(contract, numTransactions)  
         
-    else:
+    elif sys.argv[1]=="threaded1":
+        many_transactions_threaded(contract, numTransactions)
+            
+            
+    elif sys.argv[1]=="threaded2":
+        num_workers = 100
+        if len(sys.argv)>2:
+            try:
+                num_workers = int(sys.argv[2])
+            except:
+                pass
+            
+        many_transactions_threaded_Queue(contract, 
+                                         numTx=numTransactions, 
+                                         num_worker_threads=num_workers)
         
-        if sys.argv[1]=="threaded1":
-            many_transactions_threaded(contract, numTransactions)
-            
-            
-        elif sys.argv[1]=="threaded2":
-            num_workers = 100
-            if len(sys.argv)>2:
-                try:
-                    num_workers = int(sys.argv[2])
-                except:
-                    pass
-                
-            many_transactions_threaded_Queue(contract, 
-                                             numTx=numTransactions, 
-                                             num_worker_threads=num_workers)
-            
-        elif sys.argv[1]=="threaded3":
-            batchSize=25
-            many_transactions_threaded_in_batches(contract, 
-                                                  numTx=numTransactions, 
-                                                  batchSize=batchSize)
+    elif sys.argv[1]=="threaded3":
+        batchSize=25
+        many_transactions_threaded_in_batches(contract, 
+                                              numTx=numTransactions, 
+                                              batchSize=batchSize)
           
-        else:
-            print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
+    else:
+        print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
 
         
         
