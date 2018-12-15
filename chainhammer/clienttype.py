@@ -149,7 +149,10 @@ def clientType(w3):
             pass
         try:
             answer = curl_post(method="parity_chainId")
-            chainId = int(answer, 16) 
+            try:
+                chainId = int(answer, 16)
+            except TypeError:
+                chainId = -1
         except MethodNotExistentError:
             pass
 
