@@ -1,3 +1,5 @@
+beware: some of this collection is outdated; is going to get cleaned soonish.
+
 # TODO - next steps
 
 interesting next questions:

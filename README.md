@@ -1,15 +1,10 @@
-
 ---
 
-news 2018-Oct-01
+news 2018-Dec-15:
 
-## New Maintainer:
-
-* github --> drandreaskrueger --> [chainhammer](https://github.com/drandreaskrueger/chainhammer)
-* `git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer`
-* News: Funding needed! Contact me. Or simply: [ETH] 0x008B32b996745b89bfdED64488DeA074EF52f4b8
-
-Thx
+## refactored!
+Everything is in a different place now, sorry. But it urgently needed cleanup.  
+Please open an issue (or fork & pull request) if you find a broken link, thanks.
 
 ---
 
@@ -18,23 +13,26 @@ Thx
 ---
 
 # chainhammer v42
-TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. It should work with any Ethereum type chain; we focused on PoA consensus.
+TPS measurements of parity aura, geth clique, quorum, tobalaba, etc. 
+It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
-* `chainhammer` - submits many transactions to blockchain - see next chapter 'chronology'
+* `chainhammer` - submits many transactions to blockchain - see chapter 'chronology'
 * `chainreader` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [chainreader/README.md](chainreader/README.md)
 
 ### chronology
+See the [results/](results/) folder:
 
-1. [log.md](log.md): initial steps; also tried *Quorum's private transactions*
-1. [quorum.md](quorum.md): raft consensus, geth fork
-1. [tobalaba.md](tobalaba.md): parity fork
-1. [quorum-IBFT.md](quorum-IBFT.md): other consensus algo in quorum
-1. [geth.md](geth.md): geth clique PoA algorithm
-1. [parity.md](parity.md): now out of ideas. Still 5 times slower than geth.
-1. [eos.md](eos.md): not begun
+1. [log.md](results/log.md): initial steps; also tried *Quorum's private transactions*
+1. [quorum.md](results/quorum.md): raft consensus, quorum is a geth fork
+1. [tobalaba.md](results/tobalaba.md): parity fork of  EnergyWebFoundation
+1. [quorum-IBFT.md](results/quorum-IBFT.md): IstanbulBFT, 2nd consensus algo in quorum
+1. [geth.md](results/geth.md): geth clique PoA algorithm
+1. [parity.md](results/parity.md): parity aura PoA algorithm, many attempts to accelerate
+1. [eos.md](results/eos.md): not begun yet
+1. [substrate.md](results/substrate.md): not begun yet
 
-## results
+## results summary
 
 | hardware  	| node type 	    | #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
 |-----------	|-----------	    |--------	|--------	|-------------	|--------------	|
@@ -62,17 +60,18 @@ TPS measurements of Quorum, EnergyWebFoundation, geth clique, parity aura, etc. 
 | t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
 | c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	| 524.3        |
 
-You can [reproduce](reproduce.md) these results easily. Or even quicker when you use my [Amazon AMI readymade image](reproduce.md#readymade-amazon-ami) - for the `config` column see there. And see [parity.md](parity.md) and [geth.md](geth.md) and [quorum-IBFT.md](quorum-IBFT.md) for additional details.
+[Reproduce](docs/reproduce.md) these results easily; for the `config` column see there.
+Or even quicker with my [Amazon AMI readymade image](docs/reproduce.md#readymade-amazon-ami).
+
+And see [parity.md](results/parity.md) and [geth.md](results/geth.md) 
+and [quorum-IBFT.md](results/quorum-IBFT.md) for additional details.
 
 ## faster wider more
-
-See 
-
-* logbook [log.md](log.md) for what I had done initially to get this faster *on Quorum*, step by step. 
-* some ideas what to try next: [TODO.md](TODO.md) = e.g. geth/parity PoA, vary transaction size, run on host machine (not docker/vagrant), etc.
+* logbook [log.md](results/log.md) for how I initially got this faster *on Quorum*, step by step. 
+* some ideas what to try next: [TODO.md](docs/TODO.md) = e.g. vary transaction size, automate more, etc.
 
 ### you
-See [other-projects.md](other-projects.md) using this, or projects which are similar to this. 
+See [other-projects.md](docs/other-projects.md) using chainhammer, or projects which are similar to this. 
 
 *Please report back when you have done other / new measurements.*
 
@@ -83,36 +82,44 @@ See [other-projects.md](other-projects.md) using this, or projects which are sim
 * geth [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions.
 * quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
 
-
 ## run
+For more details see [reproduce.md](docs/reproduce.md). 
+Assuming a node is already running on port 8545, this focuses on chainhammer itself:
 
-For more details e.g. how to run a network of parity nodes, see [reproduce.md](reproduce.md). This assumes it's already running. The focus here is on chainhammer itself:
 ### dependencies
 ```
 sudo apt install python3-pip libssl-dev expect-dev
 sudo pip3 install virtualenv 
-virtualenv -p python3 py3eth
-source py3eth/bin/activate
+
+virtualenv -p python3 env
+source env/bin/activate
 
 python3 -m pip install --upgrade pip==18.0
 pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0 pytest pytest-cov
 
-# only when using chainreader notebooks:
+# for chainreader notebooks:
 pip3 install --upgrade jupyter ipykernel 
 ipython kernel install --user --name="Python.3.py3eth"
 ```
+
 all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
-
 ```
-source py3eth/bin/activate
+source env/bin/activate
+```
 
+Before first ever start: 
+```
+cd chainhammer
 touch account-passphrase.txt
-./deploy.py 
+deploy.py andtests
 ```
-Always use this first. It tests whether communication with the ethereum node is working, **and initially creates local files about the compiled and deployed contract**. If there are connection problems, check the ports in [config.py](config.py) --> `RPCaddress, RPCaddress2`.
+It tests whether communication with the ethereum node is working, 
+**and initially creates local files about the compiled and deployed contract**. 
+If there are connection problems, check the ports in [config.py](chainhammer/config.py) --> 
+`RPCaddress, RPCaddress2`.
 
 ### quickstart
-
+Remember, in each new terminal virtualenv: `source env/bin/activate; cd chainhammer`
 
 first terminal:
 ```
@@ -120,33 +127,41 @@ first terminal:
 ```
 second terminal:
 ```
-./deploy.py notest; ./send.py threaded2 23
+./deploy.py; ./send.py threaded2 23
 ```
 
-Then, after all (e.g. 20,001) transactions have been seen, extract the whole chain into `allblocks-parity_run7.db` (example)
+Then, after all (e.g. 20,001) transactions have been seen, 
+extract the whole chain into `parity_run7.db` (example);
+and create the diagrams
+
 ```
-cd chainreader
-./blocksDB_create.py allblocks-parity_run7.db
+cd ../chainreader
+rm parity_run7.db
+./blocksDB_create.py parity_run7.db
+./blocksDB_diagramming.py parity_run7.db parity-run-7
 ```
-and examine it with a jupyter notebook, to make the diagrams
-```
-jupyter notebook blocksDB_analyze_parity-aura_run7.ipynb
-```
-by menu --> Kernel --> Restart & Run All. 
 
 ## unittests
 ```
 ./pytest.sh
 ```
-enables the virtualenv, then starts a `testrpc-py` Ethereum simulator on http://localhost:8545 in the background, logging into `tests/logs/`; then runs `./deploy.py andtests`; and finally runs all the unittests, also logging into `tests/logs/`.  
-(Instead of testrpc-py) if you want to run tests with another node, just start that; and run `pytest` manually:
+enables the virtualenv, 
+then starts a `testrpc-py` Ethereum simulator on http://localhost:8545 in the background, 
+logging into `tests/logs/`; 
+then runs `./deploy.py andtests`; 
+and finally runs all the unittests, also logging into `tests/logs/`.  
+
+(Instead of testrpc-py) if you want to run tests with another node, 
+just start that; and run `pytest` manually:
 ```
 source env/py3eth/bin/activate
 ./deploy.py andtests
 py.test -v --cov
 ```
 
-December 4th, there were 64 tests, all 64 PASSED (see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi)  --> `cat tests/logs/*.ansi` because colors) on these different Ethereum providers:  
+December 4th, there were 64 tests, all 64 PASSED
+(see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi)  --> 
+`cat tests/logs/*.ansi` because colors) on these different Ethereum providers:  
 
 * testrpc instantseal (`testrpc-py`)  9 seconds 
 * geth Clique (`geth-dev`) 54 seconds
@@ -159,15 +174,19 @@ December 4th, there were 64 tests, all 64 PASSED (see this [logfile](tests/logs/
 Please credit this as:
 
 > benchmarking scripts "chainhammer"  
-> https://gitlab.com/electronDLT/chainhammer    
-> by Dr Andreas Krueger, Electron.org.uk, London 2018  
+> initially developed at Electron.org.uk London 2018
+> current maintainer: Dr Andreas Krueger (c) 2018  
+> https://github.com/drandreaskrueger/chainhammer    
 
-Consider to submit your improvements & [usage](other-projects.md) as pull request. Thanks.
+Consider to submit your improvements & [usage](docs/other-projects.md) as pull request. Thanks.
 
 ### short summary
 
-> Electron created the open source tools chainhammer which submits a high load of smart contract transactions to an Ethereum based blockchain, and chainreader which reads in the whole chain, and produces diagrams of TPS, blocktime, gasUsed and gasLimit, and the blocksize.
-> https://gitlab.com/electronDLT/chainhammer
+> The open source tools 'chainhammer' submits a high load of 
+> smart contract transactions to an Ethereum based blockchain, 
+> then 'chainreader' reads the whole chain, and 
+> produces diagrams of TPS, blocktime, gasUsed and gasLimit, and the blocksize.
+> https://github.com/drandreaskrueger/chainhammer    
 
 ---
 
@@ -176,17 +195,7 @@ Consider to submit your improvements & [usage](other-projects.md) as pull reques
 ---
 
 ## chainhammer --> chainreader -->  diagrammer
-
-Newsflash October 2018:
-
-#### diagramming now in 4 CLI lines:
-
-```
-cd chainreader
-rm temp.db*
-./blocksDB_create.py temp.db
-./blocksDB_diagramming.py temp.db name-prefix fromBlock toBlock
-```
+examples:
 
 ### geth clique on AWS t2.xlarge 
 [geth.md](geth.md) = geth (go ethereum client), "Clique" consensus.
