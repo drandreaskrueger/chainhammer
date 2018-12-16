@@ -126,7 +126,7 @@ cd drandreaskrueger_chainhammer/
 sudo apt install python3-pip libssl-dev
 sudo pip3 install virtualenv 
 virtualenv -p python3 py3eth
-source py3eth/bin/activate
+source env/bin/activate
 
 python3 -m pip install --upgrade pip==18.0
 
@@ -136,7 +136,7 @@ pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0
 or if you are adventurous:
 ```
 virtualenv -p python3 env/py3eth
-source env/py3eth/bin/activate
+source env/env/bin/activate
 python3 -m pip install --upgrade pip==18.0
 pip3 install --upgrade rlp==0.6.0 eth-testrpc py-solc web3 web3[tester] requests pandas matplotlib pytest pytest-cov
 ```
@@ -167,7 +167,7 @@ new terminal
 ```
 # same virtualenv
 cd drandreaskrueger_chainhammer
-source py3eth/bin/activate
+source env/bin/activate
 
 # start the chainhammer send routine
 ./deploy.py notest; ./send.py 
@@ -291,7 +291,7 @@ monitor-frontend         | 2018-09-10 13:34:02.054 [API] [BLK] Block: 7 from: ge
 new terminal: test connection
 ```
 cd drandreaskrueger_chainhammer/
-source py3eth/bin/activate
+source env/bin/activate
 ./deploy.py
 ```
 
@@ -299,14 +299,14 @@ source py3eth/bin/activate
 new terminal: watcher
 ```
 cd drandreaskrueger_chainhammer/
-source py3eth/bin/activate
+source env/bin/activate
 ./tps.py
 ```
 
 new terminal: hammer
 ```
 cd drandreaskrueger_chainhammer/
-source py3eth/bin/activate
+source env/bin/activate
 ./deploy.py notest; ./send.py 
 ```
 
@@ -566,7 +566,7 @@ diff docker-compose-local.yaml docker-compose.yaml
 ... and create some local files
 ```
 ssh chainhammer
-cd ~/drandreaskrueger_chainhammer && source py3eth/bin/activate
+cd ~/drandreaskrueger_chainhammer && source env/bin/activate
 
 ./deploy.py
 ```
@@ -588,7 +588,7 @@ cp ~/paritytech_parity-deploy/deployment/1/password ~/drandreaskrueger_chainhamm
 ### chainhammer: send transactions
 ```
 ssh chainhammer
-cd drandreaskrueger_chainhammer && source py3eth/bin/activate
+cd drandreaskrueger_chainhammer && source env/bin/activate
 
 ./deploy.py notest; ./send.py threaded2 23
 ```

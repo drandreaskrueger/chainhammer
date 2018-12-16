@@ -8,14 +8,14 @@ echo to run it yourself with variations of network and parameters
 echo 
 echo start like this:
 echo 
-echo "    source env/py3eth/bin/activate"
+echo "    source env/bin/activate"
 echo "    unbuffer testrpc-py &> tests/logs/testrpc-py.log &"
 echo "    ./run.sh"
 echo
 echo
 
 echo virtualenv 
-source env/py3eth/bin/activate
+source env/bin/activate
 echo
 echo 
 

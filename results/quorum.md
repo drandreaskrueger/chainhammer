@@ -57,7 +57,7 @@ see [send.py](send.py) --> ` initialize(contractTx_blockNumber=1, contractTx_tra
 for py3 dependencies, mostly ethereum 
 ```
 virtualenv -p python3 py3eth
-source py3eth/bin/activate
+source env/bin/activate
 python3 -m pip install --upgrade pip==9.0.3
 pip3 install --upgrade py-solc==2.1.0 web3==4.3.0 web3[tester]==4.3.0 rlp==0.6.0 eth-testrpc==1.3.4 requests 
 ```
@@ -218,12 +218,12 @@ RAFT=False
 ```
 terminal 1:
 ```
-source py3eth/bin/activate
+source env/bin/activate
 ./tps.py
 ```
 terminal 2:
 ```
-source py3eth/bin/activate
+source env/bin/activate
 ./deploy.py notest; ./send.py threaded2 23
 ```
 

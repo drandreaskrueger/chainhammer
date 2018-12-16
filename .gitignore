@@ -2,7 +2,7 @@
 .directory
 
 # virtualenv
-py3eth
+env
 
 # block database files allblocks.db.sql and allblocks.db
 *.db.sql

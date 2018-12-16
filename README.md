@@ -142,6 +142,7 @@ and create the diagrams
 ```
 cd ../reader
 rm -f parity-run17.db*
+
 ./blocksDB_create.py parity-run17.db
 ./blocksDB_diagramming.py parity-run17.db Parity-run-17
 ```

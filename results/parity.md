@@ -1235,7 +1235,7 @@ PARITY_UNLOCK_EACH_TRANSACTION=True
 then initialize & test:
 
 ```
-cd electronDLT_chainhammer && source py3eth/bin/activate
+cd electronDLT_chainhammer && source env/bin/activate
 ./deploy.py
 ```
 
@@ -1248,7 +1248,7 @@ new terminal, send 20k transactions:
 
 ```
 ssh chainhammer
-cd electronDLT_chainhammer && source py3eth/bin/activate
+cd electronDLT_chainhammer && source env/bin/activate
 ./deploy.py notest ; ./send.py threaded2 23
 ```
 
@@ -1338,14 +1338,14 @@ host1    | 2018-09-25 08:16:34 UTC Starting Parity/v1.7.13-stable-8b74936-201801
 now benchmarking:
 
 ```
-cd ~/electronDLT_chainhammer && source py3eth/bin/activate
+cd ~/electronDLT_chainhammer && source env/bin/activate
 ./deploy.py
 ./tps.py
 ```
 
 ```
 ssh chainhammer # new terminal
-cd ~/electronDLT_chainhammer && source py3eth/bin/activate
+cd ~/electronDLT_chainhammer && source env/bin/activate
 ./deploy.py notest; ./send.py threaded2 23
 ```
 

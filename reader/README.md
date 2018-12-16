@@ -6,7 +6,7 @@ All happens in virtualenv (see [../quorum.md#virtualenv](../quorum.md#virtualenv
 
 Start virtualenv, install dependencies:
 ```
-source py3eth/bin/activate
+source env/bin/activate
 pip3 install web3 pandas jupyter ipykernel matplotlib 
 ipython kernel install --user --name="Python.3.py3eth"
 ```

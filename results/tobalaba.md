@@ -22,7 +22,7 @@ directly jump to
 * sync your energyweb client, with some special switches: `./tobalaba-node-start.sh`
 * put Tobalaba-Ether onto the first address of that node; and its passphrase into `account-passphrase.txt`
 * clone this repo (and checkout e.g. commit cd844ea7 because that definitely contains [the correct](#config) `config.py`)
-* install the [virtualenv & dependencies](https://gitlab.com/electronDLT/chainhammer/blob/master/README.md#dependencies) - each of the following terminals needs to start that venv first, with `source py3eth/bin/activate`
+* install the [virtualenv & dependencies](https://gitlab.com/electronDLT/chainhammer/blob/master/README.md#dependencies) - each of the following terminals needs to start that venv first, with `source env/bin/activate`
 * first terminal:   `./tps.py`
 * second terminal: `./deploy.py notest && ./send.py threaded2 23`
 
@@ -77,7 +77,7 @@ If there are many already, then just wait a while.
 ### virtualenv
 In each terminal start the virtualenv (before the following python scripts):
 
-    source py3eth/bin/activate
+    source env/bin/activate
 
 See [quorum.md#virtualenv](quorum.md#virtualenv) for which dependencies to install.
 
@@ -206,7 +206,7 @@ block 4428739 | new #TX   0 / 6000 ms =   0.0 TPS_current | total: #TX 1025 / 27
 
 ```
 cd chainreader
-source py3eth/bin/activate
+source env/bin/activate
 blocksDB_create.py
 jupyter notebook --ip=127.0.0.1
 ```
