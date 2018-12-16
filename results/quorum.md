@@ -1,7 +1,22 @@
-N.B.: No TOC yet for this file, as is going to be redone, when repeated in the cloud (all experiments here were on a local desktop). For that we'd need this solved: [BC#51](https://github.com/blk-io/crux/issues/51) to be able to run in docker (not vagrant virtualbox)
+N.B.: Going to be redone, when repeated in the cloud (all experiments here were on a local desktop). For that we'd need this solved: [BC#51](https://github.com/blk-io/crux/issues/51) to be able to run in docker (not vagrant virtualbox).
 
 # [chainhammer](../README.md): quorum
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
+
+## TOC
+1. general infos on quorum
+1. initialize 7nodes quorum-example
+1. virtualenv; start listener; start hammering
+1. blocking,  multithreaded 1, multithreaded 2, 
+1. example output
+1. chainreader
+1. faster
+1. much later repeat
+1. suggestions please
+1. IBFT = Istanbul BFT
+1. [issues raised](issues-raised)
+1. alternative: dockerized quorum nodes
+1. credits
 
 ## general infos 
 
