@@ -8,35 +8,32 @@ echo
 read -p "Press enter to continue"
 echo
 
-echo
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd docs
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../hammer
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../logs
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../networks
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../reader
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../results
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../scripts
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-echo
-cd ../tests
-docker run -ti --rm -v $PWD:/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results `ls *.md`
-cd ..
+# this is the relative url, decide here which branch to check:
+BURL="https://github.com/drandreaskrueger/chainhammer/blob/master/"
+BURL="https://github.com/drandreaskrueger/chainhammer/tree/reorg/"
+
+# for putting the command together:
+BASE1="docker run -ti --rm -v "
+BASE2=":/mnt:ro dkhamsing/awesome_bot --allow-dupe --allow-redirect --skip-save-results --base-url "
+
+FOLDER=""
+echo; echo root folder of repo:
+CMD=$BASE1$(pwd)$BASE2$BURL$FOLDER" *.md" 
+echo $CMD; echo
+$CMD
+
+
+FOLDERS="docs/ hammer/ logs/ networks/ reader/ results/ scripts/ tests/"
+
+for FOLDER in $FOLDERS; do
+    echo; echo $FOLDER
+    cd $FOLDER
+    CMD=$BASE1$(pwd)$BASE2"--base-url "$BURL$FOLDER" *.md"  
+    echo $CMD; echo
+    $CMD
+    cd ..
+done
+
 echo 
 echo done.
 echo
-
-
