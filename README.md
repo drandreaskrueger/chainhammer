@@ -17,8 +17,14 @@ TPS measurements of parity aura, geth clique, quorum, tobalaba, etc.
 It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
-* `chainhammer` - submits many transactions to blockchain - see chapter 'chronology'
-* `chainreader` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [chainreader/README.md](chainreader/README.md)
+
+### folders
+* `hammer/` - submits many transactions to blockchain - see chapter 'chronology'
+* `reader/` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [reader/README.md](reader/README.md)
+* `results/` - for each client one markdown file
+* `docs/` - see esp. reproduce.md
+* `env/` - Python virtualenv, created via script, see below
+* `tests/` - all started via `./pytest.sh`
 
 ### chronology
 See the [results/](results/) folder:
@@ -104,22 +110,21 @@ ipython kernel install --user --name="Python.3.py3eth"
 
 all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
 ```
-source env/bin/activate
+cd hammer; source ../env/bin/activate
 ```
 
 Before first ever start: 
 ```
-cd chainhammer
 touch account-passphrase.txt
 deploy.py andtests
 ```
 It tests whether communication with the ethereum node is working, 
 **and initially creates local files about the compiled and deployed contract**. 
-If there are connection problems, check the ports in [config.py](chainhammer/config.py) --> 
+If there are connection problems, check the ports in [config.py](hammer/config.py) --> 
 `RPCaddress, RPCaddress2`.
 
 ### quickstart
-Remember, in each new terminal virtualenv: `source env/bin/activate; cd chainhammer`
+Remember, in each new terminal virtualenv: `cd hammer; source ../env/bin/activate`
 
 first terminal:
 ```
@@ -131,14 +136,14 @@ second terminal:
 ```
 
 Then, after all (e.g. 20,001) transactions have been seen, 
-extract the whole chain into `parity_run7.db` (example);
+extract the whole chain into `parity-run17.db` (example);
 and create the diagrams
 
 ```
 cd ../chainreader
-rm parity_run7.db
-./blocksDB_create.py parity_run7.db
-./blocksDB_diagramming.py parity_run7.db parity-run-7
+rm parity_run17.db*
+./blocksDB_create.py parity-run17.db
+./blocksDB_diagramming.py parity-run17.db Parity-run-17
 ```
 
 ## unittests
@@ -154,12 +159,12 @@ and finally runs all the unittests, also logging into `tests/logs/`.
 (Instead of testrpc-py) if you want to run tests with another node, 
 just start that; and run `pytest` manually:
 ```
-source env/py3eth/bin/activate
-./deploy.py andtests
+source env/bin/activate
+hammer/deploy.py andtests
 py.test -v --cov
 ```
 
-December 4th, there were 64 tests, all 64 PASSED
+There were 64 tests on December 4th, all 64 PASSED
 (see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi)  --> 
 `cat tests/logs/*.ansi` because colors) on these different Ethereum providers:  
 
@@ -198,45 +203,54 @@ Consider to submit your improvements & [usage](docs/other-projects.md) as pull r
 examples:
 
 ### geth clique on AWS t2.xlarge 
-[geth.md](geth.md) = geth (go ethereum client), "Clique" consensus.
+[geth.md](results/geth.md) = geth (go ethereum client), "Clique" consensus.
 
 50,000 transactions to an Amazon t2.xlarge machine.
 
 Interesting artifact that after ~14k transactions, the speed drops considerably - but recovers again. [Reported](https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-431629285).
 
-![geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png](chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png)  
-chainreader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png
+![geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png](reader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png)  
+reader/img/geth-clique-50kTx_t2xlarge_tps-bt-bs-gas_blks12-98.png
 
 ### quorum IBFT on AWS t2.xlarge 
 
-[quorum-IBFT.md](quorum-IBFT.md) = Quorum (geth fork), IBFT consensus, 20 millions gasLimit, 1 second istanbul.blockperiod; 20000 transactions multi-threaded with 23 workers. Initial average >400 TPS then drops to below 300 TPS, see [quorum issue](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316))
+[quorum-IBFT.md](results/quorum-IBFT.md) = Quorum (geth fork), IBFT consensus, 20 millions gasLimit, 1 second istanbul.blockperiod; 20000 transactions multi-threaded with 23 workers. Initial average >400 TPS then drops to below 300 TPS, see [quorum issue](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316))
 
-![quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png](chainreader/img/quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png)
+![quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png](reader/img/quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png)
 
 
 ### quorum raft
 OLD RUN on a desktop machine.  
 
-[quorum.md](quorum.md) = Quorum (geth fork), raft consensus, 1000 transactions multi-threaded with 23 workers, average TPS around 160 TPS, and 20 raft blocks per second)
-![chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png](chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png)
+[quorum.md](results/quorum.md) = Quorum (geth fork), raft consensus, 1000 transactions multi-threaded with 23 workers, average TPS around 160 TPS, and 20 raft blocks per second)
+![reader/img/quorum_tps-bt-bs-gas_blks242-357.png](reader/img/quorum_tps-bt-bs-gas_blks242-357.png)
 
 
 ### tobalaba
 OLD RUN on a desktop machine.
 
-[tobalaba.md](tobalaba.md) = Public "Tobalaba" chain of the EnergyWebFoundation (parity fork), PoA; 20k transactions; > 150 TPS if client is well-connected.
+[tobalaba.md](results/tobalaba.md) = Public "Tobalaba" chain of the EnergyWebFoundation (parity fork), PoA; 20k transactions; > 150 TPS if client is well-connected.
 
-![chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
+![reader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](reader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
 
 ### parity aura v1.11.11 on AWS t2.xlarge 
-[parity.md#run-18](parity.md#run-18) = using [parity-deploy.sh](https://github.com/paritytech/parity-deploy) dockerized network of 4 local nodes with increased gasLimit, and 5 seconds blocktime; 20k transactions; ~ 60 TPS on an Amazon t2.xlarge machine.
+[parity.md#run-18](results/parity.md#run-18) = 
+using [parity-deploy.sh](https://github.com/paritytech/parity-deploy) 
+dockerized network of 4 local nodes with increased gasLimit, and 5 seconds blocktime; 
+20k transactions; ~ 60 TPS on an Amazon t2.xlarge machine.
 
-N.B.: Could not work with parity v2 yet because of bugs [PD#76](https://github.com/paritytech/parity-deploy/issues/76) and [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582) --> everything still on parity v1.11.11
+N.B.: Could not work with parity v2 yet because of bugs 
+[PD#76](https://github.com/paritytech/parity-deploy/issues/76) and 
+[PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582) --> 
+everything still on parity v1.11.11
 
-![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](chainreader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
+![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](reader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
 parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 
 
-Calling all parity experts: How to improve these too slow TPS results?    See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), and the [detailed log of what I've tried already](parity.md), and the 2 shortest routes to reproducing the results: [reproduce.md](reproduce.md).    
+Calling all parity experts: How to improve these too slow TPS results?    
+See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), 
+and the [detailed log of what I've tried already](results/parity.md), 
+and the 2 shortest routes to reproducing the results: [reproduce.md](docs/reproduce.md).    
 
 Thanks.
