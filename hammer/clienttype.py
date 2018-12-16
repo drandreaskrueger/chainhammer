@@ -3,7 +3,7 @@
 @summary: Which client type do we have? 
           quorum-raft/ibft OR energyweb OR parity OR geth OR ...
 
-@version: v32 (19/September/2018)
+@version: v43 (16/December/2018)
 @since:   29/May/2018
 @organization: 
 @author:  https://github.com/drandreaskrueger

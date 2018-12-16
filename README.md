@@ -1,6 +1,6 @@
 ---
 
-news 2018-Dec-15:
+news 2018-Dec-16:
 
 ## refactored!
 Everything is in a different place now, sorry. But it urgently needed cleanup.  
@@ -12,7 +12,7 @@ Please open an issue (or fork & pull request) if you find a broken link, thanks.
 
 ---
 
-# chainhammer v42
+# chainhammer v43
 TPS measurements of parity aura, geth clique, quorum, tobalaba, etc. 
 It should work with any Ethereum type chain; we focused on PoA consensus.
 

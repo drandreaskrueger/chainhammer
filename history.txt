@@ -1,13 +1,18 @@
-v43 5/12/2018- 
-    Reog everything into subfolders for better overview
+v43 5/12/2018-16/12/2018
+    Reorg everything into subfolders for better overview
       docs & results for human readable, 
-      networks for scripts to configure and start several nodes, and
-      chainhammer for the core code
-    BUT now all links are broken, sorry refactoring had to be done;
+      networks & scripts for starting several nodes, and helper scripts,
+      hammer & reader for the core chainhammer & chainreader code,
+    BUT now links are broken, sorry refactoring had to be done;
      do this to find the old structure: 
       git checkout f7d9e81e4ce9f81d3ad3ad67b7f92c477b9b7419
-      TODO - make this a release tag perhaps
+      TODO - make this a release tag perhaps?
     Initial skeleton for run.sh
+    code: import & path changes, so that tests were still running PASSED
+    new tool scripts/link-checker.sh which finds all broken links in .md files. 
+    had to fix 150 or so links in *.md files after reorg
+    overview intros for parity.md geth.md quorum.md etc.
+    virtualenv now simply in env/
 
 v42 30/11/2018 - 4/12/2018  
     testRPC and unittesting with pytest - non-trivial, because

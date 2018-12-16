@@ -2,7 +2,7 @@
 """
 @summary: tools to talk to an Ethereum client node 
 
-@version: v32 (19/September/2018)
+@version: v43 (16/December/2018)
 @since:   19/June/2018
 @organization: 
 @author:  https://github.com/drandreaskrueger
