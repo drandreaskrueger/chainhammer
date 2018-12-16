@@ -22,7 +22,7 @@ directly jump to
 * sync your energyweb client, with some special switches: `./tobalaba-node-start.sh`
 * put Tobalaba-Ether onto the first address of that node; and its passphrase into `account-passphrase.txt`
 * clone this repo (and checkout e.g. commit cd844ea7 because that definitely contains [the correct](#config) `config.py`)
-* install the [virtualenv & dependencies](https://gitlab.com/electronDLT/chainhammer/blob/master/README.md#dependencies) - each of the following terminals needs to start that venv first, with `source env/bin/activate`
+* install the [virtualenv & dependencies](../README.md#dependencies) - each of the following terminals needs to start that venv first, with `source env/bin/activate`
 * first terminal:   `./tps.py`
 * second terminal: `./deploy.py notest && ./send.py threaded2 23`
 

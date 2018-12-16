@@ -17,12 +17,13 @@ But then varied so that the execution_count and ExecuteTime is stripped (not the
 Run this before committing a jupyter notebook to gitlab/github, for a less confusing commit diff view.
 
 @author Dr Andreas Krueger
-@contact: andreas.krueger+code@electron.org.uk
-@organization: Electron.Org.UK
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
 @param git-precommit-stripper.py filename.ipynb
 @attention: overwrites file
 @warning: might not work perfectly, might be incomplete - some auto-updated cell properties might not yet be removed. Please extend.
-@see: https://gitlab.com/electronDLT/DevOps/blob/master/snippets/git-precommit-stripper.py
+@see: https://github.com/drandreaskrueger/DevOps/blob/master/snippets/git-precommit-stripper.py
 @since last edit = 2017 August 07
 @version: v04
 """

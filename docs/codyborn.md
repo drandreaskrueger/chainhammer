@@ -4,7 +4,7 @@ TODO: rename/restructure this into "performance-optimizations.md"
 
 ## perhaps working, but exotic:
 
-About the 'nonsimple ( * ) idea' remark in '[Please you help](https://gitlab.com/electronDLT/chainhammer/blob/master/parity.md#please-you-help)'...:
+About the 'nonsimple ( * ) idea' remark in '[Please you help](../results/parity.md#please-you-help)'...:
 
 There *seems to be* an exotic way of talking to an Ethereum node, bypassing a lot of the (possibly uncleverly implemented) parity code like transaction signing, and nonce-handling ... A microsoft employee has recently set up a benchmarking on Azure, to push the limits further. 
 

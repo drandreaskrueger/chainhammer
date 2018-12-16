@@ -108,10 +108,10 @@ block 57 | new #TX   0 / 2000 ms =   0.0 TPS_current | total: #TX 20001 / 76.2 s
 ```
 ### results approx 350 TPS but only for first 14k transactions 
 
-![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png)
-image https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png)
+image https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png
 
-The following averages are calculated in the zoomed in diagrams at the bottom of notebook [chainreader/blocksDB_analyze_geth-clique.ipynb](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/blocksDB_analyze_geth-clique.ipynb)
+The following averages are calculated in the zoomed in diagrams at the bottom of notebook [chainreader/blocksDB_analyze_geth-clique.ipynb](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/blocksDB_analyze_geth-clique.ipynb)
 
 
 * we see **approx 350 TPS** when averaging over blocks 23-40 
@@ -120,7 +120,7 @@ The following averages are calculated in the zoomed in diagrams at the bottom of
 
 The reason for this drop is to be found out, see issue [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) "Sudden drop in TPS after total 14k transactions".
 
-(actually, [same behavior as in quorum IBFT](https://gitlab.com/electronDLT/chainhammer/blob/master/quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx))
+(actually, [same behavior as in quorum IBFT](https://github.com/drandreaskrueger/chainhammer/blob/master/quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx))
 
 ### run 2
 * purpose: new diagrams

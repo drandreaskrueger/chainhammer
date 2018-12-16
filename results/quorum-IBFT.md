@@ -49,8 +49,8 @@ change `istanbul-genesis.json` to
 
 However, the effect is simply that then the blocktime is going up. So raising the gasLimit does not result in higher TPS yet:
 
-* [10 mio gasLimit](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-1s-gas10mio_run2_tps-bt-bs-gas_blks20-90.png)
-* [20 mio gasLimit](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)
+* [10 mio gasLimit](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-1s-gas10mio_run2_tps-bt-bs-gas_blks20-90.png)
+* [20 mio gasLimit](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)
 
 both saturate around ~200 TPS.
 
@@ -113,8 +113,8 @@ block 80 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 105.0 
 block 81 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 106.1 s = 188.6 TPS_average
 ```
 
-![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)  
-https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)  
+https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png
 
 ### crux docker 4nodes
 different from above:
@@ -238,8 +238,8 @@ block 114 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 90.2 
 block 115 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 91.1 s = 219.5 TPS_average
 ```
 
-![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
-https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
+https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
 
 until now the best result - around 
 
@@ -249,7 +249,7 @@ No blocktime increase (as before with constellation 7 nodes) but a steady 1 seco
 
 ### Direct RPC call instead of web3 call
 
-With [this config switch](https://gitlab.com/electronDLT/chainhammer/blob/509f2df05ebbddce969443849f8129ca66e26d9c/config.py#L29-30) change, all those 20k transactions are not each sent through the standard web3 call
+With [this config switch](https://github.com/drandreaskrueger/chainhammer/blob/509f2df05ebbddce969443849f8129ca66e26d9c/config.py#L29-30) change, all those 20k transactions are not each sent through the standard web3 call
 
     contract.functions.set( x=arg ).transact(txParameters)
 
@@ -257,7 +257,7 @@ but the transaction is manually compiled, and sent via a POST call directly to t
 
     requests.post(RPCaddress, json=payload, headers=headers)
 
-(see [full code here](https://gitlab.com/electronDLT/chainhammer/blob/d00ea549928d9007a3f4fe051f275cb759bfebd2/send.py#L147-177)).
+(see [full code here](https://github.com/drandreaskrueger/chainhammer/blob/d00ea549928d9007a3f4fe051f275cb759bfebd2/send.py#L147-177)).
 
 Quite surprising, but web3 seems to seriously harm the overall execution performance!
 
@@ -360,14 +360,14 @@ block 92 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 64.9 s
 ```
 
 #### result > 400 TPS but only for the first 14k tx
-![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
-(diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
+(diagram https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
 
 Surprising acceleration when not using web3 ... not 273 TPS but
 
 **370 - 465 TPS** !
 
-Following detailed averages are calculated at the bottom of notebook [chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
+Following detailed averages are calculated at the bottom of notebook [chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
 
 Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.  
 
@@ -376,7 +376,7 @@ Looking at the later blocks 64 to 80 only, we see averages of **~270 TPS**.
 
 Unclear what exactly makes the rate collapse here, and after already approx 13000 - 14000 transactions. I have done several repetitions, they all look similar. Any ideas where this might come from?  
 
-(actually, [same behavior as in geth Clique PoA](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions))
+(actually, [same behavior as in geth Clique PoA](https://github.com/drandreaskrueger/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions))
 
 
 ### on Amazon AWS

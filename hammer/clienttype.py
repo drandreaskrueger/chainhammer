@@ -5,9 +5,9 @@
 
 @version: v32 (19/September/2018)
 @since:   29/May/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
 

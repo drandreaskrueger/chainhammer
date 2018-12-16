@@ -9,7 +9,7 @@ interesting next questions:
   * Will be interesting to combine https://github.com/javahippie/geth-dev and https://github.com/paritytech/parity-deploy !
 * [a first issue](https://github.com/drandreaskrueger/chainhammer/issues/1) with python library dependencies for chainhammer was reported 
 * add this repo to https://github.com/ConsenSys/ethereum-developer-tools-list
-* quorum: solve [this strange problem](https://gitlab.com/electronDLT/chainhammer/blob/d3b408d325e1089c54071aeceb4af06b75133dd2/reproduce_TODO-crux.md#problems) which seems to only appear on Amazon AWS; but no time for this now.
+* quorum: solve [this strange problem](https://github.com/drandreaskrueger/chainhammer/blob/d3b408d325e1089c54071aeceb4af06b75133dd2/reproduce_TODO-crux.md#problems) which seems to only appear on Amazon AWS; but no time for this now.
 * gas / transaction bytes / block size / ...
   * standard `.set()` call needs `26644 gas`, very small; general calls will be larger --> estimate effect of gas on TPS:
   * custom smart contract that can use *tunable gas* for *storage* (e.g. append to list), or tunable gas for *calculations* (e.g. 
@@ -59,8 +59,8 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * [quorum.md](quorum.md) - quickstart how to use this chainhammer tool
   * [log.md](log.md) - sequence of everything that I've already optimized, to get this faster 
   * [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md) - attempt to run it on host machine instead of inside vagrant VB; currently broken, issue unanswered.
-  * [Quorum-consensus.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md) - raft, IBFT, etc
-  * [Quorum-privacy.md](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-privacy.md) - quorum private transactions
+  * [Quorum-consensus.md](https://github.com/drandreaskrueger/training-material/blob/master/EEA/Quorum-consensus.md) - raft, IBFT, etc
+  * [Quorum-privacy.md](https://github.com/drandreaskrueger/training-material/blob/master/EEA/Quorum-privacy.md) - quorum private transactions
 * [tobalaba.md](tobalaba.md) also benchmarked the parity fork of the EnergyWebFoundation: `--chain Tobalaba`
 * [quorum-IBFT.md](quorum-IBFT.md)
 * [parity.md](parity.md)

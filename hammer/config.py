@@ -4,9 +4,9 @@
 
 @version: v33 (19/September/2018)
 @since:   8/May/2018
-@organization: electron.org.uk
+@organization: 
 @author:  https://github.com/drandreaskrueger
-@see: https://gitlab.com/electronDLT/chainhammer for updates
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
 ##########
@@ -42,7 +42,7 @@ ROUTE = "RPC"  # "web3" "RPC"
   
 # parity's idiosyncracy:
 # 'Time-unlocking is only supported in --geth compatibility mode.'
-# see https://gitlab.com/electronDLT/chainhammer/blob/master/parity.md#run-14 for why and how
+# see https://github.com/drandreaskrueger/chainhammer/blob/master/parity.md#run-14 for why and how
 PARITY_UNLOCK_EACH_TRANSACTION=False
 
 if PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC":

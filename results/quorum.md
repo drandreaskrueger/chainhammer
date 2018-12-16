@@ -1,4 +1,3 @@
-Public repo because [#346](https://github.com/jpmorganchase/quorum/issues/346), etc - for more info also see Electron-[internal repo](https://gitlab.com/electronDLT/training-material/blob/master/EEA/Quorum-consensus.md).
 # [chainhammer](README.md): quorum
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
@@ -148,7 +147,7 @@ See [log.md](log.md) for what I have tried to get this faster.
 
 ### Much later repeat
 
-With newest chainhammer code (version [v24](https://gitlab.com/electronDLT/chainhammer/commit/69407bab63ca56fb62bae736c9cf3e6a7c32c6c0)), 
+With newest chainhammer code (version [v24](https://github.com/drandreaskrueger/chainhammer/commit/69407bab63ca56fb62bae736c9cf3e6a7c32c6c0)), 
 and with 10 multithreading workers, 
 and with RPC calls instead of web3.contract calls, 
 and with 7nodes in the standard constellation version of the [quorum-examples-->raft](https://github.com/jpmorganchase/quorum-examples),
@@ -198,7 +197,7 @@ Differences to the raft chainhammer code (already solved, to benchmark the [Toba
 
 * the smart contract deployment transaction cannot reliably be found in block 0; instead 
   * we reimplemented `script1.js` into a real programming language, which is allowed to write to file --> `deploy.py`
-* 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://gitlab.com/electronDLT/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) needed be a different one than blocks moving forwards; it is now just waiting for that `contract-address.json` file to be updated.
+* 'raft' is producing no empty blocks, so the trigger for ["waiting for something to happen"](https://github.com/drandreaskrueger/chainhammer/blob/ca97cf5de66df03b26e3bf28f2a0ca9a621cc781/tps.py#L108-110) needed be a different one than blocks moving forwards; it is now just waiting for that `contract-address.json` file to be updated.
 
 --> benchmarking IBFT should be simple, and straightforward. Let's see:
 
@@ -266,7 +265,8 @@ Always used the 7nodes example as described above, but there is also https://git
 Please credit this as:
 
 > benchmarking scripts "chainhammer"  
-> https://gitlab.com/electronDLT/chainhammer    
-> by Dr Andreas Krueger, Electron.org.uk, London 2018  
+> beginning developed at Electron.org.uk 2018   
+> current maintainer: Dr Andreas Krueger 2018    
+> https://github.com/drandreaskrueger/chainhammer    
 
 Consider to submit your improvements & [usage](other-projects.md) as pull request. Thanks.

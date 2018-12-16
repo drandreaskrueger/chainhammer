@@ -697,8 +697,8 @@ block 83 | new #TX   4 / 4000 ms =   1.0 TPS_current | total: #TX 20001 / 310.1 
 
 #### result run 7
 
-![https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](https://gitlab.com/electronDLT/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
-diagram https://gitlab.com/electronDLT/chainhammer/blob/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
+diagram https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png
 
 N.B.: The CPU usage stays below 60%, so parity is not yet using all the computational resources available, even with `--jsonrpc-server-threads 100`. 
 
@@ -718,7 +718,7 @@ docker-compose up
 
 log of run 8:  
 
-(For the reason of all those `/    0 ms =   0.0 TPS_current`, see [this code comment](https://gitlab.com/electronDLT/chainhammer/commit/515033d42a0fab45cd53ae4e823501385344bf8f))
+(For the reason of all those `/    0 ms =   0.0 TPS_current`, see [this code comment](https://github.com/drandreaskrueger/chainhammer/commit/515033d42a0fab45cd53ae4e823501385344bf8f))
 
 ```
 ./tps.py 
@@ -765,7 +765,7 @@ but with only 1 node, and simplemost block sealing.
 --> **We need new ideas what is slowing down parity so much.**
 
 ### run 9 
-identical to above run 8 but sending the smart contract transactions [via web3 not via RPC](https://gitlab.com/electronDLT/chainhammer/blob/5fa31f2999627f9a3858f443240fcaa1a2dfd23d/config.py#L30-31) ... slows it down a little bit:
+identical to above run 8 but sending the smart contract transactions [via web3 not via RPC](https://github.com/drandreaskrueger/chainhammer/blob/5fa31f2999627f9a3858f443240fcaa1a2dfd23d/config.py#L30-31) ... slows it down a little bit:
 
 ```
 ...
@@ -1182,7 +1182,7 @@ ValueError: {'message': 'Time-unlocking is only supported in --geth compatibilit
              'code': -32000}
 ```
 
-and [my code is using](https://gitlab.com/electronDLT/chainhammer/blob/b6fbbddf859009e68fbe2a620c3f1558988572df/clienttools.py#L67-94) 
+and [my code is using](https://github.com/drandreaskrueger/chainhammer/blob/b6fbbddf859009e68fbe2a620c3f1558988572df/clienttools.py#L67-94) 
 
 ```
 w3.personal.unlockAccount(account=account, passphrase=passphrase,  
@@ -1202,7 +1202,7 @@ To now be absolutely sure, that the parity coders have not (inadvertently)
 created an artificially slow parity-client when using that `--geth` switch, 
 I tested parity **without that `--geth` switch**.
 
-It needed [a changes to my code in several places](https://gitlab.com/electronDLT/chainhammer/commit/47711cbce9def97d3b61ee8edd00107245de42fa), but now I provide a new switch `PARITY_UNLOCK_EACH_TRANSACTION` in [config.py](https://gitlab.com/electronDLT/chainhammer/blob/47711cbce9def97d3b61ee8edd00107245de42fa/config.py#L40-42) which allows to start parity without that `--geth` CLI argument.
+It needed [a changes to my code in several places](https://github.com/drandreaskrueger/chainhammer/commit/47711cbce9def97d3b61ee8edd00107245de42fa), but now I provide a new switch `PARITY_UNLOCK_EACH_TRANSACTION` in [config.py](https://github.com/drandreaskrueger/chainhammer/blob/47711cbce9def97d3b61ee8edd00107245de42fa/config.py#L40-42) which allows to start parity without that `--geth` CLI argument.
 
 Full log, new start:
 ```
@@ -1235,7 +1235,7 @@ PARITY_UNLOCK_EACH_TRANSACTION=True
 then initialize & test:
 
 ```
-cd electronDLT_chainhammer && source env/bin/activate
+cd drandreaskrueger_chainhammer && source env/bin/activate
 ./deploy.py
 ```
 
@@ -1248,7 +1248,7 @@ new terminal, send 20k transactions:
 
 ```
 ssh chainhammer
-cd electronDLT_chainhammer && source env/bin/activate
+cd drandreaskrueger_chainhammer && source env/bin/activate
 ./deploy.py notest ; ./send.py threaded2 23
 ```
 
@@ -1338,14 +1338,14 @@ host1    | 2018-09-25 08:16:34 UTC Starting Parity/v1.7.13-stable-8b74936-201801
 now benchmarking:
 
 ```
-cd ~/electronDLT_chainhammer && source env/bin/activate
+cd ~/drandreaskrueger_chainhammer && source env/bin/activate
 ./deploy.py
 ./tps.py
 ```
 
 ```
 ssh chainhammer # new terminal
-cd ~/electronDLT_chainhammer && source env/bin/activate
+cd ~/drandreaskrueger_chainhammer && source env/bin/activate
 ./deploy.py notest; ./send.py threaded2 23
 ```
 
@@ -1517,7 +1517,7 @@ And then
 
 #### Why I ask for your help:
 
-Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://gitlab.com/electronDLT/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
+Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://github.com/drandreaskrueger/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
 
 Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
 

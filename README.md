@@ -180,7 +180,7 @@ There were 64 tests on December 4th, all 64 PASSED
 Please credit this as:
 
 > benchmarking scripts "chainhammer"  
-> initially developed at Electron.org.uk London 2018  
+> beginning developed at Electron.org.uk 2018   
 > current maintainer: Dr Andreas Krueger 2018    
 > https://github.com/drandreaskrueger/chainhammer    
 

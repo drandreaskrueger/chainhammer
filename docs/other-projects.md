@@ -1,7 +1,7 @@
 # other projects & blockchain benchmarks
-https://gitlab.com/electronDLT/chainhammer has helped to create these measurements, on different Ethereum type blockchains. Feel free to include it into your project, preferably as a [submodule](https://www.google.co.uk/search?q=git+submodule+how+to), in case this repo keeps on evolving.
+https://github.com/drandreaskrueger/chainhammer has helped to create these measurements, on different Ethereum type blockchains. Feel free to include it into your project, preferably as a [submodule](https://www.google.co.uk/search?q=git+submodule+how+to), in case this repo keeps on evolving.
 
-To appear in the following lists, please [fork](https://gitlab.com/electronDLT/chainhammer/forks/new) this repo, add your information, and then "pull request". Thanks.
+To appear in the following lists, please [fork](https://github.com/drandreaskrueger/chainhammer/forks/new) this repo, add your information, and then "pull request". Thanks.
 
 ## other blockchain benchmarking & simulation projects
 
@@ -39,7 +39,7 @@ To appear in the following lists, please [fork](https://gitlab.com/electronDLT/c
 ### tweets
 
 > Cool, checkout chainhammer, a toolset for benchmarking blockchain TPS by @drandreaskruger / @ElectronDLT
-> https://gitlab.com/electronDLT/chainhammer  
+> https://github.com/drandreaskrueger/chainhammer  
 
 https://twitter.com/5chdn/status/1032749019179765760  
 https://twitter.com/drandreaskruger/status/1032757116073848834  
@@ -47,11 +47,15 @@ https://twitter.com/drandreaskruger/status/1032757116073848834
 
 ### short summary
 
-> Electron created the open source tools `chainhammer` which submits a high load of smart contract transactions to an Ethereum based blockchain, and `chainreader` which reads in the whole chain, and produces diagrams of TPS, blocktime, gasUsed and gasLimit, and the blocksize.
-> https://gitlab.com/electronDLT/chainhammer
+> The open source tools 'chainhammer' submits a high load of 
+> smart contract transactions to an Ethereum based blockchain, 
+> then 'chainreader' reads the whole chain, and 
+> produces diagrams of TPS, blocktime, gasUsed and gasLimit, and the blocksize.
+> https://github.com/drandreaskrueger/chainhammer    
 
 ### credits
 
-    benchmarking scripts "chainhammer"
-    https://gitlab.com/electronDLT/chainhammer
-    by Dr Andreas Krueger, Electron.org.uk, London
+> benchmarking scripts "chainhammer"  
+> beginning developed at Electron.org.uk 2018   
+> current maintainer: Dr Andreas Krueger 2018    
+> https://github.com/drandreaskrueger/chainhammer    
