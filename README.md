@@ -8,7 +8,7 @@ Please open an issue (or fork & pull request) if you find a broken link, thanks.
 
 ---
 
-![chainhammer-logo.png](chainhammer-logo.png)
+![chainhammer-logo.png](docs/chainhammer-logo.png)
 
 ---
 
@@ -19,7 +19,7 @@ It should work with any Ethereum type chain; we focused on PoA consensus.
 ## instructions
 
 ### folders
-* `hammer/` - submits many transactions to blockchain - see chapter 'chronology'
+* `hammer/` - submits many transactions to blockchain - see next chapter 'chronology'
 * `reader/` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [reader/README.md](reader/README.md)
 * `results/` - for each client one markdown file
 * `docs/` - see esp. reproduce.md
@@ -66,15 +66,15 @@ See the [results/](results/) folder:
 | t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
 | c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	| 524.3        |
 
-[Reproduce](docs/reproduce.md) these results easily; for the `config` column see there.
-Or even quicker with my [Amazon AMI readymade image](docs/reproduce.md#readymade-amazon-ami).
+[Reproduce](docs/reproduce.md) these results easily; for the `config` column also see there.
+Quickest reproduction with my [Amazon AMI readymade image](docs/reproduce.md#readymade-amazon-ami).
 
-And see [parity.md](results/parity.md) and [geth.md](results/geth.md) 
-and [quorum-IBFT.md](results/quorum-IBFT.md) for additional details.
+And see that bottom of [parity.md](results/parity.md) and [geth.md](results/geth.md) 
+and [quorum-IBFT.md](results/quorum-IBFT.md) for the latest runs, and additional details.
 
 ## faster wider more
-* logbook [log.md](results/log.md) for how I initially got this faster *on Quorum*, step by step. 
-* some ideas what to try next: [TODO.md](docs/TODO.md) = e.g. vary transaction size, automate more, etc.
+* how I initially got this faster, *on Quorum*, step by step, please read the 1st logbook [log.md](results/log.md)
+* what to try next: [TODO.md](docs/TODO.md) = e.g. vary transaction size, automate more, etc.
 
 ### you
 See [other-projects.md](docs/other-projects.md) using chainhammer, or projects which are similar to this. 
@@ -82,11 +82,10 @@ See [other-projects.md](docs/other-projects.md) using chainhammer, or projects w
 *Please report back when you have done other / new measurements.*
 
 #### Suggestions please: how can I speed this up further? 
-
 * parity [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393) 60 TPS ? (parity aura v1.11.11)
-* parity [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help - stackexchange.com
+  * parity [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help - stackexchange.com
 * geth [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions.
-* quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
+  * quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
 
 ## run
 For more details see [reproduce.md](docs/reproduce.md). 
@@ -179,8 +178,8 @@ There were 64 tests on December 4th, all 64 PASSED
 Please credit this as:
 
 > benchmarking scripts "chainhammer"  
-> initially developed at Electron.org.uk London 2018
-> current maintainer: Dr Andreas Krueger (c) 2018  
+> initially developed at Electron.org.uk London 2018  
+> current maintainer: Dr Andreas Krueger 2018    
 > https://github.com/drandreaskrueger/chainhammer    
 
 Consider to submit your improvements & [usage](docs/other-projects.md) as pull request. Thanks.
@@ -199,7 +198,7 @@ Consider to submit your improvements & [usage](docs/other-projects.md) as pull r
 
 ---
 
-## chainhammer --> chainreader -->  diagrammer
+## chainhammer: hammer --> reader -->  diagrams
 examples:
 
 ### geth clique on AWS t2.xlarge 
@@ -248,7 +247,8 @@ everything still on parity v1.11.11
 parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 
 
-Calling all parity experts: How to improve these too slow TPS results?    
+**Calling all parity experts: How to improve these too slow TPS results?**
+    
 See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), 
 and the [detailed log of what I've tried already](results/parity.md), 
 and the 2 shortest routes to reproducing the results: [reproduce.md](docs/reproduce.md).    
