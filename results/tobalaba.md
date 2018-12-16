@@ -1,4 +1,4 @@
-# [chainhammer](README.md): Tobalaba
+# [chainhammer](../README.md): Tobalaba
 Purpose: Extending the quorum benchmarking to other Ethereum-type chains. 
 
 Here: *Toabalaba chain of the EnergyWebFoundation*, a fork of parity.
@@ -64,7 +64,7 @@ Then it accepted 10000 transactions.
     
 ### account, password
 
-By default, the [deploy.py](deploy.py) uses the first address `web3.eth.accounts[0]`.    
+By default, the [deploy.py](../hammer/deploy.py) uses the first address `web3.eth.accounts[0]`.    
 
 Put your `unlockAccount` passphrase into the file `account-passphrase.txt` (the passphrase must not have whitespaces at the beginning or end).  
 
@@ -84,7 +84,7 @@ See [quorum.md#virtualenv](quorum.md#virtualenv) for which dependencies to insta
 ## benchmark
 
 ### config
-in [config.py](config.py) manually set:
+in [config.py](../hammer/config.py) manually set:
 ```
 RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
 RAFT=False
@@ -214,16 +214,16 @@ jupyter notebook --ip=127.0.0.1
 #### bad connectivity results: < 5 TPS
 (for better results, scroll down)
 
---> chainreader / [blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb)
+--> chainreader / [blocksDB_analyze.ipynb](../reader/blocksDB_analyze.ipynb)
 
-![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png)
+![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](../reader/img/tps-bt-bs-gas_blks4428719-4428755.png)
 
 
 
 
 ## 20,000 transactions, better connectivity
 
-See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously (above), my client often had only 1/25 peers and sometimes even 0/25 peers. That had decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](tobalaba-peers.txt) and [tobalaba-node-start.sh](tobalaba-node-start.sh). 
+See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously (above), my client often had only 1/25 peers and sometimes even 0/25 peers. That had decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](../networks/tobalaba-peers.txt) and [tobalaba-node-start.sh](../networks/tobalaba-node-start.sh). 
 
 Why don't more nodes get added automatically? Was the [peer discovery broken](https://github.com/energywebfoundation/energyweb-client/issues/24#issuecomment-399896244) in this old parity fork? Even with the hardcoded nodes now, the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
 
@@ -280,9 +280,9 @@ The TPS numbers in the right column are only an estimate (using unix time), and 
 
 ### better connectivity results: > 150 TPS
 
---> chainreader / [blocksDB_analyze_tobalaba-better.ipynb](blocksDB_analyze_tobalaba-better.ipynb)
+--> chainreader / [blocksDB_analyze_tobalaba-better.ipynb](../reader/outdated/blocksDB_analyze_tobalaba-better.ipynb)
 
-![chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](chainreader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
+![../reader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](../reader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
 
 
 ## Conclusion

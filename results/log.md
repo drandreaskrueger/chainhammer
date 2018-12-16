@@ -159,7 +159,7 @@ A typical `set(7)` transaction needs `gas=26644`.
 
 ### non private contract
 First I will now benchmark **quorum raft** without setting the `privateFor` field,
-by varying the [script1.js](script1.js) --> [script3.js](script3.js) 
+by varying the `script1.js` --> `script3.js` 
 
 So I expect constellation to not be in the way.  
 
@@ -316,7 +316,7 @@ RPC :  83.9 TPS_average, 129 TPS peak
 
 I must pause this for now.  Last steps for wrapping it up:
 * added more infos to the [open issue #352](https://github.com/jpmorganchase/quorum/issues/352)
-* new [TODO.md](TODO.md) with possible next steps - feel free to fork this, and work on it. Thanks.
+* new [TODO.md](../docs/TODO.md) with possible next steps - feel free to fork this, and work on it. Thanks.
 
 ## log is continued elsewhere
 see

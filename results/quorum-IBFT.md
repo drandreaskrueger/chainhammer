@@ -238,7 +238,7 @@ block 114 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 90.2 
 block 115 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 91.1 s = 219.5 TPS_average
 ```
 
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](../reader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
 https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
 
 until now the best result - around 

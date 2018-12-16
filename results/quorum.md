@@ -1,4 +1,4 @@
-# [chainhammer](README.md): quorum
+# [chainhammer](../README.md): quorum
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
 ## general infos 
@@ -50,7 +50,7 @@ if that says sth like
 
 then we now have a block 1 transaction 0 which contains a simple set()/get() smart contract, which we will later fire our transactions at.
 
-see [send.py](send.py) --> ` initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0)`
+see [send.py](../hammer/send.py) --> ` initialize(contractTx_blockNumber=1, contractTx_transactionIndex=0)`
 
 ## virtualenv 
 for py3 dependencies, mostly ethereum 
@@ -138,7 +138,7 @@ block 4822 | new #TX 117 /  358 ms = 326.1 TPS_current | total: #TX 1000 / 10.8 
 * the image shows the third such experiment on a newly started [quorum-examples/7nodes](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes) network
 * average TPS around 160 TPS, about 20 blocks per second
 
-![chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png](chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png)
+![chainreader/img/quorum_tps-bt-bs-gas_blks242-357.png](../reader/img/quorum_tps-bt-bs-gas_blks242-357.png)
 
 
 ## faster
@@ -269,4 +269,4 @@ Please credit this as:
 > current maintainer: Dr Andreas Krueger 2018    
 > https://github.com/drandreaskrueger/chainhammer    
 
-Consider to submit your improvements & [usage](other-projects.md) as pull request. Thanks.
+Consider to submit your improvements & [usage](docs/other-projects.md) as pull request. Thanks.

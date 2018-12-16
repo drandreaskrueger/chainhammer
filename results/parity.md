@@ -242,7 +242,7 @@ block 215 | new #TX   0 / 74000 ms =   0.0 TPS_current | total: #TX 20001 / 517.
 
 #### result initial run1: > 60 TPS
 
-![chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
+![chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](../reader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
 
 
 
@@ -697,7 +697,7 @@ block 83 | new #TX   4 / 4000 ms =   1.0 TPS_current | total: #TX 20001 / 310.1 
 
 #### result run 7
 
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
+![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](../reader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
 diagram https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png
 
 N.B.: The CPU usage stays below 60%, so parity is not yet using all the computational resources available, even with `--jsonrpc-server-threads 100`. 
@@ -781,7 +781,7 @@ block 19716 | new #TX   7 /    0 ms =   0.0 TPS_current | total: #TX 20001 / 295
 ### runs 10 = Amazon AWS runs
 Because the [parity team was pressed with time](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-418689243), I've created an Amazon AWS image that can be spun up and benchmarked in about 8 minutes. 
 
-See [reproduce.md#results](reproduce.md#results) for measurements. Best TPS seen was 56 TPS (versus >300 TPS for geth).
+See [reproduce.md#results](../docs/reproduce.md#results) for measurements. Best TPS seen was 56 TPS (versus >300 TPS for geth).
 
 ### run 11 on Amazon t2.large
 [tnpxu](https://github.com/paritytech/parity-ethereum/issues/9393#issuecomment-420268151) suggested this  (my only change is `--gasprice 0` - because parity-deploy can not prefund accounts yet?):
@@ -1495,7 +1495,7 @@ Less than 50 TPS.
 
 Because I am running out of simple ( * ) ideas. 
 
-**For a nonsimple ( * ) idea  = see [codyborn.md](codyborn.md).**
+**For a nonsimple ( * ) idea  = see [codyborn.md](../docs/codyborn.md).**
 
 But his approach is exotic: bypassing nonce lookup, manual transaction signing, dropping tx verification, etc. 
 
@@ -1641,7 +1641,7 @@ rm temp.db*
 ./blocksDB_diagramming.py temp.db parity-v1.11.11-aura_t2xlarge 5 85
 ```
 
-![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](chainreader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
+![parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png](../reader/img/parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png)  
 parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 
 ## please help making parity faster:
