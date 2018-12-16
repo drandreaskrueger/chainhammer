@@ -141,7 +141,7 @@ and create the diagrams
 
 ```
 cd ../reader
-rm -f parity_run17.db*
+rm -f parity-run17.db*
 ./blocksDB_create.py parity-run17.db
 ./blocksDB_diagramming.py parity-run17.db Parity-run-17
 ```
@@ -160,7 +160,7 @@ and finally runs all the unittests, also logging into `tests/logs/`.
 just start that; and run `pytest` manually:
 ```
 source env/bin/activate
-hammer/deploy.py andtests
+cd hammer; ./deploy.py andtests; cd ..
 py.test -v --cov
 ```
 
