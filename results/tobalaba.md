@@ -57,7 +57,7 @@ I now start the node with these parameters
                             --tx-queue-mem-limit=0 --tx-queue-per-sender=10001 --tx-queue-gas=off \
                             --reserved-peers <PATH>/tobalaba-peers.txt
 
-(See [tobalaba-node-start.sh](tobalaba-node-start.sh) - in it, just change your path)
+(See [tobalaba-node-start.sh](../networks/tobalaba-node-start.sh) - in it, just change your path)
 
 
 Then it accepted 10000 transactions.
@@ -214,7 +214,7 @@ jupyter notebook --ip=127.0.0.1
 #### bad connectivity results: < 5 TPS
 (for better results, scroll down)
 
---> chainreader / [blocksDB_analyze.ipynb](../reader/blocksDB_analyze.ipynb)
+--> chainreader / [blocksDB_analyze.ipynb](../reader/outdated/blocksDB_analyze.ipynb)
 
 ![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](../reader/img/tps-bt-bs-gas_blks4428719-4428755.png)
 

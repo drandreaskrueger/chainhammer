@@ -113,7 +113,8 @@ docker-compose up
 ```
 That starts one `instantseal` node - but that already shows that parity cannot get faster than ~70 TPS. Use this for now.
 
-(Later, you can try `aura` networks of 4 nodes instead - see instructions here: [parity.md --> run 13](parity.md#run-13) )
+(Later, you can try `aura` networks of 4 nodes instead - see instructions 
+here: [parity.md --> run 13](../results/parity.md#run-13) )
 
 
 ### chainhammer
@@ -495,7 +496,7 @@ jq ".engine.authorityRound.params.stepDuration = 5" deployment/chain/spec.json >
 cp ~/paritytech_parity-deploy/deployment/1/password ~/drandreaskrueger_chainhammer/account-passphrase.txt
 docker-compose up
 ```
-For explanations of all those settings, see [parity.md](parity.md). 
+For explanations of all those settings, see [parity.md](../results/parity.md). 
 
 If you later want to end this ... 'Ctrl-c' and:
 
@@ -770,7 +771,7 @@ docker-compose -f docker-compose-local.yaml up --build
 
 ### (J) parity v1.11.11 on AWS t2.xlarge
 Repeated recent run, to get *chainreader diagrams* for parity on a fast AWS machine.  
-See [parity.md#run-18](parity.md#run-18) for details. Almost identical to (D) above, just newer versions of some dependencies.
+See [parity.md#run-18](../results/parity.md#run-18) for details. Almost identical to (D) above, just newer versions of some dependencies.
 
 ### (K) geth v1.8.14 on AWS t2.xlarge
 Repeated recent run, to get *chainreader diagrams* for geth clique on a fast AWS machine. See [geth.md#run-2](geth.md#run-2) for details. Almost identical to (B), but without the ethstats docker instances.
@@ -785,8 +786,10 @@ Perhaps it is a newer version of quorum? Unfortunately I don't know as [quorum p
 
 
 ## you
-Please inspire us what could make `parity aura` faster. Or actually ... what could make *any* of this faster. Thanks.
+Please inspire us what could make `parity aura` faster. 
+Or actually ... what could make *any* of this faster. Thanks.
 
 ## issues
-See bottom of [parity.md](parity.md#issues), [geth.md](geth.md#issues), [quorum.md](quorum.md#issues-raised), [quorum-IBFT.md](quorum-IBFT.md#issues).
+See bottom of [parity.md](../results/parity.md#issues), [geth.md](../results/geth.md#issues), 
+[quorum.md](../results/quorum.md#issues-raised), [quorum-IBFT.md](../results/quorum-IBFT.md#issues).
 

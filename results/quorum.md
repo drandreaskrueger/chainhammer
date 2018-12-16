@@ -269,4 +269,4 @@ Please credit this as:
 > current maintainer: Dr Andreas Krueger 2018    
 > https://github.com/drandreaskrueger/chainhammer    
 
-Consider to submit your improvements & [usage](docs/other-projects.md) as pull request. Thanks.
+Consider to submit your improvements & [usage](../docs/other-projects.md) as pull request. Thanks.

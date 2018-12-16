@@ -546,7 +546,7 @@ now with the new CLI tool, immediately create images:
 ./blocksDB_diagramming.py temp.db quorum-crux-IBFT_t2xlarge 320 395
 ```
 
-![quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png](chainreader/img/quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png)
+![quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png](../reader/img/quorum-crux-IBFT_t2xlarge_tps-bt-bs-gas_blks320-395.png)
 
 
 

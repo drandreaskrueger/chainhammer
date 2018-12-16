@@ -1505,8 +1505,8 @@ We are probably better off switching from `parity` to `geth` instead, because `g
 
 If you still believe `parity` is faster - then try it yourself: See 
 
-* [reproduce.md](reproduce.md) for how to get my scripts up and running *within less than half an hour*, or  
-* [reproduce.md --> Amazon AMI](reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*!!!
+* [reproduce.md](../docs/reproduce.md) for how to get my scripts up and running *within less than half an hour*, or  
+* [reproduce.md --> Amazon AMI](../docs/reproduce.md#readymade-amazon-ami) for launching my readymade Amazon image *in less than 10 minutes*!!!
 
 And then 
 
@@ -1646,7 +1646,7 @@ parity-v1.11.11-aura_t2xlarge_tps-bt-bs-gas_blks5-85.png
 
 ## please help making parity faster:
 
-##### There is a [README.md --> quickstart](README.md#quickstart), and a [reproduce.md](reproduce.md) ... 
+##### There is a [README.md --> quickstart](../README.md#quickstart), and a [reproduce.md](../docs/reproduce.md) ... 
 
 ... so if you have any intution or knowledge how to accelerate parity -or how I am using it wrong-, then please replicate my setup, and then start modifying the parameters of the network of parity nodes, with e.g. `parity-deploy.sh ...` - until you get to better TPS rates. 
 

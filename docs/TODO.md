@@ -25,7 +25,7 @@ loop multiplication) instead of the SimpleStorage.sol
 * [doing away with vagrant](log.md#doing-away-with-vagrant), instead run on host machine - tried, BUT have to wait for [severe bug #352](https://github.com/jpmorganchase/quorum/issues/352#issuecomment-384731645) to be fixed; see [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/e8a368fa5248400472dc1bb66f3de4f38c26d9a9/non-vagrant/README.md)
 * [eth_sendTransactionAsync](https://github.com/jpmorganchase/quorum/issues/346#issuecomment-382216968) ??
 * [QuorumNetworkManager](https://github.com/ConsenSys/QuorumNetworkManager)
-* benchmark EOS / EOSclassic - see [eos.md](eos.md)
+* benchmark EOS / EOSclassic - see [eos.md](../results/eos.md)
 * compare all results in a table / barchart, instead of chronological text log files.
 
 what else? Please YOU make suggestions.
@@ -42,13 +42,13 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 ## done
 * `IBFT` instead of `raft`
   * generic [7nodes example](https://github.com/drandreaskrueger/quorum-examples/blob/master/examples/7nodes/README.md#7-nodes) contains IBFT already; so that part *should be* easy (however, some issues reported bugs with IBFT ?)
-  * needs code update in `tps.py`, see [README.md](README.md) --> IBFT
+  * needs code update in `tps.py`, see README.md --> IBFT
 * [Crux](https://medium.com/blk-io/announcing-crux-a-secure-enclave-for-quorum-61afbfdb79e4) instead of `Constellation`
   * newly developed by blk.io / Conor Svenson
   * already has a "7nodes example", so should be easy to benchmark: [raft](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/raft-start.sh#L7), [IBFT](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/istanbul-start.sh#L7)
-* refactor [chainreader/blocksDB_analyze.ipynb](../reader/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
+* refactor [chainreader/blocksDB_analyze.ipynb](../reader/outdated/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
 * send TX via IPC instead of RPC - faster?
-*summarizing manual how exactly to use chainhammer & chainreader* - this repo had organically grown in depth and width --> some refactoring would make sense soon. These 2 simple tools are really not difficult to use though, AND all infos are explicit already - it's only that the information is spread over several files right now. --> *there is a [README.md --> quickstart](README.md#quickstart)) now*.
+*summarizing manual how exactly to use chainhammer & chainreader* - this repo had organically grown in depth and width --> some refactoring would make sense soon. These 2 simple tools are really not difficult to use though, AND all infos are explicit already - it's only that the information is spread over several files right now. --> *there is a [README.md --> quickstart](../README.md#quickstart)) now*.
 * Vanilla Ethereum PoA
   * `parity` PoA
   * `geth` PoA
