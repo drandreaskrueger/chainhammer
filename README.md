@@ -68,12 +68,12 @@ See the [results/](results/) folder:
 
 [Reproduce](docs/reproduce.md) these results easily; for the `config` column also see there.
 Quickest reproduction with my [Amazon AMI readymade image](docs/reproduce.md#readymade-amazon-ami).
-
 And see that bottom of [parity.md](results/parity.md) and [geth.md](results/geth.md) 
 and [quorum-IBFT.md](results/quorum-IBFT.md) for the latest runs, and additional details.
 
 ## faster wider more
 * how I initially got this faster, *on Quorum*, step by step, please read the 1st logbook [log.md](results/log.md)
+* then I improved per client, see each in [#chronology](#chronology)
 * what to try next: [TODO.md](docs/TODO.md) = e.g. vary transaction size, automate more, etc.
 
 ### you
@@ -111,11 +111,12 @@ all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
 ```
 cd hammer; source ../env/bin/activate
 ```
+Now start your ethereum node(s), or simply: `source env/bin/activate; testrpc-py`
 
-Before first ever start: 
+Before first ever run of chainhammer: 
 ```
 touch account-passphrase.txt
-deploy.py andtests
+./deploy.py andtests
 ```
 It tests whether communication with the ethereum node is working, 
 **and initially creates local files about the compiled and deployed contract**. 
@@ -131,7 +132,7 @@ first terminal:
 ```
 second terminal:
 ```
-./deploy.py; ./send.py threaded2 23
+./deploy.py; ./send.py
 ```
 
 Then, after all (e.g. 20,001) transactions have been seen, 
@@ -139,8 +140,8 @@ extract the whole chain into `parity-run17.db` (example);
 and create the diagrams
 
 ```
-cd ../chainreader
-rm parity_run17.db*
+cd ../reader
+rm -f parity_run17.db*
 ./blocksDB_create.py parity-run17.db
 ./blocksDB_diagramming.py parity-run17.db Parity-run-17
 ```
