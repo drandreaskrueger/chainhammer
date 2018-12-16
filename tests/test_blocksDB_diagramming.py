@@ -12,7 +12,7 @@
 import os, sqlite3, pytest
 from pprint import pprint
 
-import chainreader.blocksDB_diagramming as DBdiagram
+import reader.blocksDB_diagramming as DBdiagram
 
 ###############################################################
 # current path one up?

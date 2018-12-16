@@ -5,7 +5,7 @@ echo =====================================
 echo 
 
 # BOTH testrpc-py AND pytest must be run in the virtualenv!
-source env/py3eth/bin/activate
+source env/bin/activate
 
 # py.test needs the unbuffer command to preserve colors
 # testrpc needs the unbuffer command to redirect, otherwise log file is empty
@@ -22,12 +22,14 @@ echo
 echo =====================================
 echo
 
-echo now run ./deploy.py once, to 
+echo now run hammer/deploy.py once, to 
 echo A make sure there is a connection to a node
 echo B print all the versions 
 echo C create some files needed locally
 echo
+cd hammer
 ./deploy.py
+cd ..
 
 echo
 echo now the tests can start:

@@ -1,15 +1,15 @@
 import os, timeit, shutil, threading, json, time
-from config import RPCaddress
-import tps
-from deploy import FILE_CONTRACT_ADDRESS
+from hammer.config import RPCaddress
+import hammer.tps as tps
+from hammer.deploy import FILE_CONTRACT_ADDRESS
 
-from clienttools import web3connection
+from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer
 NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-# path for the contract sourcecode file
+# current path one up?
 # unfortunately path if different depending on how py.test is called
 path=os.path.abspath(os.curdir)
 if os.path.split(path)[-1]=="tests":

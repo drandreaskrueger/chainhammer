@@ -13,19 +13,19 @@ import os, timeit
 from pprint import pprint
 import web3
 
-from config import RPCaddress, FILE_CONTRACT_SOURCE, ABI
-
 # web3 connection and nodetype
-from clienttools import web3connection
+from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE, ABI
+from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer
 NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-import deploy, clienttools
+import hammer.deploy as deploy
+import hammer.clienttools as clienttools 
 deploy.w3 = w3
 
-# path for the contract sourcecode file
+# current path one up?
 # unfortunately path if different depending on how py.test is called
 path=os.path.abspath(os.curdir)
 if os.path.split(path)[-1]=="tests":
@@ -33,7 +33,8 @@ if os.path.split(path)[-1]=="tests":
 
 
 def test_compileContract():
-    name, interface = deploy.compileContract(FILE_CONTRACT_SOURCE)
+    solfile = os.path.join("hammer", FILE_CONTRACT_SOURCE)
+    name, interface = deploy.compileContract(solfile)
     assert name == "simplestorage"
     pprint (interface)
     assert "abi" in interface
@@ -48,7 +49,8 @@ def assertThatAddress(address):
 
     
 def test_deployContract():
-    name, interface = deploy.compileContract(FILE_CONTRACT_SOURCE)
+    solfile = os.path.join("hammer", FILE_CONTRACT_SOURCE)
+    name, interface = deploy.compileContract(solfile)
     print ("unlock: ", clienttools.unlockAccount())
     address = deploy.deployContract(interface, ifPrint=True)
     print (address)
@@ -82,7 +84,8 @@ def test_saveTo_and_loadFromDisk():
 
 
 def test_contract_CompileDeploySave():
-    answer = deploy.contract_CompileDeploySave(FILE_CONTRACT_SOURCE)
+    solfile = os.path.join("hammer", FILE_CONTRACT_SOURCE)
+    answer = deploy.contract_CompileDeploySave(solfile)
     contractName, contract_interface, contractAddress = answer
     assert contractName == "simplestorage"
     assert "abi" in contract_interface
@@ -91,7 +94,8 @@ def test_contract_CompileDeploySave():
 
 
 def test_trySmartContractMethods():
-    answer = deploy.contract_CompileDeploySave(FILE_CONTRACT_SOURCE)
+    solfile = os.path.join("hammer", FILE_CONTRACT_SOURCE)
+    answer = deploy.contract_CompileDeploySave(solfile)
     _, interface, address = answer
     print ("new contract deployed") # I could have loaded but then test wouldn't be isolated
     

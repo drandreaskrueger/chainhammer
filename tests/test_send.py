@@ -13,27 +13,28 @@ import os
 from pprint import pprint
 from web3.utils import datatypes
 
-from config import RPCaddress, FILE_CONTRACT_SOURCE
-
 # web3 connection and nodetype
-from clienttools import web3connection
+from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE
+from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer
 NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-import send
-import deploy
+import hammer.send as send
+import hammer.deploy as deploy
 deploy.w3 = send.w3 = w3
 
-# path for the contract sourcecode file
+# current path one up?
 # unfortunately path if different depending on how py.test is called
 path=os.path.abspath(os.curdir)
 if os.path.split(path)[-1]=="tests":
     os.chdir("..") 
+   
 
 # fixture: create a contract that every test here can be using
-_,interface,address = deploy.contract_CompileDeploySave(FILE_CONTRACT_SOURCE)
+solfile = os.path.join("hammer", FILE_CONTRACT_SOURCE)
+_,interface,address = deploy.contract_CompileDeploySave(solfile)
 contract = deploy.contractObject(address, interface["abi"])
 abi = interface["abi"]
  

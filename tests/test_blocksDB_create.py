@@ -11,14 +11,14 @@
 
 import os, sqlite3, pytest
 
-import chainreader.blocksDB_create as DBcreate
+import reader.blocksDB_create as DBcreate
 from .test_tps import sendMoney_andWaitForReceipt
 
 ###############################################################
 # web3 connection and nodetype 
 
-from config import RPCaddress
-from clienttools import web3connection
+from hammer.config import RPCaddress
+from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer

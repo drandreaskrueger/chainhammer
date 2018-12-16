@@ -10,9 +10,10 @@
 """
 
 import os
-from clienttools import *
-from config import RPCaddress
 import web3
+
+from hammer.clienttools import *
+from hammer.config import RPCaddress
 
 def test_printVersions():
     # if any of the dependencies is NOT installed, this would throw:

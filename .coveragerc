@@ -1,2 +1,2 @@
 [report]
-omit = env/py3eth/lib/python3.5/site-packages/*,env/py3eth/lib/python3.5/*
+omit = env/lib/python3.5/site-packages/*,env/lib/python3.5/*

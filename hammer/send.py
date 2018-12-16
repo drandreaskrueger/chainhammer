@@ -32,9 +32,9 @@ from web3.utils.abi import filter_by_name, abi_to_signature
 from web3.utils.encoding import pad_hex
 
 # chainhammer:
-from config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
-from deploy import loadFromDisk
-from clienttools import web3connection, unlockAccount
+from hammer.config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.deploy import loadFromDisk
+from hammer.clienttools import web3connection, unlockAccount
 
 
 ##########################

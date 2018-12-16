@@ -10,10 +10,9 @@
 """
 
 import pytest
-
-from clienttype import *
-from config import RPCaddress
 import web3
+from hammer.clienttype import *
+from hammer.config import RPCaddress
 
 global w3
 w3=simple_web3connection(RPCaddress)
