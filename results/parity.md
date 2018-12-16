@@ -4,6 +4,39 @@ This is a long text because it is the almost complete log of what I tried to get
 
 The most elaborate set of configuration switches is **--> [run 13](#run-13) <--** near the bottom of this file.
 
+## TOC
+1. parity docker: v1.11.8, configure, 
+1. parity-deploy = docker-compose generator tool
+1. orbita-center/parity-poa-playground; my fork of parity-poa-playground
+1. [benchmarking](#benchmarking); chainhammer settings; ... 
+1. initial run, unoptimized, > 60 TPS
+1. run2 with altered settings
+1. run3, omitting --scale-verifiers
+1. run4, more jsonrpc-server-threads
+1. run5, switching off 4 of the machines
+1. run6; different network tool --> parity-deploy
+1. run7; --gas-floor-target
+1. run8: instantseal
+1. run9: via web3 not via RPC
+1. runs10: Amazon AWS runs
+1. run11 on Amazon t2.large; faulty `parity:2.0.5-stable`; how to downgrade to a `stable stable` version; best suggested switches
+1. run12: --force-sealing
+1. run13: blocktimes 5 seconds
+1. run14: without the `--geth` compatibility switch
+1. run15: older parity 1.7.13 and instantseal
+1. run16: old parity versions: 1.7.13 and aura
+1. run 17: old parity versions: 1.8.11 and aura
+1. Please *you* help
+1. ... final verdict: `parity aura` 5-6 times slower than `geth clique`
+1. runs 18: purpose: new diagrams; instantseal, aura
+1. please help making parity faster
+1. unittests scripts: with instantseal, with aura
+1. other versions of parity
+1. background info on Aura
+1. [issues](#issues)
+
+
+
 ## parity docker
 Following informative wiki page https://github.com/paritytech/wiki/blob/master/Docker.md
 

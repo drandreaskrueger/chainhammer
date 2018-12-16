@@ -2,7 +2,21 @@
 
 ... *the other consensus algorithm* that is shipped with quorum.
 
-Also see [general infos](quorum.md#general-infos) in previous document (which documents the initial raft consensus benchmarking).
+Also see [general infos](quorum.md#general-infos) in previous document 
+(which documents the initial raft consensus benchmarking).
+
+## TOC
+1. tweaking and benchmarking: environment used in this first part, mempool settings, faster blockperiod, higher gas Limit
+1. [example runs](#example-runs)
+1. 7nodes - istanbul.blockperiod 1sec, gasLimit 20 million
+1. crux docker 4nodes
+1. Direct RPC call instead of web3 call: result > 400 TPS but only for the first 14k tx
+1. on Amazon AWS
+1. run 11 - purpose: new diagrams
+1. how to further increase the TPS?
+1. [issues](#issues)
+
+## tweaking and benchmarking
 
 ### environment used in this first part
 
@@ -13,9 +27,6 @@ Also see [general infos](quorum.md#general-infos) in previous document (which do
 * using - see [bootstrap.sh L33 and L11](https://github.com/jpmorganchase/quorum-examples/blob/master/vagrant/bootstrap.sh#L11-L33):
   * jpmorganchase/quorum and 
   * jpmorganchase/constellation 
-
-
-## tweaking and benchmarking
 
 I have been trying to raise the TPS:
 
@@ -54,7 +65,7 @@ However, the effect is simply that then the blocktime is going up. So raising th
 
 both saturate around ~200 TPS.
 
-## example runs: 
+## example runs 
 
 ### 7nodes - istanbul.blockperiod 1sec, gasLimit 20 million
 

@@ -1,5 +1,15 @@
 # geth Clique PoA benchmarking
-To have a nodes setup comparable to the  quorum [7nodes example](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes) or the blk.io [crux-quorum-4nodes-docker-compose](https://github.com/blk-io/crux/blob/master/docker/quorum-crux/docker-compose.yaml), I am looking for a ready dockerized or vagrant virtualbox solution. Please tell me if you know a good one. For now I have chosen
+To have a nodes setup comparable to the 
+quorum [7nodes example](https://github.com/jpmorganchase/quorum-examples/tree/master/examples/7nodes) 
+or the blk.io [crux-quorum-4nodes-docker-compose](https://github.com/blk-io/crux/blob/master/docker/quorum-crux/docker-compose.yaml), 
+I am looking for a ready dockerized or vagrant virtualbox solution. 
+Please tell me if you know a good one. For now I have chosen `javahippie/geth-dev`
+
+## TOC
+1. javahippie/geth-dev; docker stuff; 
+1. run1
+1. run 2 - purpose: new diagrams
+1. [issues](#issues)
 
 ## javahippie/geth-dev
 

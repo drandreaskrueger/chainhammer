@@ -1,3 +1,5 @@
+N.B.: No TOC yet for this file, as is going to be redone, when repeated in the cloud (all experiments here were on a local desktop). For that we'd need this solved: [BC#51](https://github.com/blk-io/crux/issues/51) to be able to run in docker (not vagrant virtualbox)
+
 # [chainhammer](../README.md): quorum
 Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://github.com/jpmorganchase/quorum-examples/blob/master/examples/7nodes/README.md) example.
 
@@ -256,7 +258,7 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [BQE #33](https://github.com/blk-io/crux/issues/33) Server does not implement chimera.ClientServer (missing Delete method)
 * [Q #507](https://github.com/jpmorganchase/quorum/issues/507) `Quorum/v2.1.0-stable-159d813f/linux-amd64/go1.9.3`
 * [QE#121](https://github.com/jpmorganchase/quorum-examples/issues/121) --rpcapi ...,raft
-
+* [BC#51](https://github.com/blk-io/crux/issues/51) (FR) dockerized with raft consensus not IBFT 
 
 ## alternative: dockerized quorum nodes
 Always used the 7nodes example as described above, but there is also https://github.com/ConsenSys/quorum-docker-Nnodes = Run a bunch of Quorum nodes, each in a separate Docker container. Untested.

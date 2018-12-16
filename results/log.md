@@ -1,5 +1,25 @@
 # chainhammer log book of what I tried
 
+## TOC
+1. blocking (non-async)
+1. async, 1000 threads
+1. Two different nodes
+1. queue with limited number of multi-threading workers
+1. killed the virtualbox, and started anew completely
+1. queue with *small* number of multi-threading workers
+1. batched multi-threading, no Queue
+1. currently the fastest: Queue with 23 workers
+1. doing away with vagrant
+1. back to vagrant
+1. gas
+1. non private contract
+1. sending via web3 versus sending via RPC; results
+1. always resetting the chain before each experiment
+1. non-`privateFor` contract
+1. contract deployed with `privateFor=["..."]`, but PUBLIC .set()-transactions
+1. contract deployed with `privateFor=["..."]`, AND transactions with `privateFor=["..."]`
+1. log is continued elsewhere
+
 ### blocking (non-async)
 
 13.4 TPS average    
