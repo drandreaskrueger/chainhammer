@@ -13,16 +13,21 @@
 ################
 ## Dependencies:
 
+from pprint import pprint
+
 try:
     from web3 import Web3, HTTPProvider # pip3 install web3
 except:
     print ("Dependencies unavailable. Start virtualenv first!")
     exit()
 
-from config import RPCaddress, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
-from clienttype import clientType
+# extend sys.path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from pprint import pprint
+from hammer.config import RPCaddress, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.clienttype import clientType
 
 ################
 ## Tools:
@@ -180,4 +185,3 @@ if __name__ == '__main__':
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 
-    

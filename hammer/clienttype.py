@@ -24,7 +24,13 @@ except:
     print ("Dependencies unavailable. Start virtualenv first!")
     exit()
 
-from config import RPCaddress
+
+# extend sys.path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+    
+from hammer.config import RPCaddress
 
 
 

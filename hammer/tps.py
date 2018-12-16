@@ -16,9 +16,14 @@ import time, timeit, sys, os
 
 from web3 import Web3, HTTPProvider
 
-from config import RPCaddress2 
-from deploy import loadFromDisk, FILE_CONTRACT_ADDRESS
-from clienttools import web3connection, getBlockTransactionCount
+# extend path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+    
+from hammer.config import RPCaddress2 
+from hammer.deploy import loadFromDisk, FILE_CONTRACT_ADDRESS
+from hammer.clienttools import web3connection, getBlockTransactionCount
     
 
 def loopUntil_NewContract(query_intervall = 0.1):

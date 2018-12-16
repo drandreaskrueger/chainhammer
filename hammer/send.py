@@ -9,8 +9,12 @@
 @see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
+# extend sys.path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from config import RPCaddress, ROUTE, PRIVATE_FOR, ABI
+from hammer.config import RPCaddress, ROUTE, PRIVATE_FOR, ABI
 
 ################
 ## Dependencies:

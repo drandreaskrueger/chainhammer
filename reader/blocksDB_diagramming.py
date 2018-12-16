@@ -31,7 +31,6 @@ import matplotlib
 ################
 
 
-
 def DB_query(SQL, conn):
     """
     any SQL query, with many answers 
@@ -213,8 +212,8 @@ def check_timestamp_format(df):
 
     problematic = []
     for ts in df["timestamp"]:
-        #        year 2001         year 2255
-        if not (1000000000 < ts < 9000000000):   
+        #        year 2001         year 2255      testrpc-py issue https://github.com/pipermerriam/eth-testrpc/issues/117
+        if not ((1000000000 < ts < 9000000000) or (6000000 < ts < 8000000)):   
             problematic.append(ts)
             
     if problematic:
@@ -226,7 +225,6 @@ def check_timestamp_format(df):
             pass
         print ("examples:", problematic)
     
-    assert not problematic 
     # hello year 2255, you might have a Y2286 problem 
     # when epochtime goes from 9999999999 to 10000000000
     # someone warned you 30 years earlier. Hahaha :-)
@@ -369,7 +367,7 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="i
     simple_stats(conn)
     df = read_whole_table_into_dataframe(conn)
     conn.close()
-    check_timestamp_format(df)
+    assert check_timestamp_format(df)
     add_columns(df)
     show_peak_TPS(df)
     

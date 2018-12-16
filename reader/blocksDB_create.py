@@ -70,17 +70,14 @@ from threading import Thread
 # pypi:
 from web3 import Web3, HTTPProvider # pip3 install web3
 
-# allow to import from parent folder: 
-import inspect
-currentfile = inspect.getfile(inspect.currentframe())
-currentdir = os.path.dirname(os.path.abspath(currentfile))
-parentdir = os.path.dirname(currentdir)
-sys.path.insert(0,parentdir) 
-
 # chainhammer
-from config import RPCaddress
-from clienttools import web3connection
-from tps import timestampToSeconds
+# extend sys.path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+from hammer.config import RPCaddress
+from hammer.clienttools import web3connection
+from hammer.tps import timestampToSeconds
 
 ###############################################################################
 

@@ -25,10 +25,16 @@ except:
     print ("Dependencies unavailable. Start virtualenv first!")
     exit()
 
-from config import RPCaddress, PARITY_UNLOCK_EACH_TRANSACTION
-from config import FILE_CONTRACT_SOURCE, FILE_CONTRACT_ABI, FILE_CONTRACT_ADDRESS
 
-from clienttools import web3connection, unlockAccount
+# extend path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+from hammer.config import RPCaddress, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.config import FILE_CONTRACT_SOURCE, FILE_CONTRACT_ABI, FILE_CONTRACT_ADDRESS
+
+from hammer.clienttools import web3connection, unlockAccount
 
 
 ###############################################################################
