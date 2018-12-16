@@ -59,8 +59,6 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * [quorum.md](quorum.md) - quickstart how to use this chainhammer tool
   * [log.md](log.md) - sequence of everything that I've already optimized, to get this faster 
   * [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md) - attempt to run it on host machine instead of inside vagrant VB; currently broken, issue unanswered.
-  * [Quorum-consensus.md](https://github.com/drandreaskrueger/training-material/blob/master/EEA/Quorum-consensus.md) - raft, IBFT, etc
-  * [Quorum-privacy.md](https://github.com/drandreaskrueger/training-material/blob/master/EEA/Quorum-privacy.md) - quorum private transactions
 * [tobalaba.md](tobalaba.md) also benchmarked the parity fork of the EnergyWebFoundation: `--chain Tobalaba`
 * [quorum-IBFT.md](quorum-IBFT.md)
 * [parity.md](parity.md)

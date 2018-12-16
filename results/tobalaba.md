@@ -300,7 +300,7 @@ Thanks.
 that I raised while developing this, and testing it on the Tobalaba client
 
 * [EWC #17](https://github.com/energywebfoundation/energyweb-client/issues/17) git checkout tags/(some reasonably stable release version)
-* [SOF #50117762](https://stackoverflow.com/questions/50117762/diff-of-commit-histories-of-two-forked-but-not-forked-from-github-repos) commit history diff of Parity vs EnergyWebClient (the latter wasn't github-forked) ( * )
+* [SOF #50117762]() commit history diff of Parity vs EnergyWebClient (question removed from stackoverflow) ( * )
 * [EWC #18](https://github.com/energywebfoundation/energyweb-client/issues/18) faucet broken?
 * [W3PY #808](https://github.com/ethereum/web3.py/issues/808) deploy contract example is broken
 * [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 

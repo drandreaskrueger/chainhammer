@@ -1,5 +1,5 @@
 # analyze historical blocks
-In this case, the "Tobalaba" chain of the energywebfoundation. More background information [here](https://github.com/drandreaskrueger/training-material/tree/master/EWF) (private).
+In this case, the "Tobalaba" chain of the energywebfoundation. 
 
 ## prep
 All happens in virtualenv (see [../quorum.md#virtualenv](../quorum.md#virtualenv)).

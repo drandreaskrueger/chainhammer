@@ -111,7 +111,8 @@ block 57 | new #TX   0 / 2000 ms =   0.0 TPS_current | total: #TX 20001 / 76.2 s
 ![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png)
 image https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png
 
-The following averages are calculated in the zoomed in diagrams at the bottom of notebook [chainreader/blocksDB_analyze_geth-clique.ipynb](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/blocksDB_analyze_geth-clique.ipynb)
+The following averages are calculated in the zoomed in diagrams at the bottom of 
+notebook [reader/outdated/blocksDB_analyze_geth-clique.ipynb](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/blocksDB_analyze_geth-clique.ipynb)
 
 
 * we see **approx 350 TPS** when averaging over blocks 23-40 

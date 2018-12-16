@@ -1,7 +1,10 @@
 # other projects & blockchain benchmarks
 https://github.com/drandreaskrueger/chainhammer has helped to create these measurements, on different Ethereum type blockchains. Feel free to include it into your project, preferably as a [submodule](https://www.google.co.uk/search?q=git+submodule+how+to), in case this repo keeps on evolving.
 
-To appear in the following lists, please [fork](https://github.com/drandreaskrueger/chainhammer/forks/new) this repo, add your information, and then "pull request". Thanks.
+To appear in the following lists, please 
+**fork** ([here](https://github.com/drandreaskrueger/chainhammer/), 
+then top right press "fork") this repo, add your information, 
+and then "pull request". Thanks.
 
 ## other blockchain benchmarking & simulation projects
 
