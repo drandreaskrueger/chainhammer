@@ -368,7 +368,7 @@ Surprising acceleration when not using web3 ... not 273 TPS but
 **370 - 465 TPS** !
 
 Following detailed averages are calculated at the bottom of 
-notebook [reader/outdated/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
+notebook [reader/outdated/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](../reader/outdated/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
 
 Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.  
 
