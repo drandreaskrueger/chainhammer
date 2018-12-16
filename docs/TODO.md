@@ -46,7 +46,7 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * [Crux](https://medium.com/blk-io/announcing-crux-a-secure-enclave-for-quorum-61afbfdb79e4) instead of `Constellation`
   * newly developed by blk.io / Conor Svenson
   * already has a "7nodes example", so should be easy to benchmark: [raft](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/raft-start.sh#L7), [IBFT](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/istanbul-start.sh#L7)
-* refactor [chainreader/blocksDB_analyze.ipynb](chainreader/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
+* refactor [chainreader/blocksDB_analyze.ipynb](../reader/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
 * send TX via IPC instead of RPC - faster?
 *summarizing manual how exactly to use chainhammer & chainreader* - this repo had organically grown in depth and width --> some refactoring would make sense soon. These 2 simple tools are really not difficult to use though, AND all infos are explicit already - it's only that the information is spread over several files right now. --> *there is a [README.md --> quickstart](README.md#quickstart)) now*.
 * Vanilla Ethereum PoA
@@ -56,12 +56,12 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * perhaps try Crux not Constellation? 
 
 # other places:
-* [quorum.md](quorum.md) - quickstart how to use this chainhammer tool
-  * [log.md](log.md) - sequence of everything that I've already optimized, to get this faster 
+* [quorum.md](../results/quorum.md) - quickstart how to use this chainhammer tool
+  * [log.md](../results/log.md) - sequence of everything that I've already optimized, to get this faster 
   * [non-vagrant/README.md](https://github.com/drandreaskrueger/quorum-examples/blob/master/non-vagrant/README.md) - attempt to run it on host machine instead of inside vagrant VB; currently broken, issue unanswered.
-* [tobalaba.md](tobalaba.md) also benchmarked the parity fork of the EnergyWebFoundation: `--chain Tobalaba`
-* [quorum-IBFT.md](quorum-IBFT.md)
-* [parity.md](parity.md)
-* [chainreader/](chainreader/) traverse whole chain, display as 4 diagrams: TPS, size, gas, blocktime
-* [README.md](README.md) - entry point for this repo, now with quickstart
+* [tobalaba.md](../results/tobalaba.md) also benchmarked the parity fork of the EnergyWebFoundation: `--chain Tobalaba`
+* [quorum-IBFT.md](../results/quorum-IBFT.md)
+* [parity.md](../results/parity.md)
+* [reader/](../reader/) chainreader: traverse whole chain, display as 4 diagrams: TPS, size, gas, blocktime
+* main [README.md](../README.md) - entry point for this repo, now with quickstart
 

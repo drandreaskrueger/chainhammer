@@ -26,7 +26,7 @@ and then "pull request". Thanks.
 
 
 ## projects using chainhammer
-* [initial results log.md](log.md); [quorum.md raft](quorum.md) and [quorum-IBFT.md](quorum-IBFT.md), [tobalaba.md](tobalaba.md)
+* [initial results log.md](../results/log.md); [quorum.md raft](../results/quorum.md) and [quorum-IBFT.md](../results/quorum-IBFT.md), [tobalaba.md](../results/tobalaba.md)
 * "**Quorum stress-test 1: 140 TPS**" by vasa (@vaibhavsaini, @vasa-develop, @towardsblockchain) (May 2018)
   * [medium article](https://medium.com/@vaibhavsaini_67863/792f39d0b43f) = instruction, screenshots, results
   * [github repo](https://github.com/vasa-develop/quorum-testnode-1) = compilation from different repos: an updated [7nodes example](https://github.com/jpmorganchase/quorum-examples/pull/93), this chainhammer repo, and an [installation manual](https://gist.github.com/vasa-develop/ff34688c7cb7ae8bb6de9587a4752969#file-dependencies-sh) for Ubuntu AWS

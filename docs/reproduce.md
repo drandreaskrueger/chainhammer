@@ -570,7 +570,8 @@ cd ~/drandreaskrueger_chainhammer && source env/bin/activate
 
 ./deploy.py
 ```
-If there are connection problems, probably need to configure the correct ports in [config.py](config.py):
+If there are connection problems, probably need to configure the correct ports 
+in [config.py](../hammer/config.py):
 ```
 nano config.py
 ```
@@ -652,13 +653,11 @@ docker-compose up
 ### (C) geth quorum IBFT
 TODO, some unsolved issues. What worked fine on my local machine does not seem to work anymore on AWS. Strange.
 
-See [reproduce_TODO-crux.md](reproduce_TODO-crux.md).
-
 ### (D) parity v1.11.11 because 2.0.5 is broken
 
 Unfortunately, they have named `2.0.5` now into `stable` prematurely, so that `docker run parity/parity:stable` starts `parity:v2.0.x` and not `parity:v1.11.x` anymore. 
 
-That *broke everything*, see [parity.md --> run 11](parity.md). 
+That *broke everything*, see [parity.md --> run 11](../results/parity.md). 
 
 To correct that, replace `:stable` with the old version `:v1.11.11` *after* running `parity-deploy.sh` (I had also made a [feature request issue](https://github.com/paritytech/parity-deploy/issues/55) about this):
 ```

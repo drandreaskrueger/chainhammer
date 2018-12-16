@@ -25,7 +25,7 @@ For details, we have to wait until he publishes his code. So far he told us this
 
 ### CodyBorn Microsoft
 
-Cody Born did parity benchmarking on Azure, and reached a TPS almost as fast as [geth](geth.md) ("400 TPS"):
+Cody Born did parity benchmarking on Azure, and reached a TPS almost as fast as [geth](../results/geth.md) ("400 TPS"):
 
 > Cody Born @codyborn  
 > @ParityTech Proof-of-Authority is fast! ⚡️  
