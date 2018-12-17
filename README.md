@@ -88,26 +88,26 @@ See [other-projects.md](docs/other-projects.md) using chainhammer, or projects w
   * quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
 
 ## run
-For more details see [reproduce.md](docs/reproduce.md). 
-Assuming a node is already running on port 8545, this focuses on chainhammer itself:
 
-### dependencies
+### install.sh ALL dependencies 
+New in v44: Installer for EVERYTHING that this repo needs!
 ```
-sudo apt install python3-pip libssl-dev expect-dev
-sudo pip3 install virtualenv 
-
-virtualenv -p python3 env
-source env/bin/activate
-
-python3 -m pip install --upgrade pip==18.0
-pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0 pytest pytest-cov
-
-# for chainreader notebooks:
-pip3 install --upgrade jupyter ipykernel 
-ipython kernel install --user --name="Python.3.py3eth"
+cd chainhammer      # you must be in main folder
+scripts/install.sh
 ```
+but be CAREFUL: 
+Better only use on a disposable/cloud/virtualbox machine, 
+and NOT on your main work machine!!  
 
-all python scripts & jupyer notebooks must be run within that virtualenv, e.g.:
+or 
+
+only create the *virtualenv for the chainhammer Python programs*, then look into [scripts/install-virtualenv.sh](scripts/install-virtualenv.sh)
+
+(For more details see [reproduce.md](docs/reproduce.md)).
+
+### preparations
+
+All python scripts & jupyer notebooks must be run *within that virtualenv*, e.g.:
 ```
 cd hammer; source ../env/bin/activate
 ```
@@ -122,6 +122,7 @@ It tests whether communication with the ethereum node is working,
 **and initially creates local files about the compiled and deployed contract**. 
 If there are connection problems, check the ports in [config.py](hammer/config.py) --> 
 `RPCaddress, RPCaddress2`.
+
 
 ### quickstart
 Remember, in each new terminal virtualenv: `cd hammer; source ../env/bin/activate`

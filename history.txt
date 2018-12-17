@@ -1,3 +1,7 @@
+v44 17/12/2018
+    installer script v44 = replaces whole top half of reproduce.md !
+      cd chainhammer; scripts/install.sh
+
 v43 5/12/2018-16/12/2018
     Reorg everything into subfolders for better overview
       docs & results for human readable, 

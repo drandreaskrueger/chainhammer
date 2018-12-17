@@ -1,6 +1,10 @@
 
 
-Newsflash: There is a brand new `install.sh` which I want you to try out. It saves you a lot of manual work, because it is replacing the whole first half of all of this. Just go to the main folder `cd chainhammer/` and from there(!) execute: `scripts/install.sh`. But: No guarantees. Better only use on a disposable/cloud/virtualbox machine, and NOT on your main work machine!!
+Newsflash: There is a brand new `install.sh` which I want you to try out. 
+It saves you a lot of manual work, because it is replacing the whole first half of all of this. 
+Just go to the main folder `cd chainhammer/` and from there(!) execute: `scripts/install.sh`. 
+But: No guarantees. 
+Better only use on a disposable/cloud/virtualbox machine, and NOT on your main work machine!!
 
 # chainhammer
 Actually, today I tried this again - tested on and optimized for Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-08-20-85640`) - all this really does work:
