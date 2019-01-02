@@ -4,7 +4,7 @@ echo create chainhammer virtualenv
 echo
 echo after possibly removing a whole existing env/ folder !!!
 echo 
-echo the new virtualenv will be installed here:
+echo the new virtualenv will be installed below here:
 echo $(pwd)
 echo 
 read -p "Think twice. Then press enter to continue"
