@@ -44,8 +44,6 @@ sudo ls scripts/install-*.sh
 echo got sudo, thanks.
 
 
-
-
 source scripts/install-packages.sh
 
 source scripts/install-docker.sh

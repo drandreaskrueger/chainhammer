@@ -24,8 +24,12 @@ echo add docker debian gpg key:
 curl https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 
 
-echo making backup of /etc/apt/sources.list.d/docker.list because the following command will overwrite that!
-sudo cp /etc/apt/sources.list.d/docker.list /etc/apt/sources.list.d/docker.list.save
+file=/etc/apt/sources.list.d/docker.list
+if [ -f "$file" ]
+then
+    echo making backup of $file because the following command will overwrite that!
+    sudo cp $file $file.save
+fi
 
 echo new /etc/apt/sources.list.d/docker.list
 echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list

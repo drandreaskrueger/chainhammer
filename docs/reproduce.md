@@ -1,5 +1,5 @@
 # chainhammer reproduce results
-This tested on and optimized for a Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-08-20-85640`) - all this really does work:
+Tested on and optimized for a Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-11-10-63975`) - all this really does work:
 
 ## TOC
 
@@ -31,12 +31,11 @@ TODO: Update TOC after installation instructions moved into install.sh
 
 
 ## How to replicate the results
-
+quickstart --> **Scroll down to the AWS chapter.**
 
 ### toolchain
 
-Now all done via one script. 
-
+Now all preparations are done via one script.   
 Please do yourself the favor, and read the source code BEFORE you execute:
 
     scripts/install.sh
@@ -171,7 +170,7 @@ docker kill $(docker ps -q) ; docker rm $(docker ps -a -q) ; docker rmi $(docker
 ```
 
 #### geth Clique network with dockerized nodes
-for details see [geth.md#javahippiegeth-dev](https://github.com/drandreaskrueger/chainhammer/blob/0bdcbedfeeb261c534ae3baeb0bd9a37054c9b28/geth.md#javahippiegeth-dev).
+for details see [geth.md#javahippiegetset +xh-dev](https://github.com/drandreaskrueger/chainhammer/blob/0bdcbedfeeb261c534ae3baeb0bd9a37054c9b28/geth.md#javahippiegeth-dev).
 
 ```
 cd drandreaskrueger_geth-dev

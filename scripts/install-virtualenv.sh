@@ -16,10 +16,19 @@ sudo pip3 install virtualenv
 rm -rf env 
 virtualenv -p python3 env
 
+set +x
+echo +++ source env/bin/activate
 source env/bin/activate
+set -x
+echo
 
 python3 -m pip install --upgrade pip==18.0
+echo
+
 pip3 install --upgrade py-solc==3.1.0 web3==4.7.2 web3[tester]==4.7.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.19.1 pandas==0.23.4 matplotlib==3.0.0 pytest pytest-cov jupyter ipykernel
+echo 
+
 ipython kernel install --user --name="Python.3.py3eth"
+echo
 
 set +x
