@@ -1,13 +1,4 @@
-
-
-Newsflash: There is a brand new `install.sh` which I want you to try out. 
-It saves you a lot of manual work, because it is replacing the whole first half of all of this. 
-Just go to the main folder `cd chainhammer/` and from there(!) execute: `scripts/install.sh`.  
-  
-But: No guarantees. 
-Better only use on a disposable/cloud/virtualbox machine, and NOT on your main work machine!!
-
-# chainhammer
+# chainhammer reproduce results
 This tested on and optimized for a Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-08-20-85640`) - all this really does work:
 
 ## TOC
@@ -273,6 +264,7 @@ quorum1  | set +v
 ```
 
 ## AWS deployment
+    cd chainhammer
 
 This first part here you can safely ignore, it just logs what I have done to create the AMI.
 
@@ -280,26 +272,33 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
 
 ### how I created the AMI
 * [Launch instance Wizard](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#LaunchInstanceWizard:) in  `eu-west-2` (London)
-* Community AMIs, search "Debian-stretch 2018"
-* newest is `debian-stretch-hvm-x86_64-gp2-2018-08-20-85640`
-  * ami-0e5de816bb166040f
+* Community AMIs, tick boxes "Operating System: Debian" , "Architecture: 64-bit", then search term: "Debian-stretch 2018"
+* newest is `debian-stretch-hvm-x86_64-gp2-2018-11-10-63975`
+  * ami-0c593aade9c7196cc
   * FAI Debian image
   * Root device type: ebs 
   * Virtualization type: hvm`
+  * press select
 * type `t2.micro`
 * Step 3: Configure Instance Details
   * Network: Default
   * Subnet: Default in eu-west-2a
-  * auto assign public IP
+  * auto assign public IP: enable
 * Step 5: Add Tags
   * Name: chainhammer
   * Environment: dev
   * Project: benchmarking
   * Owner: Andreas Krueger
-* create new security group, name it; allow ssh access
-* choose an existing ssh keypair `AndreasKeypairAWS.pem`
+* create new security group, name it; allow ssh access, 
+  * source: MyIP (I simply use a defined VPN to always get the same IP again)
+  * or you must open SSH for "Anywhere" (if you have a dynamic IP each time you connect)
+* review and launch ... launch
+* (make a new one or) choose an existing ssh keypair, example `AndreasKeypairAWS.pem` 
+* Launch Instances
+* Click on "Your instances are now launching ... The following instance launches have been initiated: i-xxxxxxxxxxxxxxxxx" to open the Console https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Instances for this Instance
+* Copy the "Public DNS (IPv4)", in our example here `ec2-35-178-11-110.eu-west-2.compute.amazonaws.com`
 
-simplify `ssh` access, by adding this block to your local machine's
+now simplify `ssh` access, by adding this block to your local machine's
 
 ```
 nano ~/.ssh/config
@@ -307,7 +306,7 @@ nano ~/.ssh/config
 
 ```
 Host chainhammer
-  Hostname ec2-35-178-181-232.eu-west-2.compute.amazonaws.com
+  Hostname ec2-35-178-11-110.eu-west-2.compute.amazonaws.com
   StrictHostKeyChecking no
   User admin
   IdentityFile ~/.ssh/AndreasKeypairAWS.pem
@@ -315,6 +314,21 @@ Host chainhammer
 now it becomes this simple to connect:
 ```
 ssh chainhammer
+```
+
+you should then see something like this:
+
+```
+Warning: Permanently added 'ec2-35-178-11-110.eu-west-2.compute.amazonaws.com,35.178.11.110' (ECDSA) to the list of known hosts.
+Linux ip-172-31-29-141 4.9.0-8-amd64 #1 SMP Debian 4.9.130-2 (2018-10-27) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+admin@ip-172-31-29-141:~$ 
 ```
 
 #### VPS machine 
