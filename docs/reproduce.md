@@ -1,5 +1,7 @@
+N.B.: Work in progress
+
 # chainhammer reproduce results
-Tested on and optimized for a Debian AWS machine (`debian-stretch-hvm-x86_64-gp2-2018-11-10-63975`) - all this really does work:
+Tested on and optimized for a Debian AWS machine (based on `debian-stretch-hvm-x86_64-gp2-2018-11-10-63975`) - all this really does work:
 
 ## TOC
 
