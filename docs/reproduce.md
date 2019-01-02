@@ -41,29 +41,21 @@ TODO: Update TOC after installation instructions moved into install.sh
 
 ## How to replicate the results
 
-### VPS machine 
-#### swap - in case the RAM is not sufficient:
-```
-SWAPFILE=/swapfile; sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=700 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
-```
-(for quorum-crux use not 700 but count=1500, see below)
-
-#### N.B.: before creating image from instance to make a new AMI
-[remove-ssh-host-key-pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs), update chainhammer repo to newest commit, then power down:
-```
-sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
-cd ~/drandreaskrueger_chainhammer; git pull
-sudo shutdown now
-```
-
 
 ### toolchain
 
 Now all done via one script. 
-Please do yourself the favor, and read the source code. 
-The script makes lasting changes to the machine it is running on, 
-so I suggest that you DO NOT USE YOUR MAIN MACHINE! 
+
+Please do yourself the favor, and read the source code BEFORE you execute:
+
+    scripts/install.sh
+
+Because this script makes lasting changes to the machine it is running on, 
+so I suggest that you DO NOT USE YOUR MAIN MACHINE!
+ 
 Instead use a disposable cloud droplet, or virtualbox machine.
+
+--> **Scroll down to the AWS chapter.**
 
 
 ### dockerized parity network
@@ -282,7 +274,9 @@ quorum1  | set +v
 
 ## AWS deployment
 
-This first part here you can safely ignore, it just logs what I have done to create the AMI:
+This first part here you can safely ignore, it just logs what I have done to create the AMI.
+
+For quickstart, jump forward to chapter "readymade Amazon AMI"
 
 ### how I created the AMI
 * [Launch instance Wizard](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#LaunchInstanceWizard:) in  `eu-west-2` (London)
@@ -322,26 +316,44 @@ now it becomes this simple to connect:
 ```
 ssh chainhammer
 ```
-Then in that machine I created a small swap to protect against lack of memory:
 
-```
-SWAPFILE=/swapfile
-sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=512 &&
-sudo chmod 600 $SWAPFILE &&
-sudo mkswap $SWAPFILE &&
+#### VPS machine 
+now that you are ssh-logged into that machine:
 
-echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab &&
-sudo swapon -a &&
-free -m
+##### swap
+A swap file is helpful to protect against lack of memory in very small machines
+```
+SWAPFILE=/swapfile; sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=700 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
+```
+(for quorum-crux use not 700 but count=1500)
+
+
+##### chainhammer main repo and dependencies install
+```
+git clone https://github.com/drandreaskrueger/chainhammer.git drandreaskrueger_chainhammer
+cd drandreaskrueger_chainhammer
+scripts/install.sh
 ```
 
-**Then I executed all the above instructions (install the toolchain, and chainhammer).**
+##### N.B.: before creating image from instance to make a new AMI
 
-Then after removing all docker containers & images (to save space)
+Update chainhammer repo to newest commit, and remove all docker containers & images (to save space)
 ```
-~/remove-all-docker.sh
+cd ~/drandreaskrueger_chainhammer; git pull
+scripts/remove-all-docker.sh
 ```
-I shutdown the instance, and created an AMI from it, and made it public.
+
+And for privacy, important:
+
+[remove-ssh-host-key-pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs), 
+then power down:
+```
+sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
+
+sudo shutdown now
+```
+
+Once the instance has shutdown, and I created an AMI from it, and made it public.
 
 ```
 sudo shutdown now
@@ -351,9 +363,6 @@ On [AWS console #Instances](https://eu-west-2.console.aws.amazon.com/ec2/v2/home
 On [AWS console #Images](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images) ... right click ... Modify Image Permissions ... public. And tag it, like above.
 
 --> AMI ID `ami-0aaa64f3e432e4a26`
-
-
-
 
 
 
