@@ -5,6 +5,7 @@ news 2018-Dec-16:
 ## refactored!
 Everything is in a different place now, sorry. But it urgently needed cleanup.  
 Please open an issue (or fork & pull request) if you find a broken link, thanks.
+--> https://github.com/drandreaskrueger/chainhammer/issues
 
 ---
 
