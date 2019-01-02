@@ -341,6 +341,11 @@ SWAPFILE=/swapfile; sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=700 && sudo ch
 ```
 (for quorum-crux use not 700 but count=1500)
 
+##### git
+```
+sudo apt update && sudo apt upgrade
+sudo apt install git
+```
 
 ##### chainhammer main repo and dependencies install
 ```

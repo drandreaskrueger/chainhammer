@@ -7,9 +7,13 @@ echo then install: docker-ce
 echo should you not want that, CTRL-C now, and execute the remaining commands in install.sh manually
 
 read -p "Press enter to continue"
-
 echo 
+
+echo remove docker docker-engine docker.io
+# possibly not installed, so switch off the trap: 
+set +e
 sudo apt-get -y remove docker docker-engine docker.io
+set -e
 
 echo add docker debian gpg key:
 # add key - how more elegant?
