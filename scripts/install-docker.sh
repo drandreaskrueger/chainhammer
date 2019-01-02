@@ -1,3 +1,4 @@
+DOCKER_COMPOSE_VERSION=1.22.0
 
 echo
 echo
@@ -47,7 +48,7 @@ echo
 echo install docker-compose new version
 read -p "Press enter to continue"
 
-sudo curl -L "https://github.com/docker/compose/releases/download/1.22.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod 755 /usr/local/bin/docker-compose
 
 echo docker and docker-compose versions:

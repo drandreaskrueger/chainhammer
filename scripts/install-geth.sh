@@ -1,3 +1,4 @@
+GO_INSTALLER="go1.11.4.linux-amd64.tar.gz"
 
 echo
 echo installing go and geth
@@ -8,15 +9,15 @@ read -p "Press enter to continue"
 # but this does not work yet:
 # docker run ethereum/client-go attach https://localhost:8545
 # please help
-# until then, compile and install locally:
+#
+# until then, compile and install geth locally:
 
 echo 
-INSTALLER="go1.11.linux-amd64.tar.gz"
-echo install go $INSTALLER
-rm -f $INSTALLER
-wget https://dl.google.com/go/$INSTALLER
-sudo tar -C /usr/local -xzf $INSTALLER 
-rm $INSTALLER  
+echo install go $GO_INSTALLER
+rm -f $GO_INSTALLER
+wget https://dl.google.com/go/$GO_INSTALLER
+sudo tar -C /usr/local -xzf $GO_INSTALLER
+rm $GO_INSTALLER
 mkdir -p ~/go/bin
 echo "export PATH=\$PATH:/usr/local/go/bin:~/go/bin" >> ~/.profile
 export PATH=$PATH:/usr/local/go/bin:~/go/bin

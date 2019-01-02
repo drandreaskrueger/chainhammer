@@ -1,4 +1,4 @@
-
+SOLC_VERSION=v0.5.2
 INSTALLPATH=/usr/local/bin
 
 echo
@@ -10,7 +10,7 @@ read -p "Press enter to continue"
 # see https://solidity.readthedocs.io/en/latest/installing-solidity.html 
 # and https://github.com/ethereum/solidity/releases
 
-wget https://github.com/ethereum/solidity/releases/download/v0.4.24/solc-static-linux
+wget https://github.com/ethereum/solidity/releases/download/$SOLC_VERSION/solc-static-linux
 chmod 755 solc-static-linux 
 echo I hope $INSTALLPATH/ is in your PATH?
 echo $PATH
