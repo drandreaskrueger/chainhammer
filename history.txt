@@ -1,3 +1,8 @@
+v45 2/1/2019
+    installer script v45 = refactored into 6 separate install-XYZ.sh scripts
+    upgraded hardcoded versions (docker, pip, requirements.txt, etc)
+    new beginning cloud machine, tested the new install.sh
+
 v44 17/12/2018
     installer script v44 = replaces whole top half of reproduce.md !
       cd chainhammer; scripts/install.sh
