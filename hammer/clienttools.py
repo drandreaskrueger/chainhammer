@@ -146,7 +146,9 @@ def correctPath(file):
     P.S.: If ever consistent solution, then also fix for the two
           "contract-{abi,address}.json" which tests put into the root folder
     """
-    if os.getcwd().split("/")[:-1] != "hammer":
+    # print ("os.getcwd():", os.getcwd())
+    
+    if os.getcwd().split("/")[-1] != "hammer":
          return os.path.join("hammer", file)
     else:
          return file
