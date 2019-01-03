@@ -75,35 +75,38 @@ def test_contract_set_via_RPC():
     assert arg == stored
 
 
-def test_many_transactions_consecutive():
-    numTx=10
-    txs = send.many_transactions_consecutive(contract, numTx)
+def assert_ReturnedTransactionsOK(txs, numTx):
     print (txs)
     assert len(txs)==numTx
     assert txs[0].startswith("0x")
     assert txs[numTx-1].startswith("0x")
 
-
-def test_many_transactions_threaded():
-    answer = send.many_transactions_threaded(contract, numTx=10)
-    assert answer == None 
-    # there are no return values, so what can be tested is 
-    # that it does not throw an exception
+def test_many_transactions_consecutive():
+    numTx=10
+    txs = send.many_transactions_consecutive(contract, numTx)
+    assert_ReturnedTransactionsOK(txs, numTx)
 
 
 def test_many_transactions_threaded():
-    answer = send.many_transactions_threaded_Queue(contract, numTx=10, num_worker_threads=3)
-    assert answer == None 
-    # there are no return values, so what can be tested is 
-    # that it does not throw an exception
+    numTx=10
+    txs = send.many_transactions_threaded(contract, numTx=numTx)
+    assert_ReturnedTransactionsOK(txs, numTx)
 
+
+def test_many_transactions_threaded():
+    numTx=10
+    txs = send.many_transactions_threaded_Queue(contract, numTx=numTx, num_worker_threads=3)
+    assert_ReturnedTransactionsOK(txs, numTx)
+    
     
 def test_many_transactions_threaded_in_batches():
-    answer = send.many_transactions_threaded_in_batches(contract, numTx=10, batchSize=3)
-    assert answer == None 
-    # there are no return values, so what can be tested is 
-    # that it does not throw an exception
+    numTx=10
+    txs = send.many_transactions_threaded_in_batches(contract, numTx=numTx, batchSize=3)
+    assert_ReturnedTransactionsOK(txs, numTx)
+    
 
+def test_controlSample_transactionsSuccessful():
+    pass
 
 def test_sendmany_HowtoTestThisNoIdea():
     # answer = send.sendmany()

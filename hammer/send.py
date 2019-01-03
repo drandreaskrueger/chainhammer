@@ -51,7 +51,7 @@ def initialize_fromAddress():
     return myContract
     
 
-def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
+def contract_set_via_web3(contract, arg, hashes = None, privateFor=PRIVATE_FOR, gas=90000):
     """
     call the .set(arg) method, possibly with 'privateFor' tx-property
     using the web3 method 
@@ -69,6 +69,9 @@ def contract_set_via_web3(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     tx = contract.functions.set( x=arg ).transact(txParameters)
     print ("[sent via web3]", end=" ")  # TODO: not print this here but at start
     tx = w3.toHex(tx)
+    
+    if not hashes==None:
+        hashes.append(tx)
     return tx
 
 
@@ -132,9 +135,9 @@ def timeit_argument_encoding():
     print ("Doing that %d times ... took %.2f seconds" % (reps, timer) )
 
 
-def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
+def contract_set_via_RPC(contract, arg, hashes = None, privateFor=PRIVATE_FOR, gas=90000):
     """
-    call the .set(arg) method 
+    call the .set(arg) method numTx=10
     not going through web3
     but directly via RPC
     
@@ -162,6 +165,9 @@ def contract_set_via_RPC(contract, arg, privateFor=PRIVATE_FOR, gas=90000):
     tx = response.json()['result']
         
     print ("[sent directly via RPC]", end=" ") # TODO: not print this here but at start
+    
+    if not hashes==None:
+        hashes.append(tx)
     return tx
 
 
@@ -221,9 +227,10 @@ def many_transactions_threaded(contract, numTx):
     print ("send %d transactions, multi-threaded, one thread per tx:\n" % (numTx))
 
     threads = []
+    txs = [] # container to keep all transaction hashes
     for i in range(numTx):
         t = Thread(target = contract_set,
-                   args   = (contract, i))
+                   args   = (contract, i, txs))
         threads.append(t)
         print (".", end="")
     print ("%d transaction threads created." % len(threads))
@@ -238,6 +245,7 @@ def many_transactions_threaded(contract, numTx):
         t.join()
     print ("all threads ended.")
     
+    return txs
 
 def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=25):
     """
@@ -249,11 +257,12 @@ def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=25):
     print (line % (numTx, num_worker_threads))
 
     q = Queue()
+    txs = [] # container to keep all transaction hashes
     
     def worker():
         while True:
             item = q.get()
-            contract_set(contract, item)
+            contract_set(contract, item, txs)
             print ("T", end=""); sys.stdout.flush()
             q.task_done()
 
@@ -271,6 +280,8 @@ def many_transactions_threaded_Queue(contract, numTx, num_worker_threads=25):
 
     q.join()
     print ("\nall items - done.")
+    
+    return txs
 
 
 def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
@@ -285,6 +296,8 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
            "in batches of %d parallel threads:\n"
     print (line % (numTx, batchSize))
     
+    txs = [] # container to keep all transaction hashes
+    
     howManyLeft=numTx
     while howManyLeft>0:
     
@@ -292,9 +305,12 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
         print (line % (batchSize, howManyLeft))
         
         threads = []
-        for i in range(batchSize):
+        
+        number = batchSize if howManyLeft>batchSize else howManyLeft 
+        
+        for i in range(number):
             t = Thread(target = contract_set,
-                       args   = (contract, i))
+                       args   = (contract, i, txs))
             threads.append(t)
             print (".", end="")
         print ("\n%d transaction threads created." % len(threads))
@@ -309,8 +325,20 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
             t.join()
         print ("\nall threads ended.")
 
-        howManyLeft -= batchSize
+        howManyLeft -= number
+        
+    return txs
 
+
+################################################################
+### 
+### control sample: have the transactions been SUCCESSFUL ?
+###
+################################################################
+
+def controlSample_transactionsSuccessful(txs, sampleSize=50):
+    
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout)
 
 ###########################################################
 ###
@@ -325,10 +353,10 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
     if len(sys.argv)==1 or sys.argv[1]=="sequential":
         
         # blocking, non-async
-        many_transactions_consecutive(contract, numTransactions)  
+        txs=many_transactions_consecutive(contract, numTransactions)  
         
     elif sys.argv[1]=="threaded1":
-        many_transactions_threaded(contract, numTransactions)
+        txs=many_transactions_threaded(contract, numTransactions)
             
             
     elif sys.argv[1]=="threaded2":
@@ -339,13 +367,13 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
             except:
                 pass
             
-        many_transactions_threaded_Queue(contract, 
+        txs=many_transactions_threaded_Queue(contract, 
                                          numTx=numTransactions, 
                                          num_worker_threads=num_workers)
         
     elif sys.argv[1]=="threaded3":
         batchSize=25
-        many_transactions_threaded_in_batches(contract, 
+        txs=many_transactions_threaded_in_batches(contract, 
                                               numTx=numTransactions, 
                                               batchSize=batchSize)
           
@@ -353,7 +381,7 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
         print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
 
         
-        
+    print ("%d transaction hashes recorded, examples: %s" % (len(txs), txs[:2]))
 
 
 
