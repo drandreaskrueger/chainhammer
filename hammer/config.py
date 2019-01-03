@@ -22,7 +22,7 @@ RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # or
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev; use two different nodes for writing and reading  
 
 # how many tx to send in send.py
-NUMBER_OF_TRANSACTIONS = 20000
+NUMBER_OF_TRANSACTIONS = 200
 
 # obsolete now
 # initially the contract was deployed manually with ./runscript.sh private-contract.js  
@@ -78,7 +78,7 @@ FILE_CONTRACT_ABI     = "contract-abi.json"
 FILE_CONTRACT_ADDRESS = "contract-address.json"
 
 # account passphrase
-PASSPHRASE_FILE = "account-passphrase.txt"
+FILE_PASSPHRASE = "account-passphrase.txt"
 
 # DB file for traversing all blocks
 DBFILE="allblocks.db"

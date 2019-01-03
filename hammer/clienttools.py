@@ -13,6 +13,7 @@
 ################
 ## Dependencies:
 
+import os
 from pprint import pprint
 
 try:
@@ -27,7 +28,7 @@ if __name__ == '__main__' and __package__ is None:
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from hammer.config import RPCaddress 
-from hammer.config import PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION, PARITY_ALREADY_UNLOCKED
+from hammer.config import FILE_PASSPHRASE, PARITY_UNLOCK_EACH_TRANSACTION, PARITY_ALREADY_UNLOCKED
 from hammer.clienttype import clientType
 
 ################
@@ -148,7 +149,8 @@ def unlockAccount(duration=3600, account=None):
     if NODENAME=="Quorum":
         passphrase=""
     else:
-        with open(PASSPHRASE_FILE, "r") as f:
+        # print ("os.getcwd():", os.getcwd())
+        with open(FILE_PASSPHRASE, "r") as f:
             passphrase=f.read().strip()
 
     if NODENAME=="Geth" and CONSENSUS=="clique" and NETWORKID==500:
