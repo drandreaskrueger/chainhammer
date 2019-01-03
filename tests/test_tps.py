@@ -96,12 +96,12 @@ def test_analyzeNewBlocks():
 
     sendMoney_andWaitForReceipt() # to generate at least one more block
     
-    txCount=0
+    txCount,peakTpsAv = 0,0
     start_time = timeit.default_timer()
     tps.w3, tps.NODENAME, tps.CONSENSUS = w3, NODENAME, CONSENSUS 
-    answer = tps.analyzeNewBlocks(0, 1, txCount, start_time)
-    print (answer)
-    assert answer >= 0
+    txCount, peakTpsAv = tps.analyzeNewBlocks(0, 1, txCount, start_time, peakTpsAv)
+    print (txCount)
+    assert txCount >= 0
     
     
 def test_measurement_NotTestableBecauseInfiniteLoop():
