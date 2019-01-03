@@ -106,7 +106,10 @@ def test_many_transactions_threaded_in_batches():
     
 
 def test_controlSample_transactionsSuccessful():
-    pass
+    numTx=10
+    txs = send.many_transactions_consecutive(contract, numTx)
+    success = send.controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=30)
+    assert success
 
 def test_sendmany_HowtoTestThisNoIdea():
     # answer = send.sendmany()

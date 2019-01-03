@@ -14,8 +14,6 @@ if __name__ == '__main__' and __package__ is None:
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from hammer.config import RPCaddress, ROUTE, PRIVATE_FOR, EXAMPLE_ABI
-
 ################
 ## Dependencies:
 
@@ -27,12 +25,15 @@ from pprint import pprint
 
 # pypi:
 import requests # pip3 install requests
+import web3
 from web3 import Web3, HTTPProvider # pip3 install web3
 from web3.utils.abi import filter_by_name, abi_to_signature
 from web3.utils.encoding import pad_hex
 
 # chainhammer:
+from hammer.config import RPCaddress, ROUTE, PRIVATE_FOR, EXAMPLE_ABI
 from hammer.config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.config import GAS_FOR_SET_CALL
 from hammer.deploy import loadFromDisk
 from hammer.clienttools import web3connection, unlockAccount
 
@@ -51,7 +52,7 @@ def initialize_fromAddress():
     return myContract
     
 
-def contract_set_via_web3(contract, arg, hashes = None, privateFor=PRIVATE_FOR, gas=90000):
+def contract_set_via_web3(contract, arg, hashes = None, privateFor=PRIVATE_FOR, gas=GAS_FOR_SET_CALL):
     """
     call the .set(arg) method, possibly with 'privateFor' tx-property
     using the web3 method 
@@ -135,7 +136,7 @@ def timeit_argument_encoding():
     print ("Doing that %d times ... took %.2f seconds" % (reps, timer) )
 
 
-def contract_set_via_RPC(contract, arg, hashes = None, privateFor=PRIVATE_FOR, gas=90000):
+def contract_set_via_RPC(contract, arg, hashes = None, privateFor=PRIVATE_FOR, gas=GAS_FOR_SET_CALL):
     """
     call the .set(arg) method numTx=10
     not going through web3
@@ -336,15 +337,111 @@ def many_transactions_threaded_in_batches(contract, numTx, batchSize=25):
 ###
 ################################################################
 
-def controlSample_transactionsSuccessful(txs, sampleSize=50):
-    
-    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout)
 
-###########################################################
+def hasTxSucceeded(tx_receipt): #, gasGiven=GAS_FOR_SET_CALL):
+    
+    # txReceipt.status or None
+    status = tx_receipt.get("status", None) 
+    if status == 1:  # clear answer = transaction succeeded!
+        return True
+    if status == 0:  # clear answer = transaction failed!
+        return False
+
+    # unfortunately not all clients support status field yet (e.g. testrpc-py, quorum)
+     
+    # second way is to compare gasGiven with gasUsed:
+    gasGiven = w3.eth.getTransaction(tx_hash)["gas"]
+    gasLeftOver = tx_receipt.gasUsed < gasGiven
+    
+    if not gasLeftOver:
+        # many types of transaction failures result in all given gas being used up
+        # e.g. a failed assert() in solidity leads to all gas used up
+        # Then it's clear = transaction failed!
+        return False 
+    
+    if gasLeftOver:
+        # THIS is the dangerous case, because 
+        # e.g. solidity throw / revert() / require() are also returning some unused gas!
+        # As well as SUCCESSFUL transactions are returning some gas!
+        # But for clients without the status field, this is the only indicator, so:
+        return True
+    
+
+def controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=100):
+    """
+    Makes sure that the transactions were actually successful, 
+    and did not fail because e.g. running out of gas, etc.
+    
+    We want to benchmark the speed of successful state changes!!
+    
+    Method: Instead of checking EVERY transaction this just takes some sample.
+    It can fail in three very different ways:
+    
+    * timeout when waiting for tx-receipt, then you try raising the timeout seconds
+    * tx_receipt.status == 0 for any of the sampled transactions. Real tx failure!
+    * all given gas used up. It's only an indirect indicator for a failed transaction.
+    """
+    
+    N = sampleSize if len(txs)>sampleSize else len(txs) 
+    txs_sample = random.sample(txs, N)
+    
+    def receiptGetter(tx_hash, timeout, resultsDict):
+        try:
+            resultsDict[tx_hash] = w3.eth.waitForTransactionReceipt(tx_hash, timeout)
+        except web3.utils.threads.Timeout:
+            pass
+
+    tx_receipts = {}
+    print("Control sample. Waiting for %d transaction receipts, can possibly take a while ..." % N)
+    threads = []    
+    for tx_hash in txs_sample:
+        t = Thread(target = receiptGetter,
+                   args   = (tx_hash, timeout, tx_receipts))
+        threads.append(t)
+        t.start()
+    
+    # wait for all of them coming back:
+    for t in threads: 
+        t.join()
+    
+    # Test 1: Are all receipts here?    
+    M = len(tx_receipts)
+    if M != N:
+        print ("Bad: Timeout, received receipts only for %d out of %d sampled transactions." % (M, N))
+        success = False 
+    else:
+        print ("Good: No timeout, received the receipts for all %d sampled transactions." % N)
+        success = True
+            
+    # Test 2: Was each an every transaction successful?
+    badCounter=0
+    for tx_hash, tx_receipt in tx_receipts.items():
+        # status = tx_receipt.get("status", None) # unfortunately not all clients support this yet
+        # print ((tx_hash, status, tx_receipt.gasUsed ))
+        if not hasTxSucceeded(tx_receipt):
+            success = False
+            print ("Transaction NOT successful:", tx_hash, tx_receipt)
+            badCounter = badCounter+1 
+    # pprint (dict(tx_receipt))
+
+    if badCounter:
+        print ("Bad: %d out of %d not successful!" % (badCounter, M))
+        
+    print ("Sample of %d transactions checked ... hints at:" % M, end=" ")
+    print( "TOTAL SUCCESS :-)" if success else "-AT LEAST PARTIAL- FAILURE :-(" )
+    
+    return success
+
+
+# Try out the above with
+# pytest tests/test_send.py::test_controlSample_transactionsSuccessful
+
+
+################################################################################
 ###
 ### choose, depending on CLI parameter
 ###
-###########################################################
+################################################################################
 
 def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
 
@@ -382,6 +479,8 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
 
         
     print ("%d transaction hashes recorded, examples: %s" % (len(txs), txs[:2]))
+    
+    controlSample_transactionsSuccessful(txs)
 
 
 
