@@ -33,6 +33,7 @@ if __name__ == '__main__' and __package__ is None:
 
 from hammer.config import RPCaddress, PARITY_UNLOCK_EACH_TRANSACTION
 from hammer.config import FILE_CONTRACT_SOURCE, FILE_CONTRACT_ABI, FILE_CONTRACT_ADDRESS
+from hammer.config import GAS_FOR_SET_CALL
 
 from hammer.clienttools import web3connection, unlockAccount
 
@@ -117,7 +118,7 @@ def contract_CompileDeploySave(contract_source_file):
     return contractName, contract_interface, contractAddress
 
 
-def trySmartContractMethods(myContract, gasForSetCall=90000):
+def trySmartContractMethods(myContract, gasForSetCall=GAS_FOR_SET_CALL):
     """
     just a test if the contract's methods are working
     --> call getter then setter then getter  

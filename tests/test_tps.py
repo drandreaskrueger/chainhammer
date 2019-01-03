@@ -1,5 +1,6 @@
 import os, timeit, shutil, threading, json, time
 from hammer.config import RPCaddress
+from hammer.config import GAS_FOR_SET_CALL
 import hammer.tps as tps
 from hammer.deploy import FILE_CONTRACT_ADDRESS
 
@@ -79,7 +80,7 @@ def sendMoney_andWaitForReceipt(how_often=1,
     """
     txParameters = {'from': w3.eth.defaultAccount,
                     'to':   w3.eth.defaultAccount,
-                    'gas' : 90000,
+                    'gas' : GAS_FOR_SET_CALL,
                     'value': amount}
     for i in range(how_often):
         hash = w3.eth.sendTransaction(txParameters)

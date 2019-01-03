@@ -62,6 +62,13 @@ if PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC":
     exit(0)  
 
 
+# gas given for .set(x) transaction 
+# N.B.: must be different from (i.e. higher than) the eventually used gas in 
+# a successful transaction; because difference is used as sign for a FAILED 
+# transaction in the case of those clients which do not have a 
+# 'transactionReceipt.status' field yet
+GAS_FOR_SET_CALL = 90000 
+
 # only for Quorum:
 # set this to a list of public keys for privateFor-transactions, 
 # or to None for public transactions 
