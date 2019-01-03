@@ -138,6 +138,20 @@ def getBlockTransactionCount(w3, blockNumber):
     return len(block["transactions"])
     
 
+def correctPath(file):
+    """
+    This is a semi-dirty hack for FILE_PASSPHRASE (="account-passphrase.txt")
+    to repair the FileNotFound problem which only appears when running the tests 
+    because then the currentWorkDir is "chainhammer" not "chainhammer/hammer" 
+    P.S.: If ever consistent solution, then also fix for the two
+          "contract-{abi,address}.json" which tests put into the root folder
+    """
+    if os.getcwd().split("/")[:-1] != "hammer":
+         return os.path.join("hammer", file)
+    else:
+         return file
+     
+
 def unlockAccount(duration=3600, account=None):
     """
     unlock once, then leave open, to later not loose time for unlocking
@@ -150,7 +164,7 @@ def unlockAccount(duration=3600, account=None):
         passphrase=""
     else:
         # print ("os.getcwd():", os.getcwd())
-        with open(FILE_PASSPHRASE, "r") as f:
+        with open(correctPath(FILE_PASSPHRASE), "r") as f:
             passphrase=f.read().strip()
 
     if NODENAME=="Geth" and CONSENSUS=="clique" and NETWORKID==500:
