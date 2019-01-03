@@ -74,7 +74,7 @@ def timestampToSeconds(timestamp, NODENAME, CONSENSUS):
     return timestamp / timeunits
  
 
-def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
+def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time, peakTpsAv):
     """
     iterate through all new blocks, add up number of transactions
     print status line
@@ -84,7 +84,7 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     for bl in range(blockNumber+1, newBlockNumber+1): # TODO check range again - shift by one? 
         # txCount_new += w3.eth.getBlockTransactionCount(bl)
         blktx = getBlockTransactionCount(w3, bl)
-        txCount_new += blktx 
+        txCount_new += blktx # TODO
 
     ts_blockNumber =    w3.eth.getBlock(   blockNumber).timestamp
     ts_newBlockNumber = w3.eth.getBlock(newBlockNumber).timestamp
@@ -104,16 +104,23 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time):
     txCount += txCount_new
     elapsed = timeit.default_timer() - start_time
     tps = txCount / elapsed
+    
+    if tps > peakTpsAv:
+        peakTpsAv = tps 
+    
+    verb = " is" if peakTpsAv==tps else "was"  
+    
     line = "block %d | new #TX %3d / %4.0f ms = " \
-           "%5.1f TPS_current | total: #TX %4d / %4.1f s = %5.1f TPS_average" 
+           "%5.1f TPS_current | total: #TX %4d / %4.1f s = %5.1f TPS_average " \
+           "(peak %s %5.1f TPS_average)" 
     line = line % ( blockNumber, txCount_new, blocktimeSeconds * 1000, 
-                    tps_current, txCount, elapsed, tps) 
+                    tps_current, txCount, elapsed, tps, verb, peakTpsAv) 
     print (line)
     
-    return txCount
+    return txCount, peakTpsAv
 
 
-def measurement(blockNumber, pauseBetweenQueries=0.3):
+def measurement(blockNumber, pauseBetweenQueries=0.3, RELAXATION_ROUNDS=3):
     """
     when a (or more) new block appeared, 
     add them to the total, and print a line.
@@ -131,12 +138,21 @@ def measurement(blockNumber, pauseBetweenQueries=0.3):
     print('starting timer, at block', blockNumber, 'which has ', 
           txCount,' transactions; at timecode', start_time)
     
+    peakTpsAv = 0
+    counter=0
+    
     while(True):
         newBlockNumber=w3.eth.blockNumber
         
         if(blockNumber!=newBlockNumber): # when a new block appears:
-            txCount = analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time)
+            args = (blockNumber, newBlockNumber, txCount, start_time, peakTpsAv)
+            txCount, peakTpsAv = analyzeNewBlocks(*args)
             blockNumber = newBlockNumber
+            
+            # for the first 3 rounds, always reset the peakTpsAv again!
+            if counter < RELAXATION_ROUNDS:
+                peakTpsAv=0
+            counter += 1
 
         time.sleep(pauseBetweenQueries) # do not query too often; as little side effect on node as possible 
 
