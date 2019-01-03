@@ -26,7 +26,8 @@ if __name__ == '__main__' and __package__ is None:
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from hammer.config import RPCaddress, PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.config import RPCaddress 
+from hammer.config import PASSPHRASE_FILE, PARITY_UNLOCK_EACH_TRANSACTION, PARITY_ALREADY_UNLOCKED
 from hammer.clienttype import clientType
 
 ################
@@ -141,13 +142,9 @@ def unlockAccount(duration=3600, account=None):
     unlock once, then leave open, to later not loose time for unlocking
     """
     
-    if "TestRPC" in w3.version.node:
-        return True # TestRPC does not need unlocking
+    if ("TestRPC" in w3.version.node) or (PARITY_ALREADY_UNLOCKED and ("Parity" in w3.version.node)):
+        return True # TestRPC does not need unlocking; or parity can be CLI-switch unlocked when starting
     
-    if not account:
-        account = w3.eth.defaultAccount
-        # print (account)
-
     if NODENAME=="Quorum":
         passphrase=""
     else:
@@ -158,6 +155,10 @@ def unlockAccount(duration=3600, account=None):
         passphrase="pass" # hardcoded in geth-dev/docker-compose.yml
 
     # print ("passphrase:", passphrase)
+
+    if not account:
+        account = w3.eth.defaultAccount
+        # print (account)
 
     if PARITY_UNLOCK_EACH_TRANSACTION:
         answer = w3.personal.unlockAccount(account=account, 
