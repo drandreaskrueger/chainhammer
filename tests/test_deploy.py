@@ -14,7 +14,7 @@ from pprint import pprint
 import web3
 
 # web3 connection and nodetype
-from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE, ABI
+from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE, EXAMPLE_ABI
 from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
@@ -73,7 +73,7 @@ def test_saveTo_and_loadFromDisk():
         address, abi = deploy.loadFromDisk()
     except FileNotFoundError: # otherwise use dummy data
         address = "0x95368440Aa0b1E90201942085e03eEccDb3dB3E1"
-        abi = ABI
+        abi = EXAMPLE_ABI
     
     answer = deploy.saveToDisk(address, abi)
     assert answer == None
