@@ -19,6 +19,7 @@ account-passphrase.txt
 # regenerated on the fly anyways:
 contract-abi.json
 contract-address.json
+last-experiment.json
 
 # Eclipse project files:
 .project

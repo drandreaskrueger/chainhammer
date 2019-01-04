@@ -18,7 +18,7 @@ if __name__ == '__main__' and __package__ is None:
 ## Dependencies:
 
 # standard library:
-import sys, time, random
+import sys, time, random, json
 from threading import Thread
 from queue import Queue
 from pprint import pprint
@@ -34,6 +34,7 @@ from web3.utils.encoding import pad_hex
 from hammer.config import RPCaddress, ROUTE, PRIVATE_FOR, EXAMPLE_ABI
 from hammer.config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
 from hammer.config import GAS_FOR_SET_CALL
+from hammer.config import FILE_LAST_EXPERIMENT
 from hammer.deploy import loadFromDisk
 from hammer.clienttools import web3connection, unlockAccount
 
@@ -179,7 +180,7 @@ def try_contract_set_via_RPC(contract, steps=3):
     rand = random.randint(1, 100)
     for number in range(rand, rand+steps):
         tx = contract_set_via_RPC(contract, number)
-        print ("after set(%d) tx" % number, tx, " the storedData now is", end=" ")
+        print ("after setat(%d) tx" % number, tx, " the storedData now is", end=" ")
         # TODO: wait for receipt!
         storedData = contract.functions.get().call()
         print (storedData) 
@@ -350,6 +351,7 @@ def hasTxSucceeded(tx_receipt): #, gasGiven=GAS_FOR_SET_CALL):
     # unfortunately not all clients support status field yet (e.g. testrpc-py, quorum)
      
     # second way is to compare gasGiven with gasUsed:
+    tx_hash=tx_receipt.transactionHash
     gasGiven = w3.eth.getTransaction(tx_hash)["gas"]
     gasLeftOver = tx_receipt.gasUsed < gasGiven
     
@@ -450,6 +452,87 @@ def controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=100):
 
 
 ################################################################################
+### 
+### estimate range of blocks, first and last 100 transaction hashes
+###
+################################################################################
+
+
+def getReceipts_multithreaded_Queue(tx_hashes, timeout, num_worker_threads=8, ifPrint=False):
+    """
+    Query the RPC via a multithreading Queue, with 8 worker threads.
+    Advantage over 'getReceipts_multithreaded': 
+                       Will also work for len(tx_hashes) > 1000 
+    """
+    
+    start=time.monotonic()
+    q = Queue()
+    tx_receipts = {}
+    
+    def worker():
+        while True:
+            tx_hash = q.get()
+            receiptGetter(tx_hash, timeout, tx_receipts)
+            q.task_done()
+
+    for i in range(num_worker_threads):
+         t = Thread(target=worker)
+         t.daemon = True
+         t.start()
+
+    for tx in tx_hashes:
+        q.put (tx)
+
+    q.join()
+    
+    if ifPrint:
+        duration = time.monotonic() - start
+        print ("%d lookups took %.1f seconds" % (len(tx_receipts), duration))
+    
+    return tx_receipts
+
+
+def range_of_block_numbers(txs, txRangesSize=100, timeout=60):
+    """
+    Also only a heuristics:
+    Assuming that the first 100 and the last 100 transaction hashes 
+    that had been added to the list 'txs'
+    can reveal the min and max blocknumbers of this whole experiment
+    """
+
+    txs_begin_and_end = txs[:txRangesSize] + txs[-txRangesSize:]
+    tx_receipts = getReceipts_multithreaded_Queue(tx_hashes=txs_begin_and_end, 
+                                                  timeout=timeout) #, ifPrint=True)
+    
+    # or actually, all of them? Naaa, too slow:
+    #   TestRPC: 2000 lookups took 122.1 seconds
+    #    Parity: 2000 lookups took 7.2 seconds
+    #      Geth: 2000 lookups took 8.6 seconds
+    # tx_receipts = getReceipts_multithreaded_Queue(tx_hashes=txs, 
+    #                                              timeout=timeout, ifPrint=True)
+    
+    blockNumbers = [receipt.blockNumber for receipt in tx_receipts.values()]
+    blockNumbers = sorted(list(set(blockNumbers))) # make unique
+    # print (blockNumbers) 
+    return min(blockNumbers), max(blockNumbers)
+
+    
+def store_experiment_data(success, num_txs, 
+                          block_from, block_to, 
+                          filename=FILE_LAST_EXPERIMENT):
+    """
+    most basic data about this last experiment, 
+    stored in same (overwritten) file.
+    Purpose: diagramming should be able to calc proper averages & select ranges
+    """
+    data = {"block_first" : block_from, 
+            "block_last": block_to,
+            "num_txs" : num_txs,
+            "sample_txs_successful": success}
+    with open(FILE_LAST_EXPERIMENT, "w") as f:
+        json.dump(data, f)
+
+################################################################################
 ###
 ### choose, depending on CLI parameter
 ###
@@ -492,7 +575,11 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
         
     print ("%d transaction hashes recorded, examples: %s" % (len(txs), txs[:2]))
     
-    controlSample_transactionsSuccessful(txs)
+    success = controlSample_transactionsSuccessful(txs)
+
+    block_from, block_to = range_of_block_numbers(txs)
+    
+    store_experiment_data (success, len(txs), block_from, block_to)
 
 
 

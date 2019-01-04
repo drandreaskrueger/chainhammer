@@ -9,12 +9,12 @@
 @see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
 
-import os
+import os, json
 from pprint import pprint
 from web3.utils import datatypes
 
 # web3 connection and nodetype
-from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE
+from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE, FILE_LAST_EXPERIMENT
 from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
 global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
@@ -110,6 +110,21 @@ def test_controlSample_transactionsSuccessful():
     txs = send.many_transactions_consecutive(contract, numTx)
     success = send.controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=30)
     assert success
+
+def test_range_of_block_numbers():
+    numTx=10
+    txs = send.many_transactions_consecutive(contract, numTx)
+    block_from, block_to = send.range_of_block_numbers(txs)
+    assert block_from <= block_to
+
+def test_store_experiment_data():
+    dummy = "not real, file created by tests/test_send.py"
+    data = {"block_first" : 1, "block_last": 2, "num_txs" : dummy, "sample_txs_successful": False}
+    send.store_experiment_data(success=False, num_txs=dummy, block_from=1, block_to=2)
+    with open(FILE_LAST_EXPERIMENT, "r") as f:
+        data2 = json.load(f)
+    assert data == data2
+
 
 def test_sendmany_HowtoTestThisNoIdea():
     # answer = send.sendmany()
