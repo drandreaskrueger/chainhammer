@@ -128,6 +128,10 @@ def clientType(w3):
     nodeString = w3.version.node
     nodeName = nodeString.split("/")[0] 
     
+    known = ("Geth", "Parity", "Parity-Ethereum", "Energy Web", "TestRPC")
+    if nodeName not in known:
+        print ("Interesting, '%s', a new node type? '%s'" % (nodeName, nodeString))
+    
     if nodeName == "Parity-Ethereum":
         nodeName = "Parity"
 
