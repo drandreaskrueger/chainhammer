@@ -1,7 +1,19 @@
+v46 3/1/2019
+    show peak TPS_average, and memorize after 3 relaxation rounds
+    new switch PARITY_ALREADY_UNLOCKED
+    cleaned up config.py a bit, more consistent naming, ...
+    adapt tests to code changes
+    fixed: account-passphrase.txt now also found within tests with Geth
+    new GAS_FOR_SET_CALL constant
+    remember all sent transaction hashes
+    transaction success/failure checker, via random sample of txs
+    criterion txReceipt.status OR gasUsed/gasGiven comparison
+
 v45 2/1/2019
     installer script v45 = refactored into 6 separate install-XYZ.sh scripts
-    upgraded hardcoded versions (docker, pip, requirements.txt, etc)
-    new beginning cloud machine, tested the new install.sh
+    upgraded all hardcoded versions (docker, pip, requirements.txt, etc)
+    new beginning cloud machine, 
+    tested the new install.sh locally and in the cloud
 
 v44 17/12/2018
     installer script v44 = replaces whole top half of reproduce.md !

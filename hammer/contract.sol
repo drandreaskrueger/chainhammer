@@ -1,4 +1,5 @@
 // simplestorage contract
+// chainhammer v46
 
 pragma solidity ^0.4.21;
 

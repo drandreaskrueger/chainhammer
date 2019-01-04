@@ -1,3 +1,14 @@
+#!/usr/bin/env python3
+"""
+@summary: testing tps.py
+
+@version: v46 (03/January/2019)
+@since:   30/November/2018
+@organization: 
+@author:  https://github.com/drandreaskrueger
+@see:     https://github.com/drandreaskrueger/chainhammer for updates
+"""
+
 import os, timeit, shutil, threading, json, time
 from hammer.config import RPCaddress
 from hammer.config import GAS_FOR_SET_CALL

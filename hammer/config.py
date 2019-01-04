@@ -2,7 +2,7 @@
 """
 @summary: settings
 
-@version: v43 (16/December/2018)
+@version: v46 (03/January/2019)
 @since:   8/May/2018
 @organization: 
 @author:  https://github.com/drandreaskrueger
@@ -22,7 +22,7 @@ RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # or
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev; use two different nodes for writing and reading  
 
 # how many tx to send in send.py
-NUMBER_OF_TRANSACTIONS = 200
+NUMBER_OF_TRANSACTIONS = 20000
 
 # obsolete now
 # initially the contract was deployed manually with ./runscript.sh private-contract.js  
@@ -51,7 +51,7 @@ PARITY_UNLOCK_EACH_TRANSACTION=False
 # e.g. by manually editing the docker-compose.yml file after ./parity-deploy.sh --config aura --nodes 3
 #  services: --> host1: --> command: --> add this: (address is in deployment/1/address.txt)
 #    --unlock 0x39c6ad93dfb708143322d8bbf4c35734f6480249 --password /home/parity/password 
-PARITY_ALREADY_UNLOCKED=True
+PARITY_ALREADY_UNLOCKED=False
 
 
 # sorry, but time saving RPC optimisation makes no sense then anyways:

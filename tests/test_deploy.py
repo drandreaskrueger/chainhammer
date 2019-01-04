@@ -2,7 +2,7 @@
 """
 @summary: testing deploy.py
 
-@version: v42 (4/December/2018)
+@version: v46 (03/January/2019)
 @since:   1/December/2018
 @organization: 
 @author:  https://github.com/drandreaskrueger
