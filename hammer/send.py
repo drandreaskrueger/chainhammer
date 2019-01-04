@@ -367,6 +367,34 @@ def hasTxSucceeded(tx_receipt): #, gasGiven=GAS_FOR_SET_CALL):
         return True
     
 
+def receiptGetter(tx_hash, timeout, resultsDict):
+    try:
+        resultsDict[tx_hash] = w3.eth.waitForTransactionReceipt(tx_hash, timeout)
+    except web3.utils.threads.Timeout:
+        pass
+        
+            
+def getReceipts_multithreaded(tx_hashes, timeout):
+    """
+    one thread per tx_hash
+    """
+    
+    tx_receipts = {}
+    print("Waiting for %d transaction receipts, can possibly take a while ..." % len(tx_hashes))
+    threads = []    
+    for tx_hash in tx_hashes:
+        t = Thread(target = receiptGetter,
+                   args   = (tx_hash, timeout, tx_receipts))
+        threads.append(t)
+        t.start()
+    
+    # wait for all of them coming back:
+    for t in threads: 
+        t.join()
+    
+    return tx_receipts
+
+
 def controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=100):
     """
     Makes sure that the transactions were actually successful, 
@@ -382,27 +410,11 @@ def controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=100):
     * all given gas used up. It's only an indirect indicator for a failed transaction.
     """
     
+    print ("Check control sample.")
     N = sampleSize if len(txs)>sampleSize else len(txs) 
     txs_sample = random.sample(txs, N)
     
-    def receiptGetter(tx_hash, timeout, resultsDict):
-        try:
-            resultsDict[tx_hash] = w3.eth.waitForTransactionReceipt(tx_hash, timeout)
-        except web3.utils.threads.Timeout:
-            pass
-
-    tx_receipts = {}
-    print("Control sample. Waiting for %d transaction receipts, can possibly take a while ..." % N)
-    threads = []    
-    for tx_hash in txs_sample:
-        t = Thread(target = receiptGetter,
-                   args   = (tx_hash, timeout, tx_receipts))
-        threads.append(t)
-        t.start()
-    
-    # wait for all of them coming back:
-    for t in threads: 
-        t.join()
+    tx_receipts = getReceipts_multithreaded(tx_hashes=txs_sample, timeout=timeout) 
     
     # Test 1: Are all receipts here?    
     M = len(tx_receipts)
