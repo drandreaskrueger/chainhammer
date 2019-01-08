@@ -138,6 +138,9 @@ def load_dependencies():
     import matplotlib; print("matplotlib version", matplotlib.__version__)
     from matplotlib import pyplot as plt
     
+    backend=matplotlib.get_backend()
+    print("matplotlib backend", backend)
+    
     # get_ipython().run_line_magic('matplotlib', 'inline')
     
     # https://github.com/matplotlib/matplotlib/issues/5907#issuecomment-179001811
