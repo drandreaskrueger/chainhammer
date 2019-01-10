@@ -27,6 +27,7 @@ from pprint import pprint
 import pandas
 import numpy
 import matplotlib
+import matplotlib.pyplot as plt
 
 ################
 
@@ -287,7 +288,7 @@ def show_peak_TPS(df):
     return max1, max10
     
 
-def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, imgpath="img"):
+def diagrams_oldversion(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, imgpath="img"):
     
     from matplotlib import pyplot as plt
     
@@ -361,7 +362,246 @@ def diagrams(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, img
 
 
 
-###############################################################################
+
+
+
+################################################################################
+# new diagrams
+# completely overhauled, mostly written new actually
+################################################################################
+
+
+
+
+def experiment_slice(df, FROM_BLOCK, TO_BLOCK, emptyBlocks):
+    """
+    cut out the dataframe from FROM_BLOCK to TO_BLOCK+emptyBlocks (incl that last one)
+    can handle that df starts not at block 0
+    can handle that limits are smaller or larger than available blocknumbers
+    
+    """
+    assert FROM_BLOCK <= TO_BLOCK
+    
+    index_from = min( df[df['blocknumber'] >= FROM_BLOCK].index.tolist() )
+    # print (slice_from)
+        
+    index_to = max( df[df['blocknumber'] <= TO_BLOCK+emptyBlocks].index.tolist() )
+    # print(slice_to)
+        
+    dfs = df[index_from:index_to + 1]
+    
+    return dfs, index_from, index_to
+
+
+def try_experiment_slice(df):
+    # dfs, slice_from, slice_to = experiment_slice(df, 50, 50, 0)
+    dfs, index_from, index_to = experiment_slice(df, FROM_BLOCK, TO_BLOCK, 10)
+    print (index_from, index_to)
+
+
+def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
+    """
+    works on already sliced dataframe, 
+    where first experiment block is index 0
+    and last experiment block is index [TO_BLOCK - FROM_BLOCK]
+    N.B.:
+    we cannot rely on the blocktime of very first block
+    so we simply leave the transactions out of the summation, and 
+    the duration is from when that first block WAS MINED = its timestamp.
+    """
+    
+    blocks = TO_BLOCK - FROM_BLOCK + 1
+    ts1 = dfs.iloc[0]['timestamp'] # stop clock starts WHEN block 0 is in already!
+    ts2 = dfs.iloc[blocks-1]['timestamp']   # and ends at last filled block
+    duration = ts2-ts1
+    # print (ts1, ts2, duration)
+    
+    txs=sum(dfs['txcount'][1:blocks]) # N.B.: start summing at block 1 not 0 !
+    # print (txs)
+    
+    tps=(txs/duration)
+    # print (tps)
+    return tps, "%.1f" % tps
+
+
+# averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK)
+
+
+
+def averager(dfs, col, emptyBlocks, fmt="%.1f"):
+    """
+    We want the real average of that 'col', taken only over the non-empty blocks.
+    N.B.: this assumes that there are actually enough emptyBlocks at the end!
+    """
+    av = dfs[col] [:-emptyBlocks] .mean()
+    avTxt = fmt % av
+    return av, avTxt
+
+
+def avgLine(ax, dfs, emptyBlocks, avg, avgTxt):
+    """
+    horizontal line plus text on white background
+    """
+    blMin, blMax = min(dfs["blocknumber"])+1, max(dfs["blocknumber"][:-emptyBlocks])
+    ax.plot([blMin, blMax], [avg, avg], "k-")
+    
+    ax.text(blMin + (blMax-blMin + emptyBlocks)*0.95, avg, avgTxt, 
+            bbox=dict(facecolor='white', edgecolor='white'))
+    
+
+def axes_simplifier(ax, logYscale=False):
+    """
+    otherwise matplotlib automatically switches on notations on the ticks 
+    that might be confusing to non-technical people
+    """
+    ax.get_xaxis().get_major_formatter().set_useOffset(False)
+    ax.get_xaxis().get_major_formatter().set_scientific(False)
+    if not logYscale:
+        ax.get_yaxis().get_major_formatter().set_useOffset(False)
+        ax.get_yaxis().get_major_formatter().set_scientific(False)
+
+
+def tps_plotter(ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks):
+    """
+    TPS average calculated only over non-empty blocks!
+    average calculated for TPS (not for smoothed 3, 5, 10 blocks averages)
+    
+    N.B.: this assumes that in dfs there are actually enough emptyBlocks at the end!
+    """
+    cols=['TPS_1blk', 'TPS_3blks', 'TPS_5blks', 'TPS_10blks']
+    for col in cols:
+        ax.plot(dfs['blocknumber'], dfs[col])
+
+    axes_simplifier(ax)
+   
+    #avg1, avg1Txt = averager(dfs, cols[0], emptyBlocks, "%.1f")
+    #legend = [cols[0] + " (avg1 %s)"%avg1Txt ] + cols[1:]
+    ax.legend(cols); 
+   
+    avg, avgTxt = averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK)
+    avgLine(ax, dfs, emptyBlocks, avg, avgTxt)
+    print ("averaged over whole experiment: %s TPS" %avgTxt)
+    
+    ax.set_title("avg TPS %s = #TX whole experiment / blocktimes diff" % avgTxt)
+  
+    
+def show_tps_plotter(dfs):
+    # fig, axes = plt.subplots(1, 1, figsize=(16,9))
+    fig, axes = plt.subplots(1, 1, figsize=(6,4))
+    tps_plotter(axes, dfs, FROM_BLOCK, TO_BLOCK, 10)
+
+
+def blocktimes_plotter(ax, dfs):
+    "plot the blocktimes"
+
+    ax.set_title("blocktime seconds since last block")
+    
+    ax.scatter(x=dfs['blocknumber'], y=dfs['blocktime'], c="b", marker="x")
+    
+    axes_simplifier(ax)
+
+
+def show_blocktimes_plotter(dfs):
+    fig, axes = plt.subplots(1, 1, figsize=(16,9))
+    # fig, axes = plt.subplots(1, 1, figsize=(6,4))
+    blocktimes_plotter(axes, dfs)    
+
+
+def blocksizes_plotter(ax, dfs, emptyBlocks):
+    """
+    blocksizes
+    plus average line
+    """
+    
+    ax.scatter(dfs['blocknumber'], dfs['size'], c="g", marker="o")
+    ax.plot(   dfs['blocknumber'], dfs['size'], "g-")
+    
+    avg, avgTxt = averager(dfs, 'size', emptyBlocks, "%d")
+    avgLine(ax, dfs, emptyBlocks, avg, avgTxt)
+    print ('averaged (    "    ) blocksize: %s bytes' % avgTxt)
+    
+    ax.set_title("blocksizes in bytes")
+    
+    axes_simplifier(ax)
+
+
+def show_blocksizes_plotter(dfs):
+    fig, axes = plt.subplots(1, 1, figsize=(6,4))
+    blocksizes_plotter(axes, dfs, 15)    
+
+
+def show_blocksizes_plotter_hugeDataset():
+    testdf = pandas.DataFrame({"blocknumber" : range(100000,300000)})
+    testdf["size"]=40000
+    testdf
+    fig, axes = plt.subplots(1, 1, figsize=(6,4))
+    blocksizes_plotter(axes, testdf, 10)
+
+
+def gas_plotter(ax, dfs):
+    """
+    plot gasUsed and gasLimit per second
+    """
+    ax.set_title("gasUsed and gasLimit per second")    
+    
+    ax.plot(   dfs['blocknumber'], dfs['GLPS_1blk']) # , "g-")
+    ax.plot(   dfs['blocknumber'], dfs['GUPS_1blk']) # 
+    
+    ax.set_yscale('log')
+    
+    axes_simplifier(ax, logYscale=True)
+    ax.legend (["gasLimit/sec", "gasUsed/sec"] )
+
+
+def show_gas_plotter(dfs):
+    fig, axes = plt.subplots(1, 1, figsize=(6,4))
+    gas_plotter(axes, dfs)
+
+
+def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks=10):
+    """
+    new version 
+    more precise & consistent
+    * slice of whole experiment (from/to), plus some emptyBlocks at the end
+    * averages are calc'ed over the experiment blocks only! 
+    * average lines & number for tps & block size
+    * title shows more infos about experiment
+    * x-axis ticks issues solved
+    """
+    
+    # offset=min(df["blocknumber"])
+    # just the slice of the experiment + 10 extra blocks:
+    # dfs = df[FROM_BLOCK-offset:TO_BLOCK-offset+emptyBlocks+1] 
+    dfs, index_from, index_to = experiment_slice(df, blockFrom, blockTo, emptyBlocks)
+    
+    # https://github.com/matplotlib/matplotlib/issues/5907#issuecomment-179001811
+    import matplotlib
+    matplotlib.rcParams['agg.path.chunksize'] = 10000
+    
+    fig, axes = plt.subplots(2, 2, figsize=(16,9)) #,  sharex=True)
+    fig.subplots_adjust(hspace=0.25, wspace=0.20)
+    
+    tps_plotter(axes[0,0], dfs, blockFrom, blockTo, emptyBlocks)
+    blocktimes_plotter(axes[0,1], dfs)
+    blocksizes_plotter(axes[1,0], dfs, emptyBlocks)  
+    gas_plotter(axes[1,1], dfs)
+    
+    txs=sum(dfs['txcount'][0:-emptyBlocks+1])
+    title = prefix + " blocks %d-%d with %d txs ~ %d txs/block" 
+    title = title % (blockFrom, blockTo, txs, round(txs/(blockTo-blockFrom+1)))
+    fig.suptitle(title, fontsize=16)
+    
+    return fig, axes, dfs, txs
+
+def savePlot(fig, prefix, blockFrom, blockTo, imgpath):
+    filename = "%s_blks%d-%d.png" % (prefix,blockFrom,blockTo)
+    filepath = os.path.join(imgpath, filename)
+    fig.savefig(filepath)
+    return filepath
+
+
+
+################################################################################
 
 def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="img"):
     
@@ -378,7 +618,11 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="i
     if TO_BLOCK==-1: TO_BLOCK = max(blocknumbers)[0]
     # print (FROM_BLOCK, TO_BLOCK); exit()
     
-    fn = diagrams(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
+    print()
+    # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
+    fig, axes, dfs, txs = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK, emptyBlocks=10)
+    fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath)
+    
     print ("\ndiagrams saved to: ", fn)
     return fn
 
@@ -414,9 +658,15 @@ def CLI_params():
     print ()
     return DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK
 
+
 if __name__ == '__main__':
     
-    params = CLI_params(); 
+    # ./blocksDB_diagramming.py temp1.db TEMP 54 124
+    params = CLI_params();
+    
+    # params = ("temp1.db", "TEMP", 54, 124) 
+    # params = ("temp1.db", "TEMP", 0, 233)
+    # params = ("temp2.db", "TEMP", 0, 5000) 
 
     load_prepare_plot_save(*params)
 
