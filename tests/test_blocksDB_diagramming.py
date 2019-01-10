@@ -12,6 +12,8 @@
 import os, sqlite3, pytest
 from pprint import pprint
 
+import matplotlib.pyplot as plt
+
 import reader.blocksDB_diagramming as DBdiagram
 
 ###############################################################
@@ -35,7 +37,8 @@ def get_as_dataframe():
     df = DBdiagram.read_whole_table_into_dataframe(conn)
     conn.close()
     return df
- 
+
+
 ###############################################################
 # tests:
 
@@ -97,7 +100,7 @@ def test_simple_stats():
     conn.close()
     assert True # no return value; just check that it raised no exception
     
-    
+
 def test_read_whole_table_into_df():
     conn = connect_example_DB()
     df = DBdiagram.read_whole_table_into_dataframe(conn)
@@ -121,12 +124,95 @@ def test_show_peak_TPS():
     max1, max10 = DBdiagram.show_peak_TPS(df)
     assert max1>=0
     assert max10>=0
+
+
+def example_experiment():
+    df = get_as_dataframe()
+    # print (df)
+    FROM_BLOCK, TO_BLOCK = 26, 82
+    
+    return df, FROM_BLOCK, TO_BLOCK
+
+
+def test_experiment_slice():
+    df, FROM_BLOCK, TO_BLOCK = example_experiment()
+    dfs, index_from, index_to = DBdiagram.experiment_slice(df, FROM_BLOCK, TO_BLOCK, emptyBlocks=10)
+    assert len(dfs) == 67
+    assert max(dfs["blocknumber"]) == 92
+    assert index_from == 26
+    assert index_to == 92
+
+
+def example_experiment_slice():
+    df, FROM_BLOCK, TO_BLOCK = example_experiment()
+    emptyBlocks=10
+    dfs, index_from, index_to = DBdiagram.experiment_slice(df, FROM_BLOCK, TO_BLOCK, emptyBlocks)
+    return dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks
+
+def test_averageTps_wholeExperiment():
+    dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice()
+    avg, avgTxt = DBdiagram.averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK)
+    print (avg, avgTxt)
+    assert 176 < avg < 177
+    assert avgTxt == "176.1"
     
     
+def test_averager():
+    dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice()
+    av, avTxt = DBdiagram.averager(dfs, 'size', emptyBlocks, fmt="%d")
+    assert 51478 < av < 51479
+    assert avTxt == "51479"
+
+
+def test_avgLine():
+    dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice()
+    fig, ax = plt.subplots(1, 1)
+    avg, avgTxt = 1, "1"
+    DBdiagram.avgLine(ax, dfs, emptyBlocks, avg, avgTxt)
+
+
+def test_axes_simplifier():
+    fig, ax = plt.subplots(1, 1)
+    DBdiagram.axes_simplifier(ax, logYscale=False)
+    
+
+def example_experiment_slice_plot():
+    dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice()
+    DBdiagram.add_columns(dfs)
+    fig, ax = plt.subplots(1, 1)
+    return ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks
+
+
+def test_tps_plotter():
+    ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice_plot()
+    DBdiagram.tps_plotter(ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks)
+
+
+def test_blocktimes_plotter():
+    ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice_plot()
+    DBdiagram.blocktimes_plotter(ax, dfs)
+    
+
+def test_blocksizes_plotter():
+    ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice_plot()
+    DBdiagram.blocksizes_plotter(ax, dfs, emptyBlocks)       
+
+
+def test_gas_plotter():
+    ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice_plot()
+    DBdiagram.gas_plotter(ax, dfs)       
+
+
+# no single test for diagrams() because tested in composite test_load_prepare_plot_save()
+# no single test for savePlot() because tested in composite test_load_prepare_plot_save()
+
+
 def test_load_prepare_plot_save():
     DBFILE = os.path.join("tests", "testing_EXAMPLE-DB.db")
+
     imgpath="tests/img"
     os.mkdir(imgpath)
+    
     fn = DBdiagram.load_prepare_plot_save(DBFILE, "TEST", 0, 10, imgpath=imgpath)
     os.remove(fn)
     os.rmdir(imgpath)
@@ -139,7 +225,6 @@ def test_CLI_params():
         DBdiagram.CLI_params()
     except SystemExit:
         pass
-    
     
     
     

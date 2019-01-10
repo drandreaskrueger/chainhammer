@@ -289,6 +289,9 @@ def show_peak_TPS(df):
     
 
 def diagrams_oldversion(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_logy=True, imgpath="img"):
+    """
+    OBSOLETE NOW!
+    """
     
     from matplotlib import pyplot as plt
     
@@ -361,10 +364,6 @@ def diagrams_oldversion(df, blockFrom, blockTo, prefix="", gas_logy=True, bt_log
 
 
 
-
-
-
-
 ################################################################################
 # new diagrams
 # completely overhauled, mostly written new actually
@@ -393,12 +392,6 @@ def experiment_slice(df, FROM_BLOCK, TO_BLOCK, emptyBlocks):
     return dfs, index_from, index_to
 
 
-def try_experiment_slice(df):
-    # dfs, slice_from, slice_to = experiment_slice(df, 50, 50, 0)
-    dfs, index_from, index_to = experiment_slice(df, FROM_BLOCK, TO_BLOCK, 10)
-    print (index_from, index_to)
-
-
 def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
     """
     works on already sliced dataframe, 
@@ -424,17 +417,15 @@ def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
     return tps, "%.1f" % tps
 
 
-# averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK)
-
-
-
 def averager(dfs, col, emptyBlocks, fmt="%.1f"):
     """
     We want the real average of that 'col', taken only over the non-empty blocks.
     N.B.: this assumes that there are actually enough emptyBlocks at the end!
     """
-    av = dfs[col] [:-emptyBlocks] .mean()
-    avTxt = fmt % av
+    av = avCopy = dfs[col] [:-emptyBlocks] .mean()
+    if fmt=="%d": 
+        avCopy = int(round(av))
+    avTxt = fmt % avCopy
     return av, avTxt
 
 
@@ -485,12 +476,6 @@ def tps_plotter(ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks):
     ax.set_title("avg TPS %s = #TX whole experiment / blocktimes diff" % avgTxt)
   
     
-def show_tps_plotter(dfs):
-    # fig, axes = plt.subplots(1, 1, figsize=(16,9))
-    fig, axes = plt.subplots(1, 1, figsize=(6,4))
-    tps_plotter(axes, dfs, FROM_BLOCK, TO_BLOCK, 10)
-
-
 def blocktimes_plotter(ax, dfs):
     "plot the blocktimes"
 
@@ -499,12 +484,6 @@ def blocktimes_plotter(ax, dfs):
     ax.scatter(x=dfs['blocknumber'], y=dfs['blocktime'], c="b", marker="x")
     
     axes_simplifier(ax)
-
-
-def show_blocktimes_plotter(dfs):
-    fig, axes = plt.subplots(1, 1, figsize=(16,9))
-    # fig, axes = plt.subplots(1, 1, figsize=(6,4))
-    blocktimes_plotter(axes, dfs)    
 
 
 def blocksizes_plotter(ax, dfs, emptyBlocks):
@@ -525,19 +504,6 @@ def blocksizes_plotter(ax, dfs, emptyBlocks):
     axes_simplifier(ax)
 
 
-def show_blocksizes_plotter(dfs):
-    fig, axes = plt.subplots(1, 1, figsize=(6,4))
-    blocksizes_plotter(axes, dfs, 15)    
-
-
-def show_blocksizes_plotter_hugeDataset():
-    testdf = pandas.DataFrame({"blocknumber" : range(100000,300000)})
-    testdf["size"]=40000
-    testdf
-    fig, axes = plt.subplots(1, 1, figsize=(6,4))
-    blocksizes_plotter(axes, testdf, 10)
-
-
 def gas_plotter(ax, dfs):
     """
     plot gasUsed and gasLimit per second
@@ -551,11 +517,6 @@ def gas_plotter(ax, dfs):
     
     axes_simplifier(ax, logYscale=True)
     ax.legend (["gasLimit/sec", "gasUsed/sec"] )
-
-
-def show_gas_plotter(dfs):
-    fig, axes = plt.subplots(1, 1, figsize=(6,4))
-    gas_plotter(axes, dfs)
 
 
 def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks=10):
@@ -592,6 +553,7 @@ def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks=10):
     fig.suptitle(title, fontsize=16)
     
     return fig, axes, dfs, txs
+
 
 def savePlot(fig, prefix, blockFrom, blockTo, imgpath):
     filename = "%s_blks%d-%d.png" % (prefix,blockFrom,blockTo)
