@@ -293,6 +293,16 @@ def test_DB_newFromFile():
     assert True # no return value; just check that it raised no exception
     
     
+def test_read_experiment_infofile():
+    try:
+        fn = "hammer/last-experiment.json"
+        info = DBcreate.read_experiment_infofile(fn)
+        assert info['block_first']>=0
+    except FileNotFoundError:
+        pass
+    
+    
+    
 def test_CLI_params():
     DBcreate.CLI_params()
     assert True # How to test this, any idea?
