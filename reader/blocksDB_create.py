@@ -31,8 +31,8 @@
 # execute & commit 4392280 SQL statements into DB took 37.91 seconds
 
 
-global DBFILE
-DBFILE = "temp.db"
+global DBFILE, INFOFILE
+DBFILE, INFOFILE = "temp.db", None
 
 # obsolete: hard coded DB file names:
 """
@@ -61,7 +61,7 @@ DBFILE = "allblocks-parity-poa-playground_run1.db"
 ## Dependencies:
 
 # python standard library:
-import sys, time, os
+import sys, time, os, json
 import sqlite3
 from pprint import pprint
 from queue import Queue
@@ -380,35 +380,72 @@ def DB_newFromFile():
     conn.close()
 
 
+def read_experiment_infofile(fn):
+    """
+    now the experiments are all writing out basic information.
+    read this in here, to know the range of blocks.
+    """
+    with open(fn, "r") as f:
+        info = json.load(f)
+    return info
+
+
+def deleteSqlFilePerhaps():
+    """
+    ignore if it does not exist
+    """
+    try:
+        os.remove(DBFILE + ".sql")
+    except:
+        pass
+
+
 def CLI_params():
-    global DBFILE
-    if len(sys.argv)>2:
-        print ("Please give one argument, the filename DBFILE, or zero to choose the default ", DBFILE)
-    if len(sys.argv)==2:
+    global DBFILE, INFOFILE
+    if len(sys.argv)>3:
+        print ("Please give one argument, the filename DBFILE, "
+               "\nor zero arguments to choose the default ", DBFILE)
+        print ("Or two arguments, filename of DBFILE "
+               "and filename of the experiment-infofile.")
+        exit()
+    if len(sys.argv)>=2:
         DBFILE=sys.argv[1]
         print ("changed DBFILE to ", DBFILE)
+    if len(sys.argv)==3:
+        INFOFILE=sys.argv[2]
+        print ("changed INFOFILE to ", INFOFILE)
         
 
 if __name__ == '__main__':
     
+    CLI_params(); 
+    
     global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
-
-    CLI_params(); 
-    print ("Writing blocks information into", DBFILE)
+    
+    blockNumberFrom=0
+    # blockNumberFrom=5173723
+    numBlocks=w3.eth.blockNumber - blockNumberFrom + 1
+    
+    print ("\nWriting blocks information into", DBFILE)
+    if INFOFILE:
+        print ("Reading blocks range from", INFOFILE)
+        info = read_experiment_infofile(fn=INFOFILE)
+        # pprint(info); exit()
+        blockNumberFrom = info['block_first']
+        numBlocks = info['block_last'] - blockNumberFrom + 1
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()
     # manyBlocks_singlethreaded(); exit()
-    
     # DB_newFromFile(); exit()
     
-    # N.B.: perhaps manually delete the existing "allblocks.db.sql" before 
-    blockNumberFrom=0
-    # blockNumberFrom=5173723
-    manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, # numBlocks=1)
-                              numBlocks=w3.eth.blockNumber - blockNumberFrom + 1)
+    # better manually delete the existing "allblocks.db.sql" before
+    # uncomment this, if you want to read in millions of blocks, step by step 
+    deleteSqlFilePerhaps()
+    
+    manyBlocks_singlethreaded(blockNumberFrom=blockNumberFrom, numBlocks=numBlocks)
                               
     DB_newFromFile()
     print ("done.")
