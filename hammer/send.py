@@ -397,7 +397,7 @@ def getReceipts_multithreaded(tx_hashes, timeout):
     return tx_receipts
 
 
-def controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=100):
+def controlSample_transactionsSuccessful(txs, sampleSize=50, timeout=100):
     """
     Makes sure that the transactions were actually successful, 
     and did not fail because e.g. running out of gas, etc.

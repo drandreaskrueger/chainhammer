@@ -173,7 +173,7 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
         if AUTOSTOP_TPS and blocknumberEnd==-1 and sendingEndedFiledate()!=whenBefore:
             finalTpsAv = tpsAv
             blocknumberEnd = newBlockNumber + empty_blocks_at_end
-            print ("The end is nigh ... at blocknumber", blocknumberEnd)
+            print ("The end is nigh ... after blocknumber", blocknumberEnd)
             if NODETYPE=="TestRPC":
                 break # no empty blocks in TestRPC
 
@@ -181,11 +181,9 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
             break
         
     # print ("end")   # N.B.: it never gets here !
-    print ()
     txt = "Experiment ended! Current blocknumber = %d"
     txt = txt % (w3.eth.blockNumber)
     print (txt)
-    
     return peakTpsAv, finalTpsAv
 
 
@@ -215,6 +213,9 @@ if __name__ == '__main__':
     peakTpsAv, finalTpsAv = measurement( blocknumber_start_here )
     
     addMeasurementToFile(peakTpsAv, finalTpsAv, FILE_LAST_EXPERIMENT)
+    print ("Updated info file:", FILE_LAST_EXPERIMENT)
+    print ("End.")
+    print ()
     
     
     
