@@ -90,6 +90,11 @@ FILE_PASSPHRASE = "account-passphrase.txt"
 # last experiment data
 FILE_LAST_EXPERIMENT = "last-experiment.json"
 
+# if True, the newly written file FILE_LAST_EXPERIMENT is going to stop the loop in tps.py
+AUTOSTOP_TPS = True
+
+# after last txs have been mined, give 10 more blocks before experiment ends 
+EMPTY_BLOCKS_AT_END = 10
 
 # DB file for traversing all blocks
 DBFILE="allblocks.db"

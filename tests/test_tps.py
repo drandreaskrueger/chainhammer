@@ -11,8 +11,9 @@
 
 import os, timeit, shutil, threading, json, time
 from hammer.config import RPCaddress
-from hammer.config import GAS_FOR_SET_CALL
+from hammer.config import GAS_FOR_SET_CALL, FILE_LAST_EXPERIMENT
 import hammer.tps as tps
+import hammer.send as send
 from hammer.deploy import FILE_CONTRACT_ADDRESS
 
 from hammer.clienttools import web3connection
@@ -111,9 +112,11 @@ def test_analyzeNewBlocks():
     txCount,peakTpsAv = 0,0
     start_time = timeit.default_timer()
     tps.w3, tps.NODENAME, tps.CONSENSUS = w3, NODENAME, CONSENSUS 
-    txCount, peakTpsAv = tps.analyzeNewBlocks(0, 1, txCount, start_time, peakTpsAv)
+    txCount, peakTpsAv, tpsAv = tps.analyzeNewBlocks(0, 1, txCount, start_time, peakTpsAv)
     print (txCount)
     assert txCount >= 0
+    assert peakTpsAv >= 0
+    assert tpsAv >= 0
     
     
 def test_measurement_NotTestableBecauseInfiniteLoop():
@@ -122,4 +125,19 @@ def test_measurement_NotTestableBecauseInfiniteLoop():
     """
     # loop = tps.measurement(blockNumber, pauseBetweenQueries=0.3)
     assert True
+    
+    
+def test_sendingEndedFiledate():
+    when = tps.sendingEndedFiledate()
+    assert when >= 0
+    
+    
+def test_addMeasurementToFile():
+    fn="file.tmp"
+    send.store_experiment_data(success=False, num_txs=-1, 
+                          block_from=-2, block_to=-1, 
+                          filename=fn)
+    tps.addMeasurementToFile(peakTpsAv=-1, finalTpsAv=-2, fn=fn)
+    os.remove(fn)
+    
     
