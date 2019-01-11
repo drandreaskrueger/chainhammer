@@ -111,10 +111,10 @@ def test_controlSample_transactionsSuccessful():
     success = send.controlSample_transactionsSuccessful(txs, sampleSize=15, timeout=30)
     assert success
 
-def test_range_of_block_numbers():
+def test_when_last_ones_mined__give_range_of_block_numbers():
     numTx=10
     txs = send.many_transactions_consecutive(contract, numTx)
-    block_from, block_to = send.range_of_block_numbers(txs)
+    block_from, block_to = send.when_last_ones_mined__give_range_of_block_numbers(txs)
     assert block_from <= block_to
 
 def test_store_experiment_data():

@@ -34,7 +34,7 @@ from web3.utils.encoding import pad_hex
 from hammer.config import RPCaddress, ROUTE, PRIVATE_FOR, EXAMPLE_ABI
 from hammer.config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
 from hammer.config import GAS_FOR_SET_CALL
-from hammer.config import FILE_LAST_EXPERIMENT
+from hammer.config import FILE_LAST_EXPERIMENT, EMPTY_BLOCKS_AT_END
 from hammer.deploy import loadFromDisk
 from hammer.clienttools import web3connection, unlockAccount
 
@@ -492,7 +492,7 @@ def getReceipts_multithreaded_Queue(tx_hashes, timeout, num_worker_threads=8, if
     return tx_receipts
 
 
-def range_of_block_numbers(txs, txRangesSize=100, timeout=60):
+def when_last_ones_mined__give_range_of_block_numbers(txs, txRangesSize=100, timeout=60):
     """
     Also only a heuristics:
     Assuming that the first 100 and the last 100 transaction hashes 
@@ -529,7 +529,7 @@ def store_experiment_data(success, num_txs,
             "block_last": block_to,
             "num_txs" : num_txs,
             "sample_txs_successful": success}
-    with open(FILE_LAST_EXPERIMENT, "w") as f:
+    with open(filename, "w") as f:
         json.dump(data, f)
 
 ################################################################################
@@ -575,12 +575,7 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
         
     print ("%d transaction hashes recorded, examples: %s" % (len(txs), txs[:2]))
     
-    success = controlSample_transactionsSuccessful(txs)
-
-    block_from, block_to = range_of_block_numbers(txs)
-    
-    store_experiment_data (success, len(txs), block_from, block_to)
-
+    return txs
 
 
 if __name__ == '__main__':
@@ -598,5 +593,14 @@ if __name__ == '__main__':
     # try_contract_set_via_web3(contract); exit()
     # try_contract_set_via_RPC(contract);  exit()
 
-    sendmany()
+    txs = sendmany()
 
+    success = controlSample_transactionsSuccessful(txs)
+
+    block_from, block_to = when_last_ones_mined__give_range_of_block_numbers(txs)
+    txt = "Transaction receipts from beginning and end all arrived. Blockrange %d to %d."
+    txt = txt % (block_from, block_to)
+    print (txt)
+    
+    store_experiment_data (success, len(txs), block_from, block_to)
+    print ("Data stored. This will trigger tps.py to end in ~ %d blocks." % EMPTY_BLOCKS_AT_END)
