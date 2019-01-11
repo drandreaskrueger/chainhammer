@@ -113,7 +113,7 @@ def analyzeNewBlocks(blockNumber, newBlockNumber, txCount, start_time, peakTpsAv
     line = "block %d | new #TX %3d / %4.0f ms = " \
            "%5.1f TPS_current | total: #TX %4d / %4.1f s = %5.1f TPS_average " \
            "(peak %s %5.1f TPS_average)" 
-    line = line % ( blockNumber, txCount_new, blocktimeSeconds * 1000, 
+    line = line % ( newBlockNumber, txCount_new, blocktimeSeconds * 1000, 
                     tps_current, txCount, elapsed, tpsAv, verb, peakTpsAv) 
     print (line)
     
