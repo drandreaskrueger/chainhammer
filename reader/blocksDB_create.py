@@ -75,7 +75,7 @@ from web3 import Web3, HTTPProvider # pip3 install web3
 if __name__ == '__main__' and __package__ is None:
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-from hammer.config import RPCaddress
+from hammer.config import RPCaddress, EMPTY_BLOCKS_AT_END
 from hammer.clienttools import web3connection
 from hammer.tps import timestampToSeconds
 
@@ -434,7 +434,7 @@ if __name__ == '__main__':
         info = read_experiment_infofile(fn=INFOFILE)
         # pprint(info); exit()
         blockNumberFrom = info['block_first']
-        numBlocks = info['block_last'] - blockNumberFrom + 1
+        numBlocks = info['block_last'] - blockNumberFrom + 1 + EMPTY_BLOCKS_AT_END
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()
