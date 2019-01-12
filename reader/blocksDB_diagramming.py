@@ -19,7 +19,7 @@
 ## Dependencies:
 
 # standard library
-import sys, os
+import sys, os, json
 import sqlite3
 from pprint import pprint
 
@@ -28,6 +28,13 @@ import pandas
 import numpy
 import matplotlib
 import matplotlib.pyplot as plt
+
+# chainhammer
+# extend sys.path for imports:
+if __name__ == '__main__' and __package__ is None:
+    from os import sys, path
+    sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+from hammer.config import RPCaddress, EMPTY_BLOCKS_AT_END
 
 ################
 
@@ -158,7 +165,8 @@ def load_db_and_check_complete(DBFILE):
     # open database connection
     conn = sqlite3.connect(DBFILE)
     
-    print ("DB table names: ", DB_query("SELECT name FROM sqlite_master WHERE type='table';", conn)[0])
+    print ("DB table names: ", 
+           DB_query("SELECT name FROM sqlite_master WHERE type='table';", conn)[0])
     
     # number of rows?
     _=DB_tableSize("blocks", conn)
@@ -179,13 +187,13 @@ def load_db_and_check_complete(DBFILE):
 def simple_stats(conn):
     
     # simple statistics
-    
-    size_max = DB_query("SELECT MAX(size) FROM blocks", conn); print ("(block)size_max", size_max[0][0])
+
+    txcount_sum = DB_query("SELECT SUM(txcount) FROM blocks", conn); print ("txcount_sum", txcount_sum[0][0])    
+    size_max = DB_query("SELECT MAX(size) FROM blocks", conn); print ("blocksize_max", size_max[0][0])
     txcount_max = DB_query("SELECT MAX(txcount) FROM blocks", conn); print ("txcount_max", txcount_max[0][0])
-    txcount_av = DB_query("SELECT AVG(txcount) FROM blocks", conn); print ("txcount_av", txcount_av[0][0])
-    txcount_sum = DB_query("SELECT SUM(txcount) FROM blocks", conn); print ("txcount_sum", txcount_sum[0][0])
+    txcount_av = DB_query("SELECT AVG(txcount) FROM blocks", conn); print ("txcount average per block", txcount_av[0][0])
     blocks_nonempty_count = DB_query("SELECT COUNT(blocknumber) FROM blocks WHERE txcount != 0", conn); print ("blocks_nonempty_count", blocks_nonempty_count[0][0])
-    print ("av tx per nonempty blocks = ", txcount_sum[0][0] / blocks_nonempty_count[0][0] )
+    print ("txcount average per NONEMPTY blocks = ", txcount_sum[0][0] / blocks_nonempty_count[0][0] )
     print ()
     
     
@@ -396,7 +404,8 @@ def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
     """
     works on already sliced dataframe, 
     where first experiment block is index 0
-    and last experiment block is index [TO_BLOCK - FROM_BLOCK]
+    and last experiment(!) block is index [TO_BLOCK - FROM_BLOCK],
+    (so the 10 empty blocks at the end are NOT part of this!)
     N.B.:
     we cannot rely on the blocktime of very first block
     so we simply leave the transactions out of the summation, and 
@@ -405,7 +414,7 @@ def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
     
     blocks = TO_BLOCK - FROM_BLOCK + 1
     ts1 = dfs.iloc[0]['timestamp'] # stop clock starts WHEN block 0 is in already!
-    ts2 = dfs.iloc[blocks-1]['timestamp']   # and ends at last filled block
+    ts2 = dfs.iloc[blocks-1]['timestamp']   # and clock ends at last filled block
     duration = ts2-ts1
     # print (ts1, ts2, duration)
     
@@ -420,6 +429,7 @@ def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
 def averager(dfs, col, emptyBlocks, fmt="%.1f"):
     """
     We want the real average of that 'col', taken only over the non-empty blocks.
+    
     N.B.: this assumes that there are actually enough emptyBlocks at the end!
     """
     av = avCopy = dfs[col] [:-emptyBlocks] .mean()
@@ -519,7 +529,7 @@ def gas_plotter(ax, dfs):
     ax.legend (["gasLimit/sec", "gasUsed/sec"] )
 
 
-def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks=10):
+def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks=EMPTY_BLOCKS_AT_END):
     """
     new version 
     more precise & consistent
@@ -582,7 +592,8 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="i
     
     print()
     # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
-    fig, axes, dfs, txs = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK, emptyBlocks=10)
+    fig, axes, dfs, txs = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK, 
+                                   emptyBlocks=EMPTY_BLOCKS_AT_END)
     fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath)
     
     print ("\ndiagrams saved to: ", fn)
@@ -590,18 +601,30 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="i
 
 ###############################################################################
 
+def read_experiment_infofile(fn):
+    """
+    now the experiments are all writing out basic information.
+    read this in here, to know the range of blocks.
+    """
+    with open(fn, "r") as f:
+        info = json.load(f)
+    return info
+
 def CLI_params():
 
-    if len(sys.argv)not in (3, 5):
-        print ("Please give FOUR arguments, \n"
+    if len(sys.argv)not in (3, 4, 5):
+        print ("Please give\n"
+               "THREE arguments DBFILE PREFIX INFOFILE\n\n"
+               "Or give FOUR arguments, \n"
                "the filename DBFILE ___.db, \n"
                "a PREFIX for characterising the diagram output files; \n"
                "and FROM_BLOCK and TO_BLOCK for where to zoom,\n"
                "or\n"
                "give only the first TWO arguments, for the whole chain\n\n"
                "examples:\n"
+               "%s temp.db TEMP ../hammer/last-experiment.json\n"
                "%s temp.db TEMP 115 230\n"
-               "%s temp.db TEMP\n" % (sys.argv[0], sys.argv[0]))
+               "%s temp.db TEMP\n" % (sys.argv[0], sys.argv[0], sys.argv[0]))
         exit(1)
         
     DBFILE=sys.argv[1]
@@ -612,7 +635,20 @@ def CLI_params():
         FROM_BLOCK=-1
         TO_BLOCK=-1
         print ("for the whole chain, first to last block")
-    else:
+
+    global INFOFILE
+    INFOFILE=None
+    
+    if len(sys.argv) == 4:
+        INFOFILE=sys.argv[3]
+        print ("reading blocks range from", INFOFILE)
+        info = read_experiment_infofile(fn=INFOFILE)
+        # pprint(info); exit()
+        FROM_BLOCK = info['block_first']
+        TO_BLOCK = info['block_last']
+        print ("from block %d to block %d" % (FROM_BLOCK, TO_BLOCK) )
+
+    if len(sys.argv)==5:
         FROM_BLOCK=int(sys.argv[3])
         TO_BLOCK  =int(sys.argv[4])
         print ("from block %d to block %d" % (FROM_BLOCK, TO_BLOCK) )        
