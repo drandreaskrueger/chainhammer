@@ -1,58 +1,96 @@
+# exit when any command fails
+set -e
+# keep track of the last executed command
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+# echo an error message before exiting
+trap 'echo; echo "\"${last_command}\" command filed with exit code $?."' EXIT
+#
+
+function title {
+    echo =============================
+    echo = $1
+    echo ============================= 
+}  
+
 echo 
-echo =============================
-echo = chainhammer - example run =
-echo =============================
+
+title "chainhammer - example run ="
+
 echo 
 echo study this, to understand the moving parts of chainhammer
 echo to run it yourself with variations of network and parameters
 echo 
-echo start like this:
+echo start e.g. with testrpc as Ethereum network:
 echo 
 echo "    source env/bin/activate"
 echo "    unbuffer testrpc-py &> tests/logs/testrpc-py.log &"
+echo
 echo "    ./run.sh"
 echo
 echo
 
-echo virtualenv 
+# read parameters:
+# source $1
+SEND_PARAMS="threaded2 20"
+SEND_PARAMS="sequential"
+DBFILE=temp.db
+INFOFILE=../hammer/last-experiment.json
+PREFIX=TEMP
+
+
+title "activate virtualenv" 
 source env/bin/activate
 echo
 echo 
 
-echo start listener tps.py, log into file log/tps.py.log
-# ./tps.py
-# TODO how to kill this when the below finished plus 10 extra blocks?
+cd hammer
+rm -f $INFOFILE
+
+title tps.py
+echo start listener tps.py, show here but also log into file logs/tps.py.log
+echo this ends after send.py below writes a new INFOFILE.
+unbuffer ./tps.py | tee "../logs/tps.py.log" &
+
+
+sleep 1.5 # to have tps.py say its thing before deploy.py is printing
 echo
 echo 
 
-echo smartContract deploy.py, log into file log/deploy.py.log
-# it writes a file which triggers the wait loop in tps.py to end
-# ./deploy.py
+title deploy.py
+echo smartContract deploy.py, log into file logs/deploy.py.log. This triggers tps.py to start counting.
+./deploy.py > "../logs/deploy.py.log"
+sleep 1
 echo
 echo
 
-echo hammer transactions send.py, log into file log/send.py.log
-# ./send.py threaded2 23
-# TODO write blockFrom and blockTo into file, for diagrams
+title send.py
+echo send many transactions, plus wait 10 more blocks, log into file logs/send.py.log. Then this triggers tps.py to end counting.
+echo
+./send.py $SEND_PARAMS > "../logs/send.py.log"
 echo
 echo
 
-echo show the listener output on screen:
-# tail -f log/tps.py.log
-# TODO how to kill this and CONTINUE when the above finished?
-#
+title "sleep 1"
+echo wait 1 second until also tps.py has written its results.
+echo
+sleep 1
 echo
 echo
 
+
+title blocksDB_create.py
 echo read blocks from node1 into SQL db
-# cd chainreader
-# ./blocksDB_create.py temp.db
+cd ../reader
+./blocksDB_create.py $DBFILE $INFOFILE
 echo
 echo
 
+title blocksDB_diagramming.py
 echo make time series diagrams from SQL db
-# ./blocksDB_diagramming.py temp.db TEMP
-# TODO pass in exact blocknumbers of experiment
-echo
-echo
+./blocksDB_diagramming.py $DBFILE $PREFIX $INFOFILE
 
+title "Ready. See that image."
+
+trap '' EXIT
+
+cd ..
