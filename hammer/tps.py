@@ -165,20 +165,23 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
                 peakTpsAv=0
             counterStart += 1
 
-        time.sleep(pauseBetweenQueries) # do not query too often; as little side effect on node as possible 
-
         # send.py --> store_experiment_data() is called AFTER last tx was mined. 
         # THEN do another 10 empty blocks ...
         # only THEN end this:
-        if AUTOSTOP_TPS and blocknumberEnd==-1 and sendingEndedFiledate()!=whenBefore:
+        # if AUTOSTOP_TPS and blocknumberEnd==-1 and sendingEndedFiledate()!=whenBefore:
+        if AUTOSTOP_TPS and sendingEndedFiledate()!=whenBefore:
+            print ("Received signal from send.py = updated INFOFILE.")
             finalTpsAv = tpsAv
-            blocknumberEnd = newBlockNumber + empty_blocks_at_end
-            print ("The end is nigh ... after blocknumber", blocknumberEnd)
-            if NODETYPE=="TestRPC":
-                break # no empty blocks in TestRPC
-
-        if blocknumberEnd>0 and newBlockNumber > blocknumberEnd:
             break
+            # finalTpsAv = tpsAv
+            # blocknumberEnd = newBlockNumber + empty_blocks_at_end
+            # print ("The end is nigh ... after blocknumber", blocknumberEnd)
+            # if NODETYPE=="TestRPC":
+            #     break # no empty blocks in TestRPC
+        # if blocknumberEnd>0 and newBlockNumber > blocknumberEnd:
+            # break
+
+        time.sleep(pauseBetweenQueries) # do not query too often; as little side effect on node as possible
         
     # print ("end")   # N.B.: it never gets here !
     txt = "Experiment ended! Current blocknumber = %d"

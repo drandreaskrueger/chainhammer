@@ -531,6 +531,44 @@ def store_experiment_data(success, num_txs,
             "sample_txs_successful": success}
     with open(filename, "w") as f:
         json.dump(data, f)
+    
+
+def wait_some_blocks(waitBlocks=EMPTY_BLOCKS_AT_END, pauseBetweenQueries=0.3):
+    """
+    Actually, the waiting has to be done here, 
+    because ./send.py is started later than ./tps.py
+    So when ./send.py ends, the analysis can happen.
+    """
+    blockNumber_start = w3.eth.blockNumber
+    print ("blocknumber now:", blockNumber_start, end=" ")
+    print ("waiting for %d empty blocks:" % waitBlocks)
+    bn_previous=bn_now=blockNumber_start
+    
+    while bn_now <= waitBlocks + blockNumber_start:
+        time.sleep(pauseBetweenQueries)
+        bn_now=w3.eth.blockNumber
+        if bn_now!=bn_previous:
+            bn_previous=bn_now
+            print (bn_now, end=" "); sys.stdout.flush()
+         
+    print ("Done.")
+
+        
+def finish(txs, success):
+    block_from, block_to = when_last_ones_mined__give_range_of_block_numbers(txs)
+    txt = "Transaction receipts from beginning and end all arrived. Blockrange %d to %d."
+    txt = txt % (block_from, block_to)
+    print (txt)
+    
+    wait_some_blocks(waitBlocks=EMPTY_BLOCKS_AT_END)
+    
+    store_experiment_data (success, len(txs), block_from, block_to)
+    # print ("Data stored. This will trigger tps.py to end in ~ %d blocks." % EMPTY_BLOCKS_AT_END)
+    
+    print ("Data stored. This will trigger tps.py to end.\n"
+           "(Beware: Wait ~0.5s until tps.py stops and writes to same file.)")
+    #          see tps.py --> pauseBetweenQueries=0.3
+
 
 ################################################################################
 ###
@@ -597,10 +635,6 @@ if __name__ == '__main__':
 
     success = controlSample_transactionsSuccessful(txs)
 
-    block_from, block_to = when_last_ones_mined__give_range_of_block_numbers(txs)
-    txt = "Transaction receipts from beginning and end all arrived. Blockrange %d to %d."
-    txt = txt % (block_from, block_to)
-    print (txt)
+    finish(txs, success)
     
-    store_experiment_data (success, len(txs), block_from, block_to)
-    print ("Data stored. This will trigger tps.py to end in ~ %d blocks." % EMPTY_BLOCKS_AT_END)
+    
