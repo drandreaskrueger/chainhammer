@@ -519,6 +519,7 @@ def when_last_ones_mined__give_range_of_block_numbers(txs, txRangesSize=100, tim
     
 def store_experiment_data(success, num_txs, 
                           block_from, block_to, 
+                          empty_blocks,
                           filename=FILE_LAST_EXPERIMENT):
     """
     most basic data about this last experiment, 
@@ -528,6 +529,7 @@ def store_experiment_data(success, num_txs,
     data = {"send" : {
                 "block_first" : block_from,
                 "block_last": block_to,
+                "empty_blocks": empty_blocks, 
                 "num_txs" : num_txs,
                 "sample_txs_successful": success
                 },
@@ -559,9 +561,10 @@ def wait_some_blocks(waitBlocks=EMPTY_BLOCKS_AT_END, pauseBetweenQueries=0.3):
     print ("waiting for %d empty blocks:" % waitBlocks)
     bn_previous=bn_now=blockNumber_start
     
-    while bn_now <= waitBlocks + blockNumber_start:
+    while bn_now < waitBlocks + blockNumber_start:
         time.sleep(pauseBetweenQueries)
         bn_now=w3.eth.blockNumber
+        # print (bn_now, waitBlocks + blockNumber_start)
         if bn_now!=bn_previous:
             bn_previous=bn_now
             print (bn_now, end=" "); sys.stdout.flush()
@@ -575,9 +578,14 @@ def finish(txs, success):
     txt = txt % (block_from, block_to)
     print (txt)
     
-    wait_some_blocks(waitBlocks=EMPTY_BLOCKS_AT_END)
+    if NODETYPE=="TestRPC":
+        print ("Do not wait for empty blocks, as this is TestRPC.")
+        waitBlocks=0
+    else:
+        waitBlocks=EMPTY_BLOCKS_AT_END
+        wait_some_blocks(waitBlocks)
     
-    store_experiment_data (success, len(txs), block_from, block_to)
+    store_experiment_data (success, len(txs), block_from, block_to, waitBlocks)
     # print ("Data stored. This will trigger tps.py to end in ~ %d blocks." % EMPTY_BLOCKS_AT_END)
     
     print ("Data stored. This will trigger tps.py to end.\n"
@@ -636,6 +644,9 @@ if __name__ == '__main__':
     global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+
+    wait_some_blocks(0); exit()
+
 
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # timeit_argument_encoding(); exit()

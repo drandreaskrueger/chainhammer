@@ -131,15 +131,19 @@ def test_store_experiment_data():
     
     dummy = "not real, file created by tests/test_send.py"
     data = {"send": {
-        "block_first" : 1, "block_last": 2, 
+        "block_first" : 1, "block_last": 2, "empty_blocks": 3,
         "num_txs" : dummy, 
         "sample_txs_successful": False}
             }
-    send.store_experiment_data(success=False, num_txs=dummy, block_from=1, block_to=2)
+    send.store_experiment_data(success=False, num_txs=dummy, block_from=1, block_to=2, empty_blocks=3)
     with open(FILE_LAST_EXPERIMENT, "r") as f:
         data2 = json.load(f)
     assert data["send"] == data2["send"]
 
+
+def test_wait_some_blocks():
+    send.wait_some_blocks(waitBlocks=0)
+    
 
 def test_sendmany_HowtoTestThisNoIdea():
     # answer = send.sendmany()
