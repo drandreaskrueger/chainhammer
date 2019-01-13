@@ -18,9 +18,9 @@ from hammer.deploy import FILE_CONTRACT_ADDRESS
 
 from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
-global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
+global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer
-NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 # current path one up?
 # unfortunately path if different depending on how py.test is called

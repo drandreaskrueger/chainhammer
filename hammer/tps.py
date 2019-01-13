@@ -193,8 +193,9 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
 def addMeasurementToFile(peakTpsAv, finalTpsAv, fn=FILE_LAST_EXPERIMENT):
     with open(fn, "r") as f:
         data = json.load(f)
-    data["peakTpsAv"] = peakTpsAv
-    data["finalTpsAv"] = finalTpsAv
+    data["tps"]={}
+    data["tps"]["peakTpsAv"] = peakTpsAv
+    data["tps"]["finalTpsAv"] = finalTpsAv
 
     with open(fn, "w") as f:
         json.dump(data, f)
@@ -202,9 +203,9 @@ def addMeasurementToFile(peakTpsAv, finalTpsAv, fn=FILE_LAST_EXPERIMENT):
         
 if __name__ == '__main__':
     
-    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress2, account=None)
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
     
     blockNumber_before = w3.eth.blockNumber
     print ("\nBlock ",blockNumber_before," - waiting for something to happen") 

@@ -17,9 +17,9 @@ from web3.utils import datatypes
 from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE, FILE_LAST_EXPERIMENT
 from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
-global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
+global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer
-NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 import hammer.send as send
 import hammer.deploy as deploy
@@ -117,13 +117,28 @@ def test_when_last_ones_mined__give_range_of_block_numbers():
     block_from, block_to = send.when_last_ones_mined__give_range_of_block_numbers(txs)
     assert block_from <= block_to
 
+def setGlobalVariables():
+    send.NODENAME = NODENAME 
+    send.NODETYPE = NODETYPE
+    send.NODEVERSION = NODEVERSION
+    send.CONSENSUS = CONSENSUS
+    send.NETWORKID = NETWORKID
+    send.CHAINNAME = CHAINNAME
+    send.CHAINID = CHAINID  
+
 def test_store_experiment_data():
+    setGlobalVariables()
+    
     dummy = "not real, file created by tests/test_send.py"
-    data = {"block_first" : 1, "block_last": 2, "num_txs" : dummy, "sample_txs_successful": False}
+    data = {"send": {
+        "block_first" : 1, "block_last": 2, 
+        "num_txs" : dummy, 
+        "sample_txs_successful": False}
+            }
     send.store_experiment_data(success=False, num_txs=dummy, block_from=1, block_to=2)
     with open(FILE_LAST_EXPERIMENT, "r") as f:
         data2 = json.load(f)
-    assert data == data2
+    assert data["send"] == data2["send"]
 
 
 def test_sendmany_HowtoTestThisNoIdea():

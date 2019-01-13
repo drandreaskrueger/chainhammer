@@ -410,19 +410,19 @@ def CLI_params():
         exit()
     if len(sys.argv)>=2:
         DBFILE=sys.argv[1]
-        print ("changed DBFILE to ", DBFILE)
+        print ("reading from DBFILE ", DBFILE)
     if len(sys.argv)==3:
         INFOFILE=sys.argv[2]
-        print ("changed INFOFILE to ", INFOFILE)
+        print ("reading from INFOFILE ", INFOFILE)
         
 
 if __name__ == '__main__':
     
     CLI_params(); 
     
-    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
     
     blockNumberFrom=0
     # blockNumberFrom=5173723
@@ -433,8 +433,8 @@ if __name__ == '__main__':
         print ("Reading blocks range from", INFOFILE)
         info = read_experiment_infofile(fn=INFOFILE)
         # pprint(info); exit()
-        blockNumberFrom = info['block_first']
-        numBlocks = info['block_last'] - blockNumberFrom + 1 + EMPTY_BLOCKS_AT_END
+        blockNumberFrom = info['send']['block_first']
+        numBlocks = info['send']['block_last'] - blockNumberFrom + 1 + EMPTY_BLOCKS_AT_END
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()

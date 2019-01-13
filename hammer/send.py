@@ -525,10 +525,25 @@ def store_experiment_data(success, num_txs,
     stored in same (overwritten) file.
     Purpose: diagramming should be able to calc proper averages & select ranges
     """
-    data = {"block_first" : block_from, 
-            "block_last": block_to,
-            "num_txs" : num_txs,
-            "sample_txs_successful": success}
+    data = {"send" : {
+                "block_first" : block_from,
+                "block_last": block_to,
+                "num_txs" : num_txs,
+                "sample_txs_successful": success
+                },
+            "node" : {
+                "rpc_address": RPCaddress,
+                "web3.version.node": w3.version.node,
+                "name" : NODENAME,
+                "type" : NODETYPE,
+                "version" : NODEVERSION, 
+                "consensus" : CONSENSUS, 
+                "network_id" : NETWORKID, 
+                "chain_name" : CHAINNAME, 
+                "chain_id" : CHAINID
+                }
+            }
+            
     with open(filename, "w") as f:
         json.dump(data, f)
     
@@ -618,9 +633,9 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
 
 if __name__ == '__main__':
 
-    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # timeit_argument_encoding(); exit()

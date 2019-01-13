@@ -644,8 +644,8 @@ def CLI_params():
         print ("reading blocks range from", INFOFILE)
         info = read_experiment_infofile(fn=INFOFILE)
         # pprint(info); exit()
-        FROM_BLOCK = info['block_first']
-        TO_BLOCK = info['block_last']
+        FROM_BLOCK = info['send']['block_first']
+        TO_BLOCK =   info['send']['block_last']
         print ("from block %d to block %d" % (FROM_BLOCK, TO_BLOCK) )
 
     if len(sys.argv)==5:
