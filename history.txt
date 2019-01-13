@@ -1,3 +1,29 @@
+
+v49 11/1/2019 - 13/1/2019
+    run.sh = 
+    virtualenv + tps.py + deploy.py + send.py + blocksDB_create.py + blocksDB_diagramming.py
+    AUTOSTOP_TPS: tps.py can be stopped now, by send.py writing to last-experiment.json
+    last-experiment.json contains crucial information, e.g. range of blocks
+    now also as carrier of block range info into blocksBD_create/diagramming.py
+    better last-experiment.json with more infos
+    clienttype.py now also nodeVersion
+    Web3Foundation has paid! Mention in LICENSE and README.md#credits
+
+v48 7/1/2019 - 10/1/2019
+    new diagramming; study matplotlib.plyplot, then start anew
+    first as jupyter notebook, then merged into blocksDB_diagramming.py
+    better appearance, scatter instead of box plots, for blocksize and blocktime
+    better statistics: Now averages only over experiment blocks
+    averages printed but also shown as horizontal lines
+    now always 10 blocks at the end, to show averages 
+
+v47 4/1/2019
+    recognize known nodeNames, mention when new one
+    is_up.py loops until network is reachable
+    getReceipts_multithreaded now also as multithreading queue
+    when_last_ones_mined__give_range_of_block_numbers() waits until all receipts are there,
+    from beginning and end of experiment - and infers the range of blocknumbers the txs are in
+    
 v46 3/1/2019
     show peak TPS_average, and memorize after 3 relaxation rounds
     new switch PARITY_ALREADY_UNLOCKED
