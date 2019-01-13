@@ -65,7 +65,7 @@ def curl_post(method, txParameters=None, RPCaddress=RPCaddress, ifPrint=False):
         return response_json['result']
         
         
-def clientTypeWarnings(nodeName, nodeType, consensus, networkId, chainName, chainId):
+def clientTypeWarnings(nodeName, nodeType, nodeVersion, consensus, networkId, chainName, chainId):
     if nodeName=="TestRPC":
         print ("WARN: TestRPC has odd timestamp units, check 'tps.timestampToSeconds()' for updates")
     if consensus=="raft":
@@ -126,8 +126,9 @@ def clientType(w3):
 
     # Geth / Parity / Energy Web:
     nodeString = w3.version.node
-    nodeName = nodeString.split("/")[0] 
+    nodeVersion = nodeString.split("/")[1]
     
+    nodeName = nodeString.split("/")[0] 
     known = ("Geth", "Parity", "Parity-Ethereum", "Energy Web", "TestRPC")
     if nodeName not in known:
         print ("Interesting, '%s', a new node type? '%s'" % (nodeName, nodeString))
@@ -136,7 +137,7 @@ def clientType(w3):
         nodeName = "Parity"
 
     # Quorum pretends to be Geth - so how to distinguish vanillaGeth from QuorumGeth?
-    #  - see https://github.com/jpmorganchase/quorum/issues/507
+    #  - see https://github.com/jpmorganchase            /quorum/issues/507
     nodeType = nodeName    
 
     
@@ -187,17 +188,18 @@ def clientType(w3):
         except MethodNotExistentError:
             pass
     
-    clientTypeWarnings(nodeName, nodeType, consensus, networkId, chainName, chainId)
+    clientTypeWarnings(nodeName, nodeType, nodeVersion, consensus, networkId, chainName, chainId)
     
-    return nodeName, nodeType, consensus, networkId, chainName, chainId
+    return nodeName, nodeType, nodeVersion, consensus, networkId, chainName, chainId
     
 
 def run_clientType(w3):
     """
     test the above
     """
-    nodeName, nodeType, consensus, networkId, chainName, chainId = clientType(w3)
-    print ("nodeName: %s, nodeType: %s, consensus: %s, network: %s, chainName: %s, chainId: %s" % (nodeName, nodeType, consensus, networkId, chainName, chainId))
+    nodeName, nodeType, nodeVersion, consensus, networkId, chainName, chainId = clientType(w3)
+    txt = "nodeName: %s, nodeType: %s, nodeVersion: %s, consensus: %s, network: %s, chainName: %s, chainId: %s"
+    print ( txt % (nodeName, nodeType, nodeVersion, consensus, networkId, chainName, chainId))
 
 
 def justTryingOutDifferentThings(ifPrint=False):

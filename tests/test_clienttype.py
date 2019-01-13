@@ -40,6 +40,6 @@ def test_curl_post_MethodNotExistentError():
 def test_clientType():
     answer = clientType(w3)
     print (answer)
-    assert len(answer) == 6
+    assert len(answer) == 7
     
     

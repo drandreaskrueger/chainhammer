@@ -80,14 +80,14 @@ def setGlobalVariables_clientType(w3):
     """
     Set global variables.
     """
-    global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    global NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = clientType(w3)
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = clientType(w3)
     
-    formatter="nodeName: %s, nodeType: %s, consensus: %s, network: %s, chainName: %s, chainId: %s" 
-    print (formatter % (NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID))
+    formatter="nodeName: %s, nodeType: %s, nodeVersion: %s, consensus: %s, network: %s, chainName: %s, chainId: %s" 
+    print (formatter % (NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID))
     
-    return NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID # for when imported into other modules
+    return NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID # for when imported into other modules
 
 
 def if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS):
@@ -116,11 +116,11 @@ def web3connection(RPCaddress=None, account=None):
     
     w3 = start_web3connection(RPCaddress=RPCaddress, account=account) 
 
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = setGlobalVariables_clientType(w3)
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = setGlobalVariables_clientType(w3)
 
     if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS)
     
-    chainInfos = NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    chainInfos = NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     
     return w3, chainInfos 
 
@@ -200,7 +200,7 @@ if __name__ == '__main__':
     
     w3, chainInfos  = answer
     
-    global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+    global NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 

@@ -41,8 +41,8 @@ def test_start_web3connection_external():
 # web3 connection and nodetype
 answer = web3connection(RPCaddress=RPCaddress)
 w3, chainInfos  = answer
-global NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
-NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+global NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 
 # at least I can test whether it is the correct type:
