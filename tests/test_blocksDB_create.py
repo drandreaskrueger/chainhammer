@@ -297,7 +297,7 @@ def test_read_experiment_infofile():
     try:
         fn = "hammer/last-experiment.json"
         info = DBcreate.read_experiment_infofile(fn)
-        assert info['block_first']>=0
+        assert info['send']['block_first']>=0
     except FileNotFoundError:
         pass
     

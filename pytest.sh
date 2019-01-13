@@ -46,6 +46,10 @@ kill $PID
 echo should be gone now:
 ps aux | grep testrpc-py | grep -v grep
 echo
+echo remove temp files which were created during the tests
+rm -f contract-abi.json contract-address.json last-experiment.json
+echo
 echo see tests/logs/ for the log files of this test:
 echo cat tests/logs/*
 echo
+
