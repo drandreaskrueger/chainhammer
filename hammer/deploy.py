@@ -148,9 +148,9 @@ def trySmartContractMethods(myContract, gasForSetCall=GAS_FOR_SET_CALL):
 
 if __name__ == '__main__':
 
-    global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
+    global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
-    NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+    NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
     contract_CompileDeploySave(contract_source_file=FILE_CONTRACT_SOURCE)
     

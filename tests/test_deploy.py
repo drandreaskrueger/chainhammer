@@ -17,9 +17,9 @@ import web3
 from hammer.config import RPCaddress, FILE_CONTRACT_SOURCE, EXAMPLE_ABI
 from hammer.clienttools import web3connection
 answer = web3connection(RPCaddress=RPCaddress)
-global w3, NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
+global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID 
 w3, chainInfos  = answer
-NODENAME, NODETYPE, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
 import hammer.deploy as deploy
 import hammer.clienttools as clienttools 
