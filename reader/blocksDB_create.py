@@ -434,7 +434,8 @@ if __name__ == '__main__':
         info = read_experiment_infofile(fn=INFOFILE)
         # pprint(info); exit()
         blockNumberFrom = info['send']['block_first']
-        numBlocks = info['send']['block_last'] - blockNumberFrom + 1 + EMPTY_BLOCKS_AT_END
+        emptyBlocksAtEnd = info['send']['empty_blocks']
+        numBlocks = info['send']['block_last'] - blockNumberFrom + 1 + emptyBlocksAtEnd
 
     # tests(); exit()
     # manyBlocks_multithreaded(); exit()

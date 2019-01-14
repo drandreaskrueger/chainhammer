@@ -207,7 +207,6 @@ def many_transactions_consecutive(contract, numTx):
     """
     naive approach, blocking --> 15 TPS
     """
-    
     print ("send %d transactions, non-async, one after the other:\n" % (numTx))
     txs = []
     for i in range(numTx):
@@ -585,7 +584,7 @@ def finish(txs, success):
         waitBlocks=EMPTY_BLOCKS_AT_END
         wait_some_blocks(waitBlocks)
     
-    store_experiment_data (success, len(txs), block_from, block_to, waitBlocks)
+    store_experiment_data (success, len(txs), block_from, block_to, empty_blocks=waitBlocks)
     # print ("Data stored. This will trigger tps.py to end in ~ %d blocks." % EMPTY_BLOCKS_AT_END)
     
     print ("Data stored. This will trigger tps.py to end.\n"
@@ -645,7 +644,7 @@ if __name__ == '__main__':
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
 
-    wait_some_blocks(0); exit()
+    # wait_some_blocks(0); exit()
 
 
     w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender

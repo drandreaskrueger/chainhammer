@@ -432,7 +432,8 @@ def averager(dfs, col, emptyBlocks, fmt="%.1f"):
     
     N.B.: this assumes that there are actually enough emptyBlocks at the end!
     """
-    av = avCopy = dfs[col] [:-emptyBlocks] .mean()
+    filledSlice = dfs[col] [:len(dfs)-emptyBlocks-1]
+    av = avCopy = filledSlice .mean()
     if fmt=="%d": 
         avCopy = int(round(av))
     avTxt = fmt % avCopy
@@ -443,7 +444,8 @@ def avgLine(ax, dfs, emptyBlocks, avg, avgTxt):
     """
     horizontal line plus text on white background
     """
-    blMin, blMax = min(dfs["blocknumber"])+1, max(dfs["blocknumber"][:-emptyBlocks])
+    lastFilledBlock_index = len(dfs)-emptyBlocks-1
+    blMin, blMax = min(dfs["blocknumber"])+1, max(dfs["blocknumber"][:lastFilledBlock_index])
     ax.plot([blMin, blMax], [avg, avg], "k-")
     
     ax.text(blMin + (blMax-blMin + emptyBlocks)*0.95, avg, avgTxt, 
@@ -529,7 +531,7 @@ def gas_plotter(ax, dfs):
     ax.legend (["gasLimit/sec", "gasUsed/sec"] )
 
 
-def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks=EMPTY_BLOCKS_AT_END):
+def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks):
     """
     new version 
     more precise & consistent
@@ -572,10 +574,30 @@ def savePlot(fig, prefix, blockFrom, blockTo, imgpath):
     return filepath
 
 
+def read_experiment_infofile(fn):
+    """
+    now the experiments are all writing out basic information.
+    read this in here, to know the range of blocks.
+    """
+    with open(fn, "r") as f:
+        info = json.load(f)
+    return info
+
+
+def add_fn_to_infofile(INFOFILE, img_fn):
+    info = read_experiment_infofile(fn=INFOFILE)
+    info['diagrams']={}
+    info['diagrams']['filename'] = img_fn
+    with open(INFOFILE, "w") as f:
+        json.dump(info, f)
+        
+        
 
 ################################################################################
 
-def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="img"):
+def load_prepare_plot_save(DBFILE, NAME_PREFIX, 
+                           FROM_BLOCK, TO_BLOCK, EMPTY_BLOCKS, 
+                           INFOFILE, imgpath="img"):
     
     load_dependencies()
     conn, blocknumbers = load_db_and_check_complete(DBFILE)
@@ -593,22 +615,15 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath="i
     print()
     # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
     fig, axes, dfs, txs = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK, 
-                                   emptyBlocks=EMPTY_BLOCKS_AT_END)
+                                   emptyBlocks=EMPTY_BLOCKS)
     fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath)
     
     print ("\ndiagrams saved to: ", fn)
-    return fn
+    
+    if INFOFILE:
+        add_fn_to_infofile(INFOFILE, fn) # TODO: also add averages from diagrams() ?
 
 ###############################################################################
-
-def read_experiment_infofile(fn):
-    """
-    now the experiments are all writing out basic information.
-    read this in here, to know the range of blocks.
-    """
-    with open(fn, "r") as f:
-        info = json.load(f)
-    return info
 
 def CLI_params():
 
@@ -636,8 +651,8 @@ def CLI_params():
         TO_BLOCK=-1
         print ("for the whole chain, first to last block")
 
-    global INFOFILE
     INFOFILE=None
+    EMPTY_BLOCKS = EMPTY_BLOCKS_AT_END
     
     if len(sys.argv) == 4:
         INFOFILE=sys.argv[3]
@@ -646,7 +661,9 @@ def CLI_params():
         # pprint(info); exit()
         FROM_BLOCK = info['send']['block_first']
         TO_BLOCK =   info['send']['block_last']
-        print ("from block %d to block %d" % (FROM_BLOCK, TO_BLOCK) )
+        EMPTY_BLOCKS = info['send']['empty_blocks']
+        txt = "from block %d to block %d, with %d empty blocks afterwards"
+        print (txt % (FROM_BLOCK, TO_BLOCK, EMPTY_BLOCKS) )
 
     if len(sys.argv)==5:
         FROM_BLOCK=int(sys.argv[3])
@@ -654,7 +671,7 @@ def CLI_params():
         print ("from block %d to block %d" % (FROM_BLOCK, TO_BLOCK) )        
 
     print ()
-    return DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK
+    return DBFILE, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, EMPTY_BLOCKS, INFOFILE
 
 
 if __name__ == '__main__':
