@@ -29,13 +29,14 @@ echo "    ./run.sh"
 echo
 echo
 
-# read parameters:
+# Later: read parameters from file
 # source $1
 SEND_PARAMS="threaded2 20"
 SEND_PARAMS="sequential"
 DBFILE=temp.db
 INFOFILE=../hammer/last-experiment.json
-PREFIX=TEMP
+TPSLOG=logs/tps.py.log
+PREFIX=Geth-Local
 
 
 title "activate virtualenv" 
@@ -46,11 +47,17 @@ echo
 cd hammer
 rm -f $INFOFILE
 
-title tps.py
-echo start listener tps.py, show here but also log into file logs/tps.py.log
-echo this ends after send.py below writes a new INFOFILE.
-unbuffer ./tps.py | tee "../logs/tps.py.log" &
+title is_up.py
+echo Loops until the node is answering on the expected port.
+./is_up.py
+echo Great, node is available now.
+echo 
+echo
 
+title tps.py
+echo start listener tps.py, show here but also log into file $TPSLOG
+echo this ends after send.py below writes a new INFOFILE.
+unbuffer ./tps.py | tee "../$TPSLOG" &
 
 sleep 1.5 # to have tps.py say its thing before deploy.py is printing
 echo
@@ -89,7 +96,11 @@ title blocksDB_diagramming.py
 echo make time series diagrams from SQL db
 ./blocksDB_diagramming.py $DBFILE $PREFIX $INFOFILE
 
-title "Ready. See that image."
+title page_generator.py
+./page_generator.py $INFOFILE ../$TPSLOG
+
+title "Ready."
+echo See that image, and those .md and .html pages.
 
 trap '' EXIT
 
