@@ -15,6 +15,8 @@
 ## Dependencies:
 
 # standard library:
+import sys, os, json
+from pprint import pprint
 
 # pypi:
 
@@ -27,10 +29,26 @@ from hammer.config import FILE_LAST_EXPERIMENT
 
 ################################################################################
 
+def read_infofile(fn=FILE_LAST_EXPERIMENT):
+    with open(fn, "r") as f:
+        data = json.load(f)
+    return data
+
+
+def CLI_params():
+    if len(sys.argv)!=2:
+        print ("Please give one argument, the filename of the experiment-infofile.")
+        exit()
+    if len(sys.argv)==2:
+        INFOFILE=sys.argv[1]
+        print ("Reading from INFOFILE ", INFOFILE)
+    return INFOFILE
 
 
 if __name__ == '__main__':
-    
+    INFOFILE = CLI_params()
+    data = read_infofile(INFOFILE)
+    pprint (data)
     print ()
     
         
