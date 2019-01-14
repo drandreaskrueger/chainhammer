@@ -126,6 +126,12 @@ def sendingEndedFiledate():
     except FileNotFoundError:
         when = 0
     return when
+
+
+def readInfofile(fn=FILE_LAST_EXPERIMENT):
+    with open(fn, "r") as f:
+        data = json.load(f)
+    return data
     
 
 def measurement(blockNumber, pauseBetweenQueries=0.3, 
@@ -152,13 +158,16 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
     peakTpsAv = 0
     counterStart, blocknumberEnd = 0, -1
     
+    tpsAv = {} # memorize all of them, so we can return value at 'block_last'
+    
     while(True):
         newBlockNumber=w3.eth.blockNumber
         
         if(blockNumber!=newBlockNumber): # when a new block appears:
             args = (blockNumber, newBlockNumber, txCount, start_time, peakTpsAv)
-            txCount, peakTpsAv, tpsAv = analyzeNewBlocks(*args)
+            txCount, peakTpsAv, tpsAv[newBlockNumber] = analyzeNewBlocks(*args)
             blockNumber = newBlockNumber
+            
             
             # for the first 3 rounds, always reset the peakTpsAv again!
             if counterStart < RELAXATION_ROUNDS:
@@ -171,7 +180,8 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
         # if AUTOSTOP_TPS and blocknumberEnd==-1 and sendingEndedFiledate()!=whenBefore:
         if AUTOSTOP_TPS and sendingEndedFiledate()!=whenBefore:
             print ("Received signal from send.py = updated INFOFILE.")
-            finalTpsAv = tpsAv
+            block_last = readInfofile()['send']['block_last']
+            finalTpsAv = tpsAv[block_last]
             break
             # finalTpsAv = tpsAv
             # blocknumberEnd = newBlockNumber + empty_blocks_at_end
