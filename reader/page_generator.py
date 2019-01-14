@@ -16,7 +16,7 @@
 
 # standard library:
 import sys, os, json, time
-from pprint import pprint
+from pprint import pprint, pformat
 
 # pypi:
 
@@ -162,6 +162,9 @@ template01 = '''
 
 ### diagrams:
 ![%s](%s)
+
+### info raw:
+%s
 '''
 
 def makeAndSave_MarkdownPage(infodict, title, info, tpslog, image_location,
@@ -171,7 +174,7 @@ def makeAndSave_MarkdownPage(infodict, title, info, tpslog, image_location,
     """
     
     img_path = "../../reader/" + image_location
-    page = template01 % (title, info, tpslog, image_location, img_path)
+    page = template01 % (title, info, tpslog, image_location, img_path,  pformat(infodict))
     # print(); print (page)
     return save_page(page, filename(infodict)+".md", folder=runs_folder)
 
@@ -192,6 +195,8 @@ template02 = '''
 <h3>diagrams:</h3>
 %s
 <img src="%s"/>
+<h3>info raw</h3>
+%s
 </body>
 </html>
 '''
@@ -202,7 +207,7 @@ def makeAndSave_HTMLPage(infodict, title, info, tpslog, image_location,
     using the above template02, save an HTML page
     """
     img_path = "../../reader/" + image_location
-    page = template02 % (title,title, info, tpslog, image_location, img_path)
+    page = template02 % (title,title, info, tpslog, image_location, img_path, pformat(infodict))
     # print(); print (page)
     return save_page(page, filename(infodict)+".html", folder=runs_folder)
 
