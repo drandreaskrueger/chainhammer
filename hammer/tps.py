@@ -150,10 +150,11 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
     txCount=getBlockTransactionCount(w3, blockNumber)
     
     start_time = timeit.default_timer()
+    start_epochtime = time.time()
     # TODO: perhaps additional to elapsed system time, show blocktime? 
     
     print('starting timer, at block', blockNumber, 'which has ', 
-          txCount,' transactions; at timecode', start_time)
+          txCount,' transactions; at epochtime', start_epochtime)
     
     peakTpsAv = 0
     counterStart, blocknumberEnd = 0, -1
@@ -197,15 +198,16 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
     txt = "Experiment ended! Current blocknumber = %d"
     txt = txt % (w3.eth.blockNumber)
     print (txt)
-    return peakTpsAv, finalTpsAv
+    return peakTpsAv, finalTpsAv, start_epochtime
 
 
-def addMeasurementToFile(peakTpsAv, finalTpsAv, fn=FILE_LAST_EXPERIMENT):
+def addMeasurementToFile(peakTpsAv, finalTpsAv, start_epochtime, fn=FILE_LAST_EXPERIMENT):
     with open(fn, "r") as f:
         data = json.load(f)
     data["tps"]={}
     data["tps"]["peakTpsAv"] = peakTpsAv
     data["tps"]["finalTpsAv"] = finalTpsAv
+    data["tps"]["start_epochtime"] = start_epochtime
 
     with open(fn, "w") as f:
         json.dump(data, f)
@@ -224,12 +226,10 @@ if __name__ == '__main__':
     blocknumber_start_here = w3.eth.blockNumber 
     print ("\nblocknumber_start_here =", blocknumber_start_here)
     
-    peakTpsAv, finalTpsAv = measurement( blocknumber_start_here )
+    peakTpsAv, finalTpsAv, start_epochtime = measurement( blocknumber_start_here )
     
-    addMeasurementToFile(peakTpsAv, finalTpsAv, FILE_LAST_EXPERIMENT)
-    print ("Updated info file:", FILE_LAST_EXPERIMENT)
-    print ("End.")
-    print ()
-    
+    addMeasurementToFile(peakTpsAv, finalTpsAv, start_epochtime, FILE_LAST_EXPERIMENT)
+    print ("Updated info file:", FILE_LAST_EXPERIMENT, "THE END.")
+   
     
     

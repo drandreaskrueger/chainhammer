@@ -19,7 +19,7 @@
 ## Dependencies:
 
 # standard library
-import sys, os, json
+import sys, os, json, time
 import sqlite3
 from pprint import pprint
 
@@ -572,13 +572,6 @@ def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks):
     return fig, axes, dfs, txs, tpsAv
 
 
-def savePlot(fig, prefix, blockFrom, blockTo, imgpath):
-    filename = "%s_blks%d-%d.png" % (prefix,blockFrom,blockTo)
-    filepath = os.path.join(imgpath, filename)
-    fig.savefig(filepath)
-    return filepath
-
-
 def read_experiment_infofile(fn):
     """
     now the experiments are all writing out basic information.
@@ -589,11 +582,27 @@ def read_experiment_infofile(fn):
     return info
 
 
-def add_to_infofile(INFOFILE, img_fn, tpsAv):
+def timestamp_humanreadable(epoch):
+    return time.strftime("%Y%m%d-%H%M", time.localtime(epoch))
+
+
+def savePlot(fig, prefix, blockFrom, blockTo, imgpath, INFOFILE=None):
+    if INFOFILE:
+        info = read_experiment_infofile(INFOFILE)
+        ts = timestamp_humanreadable(info['tps']['start_epochtime'])
+        prefix = prefix + "-" +ts
+    filename = "%s_blks%d-%d.png" % (prefix,blockFrom,blockTo)
+    filepath = os.path.join(imgpath, filename)
+    fig.savefig(filepath)
+    return filepath
+
+
+def add_to_infofile(INFOFILE, img_fn, tpsAv, prefix):
     info = read_experiment_infofile(fn=INFOFILE)
     info['diagrams']={}
     info['diagrams']['filename'] = img_fn
     info['diagrams']['blocktimestampsTpsAv'] = tpsAv
+    info['diagrams']['prefix'] = prefix
     with open(INFOFILE, "w") as f:
         json.dump(info, f)
         
@@ -622,18 +631,20 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX,
     # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
     fig, axes, dfs, txs, tpsAv = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK,
                                           emptyBlocks=EMPTY_BLOCKS)
-    fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath)
+    fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath, INFOFILE)
     
     print ("\ndiagrams saved to: ", fn)
     
     if INFOFILE:
-        add_to_infofile(INFOFILE, fn, tpsAv) 
+        add_to_infofile(INFOFILE, fn, tpsAv, NAME_PREFIX) 
+        
+    return fn
 
 ###############################################################################
 
 def CLI_params():
 
-    if len(sys.argv)not in (3, 4, 5):
+    if len(sys.argv) not in (3, 4, 5):
         print ("Please give\n"
                "THREE arguments DBFILE PREFIX INFOFILE\n\n"
                "Or give FOUR arguments, \n"
