@@ -86,8 +86,15 @@ def title(info):
     """
     concatenate page title from info dict
     """
+    version = info['node']['version']
+    
+    try: # perhaps cut away "-stable-316fc7ec"
+        version = version.split("-")[0]
+    except:
+        pass
+    
     T = "%s %s with %d txs: %.1f TPS"
-    T = T % (info['node']['name'], info['node']['version'], 
+    T = T % (info['node']['name'], version, 
              info['send']['num_txs'], 
              info['diagrams']['blocktimestampsTpsAv'])  
     return T
@@ -185,8 +192,6 @@ template02 = '''
 <h3>diagrams:</h3>
 %s
 <img src="%s"/>
-
-
 </body>
 </html>
 '''
@@ -221,7 +226,7 @@ if __name__ == '__main__':
     INFOFILE, TPSLOG = CLI_params()
     
     info = read_infofile(INFOFILE)
-    pprint (info); print(); exit()
+    # pprint (info); print(); exit()
     
     elem = createElements(info, TPSLOG)
     
