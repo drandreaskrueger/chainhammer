@@ -414,15 +414,18 @@ def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
     
     blocks = TO_BLOCK - FROM_BLOCK + 1
     ts1 = dfs.iloc[0]['timestamp'] # stop clock starts WHEN block 0 is in already!
+    bn1 = dfs.iloc[0]['blocknumber']
     ts2 = dfs.iloc[blocks-1]['timestamp']   # and clock ends at last filled block
+    bn2 = dfs.iloc[blocks-1]['blocknumber']
     duration = ts2-ts1
-    # print (ts1, ts2, duration)
-    
     txs=sum(dfs['txcount'][1:blocks]) # N.B.: start summing at block 1 not 0 !
-    # print (txs)
-    
     tps=(txs/duration)
-    # print (tps)
+
+    print ("second to last experiment block, averaging:")
+    txt="blocks %d-%d, timestamps %d-%d, duration %d seconds, txcount %d, tps %.1f"
+    print (txt % (bn1, bn2, ts1, ts2, duration, txs, tps))
+    print()
+
     return tps, "%.1f" % tps
 
 
@@ -486,6 +489,8 @@ def tps_plotter(ax, dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks):
     print ("averaged over whole experiment: %s TPS" %avgTxt)
     
     ax.set_title("avg TPS %s = #TX whole experiment / blocktimes diff" % avgTxt)
+    
+    return avg
   
     
 def blocktimes_plotter(ax, dfs):
@@ -554,7 +559,7 @@ def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks):
     fig, axes = plt.subplots(2, 2, figsize=(16,9)) #,  sharex=True)
     fig.subplots_adjust(hspace=0.25, wspace=0.20)
     
-    tps_plotter(axes[0,0], dfs, blockFrom, blockTo, emptyBlocks)
+    tpsAv = tps_plotter(axes[0,0], dfs, blockFrom, blockTo, emptyBlocks)
     blocktimes_plotter(axes[0,1], dfs)
     blocksizes_plotter(axes[1,0], dfs, emptyBlocks)  
     gas_plotter(axes[1,1], dfs)
@@ -564,7 +569,7 @@ def diagrams(prefix, df, blockFrom, blockTo, emptyBlocks):
     title = title % (blockFrom, blockTo, txs, round(txs/(blockTo-blockFrom+1)))
     fig.suptitle(title, fontsize=16)
     
-    return fig, axes, dfs, txs
+    return fig, axes, dfs, txs, tpsAv
 
 
 def savePlot(fig, prefix, blockFrom, blockTo, imgpath):
@@ -584,10 +589,11 @@ def read_experiment_infofile(fn):
     return info
 
 
-def add_fn_to_infofile(INFOFILE, img_fn):
+def add_to_infofile(INFOFILE, img_fn, tpsAv):
     info = read_experiment_infofile(fn=INFOFILE)
     info['diagrams']={}
     info['diagrams']['filename'] = img_fn
+    info['diagrams']['blocktimestampsTpsAv'] = tpsAv
     with open(INFOFILE, "w") as f:
         json.dump(info, f)
         
@@ -614,14 +620,14 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX,
     
     print()
     # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
-    fig, axes, dfs, txs = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK, 
-                                   emptyBlocks=EMPTY_BLOCKS)
+    fig, axes, dfs, txs, tpsAv = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK,
+                                          emptyBlocks=EMPTY_BLOCKS)
     fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath)
     
     print ("\ndiagrams saved to: ", fn)
     
     if INFOFILE:
-        add_fn_to_infofile(INFOFILE, fn) # TODO: also add averages from diagrams() ?
+        add_to_infofile(INFOFILE, fn, tpsAv) 
 
 ###############################################################################
 
