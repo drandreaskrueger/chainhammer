@@ -59,7 +59,7 @@ echo
 title deploy.py
 echo smartContract deploy.py, log into file logs/deploy.py.log. This triggers tps.py to start counting.
 ./deploy.py > "../logs/deploy.py.log"
-sleep 1
+sleep 0
 echo
 echo
 
