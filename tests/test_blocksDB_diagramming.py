@@ -128,7 +128,7 @@ def test_show_peak_TPS():
 
 def example_experiment():
     df = get_as_dataframe()
-    # print (df)
+    print (df)
     FROM_BLOCK, TO_BLOCK = 26, 82
     
     return df, FROM_BLOCK, TO_BLOCK
@@ -145,9 +145,10 @@ def test_experiment_slice():
 
 def example_experiment_slice():
     df, FROM_BLOCK, TO_BLOCK = example_experiment()
-    emptyBlocks=10
+    emptyBlocks=21
     dfs, index_from, index_to = DBdiagram.experiment_slice(df, FROM_BLOCK, TO_BLOCK, emptyBlocks)
     return dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks
+
 
 def test_averageTps_wholeExperiment():
     dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice()
@@ -160,8 +161,8 @@ def test_averageTps_wholeExperiment():
 def test_averager():
     dfs, FROM_BLOCK, TO_BLOCK, emptyBlocks = example_experiment_slice()
     av, avTxt = DBdiagram.averager(dfs, 'size', emptyBlocks, fmt="%d")
-    assert 51478 < av < 51479
-    assert avTxt == "51479"
+    assert 52262 < av < 52263
+    assert avTxt == "52263"
 
 
 def test_avgLine():
@@ -213,7 +214,7 @@ def test_load_prepare_plot_save():
     imgpath="tests/img"
     os.mkdir(imgpath)
     
-    fn = DBdiagram.load_prepare_plot_save(DBFILE, "TEST", 0, 10, imgpath=imgpath)
+    fn = DBdiagram.load_prepare_plot_save(DBFILE, "TEST", 0, 10, 5, None, imgpath=imgpath)
     os.remove(fn)
     os.rmdir(imgpath)
     print ("\nremoved path %s and file %s" % (imgpath, fn))

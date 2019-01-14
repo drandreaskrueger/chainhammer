@@ -135,9 +135,12 @@ def test_sendingEndedFiledate():
 def test_addMeasurementToFile():
     fn="file.tmp"
     send.store_experiment_data(success=False, num_txs=-1, 
-                          block_from=-2, block_to=-1, 
-                          filename=fn)
-    tps.addMeasurementToFile(peakTpsAv=-1, finalTpsAv=-2, fn=fn)
+                               block_from=-2, block_to=-1,
+                               empty_blocks = 5,
+                               filename=fn)
+    tps.addMeasurementToFile(peakTpsAv=-1, finalTpsAv=-2, 
+                             start_epochtime=42, 
+                             fn=fn)
     os.remove(fn)
     
     
