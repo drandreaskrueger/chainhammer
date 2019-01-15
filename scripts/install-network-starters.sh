@@ -15,7 +15,7 @@ echo
 echo paritytech/parity-deploy
 rm -rf paritytech_parity-deploy
 git clone https://github.com/paritytech/parity-deploy.git paritytech_parity-deploy
-echo TODO: Perhaps already patch with chainhammer-optimized parameters?
+git checkout 11b64e11cc9403101aa1e0db0bfbc72997e01a74
 
 echo
 rm -rf drandreaskrueger_geth-dev

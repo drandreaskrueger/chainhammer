@@ -1,6 +1,8 @@
+# PID of network starter
+network.pid
+
 # external tools repos, clones via scripts/install.sh
 networks/repos
-
 
 # Dolphin explorer folder file
 .directory
