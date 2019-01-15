@@ -53,6 +53,9 @@ if [[ "$PARITY_VERSION" < "v2" ]]; then
     echo patched for issue 92
 fi
 
+cp deployment/1/password $GETBACK/hammer/account-passphrase.txt
+echo copied password
+
 # start network:
 # docker-compose up
 

@@ -51,7 +51,7 @@ PARITY_UNLOCK_EACH_TRANSACTION=False
 # e.g. by manually editing the docker-compose.yml file after ./parity-deploy.sh --config aura --nodes 3
 #  services: --> host1: --> command: --> add this: (address is in deployment/1/address.txt)
 #    --unlock 0x39c6ad93dfb708143322d8bbf4c35734f6480249 --password /home/parity/password 
-PARITY_ALREADY_UNLOCKED=True
+PARITY_ALREADY_UNLOCKED=False
 
 
 # sorry, but time saving RPC optimisation makes no sense then anyways:
