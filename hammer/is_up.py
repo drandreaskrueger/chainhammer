@@ -77,7 +77,12 @@ def loop_until_is_up(seconds_between_calls = 0.5, ifPrint=False, timeout=None):
     start = time.monotonic()
     
     while True:
+        
         success, error = simple_RPC_call()
+        # TODO: Also wait until chain is moving (for all but testRPC & instantseal)? 
+        # E.g. quorum-crux needs a long time between first answer and blocks moving!
+        # or a simple sleep, depending on NODENAME ?
+        
         if ifPrint:
             print (success, error)
         if success:
