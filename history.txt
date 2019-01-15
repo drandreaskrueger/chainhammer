@@ -1,3 +1,13 @@
+v51 15/1/2019
+    tried out parity v2.2.3 - but still not able to survive multithreaded sending
+    see folder networks/
+    16 (!) new scripts:
+    for -start, -stop, -clean of geth, parity aura/instantseal, quorum, and testrpc!
+    for -configure of parity instantseal, and aura; still TODO: geth and quorum
+    run.sh can call *-start.sh and *-stop.sh scripts when given a 2nd parameter
+    run.sh 1st parameter now sane to be used as part of filename
+    run.sh is now a complete experiment launcher !
+
 v50 14/1/2019-15/1/2019
     new page_generator.py which makes a markdown and an HTML page from each run
     formatting issues, improved looks
