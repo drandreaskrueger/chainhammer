@@ -642,6 +642,16 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX,
 
 ###############################################################################
 
+def sanify(mystring):
+    """
+    from given string, make something that can be used as filename
+    """
+    keepcharacters = ('-','.','_')
+    sane = "".join(c for c in mystring if c.isalnum() or c in keepcharacters)
+    sane = sane.rstrip()
+    return sane
+    
+
 def CLI_params():
 
     if len(sys.argv) not in (3, 4, 5):
@@ -660,9 +670,9 @@ def CLI_params():
         exit(1)
         
     DBFILE=sys.argv[1]
-    NAME_PREFIX=sys.argv[2]
+    NAME_PREFIX = sanify( sys.argv[2] )
     print ("using  DBFILE=%s  NAME_PREFIX=%s" % (DBFILE, NAME_PREFIX))
-
+    
     if len(sys.argv)==3:
         FROM_BLOCK=-1
         TO_BLOCK=-1
