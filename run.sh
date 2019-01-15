@@ -1,3 +1,15 @@
+if (( $# != 1  && $# != 2 )); then
+    echo "Syntax:"
+    echo "./run.sh info-word [network-scripts-prefix]"
+    echo "e.g."
+    echo "./run.sh Geth-t2.xlarge"
+    echo "./run.sh Geth-t2.xlarge geth-clique"
+    echo "The first case assumes that network nodes are started manually."
+    exit    
+fi
+
+INFOWORD=$1
+
 # exit when any command fails
 set -e
 # keep track of the last executed command
@@ -14,7 +26,7 @@ function title {
 
 echo 
 
-title "chainhammer - example run ="
+title "chainhammer v51 - run all ="
 
 echo 
 echo study this, to understand the moving parts of chainhammer
@@ -25,18 +37,24 @@ echo
 echo "    source env/bin/activate"
 echo "    unbuffer testrpc-py &> tests/logs/testrpc-py.log &"
 echo
-echo "    ./run.sh"
+echo "    ./run.sh TestRPC-local"
 echo
 echo
 
-# Later: read parameters from file
-# source $1
-SEND_PARAMS="threaded2 20"
-SEND_PARAMS="sequential"
+# defaults:
 DBFILE=temp.db
 INFOFILE=../hammer/last-experiment.json
 TPSLOG=logs/tps.py.log
-PREFIX=Geth-Local
+
+# fallback is non-async sending
+# important especially for testrpc-py which does not handle multithreading well
+# can be overwritten by the specific network starter
+SEND_PARAMS="sequential"
+
+if (( $# == 2 )); then
+    title start network
+    source networks/$2-start.sh
+fi
 
 
 title "activate virtualenv" 
@@ -94,14 +112,21 @@ echo
 
 title blocksDB_diagramming.py
 echo make time series diagrams from SQL db
-./blocksDB_diagramming.py $DBFILE $PREFIX $INFOFILE
+./blocksDB_diagramming.py $DBFILE $INFOWORD $INFOFILE
 
 title page_generator.py
 ./page_generator.py $INFOFILE ../$TPSLOG
+
+cd ..
+
+if (( $# == 2 )); then
+    title stop network
+    source networks/$2-stop.sh
+fi
+
 
 title "Ready."
 echo See that image, and those .md and .html pages.
 
 trap '' EXIT
 
-cd ..
