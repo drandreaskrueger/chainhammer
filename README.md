@@ -14,7 +14,7 @@ Please open an issue (or fork & pull request) if you find a broken link, thanks.
 
 ---
 
-# chainhammer v46
+# chainhammer v50
 TPS measurements of parity aura, geth clique, quorum, tobalaba, etc. 
 It should work with any Ethereum type chain; we focused on PoA consensus.
 
@@ -125,8 +125,13 @@ It tests whether communication with the ethereum node is working,
 If there are connection problems, check the ports in [config.py](hammer/config.py) --> 
 `RPCaddress, RPCaddress2`.
 
-
 ### quickstart
+A new integrated script which executes a lot of steps, one by one. Beware, this is still beta. Please report any issues, thanks.
+
+    ./run.sh Geth-Clique-Local geth-clique
+
+
+### step-by-step
 Remember, in each new terminal virtualenv: `cd hammer; source ../env/bin/activate`
 
 first terminal:

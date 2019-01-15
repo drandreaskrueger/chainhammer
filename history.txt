@@ -1,5 +1,15 @@
+v50 14/1/2019-15/1/2019
+    new page_generator.py which makes a markdown and an HTML page from each run
+    formatting issues, improved looks
+    page also contains whole infodict, better safe than sorry.
+    TestRPC has no empty blocks --> fix blocksDB_create/diagramming.py
+    fixed issue with finalTpsAv
+    diagramming also stores its blocktimesTpsAv result
+    updated tests
+    image-filename now also contains time-of-experiment-start to avoid overwriting
+    run.sh now starts with ./is_up.py and ends with ./page_generator.py
 
-v49 11/1/2019 - 13/1/2019
+v49 11/1/2019-13/1/2019
     run.sh = 
     virtualenv + tps.py + deploy.py + send.py + blocksDB_create.py + blocksDB_diagramming.py
     AUTOSTOP_TPS: tps.py can be stopped now, by send.py writing to last-experiment.json
