@@ -93,8 +93,9 @@ def title(info):
     except:
         pass
     
-    T = "%s %s with %d txs: %.1f TPS"
-    T = T % (info['node']['name'], version, 
+    T = "(%s) %s %s with %d txs: %.1f TPS"
+    T = T % (info['diagrams']['prefix'],
+        info['node']['name'], version, 
              info['send']['num_txs'], 
              info['diagrams']['blocktimestampsTpsAv'])  
     return T
@@ -196,7 +197,7 @@ template02 = '''
 %s
 <img src="%s"/>
 <h3>info raw</h3>
-%s
+<small>%s</small>
 </body>
 </html>
 '''
