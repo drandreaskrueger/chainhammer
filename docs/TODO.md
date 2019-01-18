@@ -38,6 +38,7 @@ N.B.: No guarantees that I will get time to continue with this at all - so pleas
 * timestamp transformation = different units depending on client, see tps.timestampToSeconds():
   * next time when trying 'raft' consensus - test whether timestamp transformation is working correctly
   * check back with https://github.com/pipermerriam/eth-testrpc/issues/117 if problem is solved now
+* parity instantseal produces 1 block per 1 transaction, but with an integer block timestamp - totally non-sensical. Needs finer time resolution! 
 
 ## done
 * `IBFT` instead of `raft`
