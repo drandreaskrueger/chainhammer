@@ -274,6 +274,7 @@ while exploring this, I ran into issues with Quorum(Q) and QuorumExamples(QE):
 * [Q #507](https://github.com/jpmorganchase/quorum/issues/507) `Quorum/v2.1.0-stable-159d813f/linux-amd64/go1.9.3`
 * [QE#121](https://github.com/jpmorganchase/quorum-examples/issues/121) --rpcapi ...,raft
 * [BC#51](https://github.com/blk-io/crux/issues/51) (FR) dockerized with raft consensus not IBFT 
+* [BC#57](https://github.com/blk-io/crux/issues/57) please update to newest quorum
 
 ## alternative: dockerized quorum nodes
 Always used the 7nodes example as described above, but there is also https://github.com/ConsenSys/quorum-docker-Nnodes = Run a bunch of Quorum nodes, each in a separate Docker container. Untested.
