@@ -577,8 +577,8 @@ def finish(txs, success):
     txt = txt % (block_from, block_to)
     print (txt)
     
-    if NODETYPE=="TestRPC":
-        print ("Do not wait for empty blocks, as this is TestRPC.")
+    if NODETYPE=="TestRPC" or (NODENAME=="Parity" and CHAINNAME=="developmentchain" and NETWORKID==17):
+        print ("Do not wait for empty blocks, as this is TestRPC, or parity instantseal.")
         waitBlocks=0
     else:
         waitBlocks=EMPTY_BLOCKS_AT_END
@@ -643,7 +643,7 @@ if __name__ == '__main__':
     global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
-
+    
     # wait_some_blocks(0); exit()
 
 
@@ -657,9 +657,10 @@ if __name__ == '__main__':
     # try_contract_set_via_RPC(contract);  exit()
 
     txs = sendmany()
+    sys.stdout.flush() # so that the log files are updated.
 
     success = controlSample_transactionsSuccessful(txs)
+    sys.stdout.flush()
 
     finish(txs, success)
-    
-    
+    sys.stdout.flush()
