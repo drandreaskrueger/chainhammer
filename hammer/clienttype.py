@@ -126,7 +126,6 @@ def clientType(w3):
 
     # Geth / Parity / Energy Web:
     nodeString = w3.version.node
-    nodeVersion = nodeString.split("/")[1]
     
     nodeName = nodeString.split("/")[0] 
     known = ("Geth", "Parity", "Parity-Ethereum", "Energy Web", "TestRPC")
@@ -135,6 +134,11 @@ def clientType(w3):
     
     if nodeName == "Parity-Ethereum":
         nodeName = "Parity"
+
+    nodeVersion = nodeString.split("/")[1]
+    if nodeName == "Parity":
+        # see issue https://github.com/paritytech/parity-ethereum/issues/10215
+        nodeVersion = nodeString.split("/")[2]
 
     # Quorum pretends to be Geth - so how to distinguish vanillaGeth from QuorumGeth?
     #  - see https://github.com/jpmorganchase            /quorum/issues/507
