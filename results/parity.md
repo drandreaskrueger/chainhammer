@@ -1759,4 +1759,4 @@ sed -i 's/parity:stable/parity:v2.2.3/g' docker-compose.yml
 * [PD#86](https://github.com/paritytech/parity-deploy/issues/86) (FR) give account balance to default account 
 * [PD#87](https://github.com/paritytech/parity-deploy/issues/87) (v2.2.3) Spec json is invalid: unknown field `gasLimitBoundDivisor`
 * [PE#10215](https://github.com/paritytech/parity-ethereum/issues/10215) why the double // in web3.version.node ?
-
+* [PD#97](https://github.com/paritytech/parity-deploy/issues/97) small improvement: compare parity versions before downloading binary
