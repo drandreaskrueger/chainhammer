@@ -15,7 +15,7 @@ echo
 echo paritytech/parity-deploy
 rm -rf paritytech_parity-deploy
 git clone https://github.com/paritytech/parity-deploy.git paritytech_parity-deploy
-git checkout 11b64e11cc9403101aa1e0db0bfbc72997e01a74
+git checkout 1a6afd17ac75bdf6c9e9fefa1d3af13748dd9cfa
 
 echo
 rm -rf drandreaskrueger_geth-dev
