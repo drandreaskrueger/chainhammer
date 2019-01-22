@@ -7,7 +7,7 @@ echo Stopping PID $(cat $PIDFILE)
 
 echo kill with -SIGINT
 cat $PIDFILE | xargs kill -SIGINT
-echo sleep 11
+echo sleep 14
 sleep 14
 echo kill with -9
 cat $PIDFILE | xargs kill -9
