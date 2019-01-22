@@ -145,6 +145,13 @@ def test_wait_some_blocks():
     send.wait_some_blocks(waitBlocks=0)
     
 
+def test_check_CLI_or_syntax_info_and_exit():
+    try:
+        send.check_CLI_or_syntax_info_and_exit()
+    except SystemExit:
+        pass
+
+
 def test_sendmany_HowtoTestThisNoIdea():
     # answer = send.sendmany()
     # how to test this? Please make suggestions

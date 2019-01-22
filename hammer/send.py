@@ -2,9 +2,8 @@
 """
 @summary: submit many contract.set(arg) transactions to the example contract
 
-@version: v46 (03/January/2019)
+@version: v52 (22/January/2019)
 @since:   17/April/2018
-@organization: 
 @author:  https://github.com/drandreaskrueger
 @see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
@@ -32,7 +31,7 @@ from web3.utils.encoding import pad_hex
 
 # chainhammer:
 from hammer.config import RPCaddress, ROUTE, PRIVATE_FOR, EXAMPLE_ABI
-from hammer.config import NUMBER_OF_TRANSACTIONS, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.config import PARITY_UNLOCK_EACH_TRANSACTION
 from hammer.config import GAS_FOR_SET_CALL
 from hammer.config import FILE_LAST_EXPERIMENT, EMPTY_BLOCKS_AT_END
 from hammer.deploy import loadFromDisk
@@ -598,24 +597,40 @@ def finish(txs, success):
 ###
 ################################################################################
 
-def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
-
-    print("\nBlockNumber = ", w3.eth.blockNumber)
+def check_CLI_or_syntax_info_and_exit():
+    """
+    before anything, check if number of parameters is fine, or print syntax instructions
+    """
     
-    if len(sys.argv)==1 or sys.argv[1]=="sequential":
+    #print ("len(sys.argv)=", len(sys.argv))
+    
+    if not (2 <= len(sys.argv) <= 4):
+        print ("Needs parameters:")
+        print ("%s numTransactions algorithm [workers]" % sys.argv[0])
+        print ("at least numTransactions, e.g.")
+        print ("%s 1000" % sys.argv[0])
+        exit()
+
+
+def sendmany(contract):
+
+    print("\nCurrent blockNumber = ", w3.eth.blockNumber)
+    numTransactions = int(sys.argv[1])
+    
+    if len(sys.argv)==2 or sys.argv[2]=="sequential":
         
         # blocking, non-async
         txs=many_transactions_consecutive(contract, numTransactions)  
         
-    elif sys.argv[1]=="threaded1":
+    elif sys.argv[2]=="threaded1":
         txs=many_transactions_threaded(contract, numTransactions)
             
             
-    elif sys.argv[1]=="threaded2":
+    elif sys.argv[2]=="threaded2":
         num_workers = 100
-        if len(sys.argv)>2:
+        if len(sys.argv)==4:
             try:
-                num_workers = int(sys.argv[2])
+                num_workers = int(sys.argv[3])
             except:
                 pass
             
@@ -623,14 +638,15 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
                                          numTx=numTransactions, 
                                          num_worker_threads=num_workers)
         
-    elif sys.argv[1]=="threaded3":
+    elif sys.argv[2]=="threaded3":
         batchSize=25
         txs=many_transactions_threaded_in_batches(contract, 
                                               numTx=numTransactions, 
                                               batchSize=batchSize)
           
     else:
-        print ("Nope. Choice '%s'" % sys.argv[1], "not recognized.")
+        print ("Nope. Choice '%s'" % sys.argv[2], "not recognized.")
+        exit()
 
         
     print ("%d transaction hashes recorded, examples: %s" % (len(txs), txs[:2]))
@@ -639,24 +655,22 @@ def sendmany(numTransactions = NUMBER_OF_TRANSACTIONS):
 
 
 if __name__ == '__main__':
+    
+    check_CLI_or_syntax_info_and_exit()
 
     global w3, NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     w3, chainInfos = web3connection(RPCaddress=RPCaddress, account=None)
     NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
     
     # wait_some_blocks(0); exit()
-
-
-    w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
     # timeit_argument_encoding(); exit()
-    
-   
-    contract = initialize_fromAddress()
-        
     # try_contract_set_via_web3(contract); exit()
     # try_contract_set_via_RPC(contract);  exit()
 
-    txs = sendmany()
+    w3.eth.defaultAccount = w3.eth.accounts[0] # set first account as sender
+    contract = initialize_fromAddress()
+
+    txs = sendmany(contract)
     sys.stdout.flush() # so that the log files are updated.
 
     success = controlSample_transactionsSuccessful(txs)
@@ -664,3 +678,5 @@ if __name__ == '__main__':
 
     finish(txs, success)
     sys.stdout.flush()
+    
+    

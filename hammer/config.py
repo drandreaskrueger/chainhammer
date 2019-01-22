@@ -22,7 +22,9 @@ RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # or
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev; use two different nodes for writing and reading  
 
 # how many tx to send in send.py
-NUMBER_OF_TRANSACTIONS = 20000
+# not anymore here, is a CLI argument now, for ./send.py
+# NUMBER_OF_TRANSACTIONS = 5000
+
 
 # obsolete now
 # initially the contract was deployed manually with ./runscript.sh private-contract.js  

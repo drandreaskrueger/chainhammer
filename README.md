@@ -140,7 +140,7 @@ first terminal:
 ```
 second terminal:
 ```
-./deploy.py; ./send.py
+./deploy.py; ./send.py 1000
 ```
 
 Then, after all (e.g. 20,001) transactions have been seen, 

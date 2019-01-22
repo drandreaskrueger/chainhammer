@@ -26,7 +26,7 @@ function title {
 
 echo 
 
-title "chainhammer v51 - run all ="
+title "chainhammer v52 - run all ="
 
 echo 
 echo study this, to understand the moving parts of chainhammer
@@ -46,9 +46,12 @@ DBFILE=temp.db
 INFOFILE=../hammer/last-experiment.json
 TPSLOG=logs/tps.py.log
 
+NUM_TRANSACTIONS=1000
+
 # fallback is non-async sending
 # important especially for testrpc-py which does not handle multithreading well
 # can be overwritten by the specific network starter
+SEND_PARAMS="threaded2 20"
 SEND_PARAMS="sequential"
 
 if (( $# == 2 )); then
@@ -89,9 +92,10 @@ echo
 echo
 
 title send.py
-echo send many transactions, plus wait 10 more blocks, log into file logs/send.py.log. Then this triggers tps.py to end counting.
+echo Send $NUM_TRANSACTIONS transactions with algo \'$SEND_PARAMS\', plus possibly wait 10 more blocks.
+echo Logging into file logs/send.py.log. Then this triggers tps.py to end counting.
 echo
-./send.py $SEND_PARAMS > "../logs/send.py.log"
+./send.py $NUM_TRANSACTIONS $SEND_PARAMS > "../logs/send.py.log"
 echo
 echo
 
