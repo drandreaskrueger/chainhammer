@@ -62,9 +62,9 @@ def format_infofile_content(info):
     T+="      and in between saw values as high as %.1f TPS.\n" % i['peakTpsAv'] 
     
     i=info['diagrams']
-    T+="DIAG: Looking only at the experiment block-timestamps, the overall TPS is ~%.1f\n" % i['blocktimestampsTpsAv']
+    T+="DIAG: The whole experiment was prefixed '%s'.\n" % i['prefix']
     T+="      The diagrams were saved into '%s'.\n" % i['filename']
-    T+="      The experiment was prefixed '%s'." % i['prefix']
+    T+="      Looking only at the experiment block-timestamps, the overall TPS was ~%.1f.\n" % i['blocktimestampsTpsAv']
     
     return T
 
