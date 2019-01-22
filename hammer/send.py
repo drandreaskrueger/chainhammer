@@ -68,7 +68,8 @@ def contract_set_via_web3(contract, arg, hashes = None, privateFor=PRIVATE_FOR, 
         unlockAccount()
         
     tx = contract.functions.set( x=arg ).transact(txParameters)
-    print ("[sent via web3]", end=" ")  # TODO: not print this here but at start
+    # print ("[sent via web3]", end=" ")  # TODO: not print this here but at start
+    print (".", end=" ")  # TODO: not print this here but at start
     tx = w3.toHex(tx)
     
     if not hashes==None:
@@ -165,7 +166,8 @@ def contract_set_via_RPC(contract, arg, hashes = None, privateFor=PRIVATE_FOR, g
     # print('raw json response: {}'.format(response.json()))
     tx = response.json()['result']
         
-    print ("[sent directly via RPC]", end=" ") # TODO: not print this here but at start
+    # print ("[sent directly via RPC]", end=" ") # TODO: not print this here but at start
+    print (".", end=" ") # TODO: not print this here but at start
     
     if not hashes==None:
         hashes.append(tx)
@@ -613,9 +615,21 @@ def check_CLI_or_syntax_info_and_exit():
 
 
 def sendmany(contract):
+    """
+    sends many transactions to contract.
+    
+    choose algorithm depending on 2nd CLI argument.
+    """
 
+    # TODO: Perhaps extend this to a full blown (config.py) settings printer?
+    # but then in tps.py because only that output is visible in run.sh
     print("\nCurrent blockNumber = ", w3.eth.blockNumber)
     numTransactions = int(sys.argv[1])
+    if ROUTE=="RPC": route = "RPC directly" 
+    if ROUTE=="web3": route = "web3 library" 
+    print ("You want me to send %d transactions, via route: %s." % (numTransactions, route))
+    
+    # choose algorithm depending on 2nd CLI argument:
     
     if len(sys.argv)==2 or sys.argv[2]=="sequential":
         
