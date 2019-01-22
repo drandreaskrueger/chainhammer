@@ -6,8 +6,9 @@ PIDFILE=network.pid
 echo Stopping PID $(cat $PIDFILE)
 
 cat $PIDFILE | xargs kill -SIGINT
-sleep 3
+sleep 12
 cat $PIDFILE | xargs kill -9
+sleep 1
 
 rm $PIDFILE
 
