@@ -1,13 +1,18 @@
 #!/bin/bash
 
-PARITY_LOCAL_REMOVE=false
-# PARITY_LOCAL_REMOVE=true
-
-PARITY_VERSION=v1.11.11
+# I was told on github that parity cannot be faster than 5 seconds blocktime:
 BLOCKTIME=5
 
 FOLDER=networks/repos/paritytech_parity-deploy
 GETBACK=../../..
+
+
+# allows downgrading local parity installation:
+PARITY_LOCAL_REMOVE=false
+# PARITY_LOCAL_REMOVE=true
+
+# fallback if no argument given:
+PARITY_VERSION=v2.2.3
 
 if [ $# -eq 0 ]
   then
@@ -17,21 +22,21 @@ else
     echo "Using parity $PARITY_VERSION"
 fi
 
-cd $FOLDER
-
-# possibly remove an existing parity first, because downgrade not allowed
+# possibly remove an existing parity first, because downgrade not allowed by parity-deploy
 if [ "$PARITY_LOCAL_REMOVE" = true ]; then
     echo remove existing local parity
     sudo mv $(which parity) $(which parity)_BACKUP
 fi
+
+cd $FOLDER
 
 # is this always needed?
 sudo ./clean.sh
 
 # patch for issue 76
 # ! important, must not be run as root !
-mkdir -p data
-echo patched for issue 76
+# mkdir -p data
+# echo patched for issue 76
 
 # run ./parity-deploy.sh with ARGS
 ./parity-deploy.sh -r $PARITY_VERSION $PARITY_ARGS
@@ -53,7 +58,7 @@ if [[ "$PARITY_VERSION" < "v2" ]]; then
     echo patched for issue 92
 fi
 
-cp deployment/1/password $GETBACK/hammer/account-passphrase.txt
+cp deployment/$FIRST_NODE/password $GETBACK/hammer/account-passphrase.txt
 echo copied password
 
 # start network:
