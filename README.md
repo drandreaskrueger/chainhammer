@@ -139,15 +139,15 @@ source env/bin/activate
 py.test -v --cov
 ```
 
-There were 64 tests on December 4th, all 64 PASSED
+There were 98 tests on January 23rd, all 98 PASSED
 (see this [logfile](tests/logs/tests-with_testrpc-py.log.ansi)  --> 
 `cat tests/logs/*.ansi` because colors) on these different Ethereum providers:  
 
-* testrpc instantseal (`testrpc-py`)  9 seconds 
-* geth Clique (`geth-dev`) 54 seconds
-* quorum IBFT (`blk-io/crux`) 31 seconds
+* testrpc instantseal (`testrpc-py`)  13 seconds 
+* geth Clique (`geth-dev`) 63 seconds
+* quorum IBFT (`blk-io/crux`) 59 seconds
 * parity instantseal (`parity-deploy`) 8 seconds
-* parity aura (`parity-deploy`) 74 seconds
+* parity aura (`parity-deploy`) 72 seconds
 
 ## credits
 
