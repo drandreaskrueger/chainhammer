@@ -131,7 +131,7 @@ echo
 
 cd ..
 
-# switch off the trap, because sometimes the 2nd kill in networks/$2-stop.sh is not needed anymore:
+# switch off the trap already here, because sometimes the 2nd kill in networks/$2-stop.sh is not needed anymore:
 set +e
 trap '' EXIT
 
