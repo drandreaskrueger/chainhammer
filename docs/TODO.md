@@ -61,22 +61,6 @@ what else? Please YOU make suggestions.
 
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
 
-## done
-* `IBFT` instead of `raft`
-  * generic [7nodes example](https://github.com/drandreaskrueger/quorum-examples/blob/master/examples/7nodes/README.md#7-nodes) contains IBFT already; so that part *should be* easy (however, some issues reported bugs with IBFT ?)
-  * needs code update in `tps.py`, see README.md --> IBFT
-* [Crux](https://medium.com/blk-io/announcing-crux-a-secure-enclave-for-quorum-61afbfdb79e4) instead of `Constellation`
-  * newly developed by blk.io / Conor Svenson
-  * already has a "7nodes example", so should be easy to benchmark: [raft](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/raft-start.sh#L7), [IBFT](https://github.com/blk-io/quorum-examples/blob/68610ee8ff9aa187d3ba76c92ed2c991c0b59e7b/examples/7nodes/istanbul-start.sh#L7)
-* refactor [chainreader/blocksDB_analyze.ipynb](../reader/outdated/blocksDB_analyze.ipynb) into 2 files: functions library + visualisation jupyter notebook
-* send TX via IPC instead of RPC - faster?
-*summarizing manual how exactly to use chainhammer & chainreader* - this repo had organically grown in depth and width --> some refactoring would make sense soon. These 2 simple tools are really not difficult to use though, AND all infos are explicit already - it's only that the information is spread over several files right now. --> *there is a [README.md --> quickstart](../README.md#quickstart)) now*.
-* Vanilla Ethereum PoA
-  * `parity` PoA
-  * `geth` PoA
-* is the parity RPC server single-threaded?? --> `--jsonrpc-server-threads 8`
-* perhaps try Crux not Constellation? 
-
 # other places:
 * [quorum.md](../results/quorum.md) - quickstart how to use this chainhammer tool
   * [log.md](../results/log.md) - sequence of everything that I've already optimized, to get this faster 
