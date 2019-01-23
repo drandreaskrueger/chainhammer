@@ -119,6 +119,18 @@ def test_analyzeNewBlocks():
     assert tpsAv >= 0
     
     
+def test_getNearestEntry():
+    myDict = {1:1, 2:2, 4:4, 17:17, 23:23}
+    assert tps.getNearestEntry(myDict, myIndex=1) == 1
+    assert tps.getNearestEntry(myDict, myIndex=2) == 2
+    assert tps.getNearestEntry(myDict, myIndex=3) == 4
+    assert tps.getNearestEntry(myDict, myIndex=4) == 4
+    assert tps.getNearestEntry(myDict, myIndex=5) == 17
+    assert tps.getNearestEntry(myDict, myIndex=10) == 17
+    assert tps.getNearestEntry(myDict, myIndex=17) == 17
+    assert tps.getNearestEntry(myDict, myIndex=18) == 23
+    
+    
 def test_measurement_NotTestableBecauseInfiniteLoop():
     """
     cannot be tested? as it is an infinite loop
@@ -134,6 +146,9 @@ def test_sendingEndedFiledate():
     
 def test_addMeasurementToFile():
     fn="file.tmp"
+    send.w3 = w3
+    send.NODENAME,send.NODETYPE,send.NODEVERSION = NODENAME,NODETYPE,NODEVERSION
+    send.CONSENSUS,send.NETWORKID,send.CHAINNAME,send.CHAINID = CONSENSUS,NETWORKID,CHAINNAME,CHAINID 
     send.store_experiment_data(success=False, num_txs=-1, 
                                block_from=-2, block_to=-1,
                                empty_blocks = 5,

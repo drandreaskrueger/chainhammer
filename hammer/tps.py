@@ -134,6 +134,28 @@ def readInfofile(fn=FILE_LAST_EXPERIMENT):
     return data
     
 
+class CodingError(Exception):
+    pass
+
+
+def getNearestEntry(myDict, myIndex):
+    """
+    because 
+      finalTpsAv = tpsAv[block_last]
+    can sometimes not be resolved, then choose
+      finalTpsAv = tpsAv[block_last+i]
+    testing with increasing i
+    """
+    maxIndex = max(myDict.keys())
+    answer = None
+    while not answer:
+        if myIndex>maxIndex:
+            raise CodingError("no value in dict with this index or higher") 
+        answer = myDict.get(myIndex, None)
+        myIndex += 1
+    return answer
+
+
 def measurement(blockNumber, pauseBetweenQueries=0.3, 
                 RELAXATION_ROUNDS=3, empty_blocks_at_end=EMPTY_BLOCKS_AT_END):
     """
@@ -182,7 +204,10 @@ def measurement(blockNumber, pauseBetweenQueries=0.3,
         if AUTOSTOP_TPS and sendingEndedFiledate()!=whenBefore:
             print ("Received signal from send.py = updated INFOFILE.")
             block_last = readInfofile()['send']['block_last']
-            finalTpsAv = tpsAv[block_last]
+            
+            # finalTpsAv = tpsAv[block_last]
+            finalTpsAv = getNearestEntry(myDict=tpsAv, myIndex=block_last)
+            
             break
             # finalTpsAv = tpsAv
             # blocknumberEnd = newBlockNumber + empty_blocks_at_end
