@@ -1,3 +1,38 @@
+v54 23/1/2019 final tests before next release
+    reminder: link-checker.sh has to be run when upstreamed into public repo
+    unittests: 98 tests PASSED on TestRPC
+    solved problems when interrupted: killing more leftovers, docker containers, etc
+    TODO: perhaps also docker-compose down consistently as part of each -stop.sh? not only -clean.sh
+    fix for quorum path
+    fix for request.get() not allowed in parity instantseal
+    v54: all 98 unittests PASSED on all 5 Ethereum providers
+
+v53 23/1/2019 documentation updates
+    moved much from main README.md into docs/FAQ.md
+    docs/FAQ.md added chapters: how to clone from gitlab, how to kill processes, docker, etc
+    docs/FAQ.md table of contents = TOC
+    extended docs/TODO.md extended e.g. with had-to-be-postponed ideas
+    main README.md is much shorter now, much easier to grasp
+    tried out everything on Laptop, fixed some occuring issues
+    running an initial experiment needs only TWO lines now!
+
+v52 18/1/2019-23/1/2019 full automation! ./run.sh and ./run-all_small.sh and ./run-all_large.sh
+    parity double-// in web3.node.version
+    parity instantseal TODO: integer-seconds blocktime not right
+    parity instantseal now treated like TestRPC: no empty blocks
+    many github interactions, parity team; testing parity-deploy, my own scripts
+    numTransactions not via config.py anymore, for scripting several experiments
+    more elegant send.py log output, mention ROUTE only once
+    tuned killing network starters; parity, quorum
+    parity-deploy still causes many issues, my own workarounds
+    new scripts for listing and killing background processes
+    quorum-configure.sh easy now that blk.io merged my pull request
+    many little improvements, around running experiment & results output
+    finalTpsAv needed cleverer dict access
+    new script to run 5 experiments with different clients all in one go!
+    ./run-all_small.sh for integration testing and 
+    ./run-all_large.sh to create all results per one machine
+
 v51 15/1/2019
     tried out parity v2.2.3 - but still not able to survive multithreaded sending
     see folder networks/
@@ -6,7 +41,7 @@ v51 15/1/2019
     for -configure of parity instantseal, and aura; still TODO: geth and quorum
     run.sh can call *-start.sh and *-stop.sh scripts when given a 2nd parameter
     run.sh 1st parameter now sane to be used as part of filename
-    run.sh is now a complete experiment launcher !
+    ./run.sh is now a complete experiment launcher !
 
 v50 14/1/2019-15/1/2019
     new page_generator.py which makes a markdown and an HTML page from each run
