@@ -36,20 +36,20 @@ echo
 
 
 chapter $CH_MACHINE-TestRPC
-CH_TXS=400 CH_THREADING="sequential" ./run.sh $CH_MACHINE-TestRPC testrpc
+CH_TXS=5000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-TestRPC testrpc
 
 
 
 
 chapter $CH_MACHINE-Geth
-CH_TXS=3000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Geth geth-clique
+CH_TXS=30000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Geth geth-clique
 
 
 
 
 chapter $CH_MACHINE-Quorum
 networks/quorum-configure.sh
-CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Quorum quorum
+CH_TXS=50000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Quorum quorum
 
 
 
@@ -62,14 +62,14 @@ networks/parity-configure-instantseal.sh $PARITY_VERSION
 # so instead of multithreaded sending:
 # TXS=1000 THREADING="threaded2 20" ./run.sh $CH_MACHINE-Parity-instantseal parity
 # I must use non-threaded sending:
-CH_TXS=2000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-instantseal parity
+CH_TXS=20000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-instantseal parity
 
 
 
 
 chapter $CH_MACHINE-Parity-aura
 networks/parity-configure-aura.sh $PARITY_VERSION
-CH_TXS=2000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-aura parity
+CH_TXS=20000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-aura parity
 
 
 
@@ -77,6 +77,7 @@ CH_TXS=2000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-aura parity
 chapter "run-all_....sh composite script ending here"
 echo see folder results/runs/
 echo
+
 
 # switch off the trap
 set +e
