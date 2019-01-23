@@ -1,10 +1,12 @@
 
 # new TODOs while work in progress
+
 * update documentation: 
   * explain new scripts like ./run.sh and ./run-all_....sh
   * radically shorten main README.md = put everything else into docs/chainhammer.md
   * `deploy.py notest` --> `deploy.py`; get-set-get test is now run with `deploy.py andtests`
-  * include methodology chapter as manual - perhaps wait until it is read? 
+  * include methodology chapter as manual - perhaps wait until it is read?
+  * run link-checker.sh again once upstreamed to github 
 * timestamp transformation = different units depending on client, see tps.timestampToSeconds():
   * next time when trying 'raft' consensus - test whether timestamp transformation is working correctly
   * testrpc-py blocktime is badly estimated - check back with https://github.com/pipermerriam/eth-testrpc/issues/117 if problem is solved now
@@ -28,9 +30,11 @@
 * display
   * multi-terminal tool (e.g terminator), to show all logs/___.log files at once
 
-beware: some of this collection is outdated:
 
-# TODO - next steps
+
+beware: some of this older collection is outdated:
+
+# TODO general
 
 interesting next questions:
 
