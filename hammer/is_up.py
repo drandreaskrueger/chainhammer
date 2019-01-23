@@ -34,8 +34,9 @@ def call_port(RPCaddress=RPCaddress):
     """
     Just calls empty GET on RPCaddress, checks whether status_code==200 
     """
+    headers=headers = {'Content-type': 'application/json'}
     try:
-        response = requests.get(RPCaddress)
+        response = requests.post(RPCaddress, headers=headers) # GET does not work on parity instantseal 
     except requests.exceptions.ConnectionError:
         success, error = False, 'ConnectionError'
     else:
