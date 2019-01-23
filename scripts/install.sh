@@ -56,6 +56,8 @@ source scripts/install-network-starters.sh
 
 source scripts/install-virtualenv.sh
 
+source scripts/install-initialize.sh
+
 
 
 echo
