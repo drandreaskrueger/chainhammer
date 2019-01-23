@@ -1,7 +1,7 @@
 #!/bin/bash
 
-FOLDER=networks/repos/blk-io
-GETBACK=../../..
+FOLDER=networks/repos/blk-io_crux/docker/quorum-crux
+GETBACK=../../../../..
 LOG=logs/network.log
 
 cd $FOLDER
