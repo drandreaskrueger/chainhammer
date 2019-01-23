@@ -142,6 +142,9 @@ if (( $# == 2 )); then
     # echo should be stopped now
     # scripts/netstat_port8545.sh
     echo
+    # TODO: Perhaps each time also call networks/$2-clean.sh 
+    #       to reset chain to block 0 ???
+    #       or at least docker-compose down already in -stop.sh?
 fi
 
 title "Ready."
