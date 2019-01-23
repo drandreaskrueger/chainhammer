@@ -68,7 +68,7 @@ def test_readTpsLog():
     
 def test_title():
     T=pg.title(INFO_EXAMPLE)
-    assert T=="Geth v1.8.14-stable-316fc7ec with 10000 txs: 162.4 TPS"
+    assert T=="(TEMP) Geth v1.8.14 with 10000 txs: 162.4 TPS"
     
     
 def test_save_page():
