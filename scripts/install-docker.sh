@@ -10,9 +10,11 @@ echo should you not want that, CTRL-C now, and execute the remaining commands in
 read -p "Press enter to continue"
 echo 
 
+echo stopping docker daemon then 
 echo remove docker docker-engine docker.io
 # possibly not installed, so switch off the trap: 
 set +e
+sudo systemctl stop docker
 sudo apt-get -y remove docker docker-engine docker.io
 set -e
 
