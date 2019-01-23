@@ -1,6 +1,133 @@
 # chainhammer FAQ
 frequently asked questions, explaining approach, or code
 
+TOC:
+
+* detailed manual for installation & first run
+  * install.sh 
+  * initialization / preparation
+  * run.sh quickstart script
+* step-by-step manually: tps.py, deploy.py, send.py, ...
+* gitlab private repo
+* what if a script fails prematurely? Kill processes 
+* docker problems? Kill & Remove docker containers
+* web3 versus RPC
+
+
+---
+
+## how to install and run
+
+step by step, in case the integrated script scripts/install.sh makes problems
+
+### install.sh ALL dependencies 
+New in v44: Installer for EVERYTHING that this repo needs!
+```
+cd chainhammer      # you must be in main folder
+scripts/install.sh
+```
+but be CAREFUL: 
+Better only use on a disposable/cloud/virtualbox machine, 
+and NOT on your main work machine!!  
+
+or 
+
+only create the *virtualenv for the chainhammer Python programs*, then look into [scripts/install-virtualenv.sh](../scripts/install-virtualenv.sh)
+
+(For more details see [reproduce.md](reproduce.md)).
+
+### preparations
+
+All python scripts & jupyer notebooks must be run *within that virtualenv*, e.g.:
+```
+cd hammer; source ../env/bin/activate
+```
+Now start your ethereum node(s), or simply: `source env/bin/activate; testrpc-py`
+
+Before first ever run of chainhammer: 
+```
+touch account-passphrase.txt
+./deploy.py andtests
+```
+It tests whether communication with the ethereum node is working, 
+**and initially creates local files about the compiled and deployed contract**. 
+If there are connection problems, check the ports in [config.py](hammer/config.py) --> 
+`RPCaddress, RPCaddress2`.
+
+### quickstart
+A new integrated script which executes a lot of steps, one by one. Beware, this is still beta. Please report any issues, thanks.
+
+    ./run.sh TestRPC-Local testrpc
+
+or e.g.
+
+    ./run.sh Geth-Clique-Local geth-clique
+
+---
+
+## alternatively: step-by-step manually
+Remember, in each new terminal virtualenv: `cd hammer; source ../env/bin/activate`
+
+first terminal:
+```
+./tps.py
+```
+
+second terminal:
+```
+./deploy.py; ./send.py 1000
+```
+
+Then, after all (e.g. 20,001) transactions have been seen, 
+extract the whole chain into `parity-run17.db` (example);
+and create the diagrams
+
+```
+cd ../reader
+rm -f parity-run17.db*
+
+./blocksDB_create.py parity-run17.db
+./blocksDB_diagramming.py parity-run17.db Parity-run-17
+```
+
+---
+
+## how to install from gitlab
+More infos [here](https://stackoverflow.com/questions/30202642/how-can-i-clone-a-private-gitlab-repository).
+
+Either
+```
+git clone https://github.com/andreaskrueger/chainhammer andreaskrueger_chainhammer
+cd andreaskrueger_chainhammer
+```
+with entering your gitlab username & password manually, or 
+
+
+```
+git clone git@gitlab.com:andreaskrueger/chainhammer andreaskrueger_chainhammer
+cd andreaskrueger_chainhammer
+```
+when you have uploaded your .ssh key to gitlab. 
+
+Then in both cases continue with install... in [README.md --> quickstart(../README.md#quickstart).
+
+
+---
+
+## what if a script fails prematurely?
+Then there might be process running in the background, which prevent new runs, then this can be useful
+
+    scripts/kill-leftovers.sh
+
+
+---
+
+## docker problems?
+
+this is a very radical step, to kill & delete all docker images & containers:
+
+    scripts/remove-all-docker.sh
+
 ---
 
 ## send via `web3.py` versus send via direct RPC call `eth_sendTransaction`
@@ -32,7 +159,7 @@ I am doing (`contract_method_ID()` + `arg` --> `argument_encoding()` --> `txPara
 ### choice
 
 I switch between those two routes here    
-[`contract_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RPC`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/send.py#L201)
+[`contrachow to install from gitlabt_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RPC`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/send.py#L201)
 
 choice constant `ROUTE` is defined in [`config.py`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/config.py#L38)
 
@@ -42,4 +169,3 @@ I have now actually raised an
 * [w3p#1133](https://github.com/ethereum/web3.py/issues/1133): *huge difference in TPS performance when bypassing web3.py in favor of a direct RPC call* 
 
 ---
-
