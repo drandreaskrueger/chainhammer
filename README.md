@@ -21,12 +21,15 @@ It should work with any Ethereum type chain; we focused on PoA consensus.
 ## instructions
 
 ### folders
-* `hammer/` - submits many transactions to blockchain - see next chapter 'chronology'
-* `reader/` - reads in the whole chain, and visualizes TPS, blocktime, gas, bytes - see [reader/README.md](reader/README.md)
-* `results/` - for each client one markdown file
+* `hammer/` - submits many transactions, while watching the recent blocks
+* `reader/` - reads blocks; visualizes TPS, blocktime, gas, bytes - see [reader/README.md](reader/README.md)
 * `docs/` - see esp. reproduce.md
-* `env/` - Python virtualenv, created via script, see below
-* `tests/` - all started via `./pytest.sh`
+* `results/` - for each client one markdown file; `results/runs/` - auto-generated pages
+* `logs/` - check this first if problems
+* `networks/` - network starters & external repos via install script, see below
+* `scripts/` - installers and other iseful bash scripts
+* `env/` - Python virtualenv, created via install script, see below
+* `tests/` - start whole integration test suite via `./pytest.sh`
 
 ### chronology
 See the [results/](results/) folder:
@@ -41,6 +44,8 @@ See the [results/](results/) folder:
 1. [substrate.md](results/substrate.md): not begun yet
 
 ## results summary
+
+Will soon be re-done completely. Please contact me now, if you know how to accelerate any of the clients:
 
 | hardware  	| node type 	    | #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
 |-----------	|-----------	    |--------	|--------	|-------------	|--------------	|
@@ -71,89 +76,51 @@ See the [results/](results/) folder:
 [Reproduce](docs/reproduce.md) these results easily; for the `config` column also see there.
 Quickest reproduction with my [Amazon AMI readymade image](docs/reproduce.md#readymade-amazon-ami).
 And see that bottom of [parity.md](results/parity.md) and [geth.md](results/geth.md) 
-and [quorum-IBFT.md](results/quorum-IBFT.md) for the latest runs, and additional details.
+and [quorum-IBFT.md](results/quorum-IBFT.md) for the latest runs, issues, and additional details.
 
 ## faster wider more
-* how I initially got this faster, *on Quorum*, step by step, please read the 1st logbook [log.md](results/log.md)
+* how I initially got this faster, *on Quorum*, step by step, please do read the 1st logbook [log.md](results/log.md)
 * then I improved per client, see each in [#chronology](#chronology)
 * what to try next: [TODO.md](docs/TODO.md) = e.g. vary transaction size, automate more, etc.
 
 ### you
-See [other-projects.md](docs/other-projects.md) using chainhammer, or projects which are similar to this. 
+Add yourself to [other-projects.md](docs/other-projects.md) using chainhammer, or projects which are similar to this.   
+
+(Especially if you work in one of the dev teams, you know your client code best - ) please try to improve the above results, e.g. by varying the CLI arguments with which the nodes are started; I don't see that as my job, you will be much more successful with that.
+
+See parity [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393), parity [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help), geth [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447), quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316).
 
 *Please report back when you have done other / new measurements.*
 
-#### Suggestions please: how can I speed this up further? 
-* parity [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393) 60 TPS ? (parity aura v1.11.11)
-  * parity [SE#58521](https://ethereum.stackexchange.com/questions/58521/parity-tps-optimization-please-help) parity TPS optimization - please help - stackexchange.com
-* geth [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions.
-  * quorum [Q#479](https://github.com/jpmorganchase/quorum/issues/479#issuecomment-413603316)  Sudden drop in TPS around 14k transactions (Quorum IBFT)
 
-## run
-
-### install.sh ALL dependencies 
-New in v44: Installer for EVERYTHING that this repo needs!
-```
-cd chainhammer      # you must be in main folder
-scripts/install.sh
-```
-but be CAREFUL: 
-Better only use on a disposable/cloud/virtualbox machine, 
-and NOT on your main work machine!!  
-
-or 
-
-only create the *virtualenv for the chainhammer Python programs*, then look into [scripts/install-virtualenv.sh](scripts/install-virtualenv.sh)
-
-(For more details see [reproduce.md](docs/reproduce.md)).
-
-### preparations
-
-All python scripts & jupyer notebooks must be run *within that virtualenv*, e.g.:
-```
-cd hammer; source ../env/bin/activate
-```
-Now start your ethereum node(s), or simply: `source env/bin/activate; testrpc-py`
-
-Before first ever run of chainhammer: 
-```
-touch account-passphrase.txt
-./deploy.py andtests
-```
-It tests whether communication with the ethereum node is working, 
-**and initially creates local files about the compiled and deployed contract**. 
-If there are connection problems, check the ports in [config.py](hammer/config.py) --> 
-`RPCaddress, RPCaddress2`.
+## install and run
 
 ### quickstart
-A new integrated script which executes a lot of steps, one by one. Beware, this is still beta. Please report any issues, thanks.
+N.B.: Better do this on a *disposable cloud, or virtualbox machine*; because the installation makes lasting changes and needs sudo!  
 
-    ./run.sh Geth-Clique-Local geth-clique
-
-
-### step-by-step
-Remember, in each new terminal virtualenv: `cd hammer; source ../env/bin/activate`
-
-first terminal:
+After unpacking a ZIP of the downloaded repo, or by
 ```
-./tps.py
-```
-second terminal:
-```
-./deploy.py; ./send.py 1000
+git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer
+cd drandreaskrueger_chainhammer
 ```
 
-Then, after all (e.g. 20,001) transactions have been seen, 
-extract the whole chain into `parity-run17.db` (example);
-and create the diagrams
-
+you now only need these **two lines** *to prepare and run the 1st experiment!*
 ```
-cd ../reader
-rm -f parity-run17.db*
-
-./blocksDB_create.py parity-run17.db
-./blocksDB_diagramming.py parity-run17.db Parity-run-17
+scripts/install.sh
+CH_TXS=1000 CH_THREADING="sequential" ./run.sh $HOSTNAME-TestRPC testrpc
 ```
+You will then have a diagram, and a HTML and MD page about this run!
+
+#### All supported clients in one go:
+
+For the **full integration test**, run each client for a short moment:
+```
+export CH_MACHINE=yourChoice
+./run-all_small.sh
+```
+
+For detailed instructions, and troubleshooting, please see [FAQ.md](docs/FAQ.md) and [github issues](https://github.com/drandreaskrueger/chainhammer/issues).
+
 
 ## unittests
 ```
@@ -169,7 +136,6 @@ and finally runs all the unittests, also logging into `tests/logs/`.
 just start that; and run `pytest` manually:
 ```
 source env/bin/activate
-cd hammer; ./deploy.py andtests; cd ..
 py.test -v --cov
 ```
 
