@@ -2,8 +2,9 @@ echo
 echo first initialization
 echo 
 
-echo make logs folder
+echo make logs and runs folder
 mkdir -p logs
+mkdir -p results/runs
 echo 
 
 echo start testRPC ethereum provider
