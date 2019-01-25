@@ -70,7 +70,15 @@ or
 
 For now, parity v2.x.y can only handle `sequential` sending. Please you help the parity team to figure out a parity configuration which does not die when shot at with 20 multi-threading workers, see [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582).
 
+### other manuals
+you find more infos in these places:
 
+* [FAQ.md](FAQ.md)
+* [reproduce_outdated.md](reproduce_outdated.md)
+* [cloud.md](cloud.md)
+* in the per-client [results/*.md](results/) texts
+
+and *below* this table:
 
 
 ## results
