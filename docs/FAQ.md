@@ -222,3 +222,25 @@ this script tries to kill as much as possible:
 
 read it before you run it!
 
+---
+
+## out of memory
+
+is hard to detect, so better have a terminal open with
+
+    ssh chainhammer
+    watch -n 10 "free -m"
+
+you you can keep an eye on your RAM.
+
+
+## Quorum off
+
+Quorum-crux cannot run in a t2.micro with only 1 GB.  
+To avoid problems, it is switched off by default.
+
+Simply run with the switch $CH_QUORUM:
+
+    CH_QUORUM=true CH_MACHINE=$HOSTNAME ./run-all_small.sh
+
+if you want to enable it.

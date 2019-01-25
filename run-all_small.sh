@@ -5,6 +5,7 @@ if [ -z "$CH_MACHINE" ] ; then
     exit
 fi
 
+
 function chapter {
 
     # helps for debugging if previous clients does not die quickly enough
@@ -48,7 +49,18 @@ echo
 echo machine name: $CH_MACHINE
 echo 
 
+if [ "$CH_QUORUM" = true ]; then
+    echo You want me to also run Quorum which needs more RAM.
+    echo Think twice, this would not work on a t2.micro machine.
+    echo Better keep an eye on your RAM, with
+    echo 'watch -n 5 "free -m"'
+else
+    echo Skipping Quorum, if you do want it, set CH_QUORUM=true
+fi
 
+echo
+sleep 1
+echo
 
 
 chapter "$CH_MACHINE-TestRPC"
@@ -64,11 +76,16 @@ CH_TXS=3000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Geth" geth-clique
 
 
 chapter "$CH_MACHINE-Quorum"
-possibly_remove_all_docker silent # now silent just do it.
-networks/quorum-configure.sh
-CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
 
-
+if [ "$CH_QUORUM" = true ]; then
+    possibly_remove_all_docker silent # now silent just do it.
+    networks/quorum-configure.sh
+    CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
+else
+    echo
+    echo Skipping Quorum, see very beginning of output of this script.
+    echo
+fi
 
 
 chapter "$CH_MACHINE-Parity-instantseal"
