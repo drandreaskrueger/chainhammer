@@ -85,7 +85,11 @@ def test_timestamp_humanreadable():
     
 
 def test_filename():
-    assert pg.filename(INFO_EXAMPLE) == "Geth_20190114-1519_txs10000"
+    answer = pg.filename(INFO_EXAMPLE)
+    assert len(answer) == len("Geth_20190114-1519_txs10000")
+    # different timezone will result in different timstamp, sigh:
+    assert answer[:12] == "Geth_2019011"
+    assert answer[-11:] == "19_txs10000"
     
     
 def test_createElements():
@@ -98,7 +102,10 @@ def test_makeAndSave_MarkdownPage():
                                          "tpslog", "image_location",
                                          runs_folder=".")
     os.remove(answer)
-    assert answer == "./Geth_20190114-1519_txs10000.md"
+    # assert answer == "./Geth_20190114-1519_txs10000.md"
+    assert len(answer) == len("./Geth_20190114-1519_txs10000.md")
+    assert answer[:14] == "./Geth_2019011"
+    assert answer[-14:] == "19_txs10000.md"
 
 
 def test_makeAndSave_HTMLPage():
@@ -106,8 +113,11 @@ def test_makeAndSave_HTMLPage():
                                          "tpslog", "image_location",
                                          runs_folder=".")
     os.remove(answer)
-    assert answer == "./Geth_20190114-1519_txs10000.html"
-
+    # assert answer == "./Geth_20190114-1519_txs10000.html"
+    assert len(answer) == len("./Geth_20190114-1519_txs10000.html")
+    assert answer[:14] == "./Geth_2019011"
+    assert answer[-16:] == "19_txs10000.html"
+    
 
 def test_CLI_params():
     try:
