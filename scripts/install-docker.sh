@@ -14,7 +14,7 @@ echo stopping docker daemon then
 echo remove docker docker-engine docker.io
 # possibly not installed, so switch off the trap: 
 set +e
-sudo systemctl stop docker
+sudo service docker stop
 sudo apt-get -y remove docker docker-engine docker.io
 set -e
 
@@ -41,7 +41,7 @@ sudo apt-get update
 set -e
 sudo apt-cache policy docker-ce
 sudo apt-get -y install docker-ce 
-sudo systemctl start docker
+sudo service docker restart
 sudo usermod -aG docker ${USER}
 groups $USER
 
