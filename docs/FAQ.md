@@ -98,7 +98,7 @@ More infos [here](https://stackoverflow.com/questions/30202642/how-can-i-clone-a
 
 Either
 ```
-git clone https://github.com/andreaskrueger/chainhammer andreaskrueger_chainhammer
+git clone https://gitlab.com/andreaskrueger/chainhammer andreaskrueger_chainhammer
 cd andreaskrueger_chainhammer
 ```
 with entering your gitlab username & password manually, or 

@@ -23,7 +23,7 @@ trap 'echo; echo "\"${last_command}\" command filed with exit code $?."' EXIT
 #
 echo 
 echo Install ChainHammer dependencies, and clone network starter repos
-echo version v45
+echo version v55
 echo 
 echo Please report any issues IF this script is NOT ending with: 
 echo ... with exit code 0.
