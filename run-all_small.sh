@@ -18,6 +18,20 @@ function chapter {
 }  
 
 
+function possibly_remove_all_docker {
+    
+    # if $CH_SMALLDISK=true then before each new docker activity all past is killed and removed 
+    # echo $CH_SMALLDISK
+    
+    if [ $CH_SMALLDISK = true ]; then
+        echo Removing previous docker stuff = time consuming but saves memory:
+        set +e # remove trap because commands fail if there aren't any docker containers
+        scripts/remove-all-docker.sh $1
+        set -e # reintroduce trap
+        echo
+    fi
+}
+
 # exit when any command fails
 set -e
 # keep track of the last executed command
@@ -36,20 +50,21 @@ echo
 
 
 chapter $CH_MACHINE-TestRPC
-CH_TXS=400 CH_THREADING="sequential" ./run.sh $CH_MACHINE-TestRPC testrpc
-
+CH_TXS=400 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-TestRPC" testrpc
 
 
 
 chapter $CH_MACHINE-Geth
-CH_TXS=3000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Geth geth-clique
+possibly_remove_all_docker # first time not silent but warn the user
+CH_TXS=3000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Geth" geth-clique
 
 
 
 
 chapter $CH_MACHINE-Quorum
+possibly_remove_all_docker silent # now silent just do it.
 networks/quorum-configure.sh
-CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Quorum quorum
+CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
 
 
 
@@ -62,14 +77,16 @@ networks/parity-configure-instantseal.sh $PARITY_VERSION
 # so instead of multithreaded sending:
 # TXS=1000 THREADING="threaded2 20" ./run.sh $CH_MACHINE-Parity-instantseal parity
 # I must use non-threaded sending:
-CH_TXS=2000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-instantseal parity
+possibly_remove_all_docker silent
+CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-instantseal" parity
 
 
 
 
 chapter $CH_MACHINE-Parity-aura
 networks/parity-configure-aura.sh $PARITY_VERSION
-CH_TXS=2000 CH_THREADING="sequential" ./run.sh $CH_MACHINE-Parity-aura parity
+possibly_remove_all_docker silent
+CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-aura" parity
 
 
 
