@@ -63,3 +63,5 @@ source scripts/install-initialize.sh
 echo
 echo Done. All is good if it says: filed with exit code 0. 
 echo
+echo N.B.: You might need to LOGOUT and LOGIN before docker starts working for you!
+echo  
