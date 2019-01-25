@@ -24,6 +24,8 @@ Now all preparations are done via one script. Please do yourself the favor, and 
 
     scripts/install.sh
 
+The log out / close terminal, and log back in, so that docker works.
+
 Because this script makes lasting changes to the machine it is running on, so I suggest that you DO NOT USE YOUR MAIN MACHINE! Instead **use a disposable cloud droplet, or virtualbox machine.**
 
 ### all 5 experiments in one go
