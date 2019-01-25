@@ -170,3 +170,55 @@ I have now actually raised an
 * [w3p#1133](https://github.com/ethereum/web3.py/issues/1133): *huge difference in TPS performance when bypassing web3.py in favor of a direct RPC call* 
 
 ---
+
+## stuck during ./is_up.py
+
+Can have many problems. 
+
+First check this logfile:
+
+    tail -n 10 -f logs/network.log
+
+then try if you can connect to the node from the outside:
+
+    geth attach http://localhost:8545
+
+if the second fails, but the first looks good, 
+I once on my local machine had an exotic problem 
+with the **vpn** and the docker portmapping, 
+then simply disconnecting from the vpn helped with that.
+
+For more docker stuff, see below.
+
+
+---
+
+## docker
+
+You could also try entering the :8545 container, 
+and look into log files there.
+
+    docker ps
+    docker exec -it <hash> bash
+
+perhaps prune the networks 
+
+    docker network ls
+    docker network prune
+
+or restart the daemon?
+    
+    sudo service docker status
+    sudo service docker restart
+    sudo service docker status
+
+---
+
+## continue after errors / Ctrl-C
+
+this script tries to kill as much as possible:
+
+    scripts/kill-leftovers.sh
+
+read it before you run it!
+

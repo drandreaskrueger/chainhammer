@@ -29,6 +29,10 @@ echo sleep 2
 sleep 2
 echo 
 
+echo docker networks:
+docker network ls
+docker network prune
+
 echo you might have to manually kill more:
 echo
 sudo scripts/netstat_port8545.sh
