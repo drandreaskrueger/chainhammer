@@ -1,7 +1,7 @@
 N.B.: Work in progress
 
 # chainhammer reproduce results
-Tested on and optimized for a Debian AWS machine (based on `debian-stretch-hvm-x86_64-gp2-2018-11-10-63975`) - see [cloud.md](cloud.md) for details.
+Tested on and optimized for a Debian AWS machine (based on `debian-stretch-hvm-x86_64-...`) - see [cloud.md](cloud.md) for details.
 
 ## TOC
 
@@ -32,7 +32,7 @@ Given a distinguishing prefix for the machine in `$CH_MACHINE`, the 2 scripts
 
     CH_MACHINE=$HOSTNAME run-all_{small,large}.sh
 
-send about {20,200} seconds worth of transactions at each of the 5 clients (testrpc-py, geth clique, quorum-crux with IBFT, parity-instantseal, parity-aura), while producing diagrams and human readable MD/HTML pages for each of them. 
+send about {20,200} seconds worth of transactions at each of the 5 clients (testrpc-py, geth clique, quorum-crux with IBFT, parity-instantseal, parity-aura), while producing diagrams and human readable MD/HTML pages for each of them, using the below `./run.sh` five times.
 
 **A whole laboratory in a one liner!**
 
@@ -44,7 +44,7 @@ The new `./run.sh` is massively automated now, executing a sequence of 10 steps 
 
     ./run.sh IDENTIFIER [networkstarter-stub]
 
-If a 2nd CLI argument $2 is given, `./run.sh` uses the scripts networks/$2-start.sh and networks/$2-stop.sh for the Ethereum network (or it expects one to be running already on port :8545, if no 2nd argument is given).
+If a 2nd CLI argument $2 is given, `./run.sh` uses the scripts `networks/$2-start.sh` and `networks/$2-stop.sh` for the Ethereum network (or it expects one to be running already on port :8545, if no 2nd argument [networkstarter-stub] is given).
 
 It needs 2 ENV variables to be set, `$CH_TXS` for number-of-transactions, and `$CH_THREADING` for the send-algorithm `sequential` or `threaded2` - and for the latter the number of multi-threading workers (thus the quotation marks).
 

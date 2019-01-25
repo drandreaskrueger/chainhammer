@@ -1,3 +1,5 @@
+TODO: some details might need updates; until then see [../run.sh](../run.sh) for intended usage 
+
 # analyze historical blocks
 In this case, the "Tobalaba" chain of the energywebfoundation. 
 
