@@ -23,7 +23,7 @@ function possibly_remove_all_docker {
     # if $CH_SMALLDISK=true then before each new docker activity all past is killed and removed 
     # echo $CH_SMALLDISK
     
-    if [ $CH_SMALLDISK = true ]; then
+    if [ "$CH_SMALLDISK" = true ]; then
         echo Removing previous docker stuff = time consuming but saves memory:
         set +e # remove trap because commands fail if there aren't any docker containers
         scripts/remove-all-docker.sh $1
@@ -31,6 +31,8 @@ function possibly_remove_all_docker {
         echo
     fi
 }
+# possibly_remove_all_docker; exit
+
 
 # exit when any command fails
 set -e
@@ -49,19 +51,19 @@ echo
 
 
 
-chapter $CH_MACHINE-TestRPC
+chapter "$CH_MACHINE-TestRPC"
 CH_TXS=400 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-TestRPC" testrpc
 
 
 
-chapter $CH_MACHINE-Geth
+chapter "$CH_MACHINE-Geth"
 possibly_remove_all_docker # first time not silent but warn the user
 CH_TXS=3000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Geth" geth-clique
 
 
 
 
-chapter $CH_MACHINE-Quorum
+chapter "$CH_MACHINE-Quorum"
 possibly_remove_all_docker silent # now silent just do it.
 networks/quorum-configure.sh
 CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
@@ -69,7 +71,7 @@ CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
 
 
 
-chapter $CH_MACHINE-Parity-instantseal
+chapter "$CH_MACHINE-Parity-instantseal"
 PARITY_VERSION=v2.2.3
 networks/parity-configure-instantseal.sh $PARITY_VERSION
 # would like to run multithreaded too but then parity stops working
@@ -83,7 +85,7 @@ CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-instantseal" 
 
 
 
-chapter $CH_MACHINE-Parity-aura
+chapter "$CH_MACHINE-Parity-aura"
 networks/parity-configure-aura.sh $PARITY_VERSION
 possibly_remove_all_docker silent
 CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-aura" parity
