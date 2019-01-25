@@ -17,6 +17,7 @@ set +e
 sudo service docker stop
 sudo apt-get -y remove docker docker-engine docker.io
 set -e
+echo 
 
 echo add docker debian gpg key:
 # add key - how more elegant?
@@ -34,16 +35,26 @@ then
     sudo cp $file $file.save
 fi
 
-echo new /etc/apt/sources.list.d/docker.list
-echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list
+echo new $file
+echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee $file
+echo
 set +e
 sudo apt-get update
 set -e
+echo
+echo install docker-ce
 sudo apt-cache policy docker-ce
 sudo apt-get -y install docker-ce 
-sudo service docker restart
+
+echo add group docker to current user
 sudo usermod -aG docker ${USER}
 groups $USER
+
+echo sudo service docker restart
+sudo service docker restart
+systemctl status docker --no-pager
+
+
 
 echo 
 echo 
