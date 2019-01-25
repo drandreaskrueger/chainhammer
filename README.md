@@ -1,7 +1,9 @@
 ```
 ## news 2019-Jan-23 - automation!
 Install&Run everything in TWO lines, incl. results as HTML page with diagrams!
-
+```
+--> [#quickstart](#quickstart)
+```
 ## news 2018-Dec-16 - refactored!
 Everything is in a different place now, sorry. But it urgently needed cleanup.  
 Please open an issue (or fork & pull request) if you find a broken link, thanks.
@@ -44,7 +46,9 @@ See the [results/](results/) folder:
 
 ## results summary
 
-Will soon be re-done completely. Please contact me now, if you know how to accelerate any of the clients:
+Outdated table in which I had run each of the experiments *manually* 
+in autumn 2018; *soon* re-done completely, using the below automation. 
+So please contact me *now*, if you know how to accelerate any of these clients:
 
 | hardware  	| node type 	    | #nodes 	| config 	| peak TPS_av 	| final TPS_av 	|
 |-----------	|-----------	    |--------	|--------	|-------------	|--------------	|
@@ -79,8 +83,10 @@ and [quorum-IBFT.md](results/quorum-IBFT.md) for the latest runs, issues, and ad
 
 ## faster wider more
 * how I initially got this faster, *on Quorum*, step by step, please do read the 1st logbook [log.md](results/log.md)
-* then I improved per client, see each in [#chronology](#chronology)
-* what to try next: [TODO.md](docs/TODO.md) = e.g. vary transaction size, automate more, etc.
+* then I improved per client, see each in [#chronology](#chronology) above
+* (possible [TODOs](docs/TODO.md) - any other ideas?)
+
+but not much more needed = the current version is already fully automated. Use it! May it help you to improve the speed of your Ethereum client!
 
 ### you
 Add yourself to [other-projects.md](docs/other-projects.md) using chainhammer, or projects which are similar to this.   
@@ -118,7 +124,7 @@ export CH_MACHINE=yourChoice
 ./run-all_small.sh
 ```
 
-For detailed instructions, and troubleshooting, please see [FAQ.md](docs/FAQ.md) and [github issues](https://github.com/drandreaskrueger/chainhammer/issues).
+For detailed instructions, please see [reproduce.md](reproduce.md), and for troubleshooting [FAQ.md](docs/FAQ.md) and [github issues](https://github.com/drandreaskrueger/chainhammer/issues).
 
 
 ## unittests
@@ -173,6 +179,11 @@ Consider to submit your improvements & [usage](docs/other-projects.md) as pull r
 ---
 
 ---
+
+```
+# The following diagrams are outdated! Just make your own, new ones, with:
+CH_MACHINE=yourChoice ./run-all_large.sh
+```
 
 ## chainhammer: hammer --> reader -->  diagrams
 examples:
