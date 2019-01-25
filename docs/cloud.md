@@ -30,7 +30,9 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
   * Network: Default
   * Subnet: Default in eu-west-2a
   * auto assign public IP: enable
-* Next ... Next ... Step 5: Add Tags
+* Next ... Step4: Add Storage
+  * 10 GiB (the default 8GiB are enough but then we need to always remove all docker images, which extends the experiment runs by about 6 minutes)
+* Next ... Step 5: Add Tags
   * Name: chainhammer
   * Environment: dev
   * Project: benchmarking
@@ -102,10 +104,29 @@ git clone https://github.com/drandreaskrueger/chainhammer.git drandreaskrueger_c
 cd drandreaskrueger_chainhammer
 
 scripts/install.sh
-./pytest.sh
 ```
 
 it stops before each step. Please report any errors as an issue on github, thanks. Yes, compiling `geth` takes long - please help us with [this idea](reproduce_outdated.md#geth-dockerized-please-help) to avoid that, thanks. 
+
+**Important:** Now LOGOUT and reconnect, so that docker daemon starts working for this user:
+
+    exit
+    ssh chainhammer
+    cd drandreaskrueger_chainhammer
+
+##### testing: unittests and integration tests
+
+    ./pytest.sh
+    
+    CH_MACHINE=t2.micro ./run-all_small.sh    
+
+you might want a second terminal open with
+
+    tail -n 10 -f logs/network.log
+
+to see any Ethereum client problems live.
+
+
 
 ##### N.B.: before creating image from instance to make a new AMI
 
@@ -115,37 +136,21 @@ cd ~/drandreaskrueger_chainhammer; git pull
 scripts/remove-all-docker.sh
 ```
 
-And for privacy, important:
-
-[remove-ssh-host-key-pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs), 
-then power down:
+And for privacy, important: [remove-ssh-host-key-pairs](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/building-shared-amis.html?icmpid=docs_ec2_console#remove-ssh-host-key-pairs), then power down:
 ```
 sudo shred -u /etc/ssh/*_key /etc/ssh/*_key.pub
-
 sudo shutdown now
 ```
 
 Once the instance has shutdown, and I created an AMI from it, and made it public.
 
-```
-sudo shutdown now
-```  * how to benchmark `parity`
-  * how to benchmark `geth`
-  * chainhammer:
-    * chainhammer: test connection
-    * chainhammer: TPS watcher
-    * chainhammer: send 20,000 transactions
 On [AWS console #Instances](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Instances) ... actions ... create image.
 
 On [AWS console #Images](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images) ... right click ... Modify Image Permissions ... public. And tag it, like above.
 
 --> AMI ID `ami-0aaa64f3e432e4a26`
 
-
-
-
-
-By now that AMI is superseded. Use the "search for public AMIs --> chainhammer" instead, next chapter:
+By now that AMI probably superseded. Use the "search for public AMIs --> chainhammer" instead, next chapter:
 
 ## readymade Amazon AMI 
 

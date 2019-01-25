@@ -38,6 +38,11 @@ send about {20,200} seconds worth of transactions at each of the 5 clients (test
 
 **A whole laboratory in a one liner!**
 
+The whole `run-all_small.sh` needs ~7 minutes 
+IF all docker images are already downloaded/built, 
+or else it takes ~6 minutes more, 
+and allocates ~2.1 GB of diskspace, mainly for the docker images.
+
 Now scroll down to the results! ONLY if you want to know more, continue reading here:
 
 ### one experiment
@@ -243,7 +248,7 @@ and even on that small machine I could see well over 100 TPS with geth clique!
 To run this 4 nodes dockerized blk-io/crux setup is more difficult because each node runs an instance of geth_quorum AND an instance of crux. I have already posted a [feature request BC#48](https://github.com/blk-io/crux/issues/48) = it would be nice to still be able to run this on a t2.micro all in RAM. For now, you can enlarge the swapfile:
 ```
 sudo swapoff -a && SWAPFILE=/swapfile; sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1500 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && sudo swapon -a && free -m
-```
+```watch -n 5 "df"
 and keep an instance of `htop` open to notice when the ceiling is hit (the you get connection problems because node 1 or 2 has run out of memory, and crashed):
 ```
 ssh chainhammer
