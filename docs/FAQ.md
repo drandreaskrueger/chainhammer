@@ -231,7 +231,9 @@ is hard to detect, so better have a terminal open with
     ssh chainhammer
     watch -n 10 "free -m"
 
-you you can keep an eye on your RAM.
+you you can keep an eye on your RAM, and for your disk:
+
+    watch -n 10 "df"
 
 
 ## Quorum off
