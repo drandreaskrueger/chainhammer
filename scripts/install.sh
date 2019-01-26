@@ -22,8 +22,10 @@ trap 'echo; echo "\"${last_command}\" command filed with exit code $?."' EXIT
 #
 #
 echo 
+echo ===================================================================
 echo Install ChainHammer dependencies, and clone network starter repos
 echo version v55
+echo ===================================================================
 echo 
 echo Please report any issues IF this script is NOT ending with: 
 echo ... with exit code 0.
@@ -44,19 +46,30 @@ sudo ls scripts/install-*.sh
 echo got sudo, thanks.
 
 
-source scripts/install-packages.sh
+function install_chapter {
+    echo 
+    echo ==========================================
+    echo = $1
+    echo ==========================================
+        
+    source $1
+}
 
-source scripts/install-docker.sh
+install_chapter scripts/install-packages.sh
 
-source scripts/install-solc.sh
+install_chapter scripts/install-docker.sh
 
-source scripts/install-geth.sh
+install_chapter scripts/install-docker-compose.sh
 
-source scripts/install-network-starters.sh
+install_chapter scripts/install-solc.sh
 
-source scripts/install-virtualenv.sh
+install_chapter scripts/install-geth.sh
 
-source scripts/install-initialize.sh
+install_chapter scripts/install-network-starters.sh
+
+install_chapter scripts/install-virtualenv.sh
+
+install_chapter scripts/install-initialize.sh
 
 
 

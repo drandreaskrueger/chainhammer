@@ -1,5 +1,4 @@
 echo
-echo
 echo create chainhammer virtualenv
 echo
 echo after possibly removing a whole existing env/ folder !!!

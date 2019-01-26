@@ -12,7 +12,10 @@ read -p "Press enter to continue"
 
 wget https://github.com/ethereum/solidity/releases/download/$SOLC_VERSION/solc-static-linux
 chmod 755 solc-static-linux 
+
 echo I hope $INSTALLPATH/ is in your PATH?
+# or how could this be done cleverer?
+
 echo $PATH
 sudo mv solc-static-linux $INSTALLPATH/
 sudo ln -s -f $INSTALLPATH/solc-static-linux $INSTALLPATH/solc

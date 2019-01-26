@@ -1,6 +1,4 @@
-DOCKER_COMPOSE_VERSION=1.22.0
 
-echo
 echo
 echo docker
 echo will remove: docker docker-engine docker.io
@@ -54,16 +52,5 @@ echo sudo service docker restart
 sudo service docker restart
 systemctl status docker --no-pager
 
-
-
-echo 
-echo 
-echo install docker-compose new version
-read -p "Press enter to continue"
-
-sudo curl -L "https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod 755 /usr/local/bin/docker-compose
-
-echo docker and docker-compose versions:
 docker --version
-docker-compose --version
+
