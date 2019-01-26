@@ -16,6 +16,9 @@ cd $GETBACK
 echo $PID > $PIDFILE
 # cat network.pid | xargs kill -SIGINT
 
+echo
+echo For Quorum it can take a minute until the chain starts moving.
+
 echo Started network, call this command for watching the log file:
 echo tail -n 10 -f $LOG
 echo
