@@ -36,16 +36,15 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
   * Virtualization type: hvm
   * press select
 * choose type `t2.micro`
-  * because that is in the "free tier"
-  * OR `t2.small` at least, if you also want to run quorum-crux
-  * OR `t2.medium` if you don't want loose quorum performance by swap 
+  * because that micro machine is in the "free tier"
+  * OR `t2.medium` if you don't want loose Quorum performance by Swap 
 * Next ... Step 3: Configure Instance Details
   * Network: Default
   * Subnet: Default in eu-west-2a
   * auto assign public IP: enable
 * Next ... Step4: Add Storage
-  * 10 GiB 
-    * the default 8GiB are enough for single experiments of ONE client, but cannot hold all docker images
+  * 11 GiB 
+    * the default 8GiB would be enough IF only small swap (700MB not 2000M) and for SINGLE experiments of ONE client at a time - but it cannot hold all docker images in parallel
 * Next ... Step 5: Add Tags
   * Name: chainhammer
   * Environment: dev
@@ -80,7 +79,7 @@ now it becomes this simple to connect:
 ```
 ssh chainhammer
 ```
-(perhaps after enabling your VPN)
+(perhaps after enabling your VPN with the correct IP address)
 
 you should then see something like this:
 
@@ -102,11 +101,11 @@ then you are logged into your new and shiny cloud machine.
 now that you are ssh-logged into that machine:
 
 ##### swap
-A swap file is helpful to protect against lack of memory in very small machines
+A swap file is helpful to protect against lack of memory in very small (low RAM) machines
 ```
-SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1000 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
+SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=2000 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
 ```
-(for quorum-crux on t2.micro not 1000 but count=1500)
+The `bs=1M count=2000` means 2000 Megabytes of swap (note that this will allocate a big chunk of the harddisk).
 
 ##### git
 ```
@@ -139,7 +138,7 @@ The script stops before each step. Please report any errors as an issue on githu
 
 If the machine has enough RAM, also include the Quorum-crux experiment, with the switch `$CH_QUORUM`
 
-    CH_QUORUM=true CH_MACHINE=t2.small ./run-all_small.sh
+    CH_QUORUM=true CH_MACHINE=t2.medium ./run-all_small.sh
 
 but keep an eye on RAM with 
 
@@ -149,7 +148,7 @@ In any case, you want to keep another terminal open with
 
     ssh -t chainhammer "tail -n 10 -f CH/logs/network.log"
 
-to see any Ethereum client problems live.
+to notice any Ethereum client problems live.
 
 ##### N.B.: before creating image from instance to make a new AMI
 
@@ -203,4 +202,19 @@ Host chainhammer
 now it becomes this simple to connect:
 ```
 ssh chainhammer
+```
+
+
+## multiple info viewer with terminator
+
+I want to see all of these outputs at a glance:
+
+```
+ssh -t chainhammer "watch -n 5 'free -m'"
+ssh -t chainhammer "watch -n 5 'df'"
+ssh -t chainhammer "htop"
+ssh -t chainhammer "tail -f CH/logs/network.log"
+ssh -t chainhammer "tail -f CH/logs/deploy.py.log"
+ssh -t chainhammer "tail -f CH/logs/send.py.log"
+ssh -t chainhammer "tail -f CH/logs/tps.py.log"
 ```
