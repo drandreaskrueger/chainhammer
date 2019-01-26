@@ -192,16 +192,44 @@ then simply disconnecting from the vpn helped with that.
 
 For more docker stuff, see below.
 
+---
+
+if
+
+    tail -n 10 -f logs/network.log
+
+shows:
+
+> could not find an available, non-overlapping IPv4 address pool  
+> among the defaults to assign to the network
+
+then for me this helped:
+
+1. disconnected the vpn
+1. `sudo systemctl restart docker`
+
+and then try again, possible first with only starting the network manually, e.g. 
+
+    networks/geth-clique-start.sh
+    networks/geth-clique-stop.sh 
+
+until you solved the problem, the rerun your experiment.
+
+Please get back to me, if you know how to differently configure the vpn so that this problem disappears, thanks.
 
 ---
 
-## docker
+## docker inside the container
 
 You could also try entering the :8545 container, 
 and look into log files there.
 
     docker ps
     docker exec -it <hash> bash
+
+---
+
+## docker what else to try
 
 perhaps prune the networks 
 
@@ -218,11 +246,15 @@ or restart the daemon?
 
 ## continue after errors / Ctrl-C
 
-this script tries to kill as much as possible:
+this scripts helps you to identify problems
+
+    scripts/show-leftovers.sh
+
+then this script tries to kill as much as possible:
 
     scripts/kill-leftovers.sh
 
-read it before you run it!
+BUT: read it before you run it!
 
 ---
 
@@ -233,18 +265,20 @@ is hard to detect, so better have a terminal open with
     ssh chainhammer
     watch -n 10 "free -m"
 
-you you can keep an eye on your RAM, and for your disk:
+so you can keep an eye on your RAM - and for your disk:
 
     watch -n 10 "df"
 
+---
 
 ## Quorum off
 
-Quorum-crux cannot run in a t2.micro with only 1 GB.  
-To avoid problems, it is switched off by default.
+Quorum-crux currently needs ~2.6 GiB of RAM, and to avoid hard-to-spot problems, it is switched off by default.
 
-Simply run with the switch $CH_QUORUM:
+Simply run with the switch $CH_QUORUM=true:
 
     CH_QUORUM=true CH_MACHINE=$HOSTNAME ./run-all_small.sh
 
 if you want to enable it.
+
+
