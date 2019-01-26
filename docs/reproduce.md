@@ -43,6 +43,12 @@ IF all docker images are already downloaded/built,
 or else it takes ~6 minutes more, 
 and allocates ~2.1 GB of diskspace, mainly for the docker images.
 
+The long experiment, with 125,000 transactions shot at 5 Ethereum providers:
+
+    date; CH_MACHINE=t2.medium ./run-all_large.sh ; date
+
+takes 27 minutes on an Amazon `t2.medium` machine.
+
 Now scroll down to the results! ONLY if you want to know more, continue reading here:
 
 ### one experiment
