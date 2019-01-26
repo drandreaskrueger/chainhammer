@@ -99,7 +99,7 @@ sleep 0
 echo
 
 title send.py
-echo Send $CH_TXS transactions with concurrency algo \'$CH_THREADING\', plus possibly wait 10 more blocks.
+echo Send $CH_TXS transactions with non/concurrency algo \'$CH_THREADING\', plus possibly wait 10 more blocks.
 echo Then send.py triggers tps.py to end counting. Logging all into file $SENDLOG. 
 echo
 
