@@ -1,3 +1,31 @@
+v55 23/1/2019-26/1/2019 obligatory: testing it in the cloud too
+    documententation update reproduce.md is MUCH easier now; 
+      must accelerate = simply moved old stuff to reproduce_outdated.md for now
+    crosslinking some manual files. Now: reproduce.md + FAQ.md + cloud.md + results/
+    different timezone on cloud machine, updated tests
+    scripts/remove-all-docker.sh can now also run silent, without waiting for confirmation
+    tried much, but docker install needs logout&login for the user to have docker access
+    more testing around install-docker.sh
+    temp: OPTIONALLY remove all docker before EACH experiment, to save diskspace
+          later removed gain, unnecessary complexity, just use larger disk instead
+    bash-script problems: always "$x" all variables $x, because if $x= empty then comparison fails otherwise
+    FAQ.md 
+        started long list of troubleshooting advice in FAQ.md
+        'could not find an available, non-overlapping IPv4 address pool' stupidly caused by local vpn !
+        TOC for FAQ
+    Quorum OFF by default because too much RAM for t2.micro; ON with switch CH_QUORUM=true
+    more versatile and consistent checking for and killing of leftovers
+    now always same port :8545 everywhere!
+    parity instantseal tps.py had incomplete knowledge about peakTpsAv, now also searches backwards
+    all networks/*-stop.sh now also do docker-compose down, for full takedown
+    installation chapters clearer
+    timeout deploy.py on Quorum small machines; extended, now prints: "Receipt arrived. Took 35.1 seconds" 
+    measured: 27 minutes for 125,000 transactions on 5 Ethereum providers, for _large.sh 
+    'terminator' 
+         layout for 6 ssh chainhammer info terminals in one window, REALLY useful.
+         screenshot terminator
+    v55: Testing in the cloud - done.
+
 v54 23/1/2019 final tests before next release
     reminder: link-checker.sh has to be run when upstreamed into public repo
     unittests: 98 tests PASSED on TestRPC
