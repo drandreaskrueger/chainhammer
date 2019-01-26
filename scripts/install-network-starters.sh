@@ -35,7 +35,7 @@ git clone  https://github.com/blk-io/crux blk-io_crux
 cd blk-io_crux
 git checkout eeb63a91b7eda0180c8686f819c0dd29c0bc4d46
 cd ..
-echo TODO: Perhaps already patch with chainhammer-optimized parameters?
+
 
 cd ../..
 

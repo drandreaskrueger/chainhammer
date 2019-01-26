@@ -1,11 +1,21 @@
 # cloud
 
-older AWS instructions, possibly outdated, but better than no manuals, right? Before you do anything below, read the [../scripts/](../scripts/)`install*.sh` *executable bash scripts* - because they are likely up-to-date.
+older AWS instructions, possibly outdated, but better than no manuals, right?
+Before you do anything below, read 
+the [../scripts/](../scripts/)`install*.sh` *executable bash scripts* - 
+because they are likely up-to-date. It would actually be a nice task 
+to automate also this creating-of-an-AMI, using `awscli` - 
+perhaps when you are reading this, that TODO is done already? 
+Anyway, this text tells you how to utilize Amazon AWS, and 
+hopefuly soon also GoogleCloud, and Azure - Contact me if you are 
+an expert in that, and might want to help, thanks.
 
 ## TOC
 
-* AWS deployment - how I created the AMI
-* [readymade Amazon AMI](cloud.md#readymade-amazon-ami) <-- start HERE if you have little time -->
+* AWS deployment
+  * how I created the AMI
+* [readymade Amazon AMI](cloud.md#readymade-amazon-ami) 
+  * start HERE if you have little time:
   * **how to clone your own AWS machine from that image**
 
 TODO: Update TOC after installation instructions moved into install.sh 
@@ -18,7 +28,7 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
 
 ### how I created the AMI
 * [Launch instance Wizard](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#LaunchInstanceWizard:) in  `eu-west-2` (London)
-* Community AMIs, tick boxes "Operating System: Debian" , "Architecture: 64-bit", then search term: "Debian-stretch 2019"
+* click "Community AMIs", tick boxes "Operating System: Debian" , "Architecture: 64-bit", then search term: "Debian-stretch 2019"
 * newest is `debian-stretch-hvm-x86_64-gp2-2019-01-22-59357`
   * ami-023143c216b0108ea
   * FAI Debian image
@@ -26,12 +36,16 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
   * Virtualization type: hvm
   * press select
 * choose type `t2.micro`
+  * because that is in the "free tier"
+  * OR `t2.small` at least, if you also want to run quorum-crux
+  * OR `t2.medium` if you don't want loose quorum performance by swap 
 * Next ... Step 3: Configure Instance Details
   * Network: Default
   * Subnet: Default in eu-west-2a
   * auto assign public IP: enable
 * Next ... Step4: Add Storage
-  * 10 GiB (the default 8GiB are enough but then we need to always remove all docker images, which extends the experiment runs by about 6 minutes)
+  * 10 GiB 
+    * the default 8GiB are enough for single experiments of ONE client, but cannot hold all docker images
 * Next ... Step 5: Add Tags
   * Name: chainhammer
   * Environment: dev
@@ -46,7 +60,7 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
 * (make a new one or) choose an existing ssh keypair, example `AndreasKeypairAWS.pem` 
 * Launch Instances
 * Click on 
-  * "Your instances are now launching ... The following instance launches have been initiated: i-xxxxxxxxxxxxxxxxx" to open the Console https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Instances for this Instance
+  * "Your instances are now launching ... The following instance launches have been initiated: [i-xxxxxxxxxxxxxxxxx](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Instances)" to open the Console for this specific Instance
   * Copy the "Public DNS (IPv4)", in our example here `ec2-35-176-53-99.eu-west-2.compute.amazonaws.com` to clipboard
 
 Now simplify `ssh` access, by adding this block to your local machine's
@@ -66,6 +80,7 @@ now it becomes this simple to connect:
 ```
 ssh chainhammer
 ```
+(perhaps after enabling your VPN)
 
 you should then see something like this:
 
@@ -89,9 +104,9 @@ now that you are ssh-logged into that machine:
 ##### swap
 A swap file is helpful to protect against lack of memory in very small machines
 ```
-SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=700 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
+SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1000 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
 ```
-(for quorum-crux use not 700 but count=1500)
+(for quorum-crux on t2.micro not 1000 but count=1500)
 
 ##### git
 ```
@@ -99,20 +114,22 @@ sudo apt update && sudo apt -y upgrade && sudo apt install -y git
 ```
 
 ##### chainhammer main repo and dependencies install
+git clone, softlink for easier access, then changedir ... and INSTALL a lot of things:
 ```
 git clone https://github.com/drandreaskrueger/chainhammer.git drandreaskrueger_chainhammer
-cd drandreaskrueger_chainhammer
+ln -s drandreaskrueger_chainhammer CH
+cd ~/CH
 
 scripts/install.sh
 ```
 
-it stops before each step. Please report any errors as an issue on github, thanks. Yes, compiling `geth` takes long - please help us with [this idea](reproduce_outdated.md#geth-dockerized-please-help) to avoid that, thanks. 
+The script stops before each step. Please report any errors as an issue on github, thanks. Yes, compiling `geth` takes long - please help us with [this idea](reproduce_outdated.md#geth-dockerized-please-help) to avoid that, thanks. 
 
 **Important:** Now LOGOUT and reconnect, so that docker daemon starts working for this user:
 
     exit
     ssh chainhammer
-    cd drandreaskrueger_chainhammer
+    cd CH
 
 ##### testing: unittests and integration tests
 
@@ -120,13 +137,19 @@ it stops before each step. Please report any errors as an issue on github, thank
     
     CH_MACHINE=t2.micro ./run-all_small.sh    
 
-you might want a second terminal open with
+If the machine has enough RAM, also include the Quorum-crux experiment, with the switch `$CH_QUORUM`
 
-    tail -n 10 -f logs/network.log
+    CH_QUORUM=true CH_MACHINE=t2.small ./run-all_small.sh
+
+but keep an eye on RAM with 
+
+    ssh -t chainhammer "watch -n 5 'free -m'"
+
+In any case, you want to keep another terminal open with
+
+    ssh -t chainhammer "tail -n 10 -f CH/logs/network.log"
 
 to see any Ethereum client problems live.
-
-
 
 ##### N.B.: before creating image from instance to make a new AMI
 

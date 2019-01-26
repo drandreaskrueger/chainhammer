@@ -74,7 +74,7 @@ So please contact me *now*, if you know how to accelerate any of these clients:
 | t2.xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 439.5      	| 395.7        |
 | t2.xlarge 	| quorum crux IBFT 	| 4    	    | (L)    	| 389.1      	| 338.9        |
 | t2.2xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 435.4      	| 423.1        |
-| c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)    	| 536.4      	| 524.3        |
+| c5.4xlarge 	| quorum crux IBFT 	| 4    	    | (F)  test_getNearestEntry()  	| 536.4      	| 524.3        |
 
 [Reproduce](docs/reproduce.md) these results easily; for the `config` column also see there.
 Quickest reproduction with my [Amazon AMI readymade image](docs/reproduce.md#readymade-amazon-ami).
@@ -106,7 +106,8 @@ N.B.: Better do this on a *disposable cloud, or virtualbox machine*; because the
 After unpacking a ZIP of the downloaded repo, or by
 ```
 git clone https://github.com/drandreaskrueger/chainhammer drandreaskrueger_chainhammer
-cd drandreaskrueger_chainhammer
+ln -s drandreaskrueger_chainhammer CH
+cd CH
 ```
 
 you now only need these **two lines** *to prepare and run the 1st experiment!*

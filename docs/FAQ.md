@@ -99,14 +99,16 @@ More infos [here](https://stackoverflow.com/questions/30202642/how-can-i-clone-a
 Either
 ```
 git clone https://gitlab.com/andreaskrueger/chainhammer andreaskrueger_chainhammer
-cd andreaskrueger_chainhammer
+ln -s andreaskrueger_chainhammer CH
+cd CH
 ```
 with entering your gitlab username & password manually, or 
 
 
 ```
 git clone git@gitlab.com:andreaskrueger/chainhammer andreaskrueger_chainhammer
-cd andreaskrueger_chainhammer
+ln -s andreaskrueger_chainhammer CH
+cd CH
 ```
 when you have uploaded your .ssh key to gitlab. 
 
