@@ -63,11 +63,15 @@ def deployContract(contract_interface, ifPrint=True, timeout=TIMEOUT_DEPLOY):
     """
     deploys contract, waits for receipt, returns address
     """
+    before=time.time()
     myContract = w3.eth.contract(abi=contract_interface['abi'], 
                                  bytecode=contract_interface['bin'])
+
     tx_hash = w3.toHex( myContract.constructor().transact() )
     print ("tx_hash = ", tx_hash, "--> waiting for receipt (timeout=%d) ..." % timeout)
+    sys.stdout.flush()
     tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=timeout)
+    print ("Receipt arrived. Took %.1f seconds." % (time.time()-before))
     
     contractAddress = tx_receipt["contractAddress"]
     if ifPrint:

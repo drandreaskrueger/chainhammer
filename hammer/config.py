@@ -46,7 +46,7 @@ RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
 
 # Quorum can take a minute until the chain finally starts moving, 
 # then the default timeout=120 might be too short. Give more time: 
-TIMEOUT_DEPLOY = 240
+TIMEOUT_DEPLOY = 300
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "RPC"  # "web3" "RPC"
