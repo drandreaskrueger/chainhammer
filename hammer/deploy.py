@@ -31,7 +31,7 @@ if __name__ == '__main__' and __package__ is None:
     from os import sys, path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
-from hammer.config import RPCaddress, PARITY_UNLOCK_EACH_TRANSACTION
+from hammer.config import RPCaddress, TIMEOUT_DEPLOY, PARITY_UNLOCK_EACH_TRANSACTION
 from hammer.config import FILE_CONTRACT_SOURCE, FILE_CONTRACT_ABI, FILE_CONTRACT_ADDRESS
 from hammer.config import GAS_FOR_SET_CALL
 
@@ -59,15 +59,15 @@ def compileContract(contract_source_file):
     return contractName.replace("<stdin>:", ""), contract_interface 
 
 
-def deployContract(contract_interface, ifPrint=True):
+def deployContract(contract_interface, ifPrint=True, timeout=TIMEOUT_DEPLOY):
     """
     deploys contract, waits for receipt, returns address
     """
     myContract = w3.eth.contract(abi=contract_interface['abi'], 
                                  bytecode=contract_interface['bin'])
     tx_hash = w3.toHex( myContract.constructor().transact() )
-    print ("tx_hash = ", tx_hash, "--> waiting for receipt ...")
-    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)
+    print ("tx_hash = ", tx_hash, "--> waiting for receipt (timeout=%d) ..." % timeout)
+    tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash, timeout=timeout)
     
     contractAddress = tx_receipt["contractAddress"]
     if ifPrint:
