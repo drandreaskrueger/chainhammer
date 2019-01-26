@@ -6,10 +6,6 @@ if [ -z "$CH_MACHINE" ] ; then
 fi
 
 function chapter {
-
-    # helps for debugging if previous clients does not die quickly enough
-    # sudo scripts/netstat_port8545.sh
-
     echo 
     echo
     echo @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -38,10 +34,10 @@ if [ "$CH_QUORUM" = true ]; then
 else
     echo Skipping Quorum, good on small machines, if you do want it, set CH_QUORUM=true
 fi
-
 echo
 sleep 1
 echo
+
 
 
 chapter "$CH_MACHINE-TestRPC"
@@ -56,7 +52,6 @@ CH_TXS=3000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Geth" geth-clique
 
 
 chapter "$CH_MACHINE-Quorum"
-
 if [ "$CH_QUORUM" = true ]; then
     networks/quorum-configure.sh
     CH_TXS=4000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
@@ -90,6 +85,7 @@ CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-aura" parity
 chapter "run-all_....sh composite script ending here"
 echo see folder results/runs/
 echo
+
 
 # switch off the trap
 set +e
