@@ -15,7 +15,7 @@ Please open an issue (or fork & pull request) if you find a broken link, thanks.
 
 ---
 
-# chainhammer v54
+# chainhammer v55
 TPS measurements of parity aura, geth clique, quorum, tobalaba, etc. 
 It should work with any Ethereum type chain; we focused on PoA consensus.
 
