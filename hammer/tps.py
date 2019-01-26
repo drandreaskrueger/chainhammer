@@ -144,15 +144,31 @@ def getNearestEntry(myDict, myIndex):
       finalTpsAv = tpsAv[block_last]
     can sometimes not be resolved, then choose
       finalTpsAv = tpsAv[block_last+i]
-    testing with increasing i
+    testing with increasing i, the decreasing i
     """
-    maxIndex = max(myDict.keys())
-    answer = None
+    answer = myDict.get(myIndex, None)
+    if answer:
+        return answer
+
+    maxIndex,minIndex = max(myDict.keys()), min(myDict.keys())
+
+    # first look later:
+    i = myIndex
     while not answer:
-        if myIndex>maxIndex:
-            raise CodingError("no value in dict with this index or higher") 
-        answer = myDict.get(myIndex, None)
-        myIndex += 1
+        i += +1
+        if i>maxIndex:
+            break
+        answer = myDict.get(i, None)
+
+    # then look earlier:
+    i=myIndex
+    while not answer:
+        i += -1
+        if i<minIndex:
+            raise CodingError("Ouch, this should never happen. Info: len(myDict)=%d myIndex=%d" %(len(myDict), myIndex)) 
+        answer = myDict.get(i, None)
+        
+        
     return answer
 
 

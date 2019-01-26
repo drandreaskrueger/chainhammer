@@ -119,7 +119,10 @@ def test_analyzeNewBlocks():
     assert tpsAv >= 0
     
     
-def test_getNearestEntry():
+def test_getNearestEntry_above():
+    """
+    pytest -v tests/test_tps.py::test_getNearestEntry_above
+    """
     myDict = {1:1, 2:2, 4:4, 17:17, 23:23}
     assert tps.getNearestEntry(myDict, myIndex=1) == 1
     assert tps.getNearestEntry(myDict, myIndex=2) == 2
@@ -129,7 +132,16 @@ def test_getNearestEntry():
     assert tps.getNearestEntry(myDict, myIndex=10) == 17
     assert tps.getNearestEntry(myDict, myIndex=17) == 17
     assert tps.getNearestEntry(myDict, myIndex=18) == 23
-    
+   
+
+def test_getNearestEntry_below():
+    """
+    pytest -v tests/test_tps.py::test_getNearestEntry_below
+    """
+    myDict = {1:1, 2:2, 4:4, 17:17, 23:23}
+    assert tps.getNearestEntry(myDict, myIndex=24) == 23
+    assert tps.getNearestEntry(myDict, myIndex=50) == 23
+
     
 def test_measurement_NotTestableBecauseInfiniteLoop():
     """
