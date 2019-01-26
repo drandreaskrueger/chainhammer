@@ -1,19 +1,29 @@
-echo killing containers, then restarting docker:
-sudo docker kill $(sudo docker ps -q)
-sudo systemctl restart docker
+#
+#
+# no warning, the name kill- should tell it all, right?
+#
+#
+# so ... read this before you execute it!
+#
+
+echo remove all docker, then restarting docker:
+scripts/remove-all-docker.sh silent keep-images
+
+echo docker system prune
+docker system prune -f
+
+echo sudo service docker restart
+sudo service docker restart
+sudo systemctl --no-pager status docker
 echo 
 
-echo run all -stop.sh and -clean.sh scripts once, patience please
-networks/testrpc-stop.sh &> /dev/null
+echo run all -clean.sh scripts once, patience please
 networks/testrpc-clean.sh > /dev/null
 echo 1/4 done
-networks/geth-clique-stop.sh &> /dev/null
 networks/geth-clique-clean.sh &> /dev/null
 echo 2/4 done
-networks/quorum-stop.sh &> /dev/null
 networks/quorum-clean.sh &> /dev/null
 echo 3/4 done
-networks/parity-stop.sh &> /dev/null
 networks/parity-clean.sh &> /dev/null
 echo 4/4 done
 echo
@@ -29,17 +39,4 @@ echo sleep 2
 sleep 2
 echo 
 
-echo docker networks:
-docker network ls
-docker network prune
-
-echo you might have to manually kill more:
-echo
-sudo scripts/netstat_port8545.sh
-echo
-ps aux | grep tps.py | grep -v grep
-ps aux | grep crux | grep -v grep
-ps aux | grep geth | grep -v grep
-
-echo or simply look around with: ps aux
-
+scripts/show-leftovers.sh
