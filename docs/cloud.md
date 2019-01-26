@@ -209,12 +209,23 @@ ssh chainhammer
 
 I want to see all of these outputs at a glance:
 
-```
-ssh -t chainhammer "watch -n 5 'free -m'"
-ssh -t chainhammer "watch -n 5 'df'"
-ssh -t chainhammer "htop"
-ssh -t chainhammer "tail -f CH/logs/network.log"
-ssh -t chainhammer "tail -f CH/logs/deploy.py.log"
-ssh -t chainhammer "tail -f CH/logs/send.py.log"
-ssh -t chainhammer "tail -f CH/logs/tps.py.log"
-```
+* df - whether the harddisk is full
+* htop - to have an eye on RAM and CPU
+* network.log - whether the Ethereum node shows problems
+* deploy.py.log - if the smart contract deploy worked
+* send.py.log - interesting towards the end of an experiment
+* (tps.py.log - shown by main scripts anyways)
+
+For that purpose "Terminator - Multiple GNOME terminals in one window" is ideal. Start it with:
+
+    scripts/terminator-ssh-chainhammer.sh
+
+Added very recently, please improve, or give feedback 
+if it does not work, thanks.
+
+It looks like this:
+
+![terminator-screenshot.png](terminator-screenshot.png)
+[terminator-screenshot.png](terminator-screenshot.png)
+
+
