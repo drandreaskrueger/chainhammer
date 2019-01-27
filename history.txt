@@ -1,4 +1,7 @@
-v55 23/1/2019-26/1/2019 obligatory: testing it in the cloud too
+
+
+v55 23/1/2019-26/1/2019 
+"Testing in the cloud; docker problems; much documentation; terminator layout. Testing: Done!"
     documententation update reproduce.md is MUCH easier now; 
       must accelerate = simply moved old stuff to reproduce_outdated.md for now
     crosslinking some manual files. Now: reproduce.md + FAQ.md + cloud.md + results/
@@ -26,7 +29,8 @@ v55 23/1/2019-26/1/2019 obligatory: testing it in the cloud too
          screenshot terminator
     v55: Testing in the cloud - done.
 
-v54 23/1/2019 final tests before next release
+v54 23/1/2019 
+"Tests before next release: all 98 unit tests PASSED on 5 network types"
     reminder: link-checker.sh has to be run when upstreamed into public repo
     unittests: 98 tests PASSED on TestRPC
     solved problems when interrupted: killing more leftovers, docker containers, etc
@@ -35,7 +39,8 @@ v54 23/1/2019 final tests before next release
     fix for request.get() not allowed in parity instantseal
     v54: all 98 unittests PASSED on all 5 Ethereum providers
 
-v53 23/1/2019 documentation updates
+v53 23/1/2019 
+"documentation updates"
     moved much from main README.md into docs/FAQ.md
     docs/FAQ.md added chapters: how to clone from gitlab, how to kill processes, docker, etc
     docs/FAQ.md table of contents = TOC
@@ -44,7 +49,8 @@ v53 23/1/2019 documentation updates
     tried out everything on Laptop, fixed some occuring issues
     running an initial experiment needs only TWO lines now!
 
-v52 18/1/2019-23/1/2019 full automation! ./run.sh and ./run-all_small.sh and ./run-all_large.sh
+v52 18/1/2019-23/1/2019 
+"full automation! run-all_{small,large}.sh; many github issues; tweaked many details"
     parity double-// in web3.node.version
     parity instantseal TODO: integer-seconds blocktime not right
     parity instantseal now treated like TestRPC: no empty blocks
@@ -61,17 +67,18 @@ v52 18/1/2019-23/1/2019 full automation! ./run.sh and ./run-all_small.sh and ./r
     ./run-all_small.sh for integration testing and 
     ./run-all_large.sh to create all results per one machine
 
-v51 15/1/2019
+v51 15/1/2019 
+"automation of network-configure/start/stop/clean; run.sh now ~complete"
     tried out parity v2.2.3 - but still not able to survive multithreaded sending
-    see folder networks/
-    16 (!) new scripts:
+    16 (!) new scripts, see folder networks/ 
     for -start, -stop, -clean of geth, parity aura/instantseal, quorum, and testrpc!
     for -configure of parity instantseal, and aura; still TODO: geth and quorum
     run.sh can call *-start.sh and *-stop.sh scripts when given a 2nd parameter
     run.sh 1st parameter now sane to be used as part of filename
     ./run.sh is now a complete experiment launcher !
 
-v50 14/1/2019-15/1/2019
+v50 14/1/2019-15/1/2019 
+"results page generator; TestRPC fix; include all TpS measurements; more automation"
     new page_generator.py which makes a markdown and an HTML page from each run
     formatting issues, improved looks
     page also contains whole infodict, better safe than sorry.
@@ -83,6 +90,7 @@ v50 14/1/2019-15/1/2019
     run.sh now starts with ./is_up.py and ends with ./page_generator.py
 
 v49 11/1/2019-13/1/2019
+"whole experiment in 1 line: run.sh, and new INFOFILE across all steps. Got paid!"
     run.sh = 
     virtualenv + tps.py + deploy.py + send.py + blocksDB_create.py + blocksDB_diagramming.py
     AUTOSTOP_TPS: tps.py can be stopped now, by send.py writing to last-experiment.json
@@ -92,7 +100,8 @@ v49 11/1/2019-13/1/2019
     clienttype.py now also nodeVersion
     Web3Foundation has paid! Mention in LICENSE and README.md#credits
 
-v48 7/1/2019 - 10/1/2019
+v48 7/1/2019-10/1/2019
+"rewritten diagrams generator"
     new diagramming; study matplotlib.plyplot, then start anew
     first as jupyter notebook, then merged into blocksDB_diagramming.py
     better appearance, scatter instead of box plots, for blocksize and blocktime
@@ -101,6 +110,7 @@ v48 7/1/2019 - 10/1/2019
     now always 10 blocks at the end, to show averages 
 
 v47 4/1/2019
+"find out real range of experiment block numbers, and is_up.py"
     recognize known nodeNames, mention when new one
     is_up.py loops until network is reachable
     getReceipts_multithreaded now also as multithreading queue
@@ -108,6 +118,7 @@ v47 4/1/2019
     from beginning and end of experiment - and infers the range of blocknumbers the txs are in
     
 v46 3/1/2019
+"transaction success tester, and misc improvements"
     show peak TPS_average, and memorize after 3 relaxation rounds
     new switch PARITY_ALREADY_UNLOCKED
     cleaned up config.py a bit, more consistent naming, ...
@@ -119,10 +130,15 @@ v46 3/1/2019
     criterion txReceipt.status OR gasUsed/gasGiven comparison
 
 v45 2/1/2019
+"better installation routines"
     installer script v45 = refactored into 6 separate install-XYZ.sh scripts
     upgraded all hardcoded versions (docker, pip, requirements.txt, etc)
     new beginning cloud machine, 
     tested the new install.sh locally and in the cloud
+
+
+2018:
+
 
 v44 17/12/2018
     installer script v44 = replaces whole top half of reproduce.md !
