@@ -170,7 +170,7 @@ On [AWS console #Instances](https://eu-west-2.console.aws.amazon.com/ec2/v2/home
 
 On [AWS console #Images](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images) ... right click ... Modify Image Permissions ... public. And tag it, like above.
 
---> AMI ID `ami-0aaa64f3e432e4a26`
+--> AMI ID `ami-0a73e3d94545308d5`
 
 By now that AMI probably superseded. Use the "search for public AMIs --> chainhammer" instead, next chapter:
 
