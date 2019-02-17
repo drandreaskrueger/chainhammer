@@ -1,7 +1,8 @@
 #!/bin/bash
 
-SEND_PARAMS="threaded2 20"
-PREFIX=Geth-Local # or by CLI parameter?
+## now done in run*.sh scripts:
+# SEND_PARAMS="threaded2 20"
+# PREFIX=Geth-Local 
 
 FOLDER=networks/repos/drandreaskrueger_geth-dev
 GETBACK=../../..

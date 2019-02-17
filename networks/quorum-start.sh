@@ -1,7 +1,8 @@
 #!/bin/bash
 
-SEND_PARAMS="threaded2 20"
-PREFIX=Quorum-Local # or by CLI parameter?
+## now done in run*.sh scripts:
+# SEND_PARAMS="threaded2 20"
+# PREFIX=Quorum-Local
 
 FOLDER=networks/repos/blk-io_crux/docker/quorum-crux
 GETBACK=../../../../..

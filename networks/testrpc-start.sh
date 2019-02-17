@@ -1,7 +1,8 @@
 #!/bin/bash
 
-SEND_PARAMS="sequential"
-PREFIX=TestRPC-Local # or by CLI parameter?
+## now done in run*.sh scripts:
+# SEND_PARAMS="sequential"
+# PREFIX=TestRPC-Local 
 
 FOLDER=.
 GETBACK=.

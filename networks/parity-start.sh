@@ -1,10 +1,10 @@
 #!/bin/bash
 
+## now done in run*.sh scripts:
 # parity still cannot handle multithreaded sending!
-# SEND_PARAMS="threaded2 20"
-SEND_PARAMS="sequential"
-
-PREFIX=Parity-Local # or by CLI parameter?
+## SEND_PARAMS="threaded2 20"
+# SEND_PARAMS="sequential"
+# PREFIX=Parity-Local
 
 FOLDER=networks/repos/paritytech_parity-deploy
 GETBACK=../../..
