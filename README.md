@@ -165,7 +165,7 @@ Please credit this as:
 
 > benchmarking scripts "chainhammer"  
 > v01-v35 financed by Electron.org.uk 2018  
-> v40-v55 financed by Web3Foundation 2018  
+> v40-v55 financed by Web3Foundation 2018-2019  
 > current maintainer: Dr Andreas Krueger 2018-2019        
 > https://github.com/drandreaskrueger/chainhammer   
 
