@@ -50,7 +50,8 @@ CH_TXS=50000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Quorum" quorum
 
 
 chapter "$CH_MACHINE-Parity-instantseal"
-PARITY_VERSION=v2.2.3
+# PARITY_VERSION=v2.2.3
+PARITY_VERSION=v1.11.11
 networks/parity-configure-instantseal.sh $PARITY_VERSION
 # would like to run multithreaded too but then parity stops working
 # see issue github.com/paritytech/parity-ethereum/issues/9582

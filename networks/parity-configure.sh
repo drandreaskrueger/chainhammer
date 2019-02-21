@@ -12,7 +12,8 @@ PARITY_LOCAL_REMOVE=false
 # PARITY_LOCAL_REMOVE=true
 
 # fallback if no argument given:
-PARITY_VERSION=v2.2.3
+# PARITY_VERSION=v2.2.3
+PARITY_VERSION=v1.11.11
 
 if [ $# -eq 0 ]
   then
