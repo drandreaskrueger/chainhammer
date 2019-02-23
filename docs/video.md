@@ -3,8 +3,12 @@
 > That could be a neat way to see it in action.  
 > Edward  
 
-## Released Video 
-youtube link, and embed as image
+## Released video
+https://www.youtube.com/watch?v=xTYnsfs5U7I
+
+![https://www.youtube.com/watch?v=xTYnsfs5U7I](video-youtube-screenshot.png)
+
+https://www.youtube.com/watch?v=xTYnsfs5U7I
 
 ## Making of = Software Suggestions & Tricks
 
@@ -37,8 +41,41 @@ Some software was initially not working as expected. May this list here help you
 * **Music**: 
   * Royalty free music by Bensound: [relaxing](https://www.bensound.com/royalty-free-music/track/relaxing), [dreams](https://www.bensound.com/royalty-free-music/track/dreams-chill-out), [summer](https://www.bensound.com/royalty-free-music/track/summer-chill-relaxed-tropical), [sci-fi](https://www.bensound.com/royalty-free-music/track/sci-fi), [the jazz piano](https://www.bensound.com/royalty-free-music/track/the-jazz-piano).
   * `ffmpeg -i bensound-relaxing.mp3 -filter:a "volume=0.05" bensound-relaxing_5percent.mp3` reduced the volume - now it hides the irregularities and noise of my voiceover, but without distracting by being overly loud.
+* **Youtube**:
+  * The uploaded 15:54 video was too long, *sigh*. Fortunately, there is a way to unlock a feature: [verify](https://www.youtube.com/verify_phone_number), then ["Longer videos"](https://www.youtube.com/features) gets enabled. But:
+  * "Video unavailable. This video was removed because it was too long", so:
+  * uploading it *again*, lol. Fortunately, I had saved the description, see below:
+
 
 #### OpenShot Timeline
 42 video and 35 audio snippets, 5 songs:  
 
 ![video-editing-openshot.png](video-editing-openshot.png) 
+
+#### youtube video description
+* title: ChainHammer Ethereum Benchmarking - explaining software v55
+* tags: chainhammer, ethereum, TPS, benchmarking, geth, parity, quorum, smartcontract, blockchain, cryptocurrencies, opensource, Python
+* advanced settings: Category Science & Technology; Video language: English; allow contribute subtitles; recording date: February 23, 2019; license: creative commons attribution
+* desciption:
+
+```
+Chainhammer:
+* submits a high load of smart contract transactions
+* to a smart contract on an Ethereum based blockchain
+* then reads the whole chain, and produces diagrams of 
+* TPS, blocktime, gasUsed and gasLimit, and the blocksize
+* fully automated, start a whole lab with a one-liner.
+* open source, Python and bash
+* https://github.com/drandreaskrueger/chainhammer
+
+about video production:
+
+* for the "making of" of this video & software tips and tricks, see: 
+* https://github.com/drandreaskrueger/chainhammer/blob/master/docs/video.md
+* e.g. royalty free music by Bensound
+* chainhammer-video-1440x1080-v06.mov movie file
+* rendered from chainhammer-video-1440x1080_v06.osp 
+* produced on 20th-23rd of February 2019
+* my first ever released video, so please be gentle, but:
+* put your comments below please, thanks!
+```
