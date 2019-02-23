@@ -17,7 +17,7 @@ Some software was initially not working as expected. May this list here help you
 * `ssh` logs into the ready-made cloud machine on AWS
 * `terminator` opens several such ssh-terminals, each with a different log file
   * changed the aspect ratio to a more standard 1440x1080 pixels
-  * when working with *own* [terminator.config](../scripts/terminator.config) files, prevent strange problems with `rm ~/.config/terminator/config` (default file)
+  * *own* [terminator.config](../scripts/terminator.config) causes strange problems, then `rm ~/.config/terminator/config` helps
 * `xwininfo` helps to understand the coordinates of the screen windows 
 * **Screen recording** with [SimpleScreenRecorder](https://www.maartenbaert.be/simplescreenrecorder/)
   * (First I had tried `kazam`, but that kept on recording the wrong windows; perhaps due to the 4K screen?).
@@ -42,17 +42,16 @@ Some software was initially not working as expected. May this list here help you
   * Royalty free music by Bensound: [relaxing](https://www.bensound.com/royalty-free-music/track/relaxing), [dreams](https://www.bensound.com/royalty-free-music/track/dreams-chill-out), [summer](https://www.bensound.com/royalty-free-music/track/summer-chill-relaxed-tropical), [sci-fi](https://www.bensound.com/royalty-free-music/track/sci-fi), [the jazz piano](https://www.bensound.com/royalty-free-music/track/the-jazz-piano).
   * `ffmpeg -i bensound-relaxing.mp3 -filter:a "volume=0.05" bensound-relaxing_5percent.mp3` reduced the volume - now it hides the irregularities and noise of my voiceover, but without distracting by being overly loud.
 * **Youtube**:
-  * The uploaded 15:54 video was too long, *sigh*. Fortunately, there is a way to unlock a feature: [verify](https://www.youtube.com/verify_phone_number), then ["Longer videos"](https://www.youtube.com/features) gets enabled. But:
+  * The uploaded 15:54 video was too long, *sigh*. Fortunately, there is a way to unlock a feature: [verify](https://www.youtube.com/verify_phone_number), then '[Longer videos](https://www.youtube.com/features)' gets enabled. But too late:
   * "Video unavailable. This video was removed because it was too long", so:
-  * uploading it *again*, lol. Fortunately, I had saved the description, see below:
-
+  * uploading it *again*, lol. Fortunately, I had saved the "description", see below.
 
 #### OpenShot Timeline
 42 video and 35 audio snippets, 5 songs:  
 
 ![video-editing-openshot.png](video-editing-openshot.png) 
 
-#### youtube video description
+#### description for youtube video
 * title: ChainHammer Ethereum Benchmarking - explaining software v55
 * tags: chainhammer, ethereum, TPS, benchmarking, geth, parity, quorum, smartcontract, blockchain, cryptocurrencies, opensource, Python
 * advanced settings: Category Science & Technology; Video language: English; allow contribute subtitles; recording date: February 23, 2019; license: creative commons attribution
@@ -79,3 +78,5 @@ about video production:
 * my first ever released video, so please be gentle, but:
 * put your comments below please, thanks!
 ```
+
+https://www.youtube.com/watch?v=xTYnsfs5U7I
