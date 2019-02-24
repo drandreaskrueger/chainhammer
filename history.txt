@@ -1,12 +1,23 @@
-v56 27/1/2019 - work-in-progress
+v57 20/2/2019-23/2/2019
+"video"
+    choosing the right foss tools
+    concept, settings, decisions
+    screencast recording of important steps
+    audio recordings, explain what is going on
+    video editing
+    music to hide the audio problems
+    new channel on youtube, release video
+    for more details see docs/video.md
+    
+v56 27/1/2019-24/2/2019 
 "new public release: tests, announcements, final polish"
     money received for v45-v55 --> git push upstream master
     history.txt now got "summarizing headings" for each version
     cleaned up networks/*-start.sh 
     began video screencast documentation of chainhammer
     github issues announcements: new version v55 released
-    new Amazon AMI image v55 
     whole lab tests on AWS t2.medium, parity v2 stalling even with "sequential" --> going back to v1.11.11
+    new Amazon AMI image v57
     
 v55 23/1/2019-26/1/2019 
 "Testing in the cloud; docker problems; much documentation; terminator layout. Testing: Done!"
