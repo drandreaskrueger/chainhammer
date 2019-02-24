@@ -29,8 +29,8 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
 ### how I created the AMI
 * [Launch instance Wizard](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#LaunchInstanceWizard:) in  `eu-west-2` (London)
 * click "Community AMIs", tick boxes "Operating System: Debian" , "Architecture: 64-bit", then search term: "Debian-stretch 2019"
-* newest is `debian-stretch-hvm-x86_64-gp2-2019-01-22-59357`
-  * ami-023143c216b0108ea
+* newest is `debian-stretch-hvm-x86_64-gp2-2019-02-19-26620`
+  * (ami-0ef10a4062f24d89d)
   * FAI Debian image
   * Root device type: ebs 
   * Virtualization type: hvm
@@ -44,13 +44,13 @@ For quickstart, jump forward to chapter "readymade Amazon AMI"
   * auto assign public IP: enable
 * Next ... Step4: Add Storage
   * 11 GiB 
-    * the default 8GiB would be enough IF only small swap (700MB not 2000M) and for SINGLE experiments of ONE client at a time - but it cannot hold all docker images in parallel
+    * (the default 8GiB would be enough IF only *small* swap (700MB not 2000M) and for SINGLE experiments of ONE client at a time (e.g. only parity) - but it cannot hold all docker images of the different Ethereum clients in parallel)
 * Next ... Step 5: Add Tags
   * Name: chainhammer
   * Environment: dev
   * Project: benchmarking
   * Owner: Andreas Krueger
-* Next ... Security Group
+* Next ... Configure Security Group
   * create new security group
   * name it; allow **ssh** access
   * source: MyIP (I simply use the same specific VPN server to always get the same IP again)
