@@ -1,15 +1,8 @@
 ```
-## news 2019-Jan-23 - automation!
-Install&Run everything in TWO lines, incl. results as HTML page with diagrams!
+NEWS 2019-Feb-23 - video!
+Explaining software v55 video released on youtube:
 ```
---> [#quickstart](#quickstart)
-```
-## news 2018-Dec-16 - refactored!
-Everything is in a different place now, sorry. But it urgently needed cleanup.  
-Please open an issue (or fork & pull request) if you find a broken link, thanks.
-```
-
---> https://github.com/drandreaskrueger/chainhammer/issues
+--> [watch](https://www.youtube.com/watch?v=xTYnsfs5U7I)
 
 ![chainhammer-logo.png](docs/chainhammer-logo.png)
 
@@ -20,6 +13,9 @@ TPS measurements of parity aura, geth clique, quorum, tobalaba, etc.
 It should work with any Ethereum type chain; we focused on PoA consensus.
 
 ## instructions
+
+### video
+The brand new v55 version is now explained & presented in a useful [video on youtube](https://www.youtube.com/watch?v=xTYnsfs5U7I).
 
 ### folders
 * `hammer/` - submits many transactions, while watching the recent blocks
@@ -46,7 +42,7 @@ See the [results/](results/) folder:
 
 ## results summary
 
-Outdated table in which I had run each of the experiments *manually* 
+**Outdated table** in which I had run each of the experiments *manually* 
 in autumn 2018; *soon* re-done completely, using the below automation. 
 So please contact me *now*, if you know how to accelerate any of these clients:
 
