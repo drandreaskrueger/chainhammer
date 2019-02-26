@@ -20,7 +20,7 @@ echo
 
 PARITY_VERSION=v2.3.4
 
-BLOCKTIMES="32 16 8 4 2 1"
+BLOCKTIMES="1 2 4 8 16 32"
 
 cp networks/parity-configure.sh networks/parity-configure_BACKUP.sh
 
