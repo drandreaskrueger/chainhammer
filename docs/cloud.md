@@ -152,9 +152,11 @@ to notice any Ethereum client problems live.
 
 ##### N.B.: before creating image from instance to make a new AMI
 
-Update chainhammer repo to newest commit, and remove all docker containers & images (to save space)
+Update chainhammer repo to newest commit, and remove all docker containers & images (to save space), and remove all results-pages and diagrams (to make downloading of new runs easier), and clean out deb packages (to save space):
 ```
+sudo apt-get clean
 cd ~/drandreaskrueger_chainhammer; git pull
+rm results/runs/* reader/img/*
 scripts/remove-all-docker.sh
 ```
 
@@ -170,7 +172,7 @@ On [AWS console #Instances](https://eu-west-2.console.aws.amazon.com/ec2/v2/home
 
 On [AWS console #Images](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images) ... right click ... Modify Image Permissions ... public. And tag it, like above.
 
---> AMI ID `ami-0a73e3d94545308d5`
+--> AMI ID `ami-02668247b6555f48a` (v57)
 
 By now that AMI probably superseded. Use the "search for public AMIs --> chainhammer" instead, next chapter:
 
