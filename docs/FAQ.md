@@ -5,6 +5,7 @@ TOC:
 
 * detailed manual for installation & first run
   * install.sh 
+  * install on Ubuntu
   * initialization / preparation
   * run.sh quickstart script
 * step-by-step manually: tps.py, deploy.py, send.py, ...
@@ -43,6 +44,20 @@ or
 only create the *virtualenv for the chainhammer Python programs*, then look into [scripts/install-virtualenv.sh](../scripts/install-virtualenv.sh)
 
 (For more details see [reproduce.md](reproduce.md)).
+
+
+### install on Ubuntu
+
+Please see [tomusdrw's hints for Ubuntu](https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932).
+
+I always use Debian, so *you* might want to create 
+additional `*_ubuntu.sh` versions of [install-docker.sh](scripts/install-docker.sh), 
+and [install-packages.sh](scripts/install-packages.sh); 
+then we could simply add a CLI argument for Ubuntu users like this:
+
+    scripts/install.sh Ubuntu
+
+Please then submit a pull request, thanks.
 
 ### preparations
 
