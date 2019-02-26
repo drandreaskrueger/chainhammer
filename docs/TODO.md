@@ -15,7 +15,8 @@
   * parity instantseal produces 1 block per 1 transaction, but with an integer block timestamp - totally non-sensical. Needs finer time resolution!
   * parity v2.x.y breaks down when shot at with multi-threaded sending, so for now chainhammer is testing it only single-threaded. See issue [PE#9582](https://github.com/paritytech/parity-ethereum/issues/9582)
   * parity: why the empty blocks in parity aura runs?
-  * parity: accelerate = best combination of CLI parameters when starting parity? That should be IMHO done by parity team because they know their code best; I can just provide the benchmarking platform so that they notice what helps and what not. See [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393)   
+  * parity: accelerate = best combination of CLI parameters when starting parity? That should be IMHO done by parity team because they know their code best; I can just provide the benchmarking platform so that they notice what helps and what not. See [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393)
+  * check again, but at least once parity v2.3.4 instantseal run did not record the very last transaction, and thus got stuck? Perhaps reintroduce `--force-sealing` ?    
 * quorum:
   * even with gasLimit=0x1312D00 (20,000,000), quorum blocks initially max out
   * what is with the higher initial blocktime? Perhaps modify is_up.py to wait for moving chain?

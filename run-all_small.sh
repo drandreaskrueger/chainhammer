@@ -63,25 +63,29 @@ fi
 
 
 chapter "$CH_MACHINE-Parity-instantseal"
-# PARITY_VERSION=v2.2.3
 # PARITY_VERSION=v1.11.11
 ## trying out suggestions by tomusdrw in https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932
 PARITY_VERSION=v2.3.4
-
 networks/parity-configure-instantseal.sh $PARITY_VERSION
+
 # would like to run multithreaded too but then parity stops working
 # see issue github.com/paritytech/parity-ethereum/issues/9582
 # so instead of multithreaded sending:
-# TXS=1000 THREADING="threaded2 20" ./run.sh $CH_MACHINE-Parity-instantseal parity
+# CH_TXS=1000 CH_THREADING="threaded2 20" ./run.sh $CH_MACHINE-Parity-instantseal parity
 # I must use non-threaded sending:
+# CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-instantseal" parity
+
+# tomusdrw's CLI settings together with "threaded2 20" leading to missing transactions!
+# "Bad: Timeout, received receipts only for 45 out of 50 sampled transactions." 
+# so keep it "sequential" for now, until that is understood better & fixed: 
 CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-instantseal" parity
 
 
 
-
+# but with tomusdrw's CLI settings, parity aura can finally be used multi-threaded
 chapter "$CH_MACHINE-Parity-aura"
 networks/parity-configure-aura.sh $PARITY_VERSION
-CH_TXS=2000 CH_THREADING="sequential" ./run.sh "$CH_MACHINE-Parity-aura" parity
+CH_TXS=2000 CH_THREADING="threaded2 20" ./run.sh "$CH_MACHINE-Parity-aura" parity
 
 
 
