@@ -2,6 +2,8 @@
 
 # I was told on github that parity cannot be faster than 5 seconds blocktime:
 BLOCKTIME=5
+## trying out suggestions by tomusdrw in https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932
+BLOCKTIME=10
 
 FOLDER=networks/repos/paritytech_parity-deploy
 GETBACK=../../..
@@ -13,7 +15,9 @@ PARITY_LOCAL_REMOVE=false
 
 # fallback if no argument given:
 # PARITY_VERSION=v2.2.3
-PARITY_VERSION=v1.11.11
+# PARITY_VERSION=v1.11.11
+## trying out suggestions by tomusdrw in https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932
+PARITY_VERSION=v2.3.4
 
 if [ $# -eq 0 ]
   then

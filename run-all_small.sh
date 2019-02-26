@@ -64,7 +64,10 @@ fi
 
 chapter "$CH_MACHINE-Parity-instantseal"
 # PARITY_VERSION=v2.2.3
-PARITY_VERSION=v1.11.11
+# PARITY_VERSION=v1.11.11
+## trying out suggestions by tomusdrw in https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932
+PARITY_VERSION=v2.3.4
+
 networks/parity-configure-instantseal.sh $PARITY_VERSION
 # would like to run multithreaded too but then parity stops working
 # see issue github.com/paritytech/parity-ethereum/issues/9582

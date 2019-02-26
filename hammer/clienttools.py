@@ -183,7 +183,10 @@ def unlockAccount(duration=3600, account=None):
                                            passphrase=passphrase)
     else:
         if NODETYPE=="Parity": 
-            duration = w3.toHex(duration)
+            # duration = w3.toHex(duration)
+            # # suggestions by tomusdrw in https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932
+            # # is duration=0 backwards compatible for old v1 versions of parity too?
+            duration = w3.toHex(0)
         answer = w3.personal.unlockAccount(account=account, 
                                            passphrase=passphrase,
                                            duration=duration)
