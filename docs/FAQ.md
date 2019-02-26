@@ -51,8 +51,8 @@ only create the *virtualenv for the chainhammer Python programs*, then look into
 Please see [tomusdrw's hints for Ubuntu](https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932).
 
 I always use Debian, so *you* might want to create 
-additional `*_ubuntu.sh` versions of [install-docker.sh](scripts/install-docker.sh), 
-and [install-packages.sh](scripts/install-packages.sh); 
+additional `*_ubuntu.sh` versions of [install-docker.sh](../scripts/install-docker.sh), 
+and [install-packages.sh](../scripts/install-packages.sh); 
 then we could simply add a CLI argument for Ubuntu users like this:
 
     scripts/install.sh Ubuntu
