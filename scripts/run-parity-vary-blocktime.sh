@@ -20,7 +20,7 @@ echo
 
 PARITY_VERSION=v2.3.4
 
-BLOCKTIMES="2 4 8 16 32"
+BLOCKTIMES="2 4 6 10 12"
 
 cp networks/parity-configure.sh networks/parity-configure_BACKUP.sh
 
@@ -35,7 +35,7 @@ for BT in $BLOCKTIMES; do
     echo
     
     networks/parity-configure-aura.sh $PARITY_VERSION
-    CH_TXS=20000 CH_THREADING="threaded2 20" ./run.sh "Parity-aura-BT"$BT"s" parity
+    CH_TXS=20000 CH_THREADING="threaded2 8" ./run.sh "Parity-aura-BT"$BT"s" parity
 
 done
 
