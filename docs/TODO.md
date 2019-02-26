@@ -65,6 +65,12 @@ interesting next questions:
 
 what else? Please YOU make suggestions.
 
+# other people's suggestions
+*  [Tomasz Drwięga @tomusdrw](https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932)'s ideas what could be tried
+
+https://github.com/paritytech/parity-ethereum/issues/10382#issuecomment-466373932
+
+
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
 
 # other places:
