@@ -20,16 +20,20 @@ echo
 
 PARITY_VERSION=v2.3.4
 
-BLOCKTIMES="1 2 4 8 16 32"
+BLOCKTIMES="2 4 8 16 32"
 
 cp networks/parity-configure.sh networks/parity-configure_BACKUP.sh
 
 for BT in $BLOCKTIMES; do
     
     chapter "BLOCKTIME $BT seconds"
+    
+    echo patching networks/parity-configure.sh
     cp networks/parity-configure_BACKUP.sh networks/parity-configure.sh
     sed -i "s/BLOCKTIME=10/BLOCKTIME="$BT"/" networks/parity-configure.sh
-    # cat networks/parity-configure.sh | grep BLOCKTIME
+    cat networks/parity-configure.sh | grep BLOCKTIME
+    echo
+    
     networks/parity-configure-aura.sh $PARITY_VERSION
     CH_TXS=20000 CH_THREADING="threaded2 20" ./run.sh "Parity-aura-BT"$BT"s" parity
 
