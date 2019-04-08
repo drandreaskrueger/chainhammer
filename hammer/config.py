@@ -4,7 +4,7 @@
 
 @version: v46 (03/January/2019)
 @since:   8/May/2018
-@organization: 
+@organization:
 @author:  https://github.com/drandreaskrueger
 @see:     https://github.com/drandreaskrueger/chainhammer for updates
 """
@@ -12,14 +12,15 @@
 ##########
 # Choices:
 
-# better keep the same port :8545 everywhere, and instead 
-# patch the docker-compose.yml files, see ../networks/quorum-configure.sh 
-RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
+# better keep the same port :8545 everywhere, and instead
+# patch the docker-compose.yml files, see ../networks/quorum-configure.sh
+# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
+RPCaddress, RPCaddress2 = 'https://jtessera.blockchain.azure.com:3200/fqlf6UcrcBJPQjoX5RkAx3Nv', 'https://jtessera.blockchain.azure.com:3200/fqlf6UcrcBJPQjoX5RkAx3Nv'
 
 # use this for unittesting with TestRPCProvider
-# RPCaddress, RPCaddress2 = None, None  
+# RPCaddress, RPCaddress2 = None, None
 # or this for experiment runs OR for unittesting with real Ethereum nodes:
-# RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading  
+# RPCaddress, RPCaddress2 = 'http://localhost:22000', 'http://localhost:22001' # use two different Quorum nodes for writing and reading
 # RPCaddress, RPCaddress2 = 'http://localhost:22001', 'http://localhost:22002' # crux dockerized, see https://github.com/blk-io/crux/blob/master/README.md#4-node-quorum-network-with-crux
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'  # orbita-center_parity-poa-playground; parity-deploy
 # RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8546'  # javahippie_geth-dev; use two different nodes for writing and reading
@@ -31,7 +32,7 @@ RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
 
 
 # obsolete now
-# initially the contract was deployed manually with ./runscript.sh private-contract.js  
+# initially the contract was deployed manually with ./runscript.sh private-contract.js
 # And wait-for-something-to-happen was triggered by chain moving or not
 # (which only works for raft & instantseal).
 # Now obsolete because we can simply always deploy our own contract first,
@@ -39,18 +40,18 @@ RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
 # OLD:
 # if consensus algorithm is Quorum raft, then --> True
 # could be automated now ... from clienttype import clientType
-# TODO: replace this constant by  clienttype CONSENSUS query 
+# TODO: replace this constant by  clienttype CONSENSUS query
 # RAFT=False
 # RAFT=True
 
 
-# Quorum can take a minute until the chain finally starts moving, 
-# then the default timeout=120 might be too short. Give more time: 
+# Quorum can take a minute until the chain finally starts moving,
+# then the default timeout=120 might be too short. Give more time:
 TIMEOUT_DEPLOY = 300
 
 ## submit transaction via web3 or directly via RPC
 ROUTE = "RPC"  # "web3" "RPC"
-  
+
 # parity's idiosyncracy:
 # 'Time-unlocking is only supported in --geth compatibility mode.'
 # see https://github.com/drandreaskrueger/chainhammer/blob/master/parity.md#run-14 for why and how
@@ -61,7 +62,7 @@ PARITY_UNLOCK_EACH_TRANSACTION=False
 # parity --unlock 0x39c6ad93dfb708143322d8bbf4c35734f6480249 --password /home/parity/password
 # e.g. by manually editing the docker-compose.yml file after ./parity-deploy.sh --config aura --nodes 3
 #  services: --> host1: --> command: --> add this: (address is in deployment/1/address.txt)
-#    --unlock 0x39c6ad93dfb708143322d8bbf4c35734f6480249 --password /home/parity/password 
+#    --unlock 0x39c6ad93dfb708143322d8bbf4c35734f6480249 --password /home/parity/password
 PARITY_ALREADY_UNLOCKED=False
 
 
@@ -70,19 +71,19 @@ if PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC":
     print ("Sorry, this parameter combination is not implemented:")
     print ('PARITY_UNLOCK_EACH_TRANSACTION and ROUTE=="RPC"')
     print ('change config.py, then restart.')
-    exit(0)  
+    exit(0)
 
 
-# gas given for .set(x) transaction 
-# N.B.: must be different from (i.e. higher than) the eventually used gas in 
-# a successful transaction; because difference is used as sign for a FAILED 
-# transaction in the case of those clients which do not have a 
+# gas given for .set(x) transaction
+# N.B.: must be different from (i.e. higher than) the eventually used gas in
+# a successful transaction; because difference is used as sign for a FAILED
+# transaction in the case of those clients which do not have a
 # 'transactionReceipt.status' field yet
-GAS_FOR_SET_CALL = 90000 
+GAS_FOR_SET_CALL = 90000
 
 # only for Quorum:
-# set this to a list of public keys for privateFor-transactions, 
-# or to None for public transactions 
+# set this to a list of public keys for privateFor-transactions,
+# or to None for public transactions
 PRIVATE_FOR = ["ROAZBWtSacxXQrOe3FGAqJDyJjFePR5ce4TSIzmJ0Bc="]
 PRIVATE_FOR = None
 
@@ -104,7 +105,7 @@ FILE_LAST_EXPERIMENT = "last-experiment.json"
 # if True, the newly written file FILE_LAST_EXPERIMENT is going to stop the loop in tps.py
 AUTOSTOP_TPS = True
 
-# after last txs have been mined, give 10 more blocks before experiment ends 
+# after last txs have been mined, give 10 more blocks before experiment ends
 EMPTY_BLOCKS_AT_END = 10
 
 # DB file for traversing all blocks
@@ -112,5 +113,3 @@ DBFILE="allblocks.db"
 
 if __name__ == '__main__':
     print ("Do not run this. Like you just did. Don't.")
-    
-    
