@@ -163,7 +163,10 @@ def unlockAccount(duration=3600, account=None):
         return True # TestRPC does not need unlocking; or parity can be CLI-switch unlocked when starting
     
     if NODENAME=="Quorum":
-        passphrase=""
+        if NETWORKID==1337:
+            passphrase="1234" # Azure Quorum testnet 1337 jtessera
+        else:
+            passphrase="" # Any other Quorum
     else:
         # print ("os.getcwd():", os.getcwd())
         with open(correctPath(FILE_PASSPHRASE), "r") as f:
@@ -202,5 +205,7 @@ if __name__ == '__main__':
     
     global NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID
     NODENAME, NODETYPE, NODEVERSION, CONSENSUS, NETWORKID, CHAINNAME, CHAINID = chainInfos
+    
+    # print (type(NETWORKID), NETWORKID)
 
 
