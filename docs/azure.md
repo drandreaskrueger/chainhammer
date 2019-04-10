@@ -15,6 +15,8 @@ git checkout master # for initialization default must be local :8545
 scripts/install-packages.sh
 scripts/install-solc.sh
 scripts/install-virtualenv.sh
+
+source env/bin/activate
 scripts/install-initialize.sh
 ```
 
@@ -84,13 +86,13 @@ Eight chainhammer steps in one go:
 
 Please let this run to the end, and don't interrupt it in the middle, otherwise you'll end up with zombie tasks. If that happens, then try `scripts/show-leftovers.sh` and kill what you can, until that script comes back empty.
 
-Things can go wrong. Please first try to solve them by reasoning about all the logs/\*.log files, then better read the chainhammer docs/\*.md files - and then open an issue on github with a good error description, and attached log files. Thanks a lot!
+Things can go wrong. Please first try to solve them by reasoning about each of the `logs/\*.log` files, then better read the chainhammer `docs/\*.md` files - and then open an issue on github with a good error description, and attached log files. Thanks a lot!
 
 ## example diagrams
 
 Using a 5th generation i5 laptop in Europe, connecting to the Quorum blockchain node in Singapore: We could see that across half a planet, a single transaction in a non-async call took almost a whole second, when running send.py with the "sequential" algo; so in the `threaded2` algo we chose 300 multi-threading workers. 
 
-We had difficulties two out of three times: Once with 20k transactions, that the Quorum node lost 58 transactions and the experiment thus never ended - hopefully that can be fixed by re-configuring some Quorum switches, perhaps enlarge the transaction queue? And a different problem in another run with 30k transactions that the node suddenly "fell off the internet", and was unreachable; that experiment also never ended; no idea how to solve that - perhaps renice the Quorum processes? There are tons of things that can be tweaked, and one of the big advantages of chainhammer is that it makes any changes measurable now in terms of TPS and stability under heavy load. Good luck with your optimization!
+We had difficulties in two out of three times: Once with 20k transactions, that the Quorum node lost 58 transactions and the experiment thus never ended - hopefully that can be fixed by re-configuring some Quorum switches, perhaps enlarge the transaction queue? And a different problem in another run with 30k transactions that the node suddenly "fell off the internet", and was unreachable; that experiment also never ended; no idea how to solve that - perhaps renice the Quorum processes, so that it cannot freeze the whole machine? 
 
 The experiment that actually ran through without any problems was this one with 15k transactions. It averaged at about 95 TPS; with a very stable blocktime of 5 seconds; blocks of average size of 469 transactions and 66523 bytes; and the gasUsed was always far below the gasLimit. See these diagrams of time series:
 
@@ -117,5 +119,6 @@ The experiment that actually ran through without any problems was this one with 
          'peakTpsAv': 88.22631017031662,
          'start_epochtime': 1554912011.7372758}}
 
-
+## work in progress
+These results are a very first attempt, so by far not final. There are tons of things that can be tweaked. One of the big advantages of this much automated chainhammer ... is that it makes any changes measurable now, in terms of TPS and stability under heavy load. Good luck with your optimization, and please keep me in the loop - thanks.
 
