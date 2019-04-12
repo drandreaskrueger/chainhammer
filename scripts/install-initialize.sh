@@ -7,6 +7,10 @@ mkdir -p logs
 mkdir -p results/runs
 echo 
 
+echo start virtualenv
+source env/bin/activate
+echo
+
 echo start testRPC ethereum provider
 networks/testrpc-start.sh
 echo 
