@@ -1,5 +1,5 @@
 echo
-echo first initialization
+echo first initialization, chainhammer v58
 echo 
 
 echo make logs and runs folder

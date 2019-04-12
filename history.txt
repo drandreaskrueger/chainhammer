@@ -1,4 +1,14 @@
-v57 20/2/2019-23/2/2019
+v58 8/4/2019-12/4/2019
+"azure - benchmarking of a(ny) remote node"
+    Microsoft's Azure team is working on a BaaS blockchain-as-a-service product
+    they want chainhammer for benchmarking
+    patched RPCaddress, added password, test runs, virtualenv installation noobproof ...
+    adapted installation, leave out docker & network starters - new: `scripts/install.sh nodocker`
+    instructions manual, doubly tested and verbose: docs/azure.md
+    this gave it a generally useful upgrade: 
+       step by step instructions how to benchmark ANY remote Ethereum node with chainhammer
+
+v57 20/2/2019-26/2/2019
 "video"
     choosing the right foss tools
     concept, settings, decisions
@@ -7,6 +17,7 @@ v57 20/2/2019-23/2/2019
     video editing
     music to hide the audio problems
     new channel on youtube, release video
+    video production files in docs/video-*.zip
     for more details see docs/video.md
     
 v56 27/1/2019-24/2/2019 

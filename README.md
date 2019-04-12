@@ -8,7 +8,7 @@ Explaining software v55 video released on youtube:
 
 ---
 
-# chainhammer v57
+# chainhammer v58
 TPS measurements of parity aura, geth clique, quorum, tobalaba, etc. 
 It should work with any Ethereum type chain; we focused on PoA consensus.
 
@@ -20,7 +20,7 @@ The brand new release v55 is now presented & explained in a useful [video on you
 ### folders
 * `hammer/` - submits many transactions, while watching the recent blocks
 * `reader/` - reads blocks; visualizes TPS, blocktime, gas, bytes - see [reader/README.md](reader/README.md)
-* `docs/` - see esp. reproduce.md
+* `docs/` - see esp. reproduce.md, cloud.md, FAQ.md, **new:** azure.md
 * `results/` - for each client one markdown file; `results/runs/` - auto-generated pages
 * `logs/` - check this first if problems
 * `networks/` - network starters & external repos via install script, see below
