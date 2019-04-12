@@ -3,21 +3,13 @@ A first benchmarking of the blockchain-as-a-service product of Microsoft. Yet un
 
 ## preparations
 Get chainhammer code, and install 
-(not docker, docker-compose, parity-deploy, geth, quorum-crux, etc - 
-like the full automation scripts/install.sh would do, but) only the needed dependencies:
+("nodocker" switch means do not install: docker, docker-compose, parity-deploy, geth-dev, quorum-crux - because we don't need to run our own network locally) 
+only the needed dependencies:
 ```
 cd drandreaskrueger
 git clone https://github.com/drandreaskrueger/chainhammer
-
 cd chainhammer
-git checkout master # for initialization default must be local :8545
-
-scripts/install-packages.sh
-scripts/install-solc.sh
-scripts/install-virtualenv.sh
-
-source env/bin/activate
-scripts/install-initialize.sh
+scripts/install.sh nodocker
 ```
 
 Now (first only on testRPC) execute all *ten chainhammer steps* once, 
@@ -26,7 +18,7 @@ Yes, to run all that is a bit of an overkill, but at least then you know
 that chainhammer is working fine (on testrpc://localhost:8545), 
 PLUS all temp files needed by chainhammer actually exist. 
 Otherwise you might later see a "FileNotFoundError: contract-address.json".
-So, run this now, and watch the output with attention:
+So, run this now - and watch the output with attention:
 ```
 CH_TXS=200 CH_THREADING="sequential" ./run.sh TestRPC testrpc
 ```
@@ -40,13 +32,21 @@ tail -f logs/deploy.py.log
 Do not move on, until the above is working fine. If unsolvable, please open a github issue.
 
 ## cloud connection attempt
-Now start a first connection to the jtessera.blockchain.azure.com Quorum-Ethereum node:
+Patch the two (write & read) RPCaddress'es from localhost:8545 to the wanted remote endpoint:   
 ```
-git checkout azure # this changes config.py to your given endpoint address
+git reset HEAD hammer/config.py
+git checkout -- hammer/config.py
+head -n 20 hammer/config.py
 
+sed -i "s/RPCaddress='http:\/\/localhost:8545'/RPCaddress='https:\/\/jtessera.blockchain.azure.com:3200\/fqlf6UcrcBJPQjoX5RkAx3Nv'/g" hammer/config.py
+sed -i "s/RPCaddress2='http:\/\/localhost:8545'/RPCaddress2='https:\/\/jtessera.blockchain.azure.com:3200\/fqlf6UcrcBJPQjoX5RkAx3Nv'/g" hammer/config.py
+head -n 20 hammer/config.py
+```
+
+Now start a first test connection to the jtessera.blockchain.azure.com Quorum-Ethereum node:
+```
 source env/bin/activate
 cd hammer
-
 ./is_up.py
 ./tps.py
 ```
@@ -69,13 +69,17 @@ cd drandreaskrueger/chainhammer/hammer
 source ../env/bin/activate
 
 ./deploy.py
+```
+(If deploy.py does not work, perhaps change the *networkId in your node*, and 
+then add [the password here](https://github.com/drandreaskrueger/chainhammer/blob/d9be8016eade1eef82faf8b5c9054fd4c3b2f87b/hammer/clienttools.py#L166-L167).)
 
+```
 ./send.py
 
 ./send.py 100
 ```
-if that seems to work, wait until it is ready with its 100 transactions. Then stop tps.py with CTRL-C.
-
+if sending seems to work, wait until it is ready with its 100 transactions. Then `tps.py` should end by itself - or kill it with CTRL-C.
+    
 You are now ready to start the full experiment:
 
 ## run experiment
@@ -92,9 +96,9 @@ Things can go wrong. Please first try to solve them by reasoning about each of t
 
 Using a 5th generation i5 laptop in Europe, connecting to the Quorum blockchain node in Singapore: We could see that across half a planet, a single transaction in a non-async call took almost a whole second, when running send.py with the "sequential" algo; so in the `threaded2` algo we chose 300 multi-threading workers. 
 
-We had difficulties in two out of three times: Once with 20k transactions, that the Quorum node lost 58 transactions and the experiment thus never ended - hopefully that can be fixed by re-configuring some Quorum switches, perhaps enlarge the transaction queue? And a different problem in another run with 30k transactions that the node suddenly "fell off the internet", and was unreachable; that experiment also never ended; no idea how to solve that - perhaps renice the Quorum processes, so that it cannot freeze the whole machine? 
+We had difficulties in two out of three times: Once with 20k transactions, that the Quorum node lost 58 transactions and the experiment thus never ended - hopefully that can be fixed by re-configuring some Quorum switches, perhaps enlarge the transaction queue? And a different problem in another run with 30k transactions that the node suddenly "fell off the internet", and was unreachable; that experiment also never ended; no idea how to solve that - perhaps lower the number of multi-threading workers, so that the client does not overpower the server; or renice the server Quorum processes, so that it cannot freeze the whole machine? Please report back, what helped, thanks.
 
-The experiment that actually ran through without any problems was this one with 15k transactions. It averaged at about 95 TPS; with a very stable blocktime of 5 seconds; blocks of average size of 469 transactions and 66523 bytes; and the gasUsed was always far below the gasLimit. See these diagrams of time series:
+The experiment that actually *ran through without any problems* was this one with 15k transactions. It averaged at about 95 TPS; with a very stable blocktime of 5 seconds; blocks of average size of 469 transactions and 66523 bytes; and the gasUsed was always far below the gasLimit. See these diagrams of time series:
 
 ![Azure-Quorum-BaaS-run](../reader/img/Quorum-IBFT_Azure-testnet-jtessera-20190410-1800_blks213799-213830.png)
 
