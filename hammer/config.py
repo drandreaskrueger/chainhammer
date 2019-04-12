@@ -14,8 +14,8 @@
 
 # better keep the same port :8545 everywhere, and instead
 # patch the docker-compose.yml files, see ../networks/quorum-configure.sh
-# RPCaddress, RPCaddress2 = 'http://localhost:8545', 'http://localhost:8545'
-RPCaddress, RPCaddress2 = 'https://jtessera.blockchain.azure.com:3200/fqlf6UcrcBJPQjoX5RkAx3Nv', 'https://jtessera.blockchain.azure.com:3200/fqlf6UcrcBJPQjoX5RkAx3Nv'
+RPCaddress='http://localhost:8545'
+RPCaddress2='http://localhost:8545'
 
 # use this for unittesting with TestRPCProvider
 # RPCaddress, RPCaddress2 = None, None
