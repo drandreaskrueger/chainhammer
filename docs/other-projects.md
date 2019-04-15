@@ -44,8 +44,7 @@ and then "pull request". Thanks.
 > Cool, checkout chainhammer, a toolset for benchmarking blockchain TPS by @drandreaskruger / @ElectronDLT
 > https://github.com/drandreaskrueger/chainhammer  
 
-https://twitter.com/5chdn/status/1032749019179765760  
-https://twitter.com/drandreaskruger/status/1032757116073848834  
+twitter.com/5chdn/status/1032749019179765760 (Afri sadly deleted all his tweets), retweeted in https://twitter.com/drandreaskruger/status/1032757116073848834  
 
 
 ### short summary

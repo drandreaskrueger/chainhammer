@@ -215,7 +215,7 @@ jupyter notebook --ip=127.0.0.1
 #### bad connectivity results: < 5 TPS
 (for better results, scroll down)
 
---> chainreader / [blocksDB_analyze.ipynb](../reader/outdated/blocksDB_analyze.ipynb)
+--> chainreader / [blocksDB_analyze.ipynb](../reader/outdated/README.md)
 
 ![chainreader/img/tps-bt-bs-gas_blks4428719-4428755.png](../reader/img/tps-bt-bs-gas_blks4428719-4428755.png)
 
@@ -281,7 +281,7 @@ The TPS numbers in the right column are only an estimate (using unix time), and 
 
 ### better connectivity results: > 150 TPS
 
---> chainreader / [blocksDB_analyze_tobalaba-better.ipynb](../reader/outdated/blocksDB_analyze_tobalaba-better.ipynb)
+--> chainreader / [blocksDB_analyze_tobalaba-better.ipynb](../reader/outdated/README.md)
 
 ![../reader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png](../reader/img/tobalaba_tps-bt-bs-gas_blks5173630-5173671.png)
 
@@ -300,16 +300,16 @@ Thanks.
 ## issues
 that I raised while developing this, and testing it on the Tobalaba client
 
-* [EWC #17](https://github.com/energywebfoundation/energyweb-client/issues/17) git checkout tags/(some reasonably stable release version)
+* [EWC #17]() git checkout tags/(some reasonably stable release version) - was https://github.com/energywebfoundation/energyweb-client/issues/17 but they deleted that repo, stupidly
 * [SOF #50117762]() commit history diff of Parity vs EnergyWebClient (question removed from stackoverflow) ( * )
-* [EWC #18](https://github.com/energywebfoundation/energyweb-client/issues/18) faucet broken?
+* [EWC #18]() faucet broken? - was https://github.com/energywebfoundation/energyweb-client/issues/18 but they deleted that repo, stupidly
 * [W3PY #808](https://github.com/ethereum/web3.py/issues/808) deploy contract example is broken
 * [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 
-* [EWC #20](https://github.com/energywebfoundation/energyweb-client/issues/20) 5 TPS?
+* [EWC #20]() 5 TPS? - was https://github.com/energywebfoundation/energyweb-client/issues/20 but they deleted that repo, stupidly
 * [GL #46558](https://gitlab.com/gitlab-org/gitlab-ce/issues/46558) gitlab not rendering HTML correctly in markdown cells 
-* [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) 0/25 peers
-* [EWC#25](https://github.com/energywebfoundation/energyweb-client/issues/25) 1.12 client may be unstable. Please use the 1.9.3 client ...
-* [EWC#26](https://github.com/energywebfoundation/energyweb-client/issues/26) IPC: jsonrpc.ipc ?
+* [EWC#24]() 0/25 peers - was https://github.com/energywebfoundation/energyweb-client/issues/24 but they deleted that repo, stupidly
+* [EWC#25]() 1.12 client may be unstable. Please use the 1.9.3 client ... - was https://github.com/energywebfoundation/energyweb-client/issues/25 but they deleted that repo, stupidly
+* [EWC#26]() IPC: jsonrpc.ipc ? - was https://github.com/energywebfoundation/energyweb-client/issues/26 but they deleted that repo, stupidly
 
 
 ## solution for ( * )

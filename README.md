@@ -125,7 +125,7 @@ export CH_MACHINE=yourChoice
 ./run-all_small.sh
 ```
 
-For detailed instructions, please see [reproduce.md](reproduce.md), and for troubleshooting [FAQ.md](docs/FAQ.md) and [github issues](https://github.com/drandreaskrueger/chainhammer/issues).
+For detailed instructions, please see [docs/](docs/), esp. [reproduce.md](docs/reproduce.md), and for troubleshooting [FAQ.md](docs/FAQ.md) and [github issues](https://github.com/drandreaskrueger/chainhammer/issues).
 
 
 ## unittests

@@ -10,7 +10,7 @@ echo
 
 # this is the relative url, decide here which branch to check:
 BURL="https://github.com/drandreaskrueger/chainhammer/blob/master/"
-BURL="https://github.com/drandreaskrueger/chainhammer/tree/reorg/"
+# BURL="https://github.com/drandreaskrueger/chainhammer/tree/reorg/"
 
 # for putting the command together:
 BASE1="docker run -ti --rm -v "

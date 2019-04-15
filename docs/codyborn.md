@@ -36,7 +36,7 @@ Cody Born did parity benchmarking on Azure, and reached a TPS almost as fast as 
 see
 > https://twitter.com/codyborn/status/1040081548135948288  
 
-the description at [https://docs.microsoft...](https://docs.microsoft.com/en-us/azure/blockchain-workbench/ethereum-poa-deployment) is incomplete; i.e. his benchmarking code itself is still closed source, but we found out this already:
+the description at [https://docs.microsoft.com/en-us/azure/blockchain-workbench/ethereum-poa-deployment](https://docs.microsoft.com/en-us/azure/blockchain-workbench/ethereum-poa-deployment) is incomplete; i.e. his benchmarking code itself is still closed source, but we found out this already:
 
 > Cody Born  
 > 3 days ago  

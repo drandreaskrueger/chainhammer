@@ -20,7 +20,7 @@ TOC:
 * Quorum off
 * web3 versus RPC
 
-Also see [reproduce.md](reproduce.md), [cloud.md](cloud.md), and the per-client [results/*.md](results/) texts.
+Also see [reproduce.md](reproduce.md), [cloud.md](cloud.md), and the per-client [results/*.md](../results/) texts.
 
 ---
 
@@ -59,7 +59,7 @@ touch account-passphrase.txt
 ```
 It tests whether communication with the ethereum node is working, 
 **and initially creates local files about the compiled and deployed contract**. 
-If there are connection problems, check the ports in [config.py](hammer/config.py) --> 
+If there are connection problems, check the ports in [config.py](../hammer/config.py) --> 
 `RPCaddress, RPCaddress2`.
 
 ### quickstart
@@ -259,7 +259,7 @@ This question was asked here: https://github.com/paritytech/parity-ethereum/issu
 
 > because the web3 library is too slow
 
-Yes, for low (two digit) TPS it does not make a big difference, only ~20% faster. But when I get into the hundreds of TPS, I see considerable gains (~twice as fast) when bypassing web3 completely.  Please have a quick look at these old experiments: https://github.com/drandreaskrueger/chainhammer/blob/master/log.md#sending-via-web3-versus-sending-via-rpc
+Yes, for low (two digit) TPS it does not make a big difference, only ~20% faster. But when I get into the hundreds of TPS, I see considerable gains (~twice as fast) when bypassing web3 completely.  Please have a quick look at these old experiments: https://github.com/drandreaskrueger/chainhammer/blob/master/results/log.md#sending-via-web3-versus-sending-via-rpc
 
 When bypassing the web3.py library, I am using the RPC `method = 'eth_sendTransaction'` directly.
 

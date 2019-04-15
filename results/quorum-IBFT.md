@@ -60,8 +60,8 @@ change `istanbul-genesis.json` to
 
 However, the effect is simply that then the blocktime is going up. So raising the gasLimit does not result in higher TPS yet:
 
-* [10 mio gasLimit](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-1s-gas10mio_run2_tps-bt-bs-gas_blks20-90.png)
-* [20 mio gasLimit](https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)
+* [10 mio gasLimit](https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/istanbul-1s-gas10mio_run2_tps-bt-bs-gas_blks20-90.png)
+* [20 mio gasLimit](https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)
 
 both saturate around ~200 TPS.
 
@@ -124,8 +124,8 @@ block 80 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 105.0 
 block 81 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 106.1 s = 188.6 TPS_average
 ```
 
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)  
-https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png](https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png)  
+https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/istanbul-1s-gas20mio_run2_tps-bt-bs-gas_blks40-85.png
 
 ### crux docker 4nodes
 different from above:
@@ -249,8 +249,8 @@ block 114 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 90.2 
 block 115 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 91.1 s = 219.5 TPS_average
 ```
 
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](../reader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
-https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png](../reader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png)
+https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/istanbul-crux-docker-1s-gas20mio_tps-bt-bs-gas_blks26-111.png
 
 until now the best result - around 
 
@@ -371,8 +371,8 @@ block 92 | new #TX   0 / 1000 ms =   0.0 TPS_current | total: #TX 20001 / 64.9 s
 ```
 
 #### result > 400 TPS but only for the first 14k tx
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
-(diagram https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
+![https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png](https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png)
+(diagram https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/istanbul-crux-docker-1s-gas20mio-RPC_run8_tps-bt-bs-gas_blks28-93.png) 
 
 Surprising acceleration when not using web3 ... not 273 TPS but
 

@@ -275,7 +275,7 @@ block 215 | new #TX   0 / 74000 ms =   0.0 TPS_current | total: #TX 20001 / 517.
 
 #### result initial run1: > 60 TPS
 
-![chainreader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](../reader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
+![reader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png](../reader/img/parity-poa-playground_run1_tps-bt-bs-gas_blks108-211.png)
 
 
 
@@ -730,8 +730,8 @@ block 83 | new #TX   4 / 4000 ms =   1.0 TPS_current | total: #TX 20001 / 310.1 
 
 #### result run 7
 
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](../reader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
-diagram https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png](../reader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png)
+diagram https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/parity-aura_run7_tps-bt-bs-gas_blks3-90.png
 
 N.B.: The CPU usage stays below 60%, so parity is not yet using all the computational resources available, even with `--jsonrpc-server-threads 100`. 
 

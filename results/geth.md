@@ -118,11 +118,11 @@ block 57 | new #TX   0 / 2000 ms =   0.0 TPS_current | total: #TX 20001 / 76.2 s
 ```
 ### results approx 350 TPS but only for first 14k transactions 
 
-![https://github.com/drandreaskrueger/chainhammer/raw/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png](../reader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png)
-image https://github.com/drandreaskrueger/chainhammer/blob/master/chainreader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png
+![https://github.com/drandreaskrueger/chainhammer/raw/master/reader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png](../reader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png)
+image https://github.com/drandreaskrueger/chainhammer/blob/master/reader/img/geth-clique-2s-gas40mio-RPC_tps-bt-bs-gas_blks21-65.png
 
 The following averages are calculated in the zoomed in diagrams at the bottom of 
-notebook [blocksDB_analyze_geth-clique.ipynb](../reader/outdated/blocksDB_analyze_geth-clique.ipynb)
+notebook [blocksDB_analyze_geth-clique.ipynb](../reader/outdated/README.md)
 
 
 * we see **approx 350 TPS** when averaging over blocks 23-40 
@@ -131,7 +131,7 @@ notebook [blocksDB_analyze_geth-clique.ipynb](../reader/outdated/blocksDB_analyz
 
 The reason for this drop is to be found out, see issue [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) "Sudden drop in TPS after total 14k transactions".
 
-(actually, [same behavior as in quorum IBFT](https://github.com/drandreaskrueger/chainhammer/blob/master/quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx))
+(actually, [same behavior as in quorum IBFT](https://github.com/drandreaskrueger/chainhammer/blob/master/results/quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx))
 
 ### run 2
 * purpose: new diagrams

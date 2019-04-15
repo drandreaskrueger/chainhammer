@@ -20,6 +20,6 @@ and [post 2](https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-4
 Feel free to run chainhammer benchmarks yourself now - see [quickstart](README.md#quickstart).
 
 ## issues
-* [ECTW#1](https://github.com/eosclassicteam/whitepaper/issues/1) please switch ON github issues in any of your repos
-* [ECEC#19](https://github.com/eosclassic/eosclassic/issues/19) wanted: tool for several nodes setup
+* [ECTW#1]() please switch ON github issues in any of your repos - was github.com/eosclassicteam/whitepaper/issues/1 but they stupidly killed that repo
+* [ECEC#19]() wanted: tool for several nodes setup - github.com/eosclassic/eosclassic/issues/19 but they stupidly killed that repo
 

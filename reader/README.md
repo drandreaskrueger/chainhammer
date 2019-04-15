@@ -50,7 +50,7 @@ Python Jupyter is a nice graphics enabled IDE to show tables, diagrams, etc inli
 jupyter notebook --ip=127.0.0.1
 ```
 
-then execute all cells in [blocksDB_analyze.ipynb](../reader/outdated/blocksDB_analyze.ipynb)
+then execute all cells in [blocksDB_analyze.ipynb](../reader/outdated/README.md)
 
 Actually, the gitlab rendering of that ^ file is not bad,
 so (even though it blows up the filesize),

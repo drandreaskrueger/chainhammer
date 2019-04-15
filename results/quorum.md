@@ -14,7 +14,7 @@ Quorum raft TPS measurements. Uses the [quorum-examples --> 7nodes](https://gith
 1. much later repeat
 1. suggestions please
 1. IBFT = Istanbul BFT
-1. [issues raised](issues-raised)
+1. [issues raised](#issues-raised)
 1. alternative: dockerized quorum nodes
 1. credits
 
