@@ -73,7 +73,7 @@ That biggest block is block 1,210,825 - see [block explorer](https://tobalaba.et
 
 ![img/TPS_allBlocks.png](img/TPS_allBlocks.png)
 
-**For many more such diagrams, see** [blocksDB_analyze.ipynb](../reader/outdated/blocksDB_analyze.ipynb).  
+**For many more such diagrams, see** [blocksDB_analyze.ipynb](../reader/outdated/README.md).  
 SCROLL DOWN TO THE MIDDLE OF THAT FILE.
 
 some images are also in [img/](img)

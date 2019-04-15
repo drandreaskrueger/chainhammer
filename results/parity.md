@@ -1550,7 +1550,7 @@ And then
 
 #### Why I ask for your help:
 
-Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://github.com/drandreaskrueger/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
+Compared to e.g. the >400 TPS of [quorum-IBFT](quorum-IBFT.md#result-400-tps-but-only-for-the-first-14k-tx), and the >300 TPS of [geth-Clique](https://github.com/drandreaskrueger/chainhammer/blob/master/results/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions), this is slow. 
 
 Calling all parity experts: How to improve this? See issue [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393). Thanks.
 

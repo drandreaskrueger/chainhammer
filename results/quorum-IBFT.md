@@ -379,7 +379,7 @@ Surprising acceleration when not using web3 ... not 273 TPS but
 **370 - 465 TPS** !
 
 Following detailed averages are calculated at the bottom of 
-notebook [reader/outdated/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](../reader/outdated/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb)
+notebook [reader/outdated/blocksDB_analyze_quorum-istanbul_RPC-call.ipynb](../reader/outdated/README.md)
 
 Averaging over blocks 40 to 80, we see averages of **370 - 393 TPS**.  
 
@@ -388,7 +388,7 @@ Looking at the later blocks 64 to 80 only, we see averages of **~270 TPS**.
 
 Unclear what exactly makes the rate collapse here, and after already approx 13000 - 14000 transactions. I have done several repetitions, they all look similar. Any ideas where this might come from?  
 
-(actually, [same behavior as in geth Clique PoA](https://github.com/drandreaskrueger/chainhammer/blob/master/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions))
+(actually, [same behavior as in geth Clique PoA](https://github.com/drandreaskrueger/chainhammer/blob/master/results/geth.md#results-approx-350-tps-but-only-for-first-14k-transactions))
 
 
 ### on Amazon AWS

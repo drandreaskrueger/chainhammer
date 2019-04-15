@@ -300,16 +300,16 @@ Thanks.
 ## issues
 that I raised while developing this, and testing it on the Tobalaba client
 
-* [EWC #17]() git checkout tags/(some reasonably stable release version) - was https://github.com/energywebfoundation/energyweb-client/issues/17 but they deleted that repo, stupidly
+* [EWC #17]() git checkout tags/(some reasonably stable release version) - was github.com/energywebfoundation/energyweb-client/issues/17 but they deleted that repo, sadly
 * [SOF #50117762]() commit history diff of Parity vs EnergyWebClient (question removed from stackoverflow) ( * )
-* [EWC #18]() faucet broken? - was https://github.com/energywebfoundation/energyweb-client/issues/18 but they deleted that repo, stupidly
+* [EWC #18]() faucet broken? - was github.com/energywebfoundation/energyweb-client/issues/18 but they deleted that repo, sadly
 * [W3PY #808](https://github.com/ethereum/web3.py/issues/808) deploy contract example is broken
 * [PS #51](https://github.com/ethereum/py-solc/issues/51) (feature request) from solc import version 
-* [EWC #20]() 5 TPS? - was https://github.com/energywebfoundation/energyweb-client/issues/20 but they deleted that repo, stupidly
+* [EWC #20]() 5 TPS? - was github.com/energywebfoundation/energyweb-client/issues/20 but they deleted that repo, sadly
 * [GL #46558](https://gitlab.com/gitlab-org/gitlab-ce/issues/46558) gitlab not rendering HTML correctly in markdown cells 
-* [EWC#24]() 0/25 peers - was https://github.com/energywebfoundation/energyweb-client/issues/24 but they deleted that repo, stupidly
-* [EWC#25]() 1.12 client may be unstable. Please use the 1.9.3 client ... - was https://github.com/energywebfoundation/energyweb-client/issues/25 but they deleted that repo, stupidly
-* [EWC#26]() IPC: jsonrpc.ipc ? - was https://github.com/energywebfoundation/energyweb-client/issues/26 but they deleted that repo, stupidly
+* [EWC#24]() 0/25 peers - was github.com/energywebfoundation/energyweb-client/issues/24 but they deleted that repo, sadly
+* [EWC#25]() 1.12 client may be unstable. Please use the 1.9.3 client ... - was github.com/energywebfoundation/energyweb-client/issues/25 but they deleted that repo, sadly
+* [EWC#26]() IPC: jsonrpc.ipc ? - was github.com/energywebfoundation/energyweb-client/issues/26 but they deleted that repo, sadly
 
 
 ## solution for ( * )

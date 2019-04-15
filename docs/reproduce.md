@@ -89,7 +89,7 @@ you find more infos in these places:
 * [FAQ.md](FAQ.md)
 * [reproduce_outdated.md](reproduce_outdated.md)
 * [cloud.md](cloud.md)
-* in the per-client [results/*.md](results/) texts
+* in the per-client [results/*.md](../results/) texts
 
 and *below* this table:
 
