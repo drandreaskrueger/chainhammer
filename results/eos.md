@@ -12,7 +12,7 @@ and [post 2](https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-4
 
 ## on pause
 
-1. They don't have a dockerized/virtualbox-vagrant setup yet, so I [suggested that in an issue](https://github.com/eosclassic/eosclassic/issues/19).  
+1. They don't have a dockerized/virtualbox-vagrant setup yet, so I [suggested that in an issue]() - was github.com/eosclassic/eosclassic/issues/19 but they killed that repo, sadly.  
 1. As we [already have results for the  PoA algorithm Clique](geth.md), I am not going to benchmark EOS now  
   * but their second post reads as if they are also *planning to improve Clique* - then it might be worthwhile.
 
@@ -20,6 +20,6 @@ and [post 2](https://github.com/ethereum/go-ethereum/issues/17447#issuecomment-4
 Feel free to run chainhammer benchmarks yourself now - see [quickstart](README.md#quickstart).
 
 ## issues
-* [ECTW#1]() please switch ON github issues in any of your repos - was github.com/eosclassicteam/whitepaper/issues/1 but they stupidly killed that repo
-* [ECEC#19]() wanted: tool for several nodes setup - github.com/eosclassic/eosclassic/issues/19 but they stupidly killed that repo
+* [ECTW#1]() please switch ON github issues in any of your repos - was github.com/eosclassicteam/whitepaper/issues/1 but they sadly killed that repo
+* [ECEC#19]() wanted: tool for several nodes setup - github.com/eosclassic/eosclassic/issues/19 but they sadly killed that repo
 

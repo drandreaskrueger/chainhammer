@@ -113,10 +113,10 @@ after each experiment, **restart the listener** `tps.py`, and redeploy the contr
 
 ## 1000 transactions - but bad connectivity
 * multi-threaded with 23 workers threads
-* submitted via web3 `Web3(HTTPProvider('http://localhost:8545'))` = RPC --> perhaps [IPC](https://github.com/energywebfoundation/energyweb-client/issues/26) would be faster?
+* submitted via web3 `Web3(HTTPProvider('http://localhost:8545'))` = RPC --> perhaps [IPC]() would be faster? - was github.com/energywebfoundation/energyweb-client/issues/26 but they killed that repo, sadly 
 * with background of only 1-2 unrelated transactions per block
 * to local (non-authority) node
-  * which had very few peers, often 0/25 - see issue [#24](https://github.com/energywebfoundation/energyweb-client/issues/24)
+  * which had very few peers, often 0/25 - see issue [#24]() - was github.com/energywebfoundation/energyweb-client/issues/24 but they killed that repo, sadly 
 
 --> **3 - 5 TPS on average**:
 
@@ -224,9 +224,9 @@ jupyter notebook --ip=127.0.0.1
 
 ## 20,000 transactions, better connectivity
 
-See issue [EWC#24](https://github.com/energywebfoundation/energyweb-client/issues/24) = previously (above), my client often had only 1/25 peers and sometimes even 0/25 peers. That had decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](../networks/tobalaba-peers.txt) and [tobalaba-node-start.sh](../networks/tobalaba-node-start.sh). 
+See issue [EWC#24]() (was github.com/energywebfoundation/energyweb-client/issues/24 but they killed that repo, sadly) = previously (above), my client often had only 1/25 peers and sometimes even 0/25 peers. That had decreased the transaction speed when hammering, as we found out when hardcoding 5 nodes with their enodes, see [tobalaba-peers.txt](../networks/tobalaba-peers.txt) and [tobalaba-node-start.sh](../networks/tobalaba-node-start.sh). 
 
-Why don't more nodes get added automatically? Was the [peer discovery broken](https://github.com/energywebfoundation/energyweb-client/issues/24#issuecomment-399896244) in this old parity fork? Even with the hardcoded nodes now, the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
+Why don't more nodes get added automatically? Was the [peer discovery broken]() (was github.com/energywebfoundation/energyweb-client/issues/24 but they killed that repo, sadly ) in this old parity fork? Even with the hardcoded nodes now, the highest number of peers I ever see is 4/25 (but there are e.g. 12 authority nodes).
 
 Nevertheless, now with more peers, the TPS benchmarking gets to higher results! -->
 
