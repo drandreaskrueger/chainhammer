@@ -331,10 +331,10 @@ result:
 ```
 < 976cf4182 tobalaba default chain
 ```
-That first commit was done Sep 7, 2017 --> https://github.com/energywebfoundation/energyweb-client/commit/976cf4182
+That first commit was done Sep 7, 2017 --> github.com/energywebfoundation/energyweb-client/commit/976cf4182 (sadly, they removed that repo not)
 
 The parent of that commit was Aug 31, 2017   
-https://github.com/energywebfoundation/energyweb-client/commit/47f7366a5c6a34dd4a587916296e0869475c15de  
+github.com/energywebfoundation/energyweb-client/commit/47f7366a5c6a34dd4a587916296e0869475c15de  
 = https://github.com/paritytech/parity/commit/47f7366a5c6a34dd4a587916296e0869475c15de
 
 now, which parity version number was that?
