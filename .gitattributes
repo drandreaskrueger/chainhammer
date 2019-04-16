@@ -1,6 +1,15 @@
-# this Juypter notebook contains images, and tables, 
+# rerun linguist locally, to figure this out: 
+# current status looks much better than before:
+#    ~/.ruby/bin/github-linguist --breakdown
+#        70.19%  Python
+#        14.51%  Shell
+#        10.98%  Jupyter Notebook
+#        4.32%   HTML
+# 
+#
+# This 1 Juypter notebook contains images, and tables, 
 # blowing up the total language fraction unrealistically; 
-# then 'Juypter notebooks' are suddenly 56% of the repo language.
+# then 'Juypter notebooks' are suddenly 56% of repo language.
 # Nonsense. 
 # As they don't want to parse notebooks better
 # (wont-fix = https://github.com/github/linguist/issues/3496)
