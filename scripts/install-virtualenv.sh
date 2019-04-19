@@ -14,7 +14,7 @@ set -x
 # echo
 
 rm -rf env 
-virtualenv -p python3 env
+python3 -m venv env
 echo
 
 set +x
