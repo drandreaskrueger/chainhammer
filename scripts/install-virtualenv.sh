@@ -10,8 +10,8 @@ read -p "Think twice. Then press enter to continue"
 echo
 
 set -x
-sudo pip3 install virtualenv
-echo
+# sudo pip3 install virtualenv # installation of virtualenv tool moved to install-packages.sh now
+# echo
 
 rm -rf env 
 virtualenv -p python3 env
