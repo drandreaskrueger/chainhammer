@@ -6,12 +6,13 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 trap 'echo; echo "\"${last_command}\" command filed with exit code $?."' EXIT
 #
 #
-#
+# scripts/install.sh                    # Debian, including all
+# scripts/install.sh docker ubuntu      # Ubuntu, including all
+# scripts/install.sh nodocker           # Debian/Ubuntu, no docker no network starters
 #
 #
 # N.B.: These install-XYZ.sh scripts are very new, 
-# and have only been tested on one local Debian machine;
-# not yet in the cloud or on differently configured machines.
+# and have mainly been tested on Debian machines.
 #  
 # Please provide detailed feedback if ANYTHING goes wrong on your machine.
 # Just raise an issue in the chainhammer repo on github.com
@@ -70,7 +71,7 @@ if [ "$1" == "nodocker" ]; then
     echo Skipping docker, docker-compose, and network-starters.
     echo ====================================================== 
 else
-    install_chapter scripts/install-docker.sh
+    install_chapter "scripts/install-docker.sh $2"
     install_chapter scripts/install-docker-compose.sh
     install_chapter scripts/install-network-starters.sh
 fi
