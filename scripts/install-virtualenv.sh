@@ -25,6 +25,7 @@ echo
 
 # fix versions because otherwise so many problems:
 python3 -m pip install --upgrade pip==18.1
+pip3 install wheel
 pip3 install --upgrade py-solc==3.2.0 web3==4.8.2 web3[tester]==4.8.2 rlp==0.6.0 eth-testrpc==1.3.5 requests==2.21.0 pandas==0.23.4 matplotlib==3.0.2 pytest==4.0.2 pytest-cov==2.6.0 jupyter==1.0.0 ipykernel==5.1.0
 
 # every few months try out newer versions instead:
