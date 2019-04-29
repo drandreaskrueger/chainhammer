@@ -113,6 +113,8 @@ CH_TXS=1000 CH_THREADING="sequential" ./run.sh $HOSTNAME-TestRPC testrpc
 ```
 You will then have a diagram, and a HTML and MD page about this run!
 
+(on **Ubuntu** instead: `scripts/install.sh docker ubuntu` )
+
 #### activate docker 
 
 Better now *logout & login*, or *close the terminal, and open a new terminal*, because the above scripts/install.sh might have enabled docker for the the first time for this user. Then:
