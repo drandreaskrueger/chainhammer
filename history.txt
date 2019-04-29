@@ -1,3 +1,15 @@
+v59 15/4/2019-29/4/2019
+"azure - solve install problems, and adapt all for Ubuntu"
+    repaired broken links in documentation, using scripts/link-checker.sh
+    github-linguist had been reporting 'jupyter-notebook' as main language
+       solved; now more correct: Python 70%, Shell 15%, Jupyter 11%, HTML 4%
+    Microsoft had problems installing python virtualenv; solved
+    Ubuntu specific packages needed scripts/install-packages.sh modifications
+    Ubuntu needed different docker installation key & repo; solved
+    Ubuntu fully tested without and with docker; all good, and still working on Debian too.
+    Quorum local network shows a new problem - issue raised at quorum-crux
+    Azure instructions integrated as "benchmarking a remote node" into README.md
+
 v58 8/4/2019-12/4/2019
 "azure - benchmarking of a(ny) remote node"
     Microsoft's Azure team is working on a BaaS blockchain-as-a-service product

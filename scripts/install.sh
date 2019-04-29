@@ -32,7 +32,7 @@ function install_chapter {
 echo 
 echo ===================================================================
 echo Install ChainHammer dependencies, and clone network starter repos
-echo version v58
+echo version v59
 echo ===================================================================
 echo 
 echo Please report any issues IF this script is NOT ending with: 

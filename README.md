@@ -8,7 +8,7 @@ Explaining software v55 video released on youtube:
 
 ---
 
-# chainhammer v58
+# chainhammer v59
 TPS measurements of parity aura, geth clique, quorum, tobalaba, etc. 
 It should work with any Ethereum type chain; we focused on PoA consensus.
 
