@@ -95,6 +95,7 @@ See parity [PE#9393](https://github.com/paritytech/parity-ethereum/issues/9393),
 
 
 ## install and run
+All this is developed and much tested on Debian, locally and in the AWS cloud. New: Ubuntu now also supported, see below.
 
 ### quickstart
 N.B.: Better do this on a *disposable cloud, or virtualbox machine*; because the installation makes lasting changes and needs sudo!  
@@ -129,6 +130,12 @@ export CH_MACHINE=yourChoice
 
 For detailed instructions, please see [docs/](docs/), esp. [reproduce.md](docs/reproduce.md), and for troubleshooting [FAQ.md](docs/FAQ.md) and [github issues](https://github.com/drandreaskrueger/chainhammer/issues).
 
+## benchmarking a remote node
+Chainhammer can now be stripped down to its pure benchmarking abilities, i.e. without the installation of docker and without the three local network starters (parity-deploy, geth-dev, quorum-crux). It was successfully used to benchmark the Microsoft Azure blockchain-as-a-service product.  The essential difference is to start the installation with the switch `nodocker`:
+
+    scripts/install.sh nodocker
+
+So, if you just want to benchmark your *existing Ethereum node or network*, have a look at the manual [docs/azure.md](docs/azure.md) . 
 
 ## unittests
 ```
