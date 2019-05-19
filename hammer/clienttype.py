@@ -40,6 +40,8 @@ class Error(Exception):
 class MethodNotExistentError(Error):
     pass
 
+class ResponseNot200Error(Error):
+    pass
 
 def curl_post(method, txParameters=None, RPCaddress=RPCaddress, ifPrint=False):
     """
@@ -54,6 +56,9 @@ def curl_post(method, txParameters=None, RPCaddress=RPCaddress, ifPrint=False):
         payload["params"] = [txParameters]
     headers = {'Content-type' : 'application/json'}
     response = requests.post(RPCaddress, json=payload, headers=headers)
+    if response.status_code != 200:
+        raise ResponseNot200Error()
+    
     response_json = response.json()
     
     if ifPrint: 

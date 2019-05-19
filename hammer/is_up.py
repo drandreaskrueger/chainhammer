@@ -60,6 +60,8 @@ def simple_RPC_call(RPCaddress=RPCaddress, method="web3_clientVersion"):
         success, error = False, "ConnectionError"
     except hammer.clienttype.MethodNotExistentError:
         success, error = False, "MethodNotExistentError"
+    except hammer.clienttype.ResponseNot200Error:
+        success, error = False, "ResponseNot200Error"
     else:
         try:
             nodeName = answer.split("/")[0]
@@ -94,16 +96,19 @@ def loop_until_is_up(seconds_between_calls = 0.5, ifPrint=False, timeout=None):
         time.sleep(seconds_between_calls)
 
     return success
-       
 
 
 if __name__ == '__main__':
 
-    # print (call_port(RPCa# ddress=RPCaddress))
+    # print (call_port(RPCaddress=RPCaddress))
     # print (simple_RPC_call())
     # loop_until_is_up(ifPrint=True)
     # loop_until_is_up(timeout=3)
     
-    loop_until_is_up()
+    ifPrint=False
+    if len(sys.argv)==2 and sys.argv[1]=="print":
+        ifPrint=True 
+    
+    loop_until_is_up(ifPrint=ifPrint)
     
     
