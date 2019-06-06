@@ -25,7 +25,10 @@ polkadot-deployer --version
 ```
 polkadot-deployer --help
 polkadot-deployer list
-polkadot-deployer create --config testnet1.json
+
+docker system prune -a --volumes
+docker system prune -a --volumes # yes, twice
+polkadot-deployer create --verbose --config testnet1.json
 ```
 with `testnet1.json`:
 ```
