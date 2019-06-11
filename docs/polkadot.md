@@ -2,7 +2,9 @@
 
 ## polkadot-deployer
 ### cloud
-The below `polkadot-deployer` shows strange problems on my local Debian machine, so eventually I decided to develop on a cloud machine instead. AWS, based on image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483", then install nodejs, npm, docker:
+The below `polkadot-deployer` shows strange problems on my local Debian machine, so eventually I decided to develop on a cloud machine instead:
+
+AWS, based on image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**); then install nodejs, npm, docker:
 
 ```
 curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
