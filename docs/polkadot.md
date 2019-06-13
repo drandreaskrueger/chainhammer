@@ -2,9 +2,7 @@
 
 ## polkadot-deployer
 ### cloud
-The below `polkadot-deployer` shows strange problems on my local Debian machine, so eventually I decided to develop on a cloud machine instead:
-
-AWS, based on image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**); then install nodejs, npm, docker:
+The below `polkadot-deployer` shows strange problems on my local Debian machine, so eventually I decided to try it on a cloud machine. AWS, based on image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**); then install nodejs, npm, docker:
 
 ```
 curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
@@ -52,6 +50,66 @@ node --version; npm --version; docker --version; free -m; df -h
 >  
 > Filesystem      Size  Used Avail Use% Mounted on  
 > /dev/xvda1      7.9G  4.1G  3.4G  55% /  
+
+#### polkadot-deployer swap out kubernetes
+The previously used byscorp/kind had seemingly unsolveable problems (see issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5)), so we had to [try out another one](https://github.com/w3f/polkadot-deployer/issues/7).
+
+Needs newest go:
+```
+which go
+sudo rm -rf /usr/local/go
+wget https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.12.6.linux-amd64.tar.gz 
+go version
+```
+> go version go1.12.6 linux/amd64  
+
+install like [described](https://github.com/kubernetes-sigs/kind#installation-and-usage)
+```
+GO111MODULE="on" go get sigs.k8s.io/kind@v0.3.0
+```
+it's a bit confused about its `bin` folder (ends up in `~/bin/go/bin/bin`), so let's simply softlink it, then it works
+
+    ln -s $GOPATH/bin/kind $GOPATH/kind
+    kind version
+
+> v0.3.0  
+
+now let's try it:
+
+    kind create cluster
+
+results in:
+
+```
+kind create cluster
+Creating cluster "kind" ...
+ ✓ Ensuring node image (kindest/node:v1.14.2) 🖼 
+ ✓ Preparing nodes 📦 
+ ✓ Creating kubeadm config 📜 
+ ✓ Starting control-plane 🕹️ 
+ ✓ Installing CNI 🔌 
+ ✓ Installing StorageClass 💾 
+Cluster creation complete. You can now use the cluster with:
+
+export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+kubectl cluster-info
+```
+
+    kind delete cluster
+
+results in
+
+```
+Deleting cluster "kind" ...
+$KUBECONFIG is still set to use /home/andreas/.kube/kind-config-kind even though that file has been deleted, remember to unset it
+```
+
+what else to try now, to make sure it really works?
+
+
+
+
 
 
 
@@ -103,3 +161,4 @@ at the moment [polkadot-deployer still does not start up properly](https://githu
 ## issues
 * [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) log files?
 * [bk#22](https://github.com/bsycorp/kind/issues/22) bsycorp/kind works only when started twice
+* [wpd#7](https://github.com/w3f/polkadot-deployer/issues/7) choose different kubernetes-in-docker solution
