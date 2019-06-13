@@ -91,28 +91,60 @@ Creating cluster "kind" ...
  ✓ Installing CNI 🔌 
  ✓ Installing StorageClass 💾 
 Cluster creation complete. You can now use the cluster with:
-
 export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 kubectl cluster-info
 ```
-
-    kind delete cluster
-
-results in
-
 ```
-Deleting cluster "kind" ...
-$KUBECONFIG is still set to use /home/andreas/.kube/kind-config-kind even though that file has been deleted, remember to unset it
+export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+echo $KUBECONFIG 
+~/.kube/kind-config-kind
+
+kubectl cluster-info
+Kubernetes master is running at https://localhost:34755
+KubeDNS is running at https://localhost:34755/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-what else to try now, to make sure it really works?
+As suggested [here](https://github.com/w3f/polkadot-deployer/issues/7#issuecomment-501762050), also trying out `helm`:
+
+    sudo apt install snapd
+    sudo snap install helm --classic
+
+then
+```
+snap run helm init
+
+$HELM_HOME has been configured at ~/.helm.
+Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
+Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
+To prevent this, run `helm init` with the --tiller-tls-verify flag.
+For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+```
+then
+```
+kubectl get pods --all-namespaces -w
+
+NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE
+kube-system   coredns-fb8b8dccf-94d5c                      1/1     Running   0          13m
+kube-system   coredns-fb8b8dccf-f24nv                      1/1     Running   0          13m
+kube-system   etcd-kind-control-plane                      1/1     Running   0          12m
+kube-system   ip-masq-agent-2sqwx                          1/1     Running   0          13m
+kube-system   kindnet-t9xxz                                1/1     Running   1          13m
+kube-system   kube-apiserver-kind-control-plane            1/1     Running   0          11m
+kube-system   kube-controller-manager-kind-control-plane   1/1     Running   0          12m
+kube-system   kube-proxy-jn66q                             1/1     Running   0          13m
+kube-system   kube-scheduler-kind-control-plane            1/1     Running   0          12m
+kube-system   tiller-deploy-765dcb8745-9l97m               1/1     Running   0          27s
+```
+this looks good, right?
 
 
 
 
 
+power it down again with
 
-
+     kind delete cluster
 
 ### polkadot-deployer install and run
 ```
