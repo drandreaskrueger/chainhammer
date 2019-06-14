@@ -159,7 +159,7 @@ install new:
 npm i -g polkadot-deployer
 polkadot-deployer --version
 ```
-> 0.10.1  
+> 0.10.2  
 
 
 ```
@@ -180,7 +180,7 @@ with `testnet1.json`:
 polkadot-deployer create --verbose --config testnet1.json
 ```
 
-NOT successful yet, see [wpd#7](https://github.com/w3f/polkadot-deployer/issues/7) issue.
+After one more iteration, *it finally worked*, see [wpd#7](https://github.com/w3f/polkadot-deployer/issues/7#issuecomment-502222660) issue, and the comments below.
 
 
 #### troubleshooting with kubectl
