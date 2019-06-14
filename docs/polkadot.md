@@ -138,28 +138,35 @@ kube-system   tiller-deploy-765dcb8745-9l97m               1/1     Running   0  
 ```
 this looks good, right?
 
-
-
-
-
 power it down again with
 
      kind delete cluster
+
+#### polkadot-deployer new version 0.10 preparations
+
+remove old:
+```
+npm r -g polkadot-deployer
+rm -rf ~/.config/polkadot-deployer
+docker kill $(docker ps -q); docker rm $(docker ps -q -a)
+docker system prune -a --volumes
+```
+
+install new:
 
 ### polkadot-deployer install and run
 ```
 npm i -g polkadot-deployer
 polkadot-deployer --version
 ```
-> 0.9.2  
+> 0.10.1  
+
 
 ```
 polkadot-deployer --help
 polkadot-deployer list
-
 docker system prune -a --volumes
 docker system prune -a --volumes # yes, twice
-polkadot-deployer create --verbose --config testnet1.json
 ```
 with `testnet1.json`:
 ```
@@ -169,6 +176,12 @@ with `testnet1.json`:
   "nodes": 4
 }
 ```
+```
+polkadot-deployer create --verbose --config testnet1.json
+```
+
+NOT successful yet, see [wpd#7](https://github.com/w3f/polkadot-deployer/issues/7) issue.
+
 
 #### troubleshooting with kubectl
 install kubectl (here Debian/ubuntu, but [see this](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for other systems):
