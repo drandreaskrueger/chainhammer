@@ -2,7 +2,7 @@
 
 ## polkadot-deployer
 ### cloud
-The below `polkadot-deployer` shows strange problems on my local Debian machine, so eventually I decided to try it on a cloud machine. AWS, based on image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**); then install nodejs, npm, docker:
+The previous version `polkadot-deployer` v0.9 had strange problems on my local Debian machine, so I also tried it on a cloud machine. I could actually replicate the problem on AWS, based on a Debian image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**). First install nodejs, npm, docker:
 
 ```
 curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
@@ -20,7 +20,7 @@ groups; docker --version
   Docker version 18.09.6, build 481bc77
 ```
 
-I had EACCES access rights problems (and for all 4 ways of npm install: `npm i $PRG`, `npm i -g $PRG`, `sudo npm i $PRG`, `sudo npm i -g $PRG`), until I used this:
+I had EACCES access rights problems (and actually for 4 ways of npm install: `npm i $PRG`, `npm i -g $PRG`, `sudo npm i $PRG`, `sudo npm i -g $PRG` = all 4 had -different- EACCESS problems!), until I used this:
 ```
 mkdir ~/.npm-global
 sudo chown -R $USER ~/.npm-global
@@ -31,9 +31,9 @@ nano ~/.profile
 source ~/.profile
 ```
 
-better use swap as RAM might become scarce
+better use swap as RAM might become scarce:
 ```
-SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=2000 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
+SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1000 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
 ```
 
 situation:
@@ -51,10 +51,9 @@ node --version; npm --version; docker --version; free -m; df -h
 > Filesystem      Size  Used Avail Use% Mounted on  
 > /dev/xvda1      7.9G  4.1G  3.4G  55% /  
 
-#### polkadot-deployer swap out kubernetes
-The previously used byscorp/kind had seemingly unsolveable problems (see issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5)), so we had to [try out another one](https://github.com/w3f/polkadot-deployer/issues/7).
 
-Needs newest go:
+#### polkadot-deployer swap out kubernetes
+Polkadot-deployer v0.9 previously used  *kubernetes-in-docker* `byscorp/kind`, and that had unsolveable problems (see issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5)), seemingly because [bsycorp/kind-v1.13 causes problems in approx 1 out of 3 attemps to start it](https://github.com/bsycorp/kind/issues/22). When they did not come up with a solution ... eventually we [swapped it out for another one](https://github.com/w3f/polkadot-deployer/issues/7). That `kubernetes-sigs/kind` needed some initial testing ... install, newest go:
 ```
 which go
 sudo rm -rf /usr/local/go
@@ -184,7 +183,7 @@ After one more iteration, *it finally worked*, see [wpd#7](https://github.com/w3
 
 
 #### troubleshooting with kubectl
-install kubectl (here Debian/ubuntu, but [see this](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for other systems):
+Especially when not working, this is useful to look deeper into it. Install `kubectl` (here Debian/ubuntu, but [see this](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for other systems):
 ```
 sudo apt-get update && sudo apt-get install -y apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -198,10 +197,13 @@ kubectl version
 then get the config file from `localhost:10080` and show it via `kubectl`
 ```
 wget -O config http://localhost:10080/config
-kubectl --kubeconfig=./config describe node minikube
-```
-at the moment [polkadot-deployer still does not start up properly](https://github.com/w3f/polkadot-deployer/issues/5#issuecomment-499876296); seemingly because [bsycorp/kind-v1.13 causes problems in approx 1 out of 3 attemps to start it](https://github.com/bsycorp/kind/issues/22). Waiting until they come up with a solution ...
 
+kubectl --kubeconfig=./config describe node minikube
+kubectl --kubeconfig=./config describe deployments -n kube-system
+kubectl --kubeconfig=./config describe deployments -n kube-system tiller-deploy
+```
+
+See issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) for discussion of results. 
 
 ## issues
 * [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) log files?
