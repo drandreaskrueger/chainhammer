@@ -1,0 +1,5 @@
+{
+  "name": "testnet1",
+  "type": "local",
+  "nodes": 4
+}
