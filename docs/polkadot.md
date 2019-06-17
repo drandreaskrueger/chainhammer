@@ -194,7 +194,7 @@ kubectl version
 ```
 > Client Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.3", GitCommit:"5e53fd6bc17c0dec8434817e69b04a25d8ae0ff0", GitTreeState:"clean", BuildDate:"2019-06-06T01:44:30Z", GoVersion:"go1.12.5", Compiler:"gc", Platform:"linux/amd64"}
 
-(obsolete: for old version with `bsycorp/kind` then get the config file from port 10080 with `wget -O config http://localhost:10080/config`), then ...)
+(obsolete: for old version with `bsycorp/kind` then get the config file from port 10080 with `wget -O config http://localhost:10080/config`, then ...)
 
 Now using the config file show status via `kubectl`
 ```
@@ -212,3 +212,5 @@ See issue a [late comment of wpd#5](https://github.com/w3f/polkadot-deployer/iss
 * [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) log files?
 * [bk#22](https://github.com/bsycorp/kind/issues/22) bsycorp/kind works only when started twice
 * [wpd#7](https://github.com/w3f/polkadot-deployer/issues/7) choose different kubernetes-in-docker solution
+* [wpd#8](https://github.com/w3f/polkadot-deployer/issues/8) benchmark stuck?
+
