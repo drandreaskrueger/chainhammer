@@ -183,7 +183,7 @@ After one more iteration, *it finally worked*, see [wpd#7](https://github.com/w3
 
 
 #### troubleshooting with kubectl
-Especially when not working, this is useful to look deeper into it. Install `kubectl` (here Debian/ubuntu, but [see this](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for other systems):
+Especially when not working, this is useful to look deeper into it. Install `kubectl`, here for Debian/Ubuntu (but [see this](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for other systems):
 ```
 sudo apt-get update && sudo apt-get install -y apt-transport-https
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
@@ -194,16 +194,19 @@ kubectl version
 ```
 > Client Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.3", GitCommit:"5e53fd6bc17c0dec8434817e69b04a25d8ae0ff0", GitTreeState:"clean", BuildDate:"2019-06-06T01:44:30Z", GoVersion:"go1.12.5", Compiler:"gc", Platform:"linux/amd64"}
 
-then get the config file from `localhost:10080` and show it via `kubectl`
-```
-wget -O config http://localhost:10080/config
+(obsolete: for old version with `bsycorp/kind` then get the config file from port 10080 with `wget -O config http://localhost:10080/config`), then ...)
 
-kubectl --kubeconfig=./config describe node minikube
-kubectl --kubeconfig=./config describe deployments -n kube-system
-kubectl --kubeconfig=./config describe deployments -n kube-system tiller-deploy
+Now using the config file show status via `kubectl`
+```
+export KUBECONFIG=$(kind get kubeconfig-path --name=testnet1); echo $KUBECONFIG
+
+kubectl get nodes
+kubectl describe node testnet1-control-plane   
+kubectl describe deployments -n kube-system
+kubectl describe deployments -n kube-system tiller-deploy
 ```
 
-See issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) for discussion of results. 
+See issue a [late comment of wpd#5](https://github.com/w3f/polkadot-deployer/issues/5#issuecomment-502769328) for example outputs.
 
 ## issues
 * [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) log files?
