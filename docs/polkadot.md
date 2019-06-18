@@ -208,9 +208,13 @@ kubectl describe deployments -n kube-system tiller-deploy
 
 See issue a [late comment of wpd#5](https://github.com/w3f/polkadot-deployer/issues/5#issuecomment-502769328) for example outputs.
 
+#### polkadot-deployer benchmark
+Initial problems. See issue [wpd#8](https://github.com/w3f/polkadot-deployer/issues/8) ("benchmark stuck?"). A simple test was  suggested, to just start and stop a mariadb container ... and it actually failed. So I raised an issue with the mariadb-on-docker people: [bdm#186](https://github.com/bitnami/bitnami-docker-mariadb/issues/186).
+
+
 ## issues
 * [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5) log files?
 * [bk#22](https://github.com/bsycorp/kind/issues/22) bsycorp/kind works only when started twice
 * [wpd#7](https://github.com/w3f/polkadot-deployer/issues/7) choose different kubernetes-in-docker solution
 * [wpd#8](https://github.com/w3f/polkadot-deployer/issues/8) benchmark stuck?
-
+* [bdm#186](https://github.com/bitnami/bitnami-docker-mariadb/issues/186) mkdir: cannot create directory '/bitnami/mariadb/data': Permission denied
