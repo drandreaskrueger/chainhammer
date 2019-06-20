@@ -3,12 +3,12 @@
 ## polkadot-deployer
 polkadot-deployer is a very useful tool that starts a polkadot network with e.g. 4 nodes. 
 
-It is using kubernetes which causes quite some problems (on Debian?). The first parts of this file here (and the below first 4 [issues](#issues) on github) are dedicated to finding out what's wrong. To avoid any idiosyncrasies of my *local* machine, I replicate the problem on a *standard cloud machine based on Debian*:
+It is using kubernetes which causes quite some problems (on Debian?). The first parts of this file here (and the below first 5 [issues](#issues) on github) are dedicated to finding out what's wrong. To avoid any idiosyncrasies of my *local* machine, I succesfully replicated the problem on a *standard cloud machine based on Debian*:
 
 ### cloud
 (for more detailed instructions how to connect to AWS machines, [see cloud.md](cloud.md#aws-deployment))
 
-Avoid all these installations by using my ready-made public Amazon AMI [ami-0aa7c32c39edb5062, and you can create an instance from that](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:search=ami-0aa7c32c39edb5062), and then directly continue below, with **"polkadot-deployer create"**.
+Avoid all these installations by using my ready-made public Amazon AMI [ami-0aa7c32c39edb5062, and you can create an instance from that](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:search=ami-0aa7c32c39edb5062), and then directly continue below in chapter [polkadot-deployer create](#polkadot-deployer-create).
 
 **OR**
 
@@ -119,8 +119,7 @@ testing whether "terminate" works:
 
     helm delete --purge mariadb
     kubectl get pods -w --all-namespaces | grep maria
-
-    kubectl get pods -w --all-namespaces | grep maria
+    
     default       mariadb-master-0                             0/1     Terminating   0          3m5s
     default       mariadb-slave-0                              0/1     Terminating   0          3m5s
 
