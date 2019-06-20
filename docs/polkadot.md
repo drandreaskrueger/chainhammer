@@ -1,147 +1,141 @@
 # Chainhammer Polkadot instructions
 
 ## polkadot-deployer
+polkadot-deployer is a very useful tool that starts a polkadot network with e.g. 4 nodes. 
+
+It is using kubernetes which causes quite some problems (on Debian?). The first parts of this file here (and the below first 4 [issues](#issues) on github) are dedicated to finding out what's wrong. To avoid any idiosyncrasies of my *local* machine, I replicate the problem on a *standard cloud machine based on Debian*:
+
 ### cloud
-The previous version `polkadot-deployer` v0.9 had strange problems on my local Debian machine, so I also tried it on a cloud machine. I could actually replicate the problem on AWS, based on a Debian image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**). First install docker, nodejs, npm:
+(for more detailed instructions how to connect to AWS machines, [see cloud.md](cloud.md#aws-deployment))
+
+Avoid all these installations by using my ready-made public Amazon AMI [ami-0aa7c32c39edb5062, and you can create an instance from that](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:search=ami-0aa7c32c39edb5062), and then directly continue below, with **"polkadot-deployer create"**.
+
+**OR**
+
+Create your own AWS machine based on a Debian image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**).  
+**AWS**: [launch instance](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#LaunchInstanceWizard), community AMIs, debian-stretch-hvm-x86_64-gp2-2019-05-14-84483, t2.medium, ... wait until booted, then connect with ssh.
+
+First install nodejs, npm, go, kubectl, swap, docker:
 
 ```
+sudo apt install -y git snapd
 git clone https://github.com/drandreaskrueger/chainhammer
-chainhammer/scripts/install-docker.sh 
+cd chainhammer
+git checkout polkadot
+
+scripts/install-nodejs.sh 
+scripts/install-go.sh 
+scripts/install-kubernetes.sh 
+scripts/create-swap.sh 
+scripts/install-docker.sh 
+
 exit
 ```
 logout and log back in, so that $USER is in docker group:
 ```
+ssh chainhammer
 groups; docker --version
   admin adm [...] docker
   Docker version 18.09.6, build 481bc77
 ```
 
-node and npm:
-```
-curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
-sudo apt-get install gcc g++ make nodejs git
-curl -L https://npmjs.org/install.sh | sudo sh
-```
-(On Debian) I had EACCES access rights problems (and actually for 4 ways of npm install: `npm i $PRG`, `npm i -g $PRG`, `sudo npm i $PRG`, `sudo npm i -g $PRG` = all 4 had -different- EACCESS problems!), until I used this:
-```
-mkdir ~/.npm-global
-sudo chown -R $USER ~/.npm-global
-npm config set prefix '~/.npm-global'
-
-nano ~/.profile
-    export PATH=~/.npm-global/bin:$PATH
-source ~/.profile
-```
-
-better use swap as RAM might become scarce:
-```
-SWAPFILE=/swapfile && free -m && sudo swapoff -a && sudo dd if=/dev/zero of=$SWAPFILE bs=1M count=1000 && sudo chmod 600 $SWAPFILE && sudo mkswap $SWAPFILE && echo $SWAPFILE none swap defaults 0 0 | sudo tee -a /etc/fstab && sudo swapon -a && free -m
-```
-
 situation:
 ```
-node --version; npm --version; docker --version; free -m; df -h
+nodejs --version; node --version; npm --version; go version; docker --version; free -m; df -h
+
+v10.16.0
+v10.16.0
+6.9.0
+
+go version go1.12.6 linux/amd64
+
+Docker version 18.09.6, build 481bc77
+
+              total        used        free      shared  buff/cache   available
+Mem:           3954          99        1015           7        2839        3567
+Swap:           999           0         999
+
+Filesystem   I have created a public Amazon AMI from this, so that you don't *have to do* the above steps.
+The AMI is called [ami-0aa7c32c39edb5062, and you can create an instance from that](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:search=ami-0aa7c32c39edb5062), and then directly continue here:   Size  Used Avail Use% Mounted on
+/dev/xvda1      7.9G  3.3G  4.2G  44% /
 ```
-> node v10.16.0  
-> npm 6.9.0  
-> Docker version 18.09.6, build 481bc77  
 
->   total        used        free      shared  buff/cache   available  
-> Mem:           2002          95          79           5        1827        1718  
-> Swap:          1999           0        1999  
->  
-> Filesystem      Size  Used Avail Use% Mounted on  
-> /dev/xvda1      7.9G  4.1G  3.4G  55% /  
-
-
-#### polkadot-deployer swap out kubernetes
-Polkadot-deployer v0.9 previously used  *kubernetes-in-docker* `byscorp/kind`, and that had unsolveable problems (see issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5)), seemingly because [bsycorp/kind-v1.13 causes problems in approx 1 out of 3 attemps to start it](https://github.com/bsycorp/kind/issues/22). When they did not come up with a solution ... eventually we [swapped it out for another one](https://github.com/w3f/polkadot-deployer/issues/7). That `kubernetes-sigs/kind` needed some initial testing ... install, newest go:
-```
-which go
-sudo rm -rf /usr/local/go
-wget https://dl.google.com/go/go1.12.6.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf go1.12.6.linux-amd64.tar.gz 
-go version
-```
-> go version go1.12.6 linux/amd64  
-
-install like [described](https://github.com/kubernetes-sigs/kind#installation-and-usage)
+**polkadot-deployer swap out kubernetes:** Polkadot-deployer v0.9 previously used  *kubernetes-in-docker* `byscorp/kind`, and that had unsolveable problems (see issue [wpd#5](https://github.com/w3f/polkadot-deployer/issues/5)), seemingly because [bsycorp/kind-v1.13 causes problems in approx 1 out of 3 attemps to start it](https://github.com/bsycorp/kind/issues/22). When they did not come up with a solution ... eventually we [swapped it out for another one](https://github.com/w3f/polkadot-deployer/issues/7). That new `kubernetes-sigs/kind` ... install like [described here](https://github.com/kubernetes-sigs/kind#installation-and-usage); it's a bit confused about its `bin` folder (ends up in `~/bin/go/bin/bin`), so let's simply softlink it, then it works.
 ```
 GO111MODULE="on" go get sigs.k8s.io/kind@v0.3.0
+ln -s $GOPATH/bin/kind $GOPATH/kind
+kind version
 ```
-it's a bit confused about its `bin` folder (ends up in `~/bin/go/bin/bin`), so let's simply softlink it, then it works
+> v0.3.0    ami-0aa7c32c39edb5062
 
-    ln -s $GOPATH/bin/kind $GOPATH/kind
-    kind version
+we [also need](https://github.com/w3f/polkadot-deployer/issues/7#issuecomment-501762050) `helm` (logout and log back in to use):
 
-> v0.3.0  
+    sudo snap install helm --classic
 
-now let's try it:
+now let's try it (for details see [this and the following comments in issue wpd#8](https://github.com/w3f/polkadot-deployer/issues/8#issuecomment-503054700)).
 
-    kind create cluster
+#### Amazon IMAGE !
 
-results in:
+I have created a public Amazon AMI from this, so that you don't *have to do* the above steps.
+The AMI is called [ami-0aa7c32c39edb5062, and you can create an instance from that](https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#Images:search=ami-0aa7c32c39edb5062), and then directly continue here:
+
+### polkadot-deployer create
+
+    npm i -g polkadot-deployer
+    polkadot-deployer --version
+
+> 0.10.4
+
+now works:
+
+    polkadot-deployer create --config networks/polkadot-testnet1.json
+
+(use --verbose if any problems).
+
+### polkadot-deployer benchmark
+but
+
+    polkadot-deployer benchmark --verbose -c networks/polkadot-finality1.json 
+
+... still has unsolved initial problems. See issue [wpd#8](https://github.com/w3f/polkadot-deployer/issues/8) ("benchmark stuck?"). A simple test was  suggested, to just start and stop a mariadb container:
 
 ```
 kind create cluster
-Creating cluster "kind" ...
- ✓ Ensuring node image (kindest/node:v1.14.2) 🖼 
- ✓ Preparing nodes 📦 
- ✓ Creating kubeadm config 📜 
- ✓ Starting control-plane 🕹️ 
- ✓ Installing CNI 🔌 
- ✓ Installing StorageClass 💾 
-Cluster creation complete. You can now use the cluster with:
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
-kubectl cluster-info
-```
-```
-export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
-echo $KUBECONFIG 
-~/.kube/kind-config-kind
+export KUBECONFIG="$(kind get kubeconfig-path --name=kind)"; echo $KUBECONFIG
 
-kubectl cluster-info
-Kubernetes master is running at https://localhost:34755
-KubeDNS is running at https://localhost:34755/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+helm init
+helm init --upgrade
+
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+kubectl get pods --all-namespaces | grep tiller
+
+helm install --name mariadb --set master.persistence.enabled=false --set slave.persistence.enabled=false stable/mariadb
+kubectl get pods -w --all-namespaces 
 ```
 
-As suggested [here](https://github.com/w3f/polkadot-deployer/issues/7#issuecomment-501762050), also trying out `helm`:
+testing whether "terminate" works:
 
-    sudo apt install snapd
-    sudo snap install helm --classic
+    helm delete --purge mariadb
+    kubectl get pods -w --all-namespaces | grep maria
 
-then
+    kubectl get pods -w --all-namespaces | grep maria
+    default       mariadb-master-0                             0/1     Terminating   0          3m5s
+    default       mariadb-slave-0                              0/1     Terminating   0          3m5s
+
+It does not. It keeps on saying "Terminating", even after many minutes.
+
+Power it down again, and remove as much leftovers as possible:
+
 ```
-snap run helm init
-
-$HELM_HOME has been configured at ~/.helm.
-Tiller (the Helm server-side component) has been installed into your Kubernetes Cluster.
-Please note: by default, Tiller is deployed with an insecure 'allow unauthenticated users' policy.
-To prevent this, run `helm init` with the --tiller-tls-verify flag.
-For more information on securing your installation see: https://docs.helm.sh/using_helm/#securing-your-helm-installation
+kind delete cluster
+docker kill $(docker ps -q); docker rm $(docker ps -q -a)
+docker system prune -af --volumes
 ```
-then
-```
-kubectl get pods --all-namespaces -w
+we have to wait what comes out of this issue [wpd#8](https://github.com/w3f/polkadot-deployer/issues/8).
 
-NAMESPACE     NAME                                         READY   STATUS    RESTARTS   AGE
-kube-system   coredns-fb8b8dccf-94d5c                      1/1     Running   0          13m
-kube-system   coredns-fb8b8dccf-f24nv                      1/1     Running   0          13m
-kube-system   etcd-kind-control-plane                      1/1     Running   0          12m
-kube-system   ip-masq-agent-2sqwx                          1/1     Running   0          13m
-kube-system   kindnet-t9xxz                                1/1     Running   1          13m
-kube-system   kube-apiserver-kind-control-plane            1/1     Running   0          11m
-kube-system   kube-controller-manager-kind-control-plane   1/1     Running   0          12m
-kube-system   kube-proxy-jn66q                             1/1     Running   0          13m
-kube-system   kube-scheduler-kind-control-plane            1/1     Running   0          12m
-kube-system   tiller-deploy-765dcb8745-9l97m               1/1     Running   0          27s
-```
-this looks good, right?
 
-power it down again with
-
-     kind delete cluster
 
 #### polkadot-deployer new version 0.10 preparations
 
@@ -185,13 +179,8 @@ After one more iteration, *it finally worked*, see [wpd#7](https://github.com/w3
 
 
 #### troubleshooting with kubectl
-Especially when not working, this is useful to look deeper into it. Install `kubectl`, here for Debian/Ubuntu (but [see this](https://kubernetes.io/docs/tasks/tools/install-kubectl/) for other systems):
+Especially when not working, this is useful to look deeper into it. 
 ```
-sudo apt-get update && sudo apt-get install -y apt-transport-https
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-sudo apt-get update
-sudo apt-get install -y kubectl
 kubectl version
 ```
 > Client Version: version.Info{Major:"1", Minor:"14", GitVersion:"v1.14.3", GitCommit:"5e53fd6bc17c0dec8434817e69b04a25d8ae0ff0", GitTreeState:"clean", BuildDate:"2019-06-06T01:44:30Z", GoVersion:"go1.12.5", Compiler:"gc", Platform:"linux/amd64"}
@@ -210,8 +199,7 @@ kubectl describe deployments -n kube-system tiller-deploy
 
 See issue a [late comment of wpd#5](https://github.com/w3f/polkadot-deployer/issues/5#issuecomment-502769328) for example outputs.
 
-#### polkadot-deployer benchmark
-Initial problems. See issue [wpd#8](https://github.com/w3f/polkadot-deployer/issues/8) ("benchmark stuck?"). A simple test was  suggested, to just start and stop a mariadb container ... and it actually failed. So I raised an issue with the mariadb-on-docker people: [bdm#186](https://github.com/bitnami/bitnami-docker-mariadb/issues/186).
+
 
 
 ## issues
