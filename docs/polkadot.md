@@ -2,13 +2,9 @@
 
 ## polkadot-deployer
 ### cloud
-The previous version `polkadot-deployer` v0.9 had strange problems on my local Debian machine, so I also tried it on a cloud machine. I could actually replicate the problem on AWS, based on a Debian image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**). First install nodejs, npm, docker:
+The previous version `polkadot-deployer` v0.9 had strange problems on my local Debian machine, so I also tried it on a cloud machine. I could actually replicate the problem on AWS, based on a Debian image "debian-stretch-hvm-x86_64-gp2-2019-05-14-84483" (for identical replication of the problems mentioned below **please use the exact same AMI "ami-0faa9c9b5399088fd"**). First install docker, nodejs, npm:
 
 ```
-curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
-sudo apt-get install gcc g++ make nodejs git
-curl -L https://npmjs.org/install.sh | sudo sh
-
 git clone https://github.com/drandreaskrueger/chainhammer
 chainhammer/scripts/install-docker.sh 
 exit
@@ -20,7 +16,13 @@ groups; docker --version
   Docker version 18.09.6, build 481bc77
 ```
 
-I had EACCES access rights problems (and actually for 4 ways of npm install: `npm i $PRG`, `npm i -g $PRG`, `sudo npm i $PRG`, `sudo npm i -g $PRG` = all 4 had -different- EACCESS problems!), until I used this:
+node and npm:
+```
+curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
+sudo apt-get install gcc g++ make nodejs git
+curl -L https://npmjs.org/install.sh | sudo sh
+```
+(On Debian) I had EACCES access rights problems (and actually for 4 ways of npm install: `npm i $PRG`, `npm i -g $PRG`, `sudo npm i $PRG`, `sudo npm i -g $PRG` = all 4 had -different- EACCESS problems!), until I used this:
 ```
 mkdir ~/.npm-global
 sudo chown -R $USER ~/.npm-global

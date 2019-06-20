@@ -32,7 +32,7 @@ function install_chapter {
 echo 
 echo ===================================================================
 echo Install ChainHammer dependencies, and clone network starter repos
-echo version v59
+echo version v60
 echo ===================================================================
 echo 
 echo Please report any issues IF this script is NOT ending with: 
@@ -79,7 +79,8 @@ fi
 # solc    
 install_chapter scripts/install-solc.sh
 
-# geth
+# go and geth
+install_chapter scripts/install-go.sh
 install_chapter scripts/install-geth.sh
 
 # env
