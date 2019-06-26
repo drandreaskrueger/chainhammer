@@ -144,7 +144,7 @@ npm r -g polkadot-deployer
 rm -rf ~/.config/polkadot-deployer
 docker kill $(docker ps -q); docker rm $(docker ps -q -a)
 docker system prune -a --volumes
-```
+``` 
 
 install new:
 
@@ -198,6 +198,19 @@ kubectl describe deployments -n kube-system tiller-deploy
 
 See issue a [late comment of wpd#5](https://github.com/w3f/polkadot-deployer/issues/5#issuecomment-502769328) for example outputs.
 
+## talking to a node
+Have a look: The [first 2 example calls are already working](https://github.com/drandreaskrueger/chainhammer/blob/a70b00de5e3137d8a43a50caaf01b71aed2ae765/hammer/polkadot.py#L45-L49). Nice. Thanks to the [chat](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org). They linked me to these Python projects & RPC API documentation:
+
+* https://github.com/polkascan/py-substrate-interface
+* https://github.com/mixbytes/polkadot-prometheus-exporter
+* https://polkadot.js.org/api/METHODS_RPC.html#json-rpc
+
+[This code here](https://github.com/mixbytes/polkadot-prometheus-exporter/tree/master/polkadot_prometheus_exporter) helped me to figure it out. The gist of how this works is: that the METHOD call NAME including its DATA has to be wrapped into a DICT, and that dict then dumped into JSON, and that STRING is sent to the WS server.
+
+I suggested  
+
+* some category "Python" (or more generally "help&examples by coding language") in the polkadot docs/wiki.
+* a (bounty for a) Python library like https://pypi.org/project/web3/ for Ethereum
 
 
 
