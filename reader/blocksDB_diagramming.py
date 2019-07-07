@@ -419,7 +419,7 @@ def averageTps_wholeExperiment(dfs, FROM_BLOCK, TO_BLOCK):
     bn2 = dfs.iloc[blocks-1]['blocknumber']
     duration = ts2-ts1
     txs=sum(dfs['txcount'][1:blocks]) # N.B.: start summing at block 1 not 0 !
-    tps=(txs/duration)
+    tps=(txs/duration) # # if only 1 filled block, then duration=0.0 --> RuntimeWarning: invalid value encountered in double_scalars
 
     print ("second to last experiment block, averaging:")
     txt="blocks %d-%d, timestamps %d-%d, duration %d seconds, txcount %d, tps %.1f"
@@ -438,7 +438,7 @@ def averager(dfs, col, emptyBlocks, fmt="%.1f"):
     filledSlice = dfs[col] [:len(dfs)-emptyBlocks-1]
     av = avCopy = filledSlice .mean()
     if fmt=="%d": 
-        avCopy = int(round(av))
+        avCopy = int(round(av)) # if only 1 filled block, this fails with "ValueError: cannot convert float NaN to integer"
     avTxt = fmt % avCopy
     return av, avTxt
 
@@ -448,7 +448,9 @@ def avgLine(ax, dfs, emptyBlocks, avg, avgTxt):
     horizontal line plus text on white background
     """
     lastFilledBlock_index = len(dfs)-emptyBlocks-1
-    blMin, blMax = min(dfs["blocknumber"])+1, max(dfs["blocknumber"][:lastFilledBlock_index])
+    blMin = min(dfs["blocknumber"])+1
+    blMax = max(dfs["blocknumber"][:lastFilledBlock_index]) # if only 1 filled block, this fails with "ValueError: max() arg is an empty sequence"
+    
     ax.plot([blMin, blMax], [avg, avg], "k-")
     
     ax.text(blMin + (blMax-blMin + emptyBlocks)*0.95, avg, avgTxt, 
@@ -625,7 +627,9 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX,
     
     if FROM_BLOCK==-1: FROM_BLOCK = min(blocknumbers)[0]
     if TO_BLOCK==-1: TO_BLOCK = max(blocknumbers)[0]
-    # print (FROM_BLOCK, TO_BLOCK); exit()
+    if TO_BLOCK-FROM_BLOCK<=0:
+        print ("\nLess than 2 blocks filled. So: NOT generating diagram!\nPremature ending. You probably do not want this.")
+        return "no-diagram-saved."
     
     print()
     # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
