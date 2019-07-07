@@ -625,19 +625,19 @@ def load_prepare_plot_save(DBFILE, NAME_PREFIX,
     add_columns(df)
     show_peak_TPS(df)
     
+    print()
     if FROM_BLOCK==-1: FROM_BLOCK = min(blocknumbers)[0]
     if TO_BLOCK==-1: TO_BLOCK = max(blocknumbers)[0]
-    if TO_BLOCK-FROM_BLOCK<=0:
+    if TO_BLOCK-FROM_BLOCK>0:
+        # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
+        fig, axes, dfs, txs, tpsAv = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK,
+                                              emptyBlocks=EMPTY_BLOCKS)
+        fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath, INFOFILE)
+        print ("\ndiagrams saved to: ", fn)
+    else:
         print ("\nLess than 2 blocks filled. So: NOT generating diagram!\nPremature ending. You probably do not want this.")
-        return "no-diagram-saved."
-    
-    print()
-    # fn = diagrams_oldversion(df, FROM_BLOCK, TO_BLOCK, NAME_PREFIX, gas_logy=True, bt_logy=True, imgpath=imgpath)
-    fig, axes, dfs, txs, tpsAv = diagrams(NAME_PREFIX, df, FROM_BLOCK, TO_BLOCK,
-                                          emptyBlocks=EMPTY_BLOCKS)
-    fn = savePlot(fig, NAME_PREFIX, FROM_BLOCK, TO_BLOCK, imgpath, INFOFILE)
-    
-    print ("\ndiagrams saved to: ", fn)
+        fn="no-diagram-created-because-less-than-2-filled-blocks"
+        tpsAv=0
     
     if INFOFILE:
         add_to_infofile(INFOFILE, fn, tpsAv, NAME_PREFIX) 
