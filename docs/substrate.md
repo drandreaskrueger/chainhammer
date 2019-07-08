@@ -9,6 +9,7 @@ cd paritytech_substrate
 
 git checkout -b v1.0 origin/v1.0
 ./scripts/init.sh
+./scripts/build.sh
 cargo clean
 RUSTFLAGS=-Awarnings cargo build
 RUSTFLAGS=-Awarnings cargo build -p subkey
