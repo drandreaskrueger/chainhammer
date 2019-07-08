@@ -6,15 +6,17 @@ Following https://substrate.dev/docs/en/getting-started/installing-substrate and
 ```
 git clone https://github.com/paritytech/substrate.git paritytech_substrate
 cd paritytech_substrate
-
 git checkout -b v1.0 origin/v1.0
+
 ./scripts/init.sh
 ./scripts/build.sh
 cargo clean
-RUSTFLAGS=-Awarnings cargo build
-RUSTFLAGS=-Awarnings cargo build -p subkey
-```
+RUSTFLAGS=-Awarnings cargo build --release
+RUSTFLAGS=-Awarnings cargo build --release -p subkey
 
+ls target/release/{subkey,substrate} -lh
+target/release/subkey --version; target/release/substrate --version
+```
 
 # other places
 
