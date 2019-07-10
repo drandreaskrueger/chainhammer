@@ -17,8 +17,22 @@ RUSTFLAGS=-Awarnings cargo build --release
 RUSTFLAGS=-Awarnings cargo build --release -p subkey
 
 ls target/release/{subkey,substrate} -lh
-target/release/subkey --version; target/release/substrate --version
+sudo ln -s ~/Code/paritytech_substrate/target/release/substrate /usr/local/bin/
+sudo ln -s ~/Code/paritytech_substrate/target/release/subkey /usr/local/bin/
+subkey --version; substrate --version
 ```
+> subkey 1.0.0  
+> substrate 1.0.0-2f1b89f4-x86_64-linux-gnu  
+
+syncing (by default "Chain specification: Emberic Elm")
+
+    substrate
+    
+while watching the size on disk
+
+    watch -n 10 "df|grep sda8; du ~/.local/share/substrate -d 0 -h"
+
+Only the first THIRD of the chain already takes up 14 GB! My disk is small, so I quit syncing. After CTRL-C and restart, the size of ~/.local/share/substrate is suddenly 4.2G only. How to trigger that compression DURING syncing? Asked in chat.
 
 ## wabt
 the suggested `apt install wabt` did not work (on Debian?), so build from source:
@@ -71,6 +85,7 @@ External: See
 * [Substrate on github/paritytech](https://github.com/paritytech/substrate)
 * [Contracts module of the Substrate Module Runtime Library (SRML)](https://github.com/paritytech/substrate/tree/master/srml/contracts)
 * [Introduction to Smart Contracts on Substrate](https://substrate.dev/docs/en/contracts/)
+* chat [#substrate-technical:matrix.org](https://riot.im/app/#/room/#substrate-technical:matrix.org)
 
 # issues
 * [ps#3066](https://github.com/paritytech/substrate/issues/3066) no ./scripts/build.sh anymore 
