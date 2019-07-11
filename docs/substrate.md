@@ -32,7 +32,12 @@ while watching the size on disk
 
     watch -n 10 "df|grep sda8; du ~/.local/share/substrate -d 0 -h"
 
-Only the first THIRD of the chain already takes up 14 GB! My disk is small, so I quit syncing. After CTRL-C and restart, the size of ~/.local/share/substrate is suddenly 4.2G only. How to trigger that compression DURING syncing? Asked in chat.
+Only the first THIRD of the chain already takes up 14 GB! My disk is small, so I quit syncing. After CTRL-C and restart, the size of ~/.local/share/substrate is suddenly 4.2G only. How to trigger that compression DURING syncing? Asked in chat. Answer: Pruning, probably faulty.
+
+Good that issue came up now, because seeminly there is confusion which version ([v1.0 (see issue 3066)](https://github.com/paritytech/substrate/issues/3066#issuecomment-509371473) or [master (see issue 3077)](https://github.com/paritytech/substrate/issues/3107#issuecomment-510618402)) is right for me. Let's wait what they come up with.
+
+
+
 
 ## wabt
 the suggested `apt install wabt` did not work (on Debian?), so build from source:
@@ -91,5 +96,6 @@ External: See
 * [ps#3066](https://github.com/paritytech/substrate/issues/3066) no ./scripts/build.sh anymore 
 * [ps#3067](https://github.com/paritytech/substrate/issues/3067) cargo build -> librocksdb-sys v5.14.2 -> unable to find libclang ... libclang.so
 * [Ww#1106](https://github.com/WebAssembly/wabt/issues/1106) bin/wasm2c --version # how to ?
+* [ps#3107](https://github.com/paritytech/substrate/issues/3107) no pruning ?
 
 
