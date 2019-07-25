@@ -258,3 +258,6 @@ I have reported it to the `geth` team --> https://github.com/ethereum/go-ethereu
 * [GE#17447](https://github.com/ethereum/go-ethereum/issues/17447) Sudden drop in TPS after total 14k transactions
 * [GE#17535](https://github.com/ethereum/go-ethereum/issues/17535) how to detect which consensus algorithm is driving the chain?
 * [GD#33](https://github.com/javahippie/geth-dev/issues/33) Feature request: options with smaller footprint
+* [GE#19890](https://github.com/ethereum/go-ethereum/issues/19890) netpoll_epoll.go: too many errors 
+* [DC#6](https://github.com/drandreaskrueger/chainhammer/issues/6#issuecomment-515075641) current geth is broken, how to skip it in the install.sh script
+
