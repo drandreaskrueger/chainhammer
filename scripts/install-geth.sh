@@ -1,7 +1,7 @@
-GO_INSTALLER="go1.11.4.linux-amd64.tar.gz"
+GETH_VERSION=v1.9.6
 
 echo
-echo installing go and geth
+echo compile and install geth $GETH_VERSION
 echo 
 read -p "Press enter to continue"
 
@@ -12,21 +12,29 @@ read -p "Press enter to continue"
 #
 # until then, compile and install geth locally:
 
-echo 
-echo install go $GO_INSTALLER
-rm -f $GO_INSTALLER
-wget https://dl.google.com/go/$GO_INSTALLER
-sudo tar -C /usr/local -xzf $GO_INSTALLER
-rm $GO_INSTALLER
-mkdir -p ~/go/bin
-echo "export PATH=\$PATH:/usr/local/go/bin:~/go/bin" >> ~/.profile
-export PATH=$PATH:/usr/local/go/bin:~/go/bin
 go version
 
-    
+echo get, compile and install geth - patience please
+echo
 
-echo install geth
-go get -d github.com/ethereum/go-ethereum
-go install "github.com/ethereum/go-ethereum/cmd/geth"
+echo download repo into $GOPATH
+go get -d -u github.com/ethereum/go-ethereum
+echo
+
+# set to a specific version
+echo checkout repo to specific geth version $GETH_VERSION
+OLDPATH=$(pwd)
+cd $GOPATH/src/github.com/ethereum/go-ethereum/
+git checkout $GETH_VERSION
+cd $OLDPATH
+echo	
+
+echo remove the old geth binary
+rm -f $(which geth)
+
+echo force rebuild geth command ethereum/go-ethereum/cmd/geth
+go clean -r "github.com/ethereum/go-ethereum/cmd/geth"
+go install  "github.com/ethereum/go-ethereum/cmd/geth"
+
 geth version
 

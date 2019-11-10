@@ -79,6 +79,9 @@ fi
 # solc    
 install_chapter scripts/install-solc.sh
 
+# go
+install_chapter scripts/install-go.sh
+
 # geth
 install_chapter scripts/install-geth.sh
 
