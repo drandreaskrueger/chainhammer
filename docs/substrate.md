@@ -199,5 +199,6 @@ External: See
 * [ps#3067](https://github.com/paritytech/substrate/issues/3067) cargo build -> librocksdb-sys v5.14.2 -> unable to find libclang ... libclang.so
 * [Ww#1106](https://github.com/WebAssembly/wabt/issues/1106) bin/wasm2c --version # how to ?
 * [ps#3107](https://github.com/paritytech/substrate/issues/3107) no pruning ?
+* [ps#4096](https://github.com/paritytech/substrate/issues/4096) error: The argument '--name <NAME>' cannot be used with '--dave'
 
 
