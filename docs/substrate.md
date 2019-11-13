@@ -1,6 +1,6 @@
 # chainhammer substrate instructions
 
-also see below chapter [#alternative-installation](#alternative installation)
+also see below chapters [#alternative-installation-1](#alternative-installation-1) and [#alternative-installation-2](#alternative-installation-2).
 # installing
 
 ## substrate 1.0
@@ -84,15 +84,13 @@ following these [workshop instructions](https://www.shawntabrizi.com/substrate-b
 
     sudo apt update
     sudo apt install -y cmake pkg-config libssl-dev git gcc build-essential git clang libclang-dev
-    
 	rustup update
 	rustup default stable    
     rustup update nightly
     rustup target add wasm32-unknown-unknown --toolchain nightly
-
-    command -v wasm-gc || cargo +nightly install --git https://github.com/alexcrichton/wasm-gc --force
-
     rustup --version; rustup toolchain list; rustup check
+
+(leaving out wasm-gc because [its repo says it is no longer necessary](https://github.com/alexcrichton/wasm-gc#wasm-gc))
 
 versions:
 
@@ -184,12 +182,34 @@ possibly run with more debug infos:
 # alternative installation 2
 Wow, their tutorials are changing fast. This [issue comment](https://substrate.dev/docs/en/next/tutorials/start-a-private-network-with-substrate) gave me yet another entry point; this time getting rid of Alice Bob Charlie Dave, and using an individual chainspec instead.
 
-First do everything in [alternative installation 1]() above until [substrate 2.0](), and then:
+rust:
 
+    sudo apt update
+    sudo apt install -y cmake pkg-config libssl-dev git gcc build-essential git clang libclang-dev
+	rustup update
+	rustup default stable    
+    rustup update nightly
+    rustup target add wasm32-unknown-unknown --toolchain nightly
+    rustup --version; rustup toolchain list; rustup check
+
+versions:
+
+> rustup 1.20.2 (13979c968 2019-10-16)  
+> stable-x86_64-unknown-linux-gnu - Up to date : 1.39.0 (4560ea788 2019-11-04)  
+> nightly-x86_64-unknown-linux-gnu - Up to date : 1.40.0-nightly (4f03f4a98 2019-11-12)  
+
+substrate subkey and node-template:
 
 ```
+git clone https://github.com/paritytech/substrate paritytech_substrate
+cd paritytech_substrate
+git checkout 7d7e74fb
 
+cargo install --force --path subkey subkey
+cd node-template
+cargo build --release
 ```
+
 
 
 
