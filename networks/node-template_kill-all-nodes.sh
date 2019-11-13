@@ -8,5 +8,5 @@ echo "ps aux | grep node-template"
 ps aux | grep node-template | grep -v grep 
 
 echo 
-echo Check these logs, they should be stopped now:
-echo tail -f logs/substrate_alice.log logs/substrate_bob.log logs/substrate_charlie.log logs/substrate_dave.log
+#echo Check these logs, they should be stopped now:
+#echo tail -f logs/substrate_alice.log logs/substrate_bob.log logs/substrate_charlie.log logs/substrate_dave.log
