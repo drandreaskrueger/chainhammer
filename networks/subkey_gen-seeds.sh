@@ -39,7 +39,8 @@ echo
 for (( i=1; i<$NUM+1; i++ ));
 do
     hyphened2seed ${SEEDPHRASES[$i-1]}
-    secret=$(subkey --ed25519 inspect "$seed"  | grep "Secret seed" | awk '{ print $3 }')
+    #                           https://github.com/paritytech/substrate/issues/4103#issuecomment-553606844
+    secret=$(subkey --ed25519 inspect "$seed"  | grep "Secret seed" | awk '{ print $3 }' | sed -r "s/0x//g") 
     filename=$FOLDER/seed$i.secret
     echo $secret > $filename
     echo $i $secret $filename
