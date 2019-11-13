@@ -88,9 +88,10 @@ following these [workshop instructions](https://www.shawntabrizi.com/substrate-b
 	rustup default stable    
     rustup update nightly
     rustup target add wasm32-unknown-unknown --toolchain nightly
+    command -v wasm-gc || cargo +nightly install --git https://github.com/alexcrichton/wasm-gc --force
     rustup --version; rustup toolchain list; rustup check
 
-(leaving out wasm-gc because [its repo says it is no longer necessary](https://github.com/alexcrichton/wasm-gc#wasm-gc))
+(wasm-gc is needed even though [its repo says it is no longer necessary](https://github.com/alexcrichton/wasm-gc#wasm-gc))
 
 versions:
 
@@ -182,6 +183,8 @@ possibly run with more debug infos:
 # alternative installation 2
 Wow, their tutorials are changing fast. This [issue comment](https://substrate.dev/docs/en/next/tutorials/start-a-private-network-with-substrate) gave me yet another entry point; this time getting rid of Alice Bob Charlie Dave, and using an individual chainspec instead.
 
+## dependencies and compilation
+
 rust:
 
     sudo apt update
@@ -190,6 +193,7 @@ rust:
 	rustup default stable    
     rustup update nightly
     rustup target add wasm32-unknown-unknown --toolchain nightly
+    command -v wasm-gc || cargo +nightly install --git https://github.com/alexcrichton/wasm-gc --force
     rustup --version; rustup toolchain list; rustup check
 
 versions:
@@ -208,10 +212,50 @@ git checkout 7d7e74fb
 cargo install --force --path subkey subkey
 cd node-template
 cargo build --release
+
+mv ../target/release/node-template ~/.cargo/bin/node-template-2.0.0-7d7e74fb7
+ln -s ~/.cargo/bin/node-template-2.0.0-7d7e74fb7 ~/.cargo/bin/node-template
+
+node-template --version; subkey --version
 ```
+versions:
+
+> node-template 2.0.0-7d7e74fb7-x86_64-linux-gnu  
+> subkey 2.0.0 # better here include the commit hash too?  
 
 
+ui:
 
+```
+cd ../..
+git clone https://github.com/polkadot-js/apps polkadot-js_apps
+cd polkadot-js_apps
+yarn
+yarn run start
+```
+http://localhost:3000
+
+## configure
+
+### own keys & own chainspec
+
+> I suggest paritytech makes this whole procedure into a better scripted automatism  
+> INCL inserting the generated keys into my own chainspec. This script is a good start:  
+
+Generate and show 4 keys, create seed?.secret files, 
+and show the keys in sr25519 for BABE and in ed25519 for GRANDPA:
+
+```
+networks/node-template_keys.sh 4
+```
+Now edit the last part that into this `networks/cfg/CH-spec.json`, and make it into a "raw" chainspec:
+
+```
+node-template build-spec --chain=local > networks/cfg/CH-spec.json
+nano networks/cfg/CH-spec.json
+
+node-template build-spec --chain networks/cfg/CH-spec.json --raw > networks/cfg/CH-spec-raw.json
+```
 
 # other places
 
