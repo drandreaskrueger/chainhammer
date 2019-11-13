@@ -1,10 +1,10 @@
 # start this with:
-#                  networks/node-template_keys-from-seeds.sh 4
+#                  networks/subkey_keys-from-seeds.sh 4
 #
 # preparation to insert the generated keys into my own chainspec with jq
 #
 # version 0.4
-# https://github.com/drandreaskrueger/chainhammer/blob/master/networks/node-template_keys-from-seeds.sh
+# https://github.com/drandreaskrueger/chainhammer/blob/master/networks/subkey_keys-from-seeds.sh
 
 FOLDER=networks/cfg
 NUM=$1
