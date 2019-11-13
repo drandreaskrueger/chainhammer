@@ -3,7 +3,7 @@
 also see below chapter [#alternative-installation](#alternative installation)
 # installing
 
-## substrate
+## substrate 1.0
 Following https://substrate.dev/docs/en/getting-started/installing-substrate and -as usual lol- initially most manuals just don't work. Then after raising 2 [issues](#issues) (which were answered superfast!), this seems to be working:
 
 ```
@@ -77,7 +77,7 @@ cargo contract --help
 > cargo-contract 0.1.1  
 
 
-# alternative installation
+# alternative installation 1
 following these [workshop instructions](https://www.shawntabrizi.com/substrate-beginner-workshop/#/0/), but manually going through http://getsubstrate.io/ script:
 
 ## dependencies and rust and wasm
@@ -103,7 +103,7 @@ versions:
 > nightly-x86_64-unknown-linux-gnu - Up to date : 1.40.0-nightly (bc0e288ad 2019-11-11)  
 
 
-## substrate
+## substrate 2.0
 
     git clone https://github.com/paritytech/substrate paritytech_substrate
     cd paritytech_substrate
@@ -179,6 +179,18 @@ possibly run with more debug infos:
 * start: `networks/node-template_start-4-local-nodes.sh`
 * kill: `networks/node-template_kill-all-nodes.sh`
 * purge = delete chains: `networks/node-template_purge-4-local-nodes.sh`
+
+
+# alternative installation 2
+Wow, their tutorials are changing fast. This [issue comment](https://substrate.dev/docs/en/next/tutorials/start-a-private-network-with-substrate) gave me yet another entry point; this time getting rid of Alice Bob Charlie Dave, and using an individual chainspec instead.
+
+First do everything in [alternative installation 1]() above until [substrate 2.0](), and then:
+
+
+```
+
+```
+
 
 
 # other places
