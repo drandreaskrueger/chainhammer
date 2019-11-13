@@ -1,11 +1,11 @@
 # start this with:
-#                  networks/node-template_keys.sh 4
+#                  networks/node-template_keygen.sh 4
 #
 # I suggest paritytech makes this whole procedure into a better scripted automatism
 # INCL inserting the generated keys into my own chainspec. This is a good start:
 #
 # version 0.4
-# https://github.com/drandreaskrueger/chainhammer/blob/master/networks/node-template_genkeys.sh
+# https://github.com/drandreaskrueger/chainhammer/blob/master/networks/node-template_keygen.sh
 
 FOLDER=networks/cfg
 NUM=$1
