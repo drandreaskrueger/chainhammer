@@ -35,7 +35,7 @@ wc $filename_my_chainspec
 echo
 filename_my_raw=$FOLDER/$FILESTUB-raw.json
 echo transforming that file into "raw" chainspec file $filename_my_raw
-node-template build-spec --chain $TEMPLATE --raw > $filename_my_raw
+node-template build-spec --chain $filename_my_chainspec --raw > $filename_my_raw
 wc $filename_my_raw
 
 echo
