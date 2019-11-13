@@ -235,27 +235,23 @@ yarn run start
 ```
 http://localhost:3000
 
-## configure
+## configure network
 
 ### own keys & own chainspec
 
-> I suggest paritytech makes this whole procedure into a better scripted automatism  
-> INCL inserting the generated keys into my own chainspec. This script is a good start:  
+I suggest paritytech makes this whole procedure into a (better than mine) scripted automatism 
+INCL already inserting the generated keys into an own chainspec. My 3 scripts are a good start:
 
-Generate and show 4 keys, create seed?.secret files, 
-and show the keys in sr25519 for BABE and in ed25519 for GRANDPA:
+      node-template_chainspec-generate.sh 4
 
-```
-networks/node-template_keys.sh 4
-```
-Now edit the last part that into this `networks/cfg/CH-spec.json`, and make it into a "raw" chainspec:
+does this:
 
-```
-node-template build-spec --chain=local > networks/cfg/CH-spec.json
-nano networks/cfg/CH-spec.json
+1. generate 4 seeds in `subkey_gen-seeds.sh`
+2. convert 4 seeds into `babe` (or `grandpa`) keys in json lists via `subkey_keys-from-seeds.sh 4 babe`
+3. generates a local.json from `node-template --chain local`
+4. inputs the keys from (2.), into a CH.json
+5. turns that into a CH-raw.json 
 
-node-template build-spec --chain networks/cfg/CH-spec.json --raw > networks/cfg/CH-spec-raw.json
-```
 
 # other places
 
