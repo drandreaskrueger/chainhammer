@@ -43,4 +43,4 @@ echo visual check intermediate file - here .genesis.runtime.grandpa :
 jq '.genesis.runtime.grandpa' $filename_my_chainspec
 
 echo
-echo Done.
+echo Done. Now start all $NUM nodes, and then insert the above keys into the keystore, and restart nodes.
