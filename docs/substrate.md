@@ -273,5 +273,5 @@ External: See
 * [ps#3107](https://github.com/paritytech/substrate/issues/3107) no pruning ?
 * [ps#4096](https://github.com/paritytech/substrate/issues/4096) error: The argument '--name <NAME>' cannot be used with '--dave'
 * [ps#4103](https://github.com/paritytech/substrate/issues/4103) --node-key vs --node-key-file 
-
+* [sdh#327](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/327) suggestion what to add to 'start-a-private-network-with-substrate'
 
