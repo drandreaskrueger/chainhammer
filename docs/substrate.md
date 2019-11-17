@@ -173,7 +173,16 @@ possibly run with more debug infos:
 
     RUST_LOG=debug RUST_BACKTRACE=1 cargo run -- --dev
 
+
+# TODO: standalone repo 'substrate-starter'
+N.B.: Everything below is to be modified for the newly created standalone repo:
+
+* https://gitlab.com/andreaskrueger/substrate-starter
+
+which does EVERYTHING there with only two bash scripts `./init.sh; ./start.sh` !!!
+
 ## local network four nodes
+
 
 * start: `networks/node-template_start-4-local-nodes.sh`
 * kill: `networks/node-template_kill-all-nodes.sh`
