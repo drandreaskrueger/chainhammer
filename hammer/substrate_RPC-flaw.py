@@ -1,6 +1,7 @@
 # reported in this issue:
 # https://github.com/substrate-developer-hub/substrate-node-template/issues/11
 
+import json
 import requests # pip install requests
 
 url = "https://dev-node.substrate.dev:9933/"
@@ -24,6 +25,19 @@ print ("Manipulating that string to make substrate happy:")
 payload_string_manipulated = payload_string.replace("'", '"')
 print ("payload_string_manipulated:", payload_string_manipulated)
 r = requests.post(url, data=payload_string_manipulated, headers=headers)
+rj = r.json()
+rj['result'] = rj['result'][:30] + "..."
+print (r.status_code, rj)
+
+print ("\nSuggested workaround:")
+r = requests.post(url, data=json.dumps(payload), headers=headers)
+rj = r.json()
+rj['result'] = rj['result'][:30] + "..."
+print (r.status_code, rj)
+
+import requests, json
+print ("\nThis works too:")
+r = requests.post(url, json=payload, headers=headers)
 rj = r.json()
 rj['result'] = rj['result'][:30] + "..."
 print (r.status_code, rj)
