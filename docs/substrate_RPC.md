@@ -16,9 +16,16 @@ we then need the SCALE codec, so:
     cd networks/repos
     git clone https://github.com/polkascan/py-scale-codec polkascan_py-scale-codec
     cd polkascan_py-scale-codec
-    python ./setup.py
+    python ./setup.py install
 
 see substrate_RPC_testing.py (and substrate_RPC-flaw.py) for more details.
+
+and -hooray- there is a Python library, for some of the RPC calls
+
+    cd .. 
+    git clone https://github.com/polkascan/py-substrate-interface.git polkascan_py-substrate-interface
+    cd polkascan_py-substrate-interface 
+    python ./setup.py install
 
 
 ## issues
