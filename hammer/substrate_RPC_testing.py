@@ -2,16 +2,14 @@
 
 import requests # pip install requests
 
-
-
 from pprint import pprint
 
 from scalecodec.metadata import MetadataDecoder
 from scalecodec.base import ScaleBytes
+from scalecodec.types import U8
 
 RPC_URL = "https://dev-node.substrate.dev:9933/"
-RPC_URL = "http://localhost:9933/"
-
+# RPC_URL = "http://localhost:9933/"
 
 answer1 ={
   "jsonrpc": "2.0",
@@ -19,37 +17,46 @@ answer1 ={
   "id": 1
 }
 
-def decoder_testing(metadata_hex = answer1["result"]):
+def SCALE_decode(metadata_hex = answer1["result"]):
 
     metadata_decoder = MetadataDecoder(ScaleBytes(metadata_hex))
+    print ([a for a in dir(metadata_decoder) if not a.startswith("_")])
+    input = metadata_decoder.data
     metadata_decoder.decode()
-    print (dir(metadata_decoder))
-    # print (metadata_decoder.data)
-    pprint (metadata_decoder.value, width=150)
+    result = metadata_decoder.value
+    print ('decoded --> %s' % result.keys())
+    print ('magicNumber : %d' % result["magicNumber"])
+    keys = result["metadata"].keys()
+    print ('metadata -->  %s --> ' % keys)
+    Metadata = result["metadata"][next(iter(keys))]
+    print ('keys() --> %s --> ' % Metadata.keys())
+    pprint (Metadata[next(iter(Metadata.keys()))], width=120)
+    return result
 
 
 def RPC_call(data={"method": "state_getMetadata"}, url=RPC_URL):
     """
     curl -H "Content-Type: application/json" -d '{"id":1, "jsonrpc":"2.0", "method": "state_getMetadata"}' https://dev-node.substrate.dev:9933/
     """
-    # print (url)
+    print (data["method"], url, end=" --> ")
     payload = {**data, 'id':'1', 'jsonrpc':'2.0'}
-
-    # THIS IS A VERY BAD HACK, see issue https://github.com/substrate-developer-hub/substrate-node-template/issues/11
-    payload = ("%s" % payload).replace("'", '"')
-
     headers = {"Content-Type" : "application/json"}
-    r = requests.post(url, data=payload, headers=headers)
-    print (r.status_code)
-    # print (r.text)
+    r = requests.post(url, json=payload, headers=headers) # do NOT use data=payload but json=payload !
     j = r.json()
+    print (r.status_code)
+    return r.status_code, j
 
-    return j
+
+def StorageValueQuery():
+    pass
 
 
-def RPC_tutorial():
-    j = RPC_call()
-    decoder_testing(j["result"])
+def RPC_tutorial(): 
+    """
+    https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/
+    """
+    _, j = RPC_call(); SCALE_decode(j["result"])
+
 
 
 
