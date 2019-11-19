@@ -1,12 +1,14 @@
 
+from pprint import pprint
 
 import requests # pip install requests
+import xxhash # pip install xxhash
 
-from pprint import pprint
 
 from scalecodec.metadata import MetadataDecoder
 from scalecodec.base import ScaleBytes
-from scalecodec.types import U8
+
+
 
 RPC_URL = "https://dev-node.substrate.dev:9933/"
 # RPC_URL = "http://localhost:9933/"
@@ -48,15 +50,46 @@ def RPC_call(data={"method": "state_getMetadata"}, url=RPC_URL):
 
 
 def StorageValueQuery():
-    pass
+    """
+    xxhash.VERSION 1.3.0 xxhash.XXHASH_VERSION 0.6.5
+    [83, 117, 100, 111, 32, 75, 101, 121]
+    ae5549fb
+    2ed2ce1a873aa650
+    AttributeError: module 'xxhash' has no attribute 'xxh128'
+    """
 
+    import xxhash # pip install xxhash
+    print ("xxhash.VERSION", xxhash.VERSION, "xxhash.XXHASH_VERSION", xxhash.XXHASH_VERSION)
+    
+    U8a = bytes("Sudo Key", encoding='utf8')
+    print (list(U8a))
+    print (xxhash.xxh32(U8a).hexdigest()) 
+    print (xxhash.xxh64(U8a).hexdigest())
+    try:
+        print (xxhash.xxh128(U8a).hexdigest())
+    except Exception as e:
+        print (e.__class__.__name__, ":", e)
+    
+
+
+def chapter(text):
+    line = "#" * (len(text) + 4)
+    print ("\n"+line)
+    print ("# " + text + " #")
+    print (line)
 
 def RPC_tutorial(): 
     """
     https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/
     """
-    _, j = RPC_call(); SCALE_decode(j["result"])
-
+    chapter("Substrate RPC Endpoint")
+    _, j = RPC_call()
+    
+    chapter("SCALE Codec")
+    SCALE_decode(j["result"])
+    
+    chapter("Storage Keys")
+    StorageValueQuery()
 
 
 
