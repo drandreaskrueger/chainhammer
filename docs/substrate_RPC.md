@@ -27,7 +27,20 @@ and -hooray- there is a Python library, for some of the RPC calls
     cd polkascan_py-substrate-interface 
     python ./setup.py install
 
+(both are now getting installed via `scripts/install-virtualenv.sh`)
+
+I have tried out most functions in `py-substrate-interface`, see  
+
+I have come up with one feature request 
+[psi#2](https://github.com/polkascan/py-substrate-interface/issues/2) 
+and a request for examples how to use one of the functions 
+[psi#3](https://github.com/polkascan/py-substrate-interface/issues/3).
+
 
 ## issues
 * [pspsc#4](https://github.com/polkascan/py-scale-codec/issues/4) self.contains_transaction: bool = False ^ SyntaxError: invalid syntax
 * [sdh#11](https://github.com/substrate-developer-hub/substrate-node-template/issues/11) using canonical Python requests --> {"code":-32700,"message":"Parse error"}
+* [ipxx#34](https://github.com/ifduyue/python-xxhash/issues/34) 128 bits ?
+* [psi#2](https://github.com/polkascan/py-substrate-interface/issues/2) (FR) let the function do the xxhash'ing of the storage key name
+* [psi#3](https://github.com/polkascan/py-substrate-interface/issues/3) example for get_storage(module, function, params) please
+
