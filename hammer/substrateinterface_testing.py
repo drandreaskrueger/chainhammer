@@ -162,11 +162,27 @@ def testing_substrateinterface():
     print ("\n[Unclear]")
     get_storage(SI, block_hash, module=module, function=function, params=params)
     
-    
+
+def get_storage_testing():
+    """
+    connect, get chain head, get_storage_by_key, get_storage
+    """
+    SI = substrateinterface.SubstrateInterface(url=RPC_URL)
+    block_hash = SI.get_chain_head()
+    storage_key="0x50a63a871aced22e88ee6466fe5aa5d9" # eonding of "Sudo Key"
+    storage = get_storage_by_key(SI, block_hash, storage_key=storage_key)
+    without0x = storage [2:] 
+    get_storage(SI, block_hash, module="sudo", function="sudo", params=without0x)
+
+
 if __name__ == '__main__':
     # hashlib_supported_algorithms(); exit()
-    testing_substrateinterface()
+    # testing_substrateinterface()
     
+    get_storage_testing()
+
+
+
 
 # example output:
 """
