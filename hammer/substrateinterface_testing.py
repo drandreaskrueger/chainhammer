@@ -172,14 +172,16 @@ def get_storage_testing():
     storage_key="0x50a63a871aced22e88ee6466fe5aa5d9" # eonding of "Sudo Key"
     storage = get_storage_by_key(SI, block_hash, storage_key=storage_key)
     without0x = storage [2:] 
-    get_storage(SI, block_hash, module="sudo", function="sudo", params=without0x)
+    params=without0x
+    # params = "7f864e18e3dd8b58386310d2fe0919eef27c6e558564b7f67f22d99d20f587bb"
+    get_storage(SI, block_hash, module="Balances", function="FreeBalance", params=params)
 
 
 if __name__ == '__main__':
     # hashlib_supported_algorithms(); exit()
-    # testing_substrateinterface()
+    testing_substrateinterface()
     
-    get_storage_testing()
+    # get_storage_testing()
 
 
 
