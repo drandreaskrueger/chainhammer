@@ -37,10 +37,20 @@ def SCALE_decode(metadata_hex = answer1["result"]):
     module_names = [m["name"] for m in Metadata[k]]
     print ('module_names --> %s ' % module_names)
 
+    chapter ("SCALE CODEC - metadata - some modules, closer look")
+
+    # this should work anywhere:
+    balances = list(filter(lambda x: x["name"]=="balances", Metadata[k]))[0]
+    print ("Module 'balances':")
+    pprint (balances, width=150)
+    print("\n###\n")
+
+
     # for this to work, the node must be of type 'substrate-package-chainhammer'
     chainhammer = list(filter(lambda x: x["name"]=="chainhammer", Metadata[k]))[0]
     print ("Module 'chainhammer':")
     pprint (chainhammer)
+
 
     # pprint (Metadata[k], width=120)
     return result
