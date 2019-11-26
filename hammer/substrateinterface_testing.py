@@ -170,14 +170,12 @@ def get_storage_testing():
     connect, get chain head, get_storage_by_key, get_storage
     """
     SI = substrateinterface.SubstrateInterface(url=RPC_URL)
-    block_hash = SI.get_chain_head()
+    # block_hash = SI.get_chain_head()
     # storage_key="0x50a63a871aced22e88ee6466fe5aa5d9" # encoding of "Sudo Key"
-    # storage = get_storage_by_key(SI, block_hash, storage_key=storage_key)
-    # without0x = storage [2:]
-    # params=without0x
-    params = "7f864e18e3dd8b58386310d2fe0919eef27c6e558564b7f67f22d99d20f587bb"
-    # params="5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"
-    get_storage(SI, block_hash, module="Balances", function="FreeBalance", params=params)
+    storage = get_storage_by_key(SI, block_hash=None, storage_key=xxh6464("Sudo Key"))
+    params = storage [2:]
+    storage = SI.get_storage(block_hash=None, module="Balances", function="FreeBalance", params=params, hasher='Blake2_256', return_scale_type='Balance')
+    pprint (storage)
     print ()
 
 
@@ -191,9 +189,9 @@ def get_storage_chainhammer():
     """
     SI = substrateinterface.SubstrateInterface(url=RPC_URL)
     block_hash = SI.get_chain_head()
-    module="chainhammer"
+    module="ChainhammerModule"
     function="SomeValue"
-    storage = SI.get_storage(block_hash=block_hash, module=module, function=function, hasher ='Blake2_256')
+    storage = SI.get_storage(block_hash=block_hash, module=module, function=function, return_scale_type='U32') # , hasher ='Blake2_256')
     pprint (storage)
 
 
@@ -211,10 +209,11 @@ def get_storage_by_key_chainhammer():
     """
     SI = substrateinterface.SubstrateInterface(url=RPC_URL)
     block_hash = SI.get_chain_head()
-    storage_key_name="chainhammer SomeValue"
+    # storage_key_name="chainhammer SomeValue"
+    storage_key_name="ChainhammerModule SomeValue"
     # storage_key_name="Sudo Key"
     storage_key = xxh6464(storage_key_name)
-    storage = SI.get_storage_by_key(block_hash=block_hash, storage_key=storage_key)
+    storage = SI.get_storage_by_key(block_hash=block_hash, storage_key=storage_key, hasher ='Blake2_256')
     pprint (storage)
 
 
@@ -230,10 +229,10 @@ if __name__ == '__main__':
     # hashlib_supported_algorithms(); exit()
     # testing_substrateinterface()
 
-    # get_storage_testing()
-    # get_storage_chainhammer()
+    get_storage_testing()
+    get_storage_chainhammer()
     # get_storage_noparams()
-    get_storage_by_key_chainhammer()
+    # get_storage_by_key_chainhammer()
 
 
 
