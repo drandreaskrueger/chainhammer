@@ -66,6 +66,12 @@ what else? Please YOU make suggestions.
 
 N.B.: No guarantees that I will get time to continue with this at all - so please feel invited to fork this repo, and keep on working on benchmarking this. I'll happily merge your pull request. Thanks.
 
+# substrate and future chainhammer extensions
+
+> ... we are introducing Substrate EVM. This is a Substrate SRML module that introduces an Ethereum-compatible execution environment “natively” into Substrate. Essentially, this allows your Substrate chain to host the vast majority of the Ethereum state transition function. Existing Solidity/EVM code can be deployed into this environment. Interoperation with the rest of Substrate (i.e. calling into other modules, transfer to and from other accounts and using interchain messaging features) happens through specially introduced “pre-compiled contract” APIs. [Gavin Wood October 30th 2019](https://medium.com/polkadot-network/polkadot-substrate-and-ethereum-f0bf1ccbfd13) 
+
+--> Benchmark that with chainhammer, using the simplestorage smart contract.
+
 # other places:
 * [quorum.md](../results/quorum.md) - quickstart how to use this chainhammer tool
   * [log.md](../results/log.md) - sequence of everything that I've already optimized, to get this faster 
