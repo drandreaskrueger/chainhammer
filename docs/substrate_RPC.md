@@ -29,12 +29,8 @@ and -hooray- there is a Python library, for some of the RPC calls
 
 (both are now getting installed via `scripts/install-virtualenv.sh`)
 
-I have tried out most functions in `py-substrate-interface`, see  
-
-I have come up with one feature request 
-[psi#2](https://github.com/polkascan/py-substrate-interface/issues/2) 
-and a request for examples how to use one of the functions 
-[psi#3](https://github.com/polkascan/py-substrate-interface/issues/3).
+I have tried out most functions in polkascan's `py-substrate-interface`, see `substrateinterface_testing.py`. Then I have come up with one feature request 
+[psi#2](https://github.com/polkascan/py-substrate-interface/issues/2) and when no answer, I solved it myself in pull request [psi#4](https://github.com/polkascan/py-substrate-interface/pull/4); and asked for a working  example how to use one of their functions [psi#3](https://github.com/polkascan/py-substrate-interface/issues/3) because they have no unittests yet.
 
 
 ## issues
@@ -43,4 +39,5 @@ and a request for examples how to use one of the functions
 * [ipxx#34](https://github.com/ifduyue/python-xxhash/issues/34) 128 bits ?
 * [psi#2](https://github.com/polkascan/py-substrate-interface/issues/2) (FR) let the function do the xxhash'ing of the storage key name
 * [psi#3](https://github.com/polkascan/py-substrate-interface/issues/3) example for get_storage(module, function, params) please
+* [psi#4](https://github.com/polkascan/py-substrate-interface/pull/4) allow human readable key name: get_storage_by_key(storage_key_name)
 
