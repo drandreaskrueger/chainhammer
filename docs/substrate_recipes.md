@@ -10,9 +10,8 @@ use our Polkadot-JS Apps to interact with your locally running node
 * https://polkadot.js.org/apps/#/explorer?rpc=ws://127.0.0.1:9944
 * Registering custom types - Additional types used by runtime modules can be added when a new instance of the API is created. This is necessary if the runtime modules use types which are not available in the base Substrate runtime. https://polkadot.js.org/api/api/#registering-custom-types
 
-
-
-
+Gave up when `cargo build` did not result in `kitchen-node`. 
+Faulty instructions. Reported:
 
 
 # issues
