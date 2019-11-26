@@ -10,8 +10,8 @@ from scalecodec.base import ScaleBytes
 
 
 
-RPC_URL = "https://dev-node.substrate.dev:9933/"
-# RPC_URL = "http://localhost:9933/"
+# RPC_URL = "https://dev-node.substrate.dev:9933/"
+RPC_URL = "http://localhost:9933/"
 
 answer1 ={
   "jsonrpc": "2.0",
@@ -32,7 +32,17 @@ def SCALE_decode(metadata_hex = answer1["result"]):
     print ('metadata -->  %s --> ' % keys)
     Metadata = result["metadata"][next(iter(keys))]
     print ('keys() --> %s --> ' % Metadata.keys())
-    pprint (Metadata[next(iter(Metadata.keys()))], width=120)
+    k = next(iter(Metadata.keys()))
+    print ("k = ", k)
+    module_names = [m["name"] for m in Metadata[k]]
+    print ('module_names --> %s ' % module_names)
+
+    # for this to work, the node must be of type 'substrate-package-chainhammer'
+    chainhammer = list(filter(lambda x: x["name"]=="chainhammer", Metadata[k]))[0]
+    print ("Module 'chainhammer':")
+    pprint (chainhammer)
+
+    # pprint (Metadata[k], width=120)
     return result
 
 
@@ -60,16 +70,16 @@ def StorageValueQuery():
 
     import xxhash # pip install xxhash
     print ("xxhash.VERSION", xxhash.VERSION, "xxhash.XXHASH_VERSION", xxhash.XXHASH_VERSION)
-    
+
     U8a = bytes("Sudo Key", encoding='utf8')
     print (list(U8a))
-    print (xxhash.xxh32(U8a).hexdigest()) 
+    print (xxhash.xxh32(U8a).hexdigest())
     print (xxhash.xxh64(U8a).hexdigest())
     try:
         print (xxhash.xxh128(U8a).hexdigest())
     except Exception as e:
         print (e.__class__.__name__, ":", e)
-    
+
 
 
 def chapter(text):
@@ -78,18 +88,19 @@ def chapter(text):
     print ("# " + text + " #")
     print (line)
 
-def RPC_tutorial(): 
+def RPC_tutorial():
     """
     https://www.shawntabrizi.com/substrate/querying-substrate-storage-via-rpc/
     """
+    # chapter("Storage Keys")
+    # StorageValueQuery()
+
     chapter("Substrate RPC Endpoint")
     _, j = RPC_call()
-    
+
     chapter("SCALE Codec")
-    SCALE_decode(j["result"])
-    
-    chapter("Storage Keys")
-    StorageValueQuery()
+    result = SCALE_decode(j["result"])
+
 
 
 
