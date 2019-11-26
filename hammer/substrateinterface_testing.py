@@ -12,6 +12,7 @@
 """
 
 from pprint import pprint
+import xxhash
 
 import substrateinterface # setup.py install
 
@@ -170,20 +171,69 @@ def get_storage_testing():
     """
     SI = substrateinterface.SubstrateInterface(url=RPC_URL)
     block_hash = SI.get_chain_head()
-    storage_key="0x50a63a871aced22e88ee6466fe5aa5d9" # eonding of "Sudo Key"
-    storage = get_storage_by_key(SI, block_hash, storage_key=storage_key)
-    without0x = storage [2:]
-    params=without0x
-    # params = "7f864e18e3dd8b58386310d2fe0919eef27c6e558564b7f67f22d99d20f587bb"
+    # storage_key="0x50a63a871aced22e88ee6466fe5aa5d9" # encoding of "Sudo Key"
+    # storage = get_storage_by_key(SI, block_hash, storage_key=storage_key)
+    # without0x = storage [2:]
+    # params=without0x
+    params = "7f864e18e3dd8b58386310d2fe0919eef27c6e558564b7f67f22d99d20f587bb"
+    # params="5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"
     get_storage(SI, block_hash, module="Balances", function="FreeBalance", params=params)
+    print ()
+
+
+def get_storage_testing_params():
+    pass
+
+
+def get_storage_chainhammer():
+    """
+    will work only on 'substrate-package-chainhammer' chain:
+    """
+    SI = substrateinterface.SubstrateInterface(url=RPC_URL)
+    block_hash = SI.get_chain_head()
+    module="chainhammer"
+    function="SomeValue"
+    storage = SI.get_storage(block_hash=block_hash, module=module, function=function, hasher ='Blake2_256')
+    pprint (storage)
+
+
+def xxh6464(x):
+    o1 = bytearray(xxhash.xxh64(x, seed=0).digest())
+    o1.reverse()
+    o2 = bytearray(xxhash.xxh64(x, seed=1).digest())
+    o2.reverse()
+    return "0x{}{}".format(o1.hex(), o2.hex())
+
+
+def get_storage_by_key_chainhammer():
+    """
+    will work only on 'substrate-package-chainhammer' chain:
+    """
+    SI = substrateinterface.SubstrateInterface(url=RPC_URL)
+    block_hash = SI.get_chain_head()
+    storage_key_name="chainhammer SomeValue"
+    # storage_key_name="Sudo Key"
+    storage_key = xxh6464(storage_key_name)
+    storage = SI.get_storage_by_key(block_hash=block_hash, storage_key=storage_key)
+    pprint (storage)
+
+
+def get_storage_noparams():
+    SI = substrateinterface.SubstrateInterface(url=RPC_URL)
+    block_hash = SI.get_chain_head()
+    print(SI.get_storage(block_hash=block_hash, module="timestamp", function="now"))
+    print(SI.get_storage(block_hash=block_hash, module="timestamp", function="now", hasher ='Blake2_256'))
+    print(SI.get_storage(block_hash=block_hash, module="timestamp", function="now"))
 
 
 if __name__ == '__main__':
     # hashlib_supported_algorithms(); exit()
-    testing_substrateinterface()
+    # testing_substrateinterface()
 
     # get_storage_testing()
-
+    # get_storage_chainhammer()
+    # get_storage_noparams()
+    get_storage_by_key_chainhammer()
 
 
 
@@ -239,11 +289,11 @@ Connected to: http://localhost:9933/
            get_chain_head : 0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167
 
 [param block_hash=0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167]
-          get_chain_block : dict_keys(['block', 'justification'])  -->  block : dict_keys(['extrinsics', 'header']) 
-         get_block_header : dict_keys(['digest', 'extrinsicsRoot', 'number', 'parentHash', 'stateRoot'])  -->  digest : dict_keys(['logs']) 
-         get_block_events : dict_keys(['jsonrpc', 'result', 'id']) 
-get_block_runtime_version : dict_keys(['apis', 'authoringVersion', 'implName', 'implVersion', 'specName', 'specVersion']) 
-         get_block_number : 703 
+          get_chain_block : dict_keys(['block', 'justification'])  -->  block : dict_keys(['extrinsics', 'header'])
+         get_block_header : dict_keys(['digest', 'extrinsicsRoot', 'number', 'parentHash', 'stateRoot'])  -->  digest : dict_keys(['logs'])
+         get_block_events : dict_keys(['jsonrpc', 'result', 'id'])
+get_block_runtime_version : dict_keys(['apis', 'authoringVersion', 'implName', 'implVersion', 'specName', 'specVersion'])
+         get_block_number : 703
 
 [param block_hash=0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167]
        get_block_metadata : dict_keys(['magicNumber', 'metadata'])
@@ -254,15 +304,15 @@ get_block_runtime_version : dict_keys(['apis', 'authoringVersion', 'implName', '
  MetadataV4-->modules-->names : ['system', 'timestamp', 'consensus', 'aura', 'indices', 'balances', 'sudo', 'chainhammer']
 
 [param block_id=703]
-          get_chain_block : dict_keys(['block', 'justification'])  -->  block : dict_keys(['extrinsics', 'header']) 
-           get_block_hash : 0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167 
+          get_chain_block : dict_keys(['block', 'justification'])  -->  block : dict_keys(['extrinsics', 'header'])
+           get_block_hash : 0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167
 
 [params: storage_key=xxh6464('Sudo Key')='0x50a63a871aced22e88ee6466fe5aa5d9', block_hash=0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167]
 get_storage_by_key(storage_key='0x50a63a871aced22e88ee6466fe5aa5d9', block_hash=0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167)
 '0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d'
 
 [Unclear]
-Please give some examples how this works ... 
+Please give some examples how this works ...
 get_storage(module='Balances', function='FreeBalance', params='d43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d', block_hash=0x12bca5272ed5c441f86089fbc951a8a4a0048ef57d7fff4d941ad7d7db61c167)
 None
 """
