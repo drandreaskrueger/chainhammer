@@ -27,3 +27,10 @@ Rust
 returns `value`, or `Err(msg)`
 
 The included template.rs stores an u32!
+
+--> made a standalone repo `substrate-package-chainhammer` which provides a
+
+    chainhammer.store_value(somevalue)
+
+and because cleaned and deleted, not much else.
+
