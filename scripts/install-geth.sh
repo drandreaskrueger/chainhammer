@@ -27,6 +27,7 @@ go version
 
 echo install geth
 go get -d github.com/ethereum/go-ethereum
+go mod init
 go install "github.com/ethereum/go-ethereum/cmd/geth"
 geth version
 
