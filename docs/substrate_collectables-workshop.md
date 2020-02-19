@@ -34,3 +34,5 @@ The included template.rs stores an u32!
 
 and because cleaned and deleted, not much else.
 
+# issues
+* [pja#2205](https://github.com/polkadot-js/apps/issues/2205) ANY transaction results in ExtrinsicStatus:: 1010: Invalid Transaction: 0
