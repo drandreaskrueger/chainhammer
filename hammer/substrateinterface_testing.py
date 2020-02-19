@@ -24,7 +24,9 @@ def hashlib_supported_algorithms():
     """
     print all hashlib algorithms
     # py3.5.3: blake2b512 blake2s256 md4 md5 md5-sha1 ripemd160 sha1 sha224 sha256 sha384 sha512 whirlpool
-    # py3.7.3: blake2b blake2b512 blake2s blake2s256 md4 md5 md5-sha1 ripemd160 sha1 sha224 sha256 sha3-224 sha3-256 sha3-384 sha3-512 sha384 sha3_224 sha3_256 sha3_384 sha3_512 sha512 sha512-224 sha512-256 shake128 shake256 shake_128 shake_256 sm3 whirlpool
+    # py3.7.3: blake2b blake2b512 blake2s blake2s256 md4 md5 md5-sha1 ripemd160 sha1 sha224 sha256 
+               sha3-224 sha3-256 sha3-384 sha3-512 sha384 sha3_224 sha3_256 sha3_384 sha3_512 
+               sha512 sha512-224 sha512-256 shake128 shake256 shake_128 shake_256 sm3 whirlpool
     """
     import hashlib
     print (" ".join(sorted(hashlib.algorithms_available)))
@@ -227,10 +229,10 @@ def get_storage_noparams():
 
 if __name__ == '__main__':
     # hashlib_supported_algorithms(); exit()
-    # testing_substrateinterface()
+    testing_substrateinterface()
 
-    get_storage_testing()
-    get_storage_chainhammer()
+    #get_storage_testing()
+    #get_storage_chainhammer()
     # get_storage_noparams()
     # get_storage_by_key_chainhammer()
 
