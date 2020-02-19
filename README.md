@@ -174,13 +174,13 @@ Please credit this as:
 
 Consider to submit your improvements & [usage](docs/other-projects.md) as pull request. Thanks.
 
-### financial support
-
-![logo](img/web3 foundation_grants_badge_black_smaller.png)
+### development was supported by
 
 > v01-v35 financed by Electron.org.uk 2018  
 > v40-v55 financed by Web3Foundation 2018-2019  
 > v58-v59 financed by Microsoft Azure 2019  
+
+![logo](img/web3_foundation_grants_badge_black_smaller.png)
 
 Thank you very much!
 
