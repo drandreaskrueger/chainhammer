@@ -169,12 +169,20 @@ There were 98 tests on January 23rd, all 98 PASSED
 Please credit this as:
 
 > benchmarking scripts "chainhammer"  
-> v01-v35 financed by Electron.org.uk 2018  
-> v40-v55 financed by Web3Foundation 2018-2019  
-> current maintainer: Dr Andreas Krueger 2018-2019        
+> maintainer: Dr Andreas Krueger 2018-2020  
 > https://github.com/drandreaskrueger/chainhammer   
 
 Consider to submit your improvements & [usage](docs/other-projects.md) as pull request. Thanks.
+
+### financial support
+
+![logo](img/web3 foundation_grants_badge_black_smaller.png)
+
+> v01-v35 financed by Electron.org.uk 2018  
+> v40-v55 financed by Web3Foundation 2018-2019  
+> v58-v59 financed by Microsoft Azure 2019  
+
+Thank you very much!
 
 ### short summary
 
