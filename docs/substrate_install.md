@@ -283,4 +283,6 @@ External: See
 * [ps#4096](https://github.com/paritytech/substrate/issues/4096) error: The argument '--name <NAME>' cannot be used with '--dave'
 * [ps#4103](https://github.com/paritytech/substrate/issues/4103) --node-key vs --node-key-file 
 * [sdh#327](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/327) suggestion what to add to 'start-a-private-network-with-substrate'
-
+* [#sdh#473](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/473) v2 tutorials?
+* [#sdh#474](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/474)  v2 installing-substrate#manual-build
+* [#sdht#24](https://github.com/substrate-developer-hub/substrate-node-template/issues/24) v2 ready ?
