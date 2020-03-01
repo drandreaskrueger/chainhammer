@@ -1,7 +1,122 @@
-# chainhammer substrate instructions
+# chainhammer substrate v2 install instructions
+This tutorial is uptodate (March 2020): https://substrate.dev/docs/en/overview/getting-started
 
-also see below chapters [#alternative-installation-1](#alternative-installation-1) and [#alternative-installation-2](#alternative-installation-2).
-# installing
+I did the following, and it worked. 
+
+Recorded so verbose, so that it can [later become an `install-node-template.sh` script](../scripts/).
+
+### rust update; node & yarn correct versions
+```
+sudo apt update
+sudo apt install -y cmake pkg-config libssl-dev git gcc build-essential git clang libclang-dev
+source ~/.cargo/env # made it part of ~/.bashrc anyways
+rustup update
+rustup default stable
+rustup update nightly
+rustup target add wasm32-unknown-unknown --toolchain nightly
+rustup --version; rustc --version; node --version; nodejs --version; yarn --version
+```
+> rustup 1.21.1 (7832b2ebe 2019-12-20)  
+> rustc 1.41.1 (f3e1a954d 2020-02-24)  
+> v11.15.0  
+> v10.19.0  
+> 1.22.0  
+
+### substrate v2 stable pre-v2.0-3e65111:
+later only subkey is needed, but this also installs the default `substrate` binary:
+```
+git clone https://github.com/paritytech/substrate/ paritytech_substrate_v2
+cd paritytech_substrate_v2/
+git checkout 3e65111
+cargo clean
+nice cargo build --release # perhaps drop this, as below 'install' compiles anyways?
+cargo test --release --all # perhaps drop this. All but 2 tests are passing.
+
+# install into ~/.cargo/bin:
+nice cargo install --force --path ./bin/node/cli/ 
+nice cargo install --force --path ./bin/utils/subkey subkey
+# always keep versions
+version=$(target/release/substrate --version | awk '{ print $2 }' )
+pushd ~/.cargo/bin
+mv substrate substrate-$version
+mv subkey subkey-$version
+ln -s substrate-$version substrate 
+ln -s subkey-$version subkey
+ls -latr sub*
+popd
+which substrate; which subkey # just to be sure
+substrate --version; subkey --version
+```
+> version 2.0.0-3e651110a-x86_64-linux-gnu  
+
+### node-template v2 (on basis of same substrate stable pre-v2.0-3e65111):
+`node-template` is a "minimal working Substrate node meant for the development of new Substrate blockchains":
+```
+git clone https://github.com/substrate-developer-hub/substrate-node-template substrate-developer-hub_substrate-node-template_v2
+cd substrate-developer-hub_substrate-node-template_v2/
+git checkout 8b6fe666
+nice cargo build --release
+version=$(target/release/node-template --version | awk '{ print $2 }' )
+cp ./target/release/node-template ~/.cargo/bin/node-template-$version
+ln -s ~/.cargo/bin/node-template-$version ~/.cargo/bin/node-template
+ls -latr ~/.cargo/bin/node*
+which node-template
+node-template --version
+```
+> version 2.0.0-8b6fe66-x86_64-linux-gnu
+
+start new chain:
+```
+node-template purge-chain -y --dev
+node-template --dev
+```
+
+keep it running, and either https://polkadot.js.org/apps/#/settings --> `127.0.0.1:9944` OR in new terminal:
+### frontend sdh-sfet 006ef1c2
+```
+git clone https://github.com/substrate-developer-hub/substrate-front-end-template substrate-developer-hub_substrate-front-end-template_v2
+cd substrate-developer-hub_substrate-front-end-template_v2
+git checkout 006ef1c2
+yarn install
+yarn start
+```
+> http://localhost:8000/
+
+### Store a value in the chain:
+http://localhost:8000/ --> Store something.   
+
+Or 
+
+* [WRITE extrinsic](https://polkadot.js.org/apps/#/extrinsics) ALICE --> templateModule --> doSomething(something) --> 42 --> Submit.  
+* [READ chainstate](https://polkadot.js.org/apps/#/chainstate) --> templateModule -->  something() --> PLUS.  
+
+It works!
+
+---
+
+
+
+---
+
+---
+
+All following is historical - left here only as lookup. Substrate v2 now had 'feature freeze'. Redone all this; see above.
+
+However, perhaps check the [list of ISSUES at the bottom of the page](#issues).
+
+---
+
+Chapters:
+
+* substrate 1.0
+* wabt
+* ink!
+* [#alternative-installation-1](#alternative-installation-1)
+* [#alternative-installation-2](#alternative-installation-2).
+* substrate 2.0
+* node template dev chain
+* configure network: own keys & own chainspec
+  * https://gitlab.com/andreaskrueger/substrate-starter
 
 ## substrate 1.0
 Following https://substrate.dev/docs/en/getting-started/installing-substrate and -as usual lol- initially most manuals just don't work. Then after raising 2 [issues](#issues) (which were answered superfast!), this seems to be working:
@@ -286,3 +401,5 @@ External: See
 * [#sdh#473](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/473) v2 tutorials?
 * [#sdh#474](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/474)  v2 installing-substrate#manual-build
 * [#sdht#24](https://github.com/substrate-developer-hub/substrate-node-template/issues/24) v2 ready ?
+* [#sdh#476](https://github.com/substrate-developer-hub/substrate-developer-hub.github.io/issues/476) cargo test --release --all ?
+
