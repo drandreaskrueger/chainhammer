@@ -66,4 +66,12 @@ cd ..
 
 cd $OLDPATH
 
+: '
+# above not needed anymore, because now released on Pypi: https://pypi.org/project/substrate-interface/ https://pypi.org/project/scalecodec/
+# pip3 uninstall scalecodec
+
+# but websockets version conflict, must get rid of eth-testrpc first --> web3==4.9.2
+pip3 install scalecodec substrate-interface
+'
+
 set +x
