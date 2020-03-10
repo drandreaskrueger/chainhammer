@@ -31,9 +31,7 @@ Two tools suggested: https://riot.im/app/#/room/!HzySYSaIhtyWrwiwEV:matrix.org/$
 As for this there is only [JS documentation](https://github.com/paritytech/txwrapper/blob/master/docs/modules/_createsignedtx_.md) but no CLI example ... I have not tried it out; also Shawn didn't know; but [judging by the code](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org/$1583880095252215PsOKK:matrix.org), it is [perhaps not faster](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org/$1583882351257282PsbPW:matrix.org) than the "`signer sign`" tool anyways? -->
 
 ### signer sign
-[dockerized](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org/$1583879105249853RnyOc:matrix.org) is ~three times faster(!) than [nondocker local install](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org/$1583879162249967usiRQtime docker run jacogr/polkadot-js-tools signer sign --type sr25519 --account //Alice --seed "//Alice" 0xa8040400ff8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48070010a5d4e8:matrix.org). 
-,
-Example call:
+[dockerized](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org/$1583879162249967usiRQ:matrix.org) is ~three times faster(!) than a [nondocker local install](https://riot.im/app/#/room/#polkadot-watercooler:matrix.org/$1583879105249853RnyOc:matrix.org).  Example call:
 
 ```
 import substrateinterface
