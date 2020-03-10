@@ -1,4 +1,4 @@
-# signing transactions
+# substrate - signing transactions
 
 ## substrate subkey command 
 
