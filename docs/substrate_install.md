@@ -1,7 +1,7 @@
-# chainhammer substrate v2 install instructions
-This tutorial is uptodate (March 2020): https://substrate.dev/docs/en/overview/getting-started
+# chainhammer substrate v2 install instructions: `v2.0.0-rc2`
+This tutorial *had been* uptodate in March 2020: https://substrate.dev/docs/en/overview/getting-started - but they made it disappear (Why no http-redirect??). Perhaps this replaced it? https://substrate.dev/docs/en/knowledgebase/getting-started/ 
 
-I did the following, and it worked. 
+Anyways, I did the following, and it worked. Updated June 2020.
 
 Recorded so verbose, so that it can [later become an `install-node-template.sh` script](../scripts/).
 
@@ -16,18 +16,23 @@ rustup update nightly
 rustup target add wasm32-unknown-unknown --toolchain nightly
 rustup --version; rustc --version; node --version; nodejs --version; yarn --version
 ```
-> rustup 1.21.1 (7832b2ebe 2019-12-20)  
-> rustc 1.41.1 (f3e1a954d 2020-02-24)  
-> v11.15.0  
-> v10.19.0  
-> 1.22.0  
 
-### substrate v2 stable pre-v2.0-3e65111:
-later only subkey is needed, but this also installs the default `substrate` binary:
+current versions in June 2020:
+
+> rustup 1.21.1 (7832b2ebe 2019-12-20)  
+> rustc 1.43.1 (8d69840ab 2020-05-04)  
+> v11.15.0  
+> v10.21.0  
+> 1.22.4  
+
+
+### substrate v2 version: `v2.0.0-rc2` (May 26 14:32:23)
+Later only subkey is needed, but this also installs the default `substrate` binary:
+
 ```
 git clone https://github.com/paritytech/substrate/ paritytech_substrate_v2
 cd paritytech_substrate_v2/
-git checkout 3e65111
+git checkout v2.0.0-rc2
 cargo clean
 nice cargo build --release # perhaps drop this, as below 'install' compiles anyways?
 cargo test --release --all # perhaps drop this. All but 2 tests are passing.
@@ -35,7 +40,8 @@ cargo test --release --all # perhaps drop this. All but 2 tests are passing.
 # install into ~/.cargo/bin:
 nice cargo install --force --path ./bin/node/cli/ 
 nice cargo install --force --path ./bin/utils/subkey subkey
-# always keep versions
+
+# always keep all old versions too
 version=$(target/release/substrate --version | awk '{ print $2 }' )
 pushd ~/.cargo/bin
 mv substrate substrate-$version
@@ -44,26 +50,30 @@ ln -s substrate-$version substrate
 ln -s subkey-$version subkey
 ls -latr sub*
 popd
+
 which substrate; which subkey # just to be sure
 substrate --version; subkey --version
 ```
 > version 2.0.0-3e651110a-x86_64-linux-gnu  
+TODO  
 
-### node-template v2 (on basis of same substrate stable pre-v2.0-3e65111):
+### node-template v2 (basis: same substrate v2.0.0-rc2):
 `node-template` is a "minimal working Substrate node meant for the development of new Substrate blockchains":
 ```
 git clone https://github.com/substrate-developer-hub/substrate-node-template substrate-developer-hub_substrate-node-template_v2
 cd substrate-developer-hub_substrate-node-template_v2/
-git checkout 8b6fe666
+git checkout v2.0.0-rc2
 nice cargo build --release
+
 version=$(target/release/node-template --version | awk '{ print $2 }' )
+echo $version
 cp ./target/release/node-template ~/.cargo/bin/node-template-$version
-ln -s ~/.cargo/bin/node-template-$version ~/.cargo/bin/node-template
+ln -sf ~/.cargo/bin/node-template-$version ~/.cargo/bin/node-template
 ls -latr ~/.cargo/bin/node*
 which node-template
 node-template --version
 ```
-> version 2.0.0-8b6fe66-x86_64-linux-gnu
+> node-template 2.0.0-rc2-83d7157-x86_64-linux-gnu
 
 start new chain:
 ```
@@ -72,11 +82,11 @@ node-template --dev
 ```
 
 keep it running, and either https://polkadot.js.org/apps/#/settings --> `127.0.0.1:9944` OR in new terminal:
-### frontend sdh-sfet 006ef1c2
+### frontend sdh-sfet v2.0.0-rc2
 ```
 git clone https://github.com/substrate-developer-hub/substrate-front-end-template substrate-developer-hub_substrate-front-end-template_v2
 cd substrate-developer-hub_substrate-front-end-template_v2
-git checkout 006ef1c2
+git checkout v2.0.0-rc2
 yarn install
 yarn start
 ```
