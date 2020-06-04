@@ -104,6 +104,8 @@ def if_poa_then_bugfix(w3, NODENAME, CHAINNAME, CONSENSUS):
         from web3.middleware import geth_poa_middleware
         # inject the poa compatibility middleware to the innermost layer
         w3.middleware_stack.inject(geth_poa_middleware, layer=0)
+        # TODO: see https://github.com/ethereum/web3.py/issues/898#issuecomment-638687435
+        # w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 
 # def web3connection(RPCaddress=RPCaddress, account=None):
