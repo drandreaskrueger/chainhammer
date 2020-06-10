@@ -35,7 +35,7 @@ cd paritytech_substrate_v2/
 git checkout v2.0.0-rc2
 cargo clean
 nice cargo build --release # perhaps drop this, as below 'install' compiles anyways?
-# nice cargo test --release --all # Compile and run tests if you like to
+# nice cargo test --release --all # Compile and run tests if you like to. Only 1 failed: (api::http::tests::request_write_body_invalid_call)
 
 # install binaries into ~/.cargo/bin:
 nice cargo install --force --path ./bin/node/cli/           # as we use node-template, see below, this might actually be unneeded
