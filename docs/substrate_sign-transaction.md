@@ -62,4 +62,4 @@ time docker run jacogr/polkadot-js-tools signer sign --type sr25519 --account //
 * [pspsi#8](https://github.com/polkascan/py-substrate-interface/issues/8) compose_call only works with dest=PUB_KEY
 * [pspsi#9](https://github.com/polkascan/py-substrate-interface/issues/9) compose_call() results in payload that makes sign-transaction crash
 * [pspsi#10](https://github.com/polkascan/py-substrate-interface/issues/10) signing transactions
-
+* [psi#13](https://github.com/polkascan/py-substrate-interface/issues/13) get_runtime_events() --> RemainingScaleBytesNotEmptyException
