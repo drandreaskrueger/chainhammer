@@ -41,4 +41,5 @@ I have tried out most functions in polkascan's `py-substrate-interface`, see `su
 * [psi#3](https://github.com/polkascan/py-substrate-interface/issues/3) example for get_storage(module, function, params) please
 * [psi#4](https://github.com/polkascan/py-substrate-interface/pull/4) allow human readable key name: get_storage_by_key(storage_key_name)
 * [psi#13](https://github.com/polkascan/py-substrate-interface/issues/13) get_runtime_events() --> RemainingScaleBytesNotEmptyException
+* [psi#14](https://github.com/polkascan/py-substrate-interface/issues/14) Verification Error: Execution(ApiError("Could not convert parameter `tx` ...
 
