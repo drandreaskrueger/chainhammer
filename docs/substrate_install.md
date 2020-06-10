@@ -35,14 +35,14 @@ cd paritytech_substrate_v2/
 git checkout v2.0.0-rc2
 cargo clean
 nice cargo build --release # perhaps drop this, as below 'install' compiles anyways?
-cargo test --release --all # perhaps drop this. All but 2 tests are passing.
+# nice cargo test --release --all # Compile and run tests if you like to
 
-# install into ~/.cargo/bin:
-nice cargo install --force --path ./bin/node/cli/ 
-nice cargo install --force --path ./bin/utils/subkey subkey
+# install binaries into ~/.cargo/bin:
+nice cargo install --force --path ./bin/node/cli/           # as we use node-template, see below, this might actually be unneeded
+nice cargo install --force --path ./bin/utils/subkey subkey # probably this is the only thing we will need later
 
 # always keep all old versions too
-version=$(target/release/substrate --version | awk '{ print $2 }' )
+version=$(target/release/substrate --version | awk '{ print $2 }' ); echo $version
 pushd ~/.cargo/bin
 mv substrate substrate-$version
 mv subkey subkey-$version
@@ -54,11 +54,13 @@ popd
 which substrate; which subkey # just to be sure
 substrate --version; subkey --version
 ```
-> version 2.0.0-3e651110a-x86_64-linux-gnu  
-TODO  
+> substrate 2.0.0-rc2-45b9f0a9c-x86_64-linux-gnu  
+> subkey 2.0.0-rc2  
+
 
 ### node-template v2 (basis: same substrate v2.0.0-rc2):
 `node-template` is a "minimal working Substrate node meant for the development of new Substrate blockchains":
+
 ```
 git clone https://github.com/substrate-developer-hub/substrate-node-template substrate-developer-hub_substrate-node-template_v2
 cd substrate-developer-hub_substrate-node-template_v2/
@@ -73,8 +75,10 @@ ls -latr ~/.cargo/bin/node*
 which node-template
 node-template --version
 ```
+> ~/.cargo/bin/node-template  
 > node-template 2.0.0-rc2-83d7157-x86_64-linux-gnu
 
+#### node-template start chain 
 start new chain:
 ```
 node-template purge-chain -y --dev
