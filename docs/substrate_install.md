@@ -5,6 +5,9 @@ Anyways, I did the following, and it worked. Updated June 2020.
 
 Recorded so verbose, so that it can [later become an `install-node-template.sh` script](../scripts/).
 
+#### June 2020 - version troubles - again.
+[a few days later] Now ... the polkascan Python library has trouble with this rc2. So ... trying out rc3 now. Everything below would have to be updated. But I could be bothered. Arrggghh.  
+
 ### rust update; node & yarn correct versions
 ```
 sudo apt update
