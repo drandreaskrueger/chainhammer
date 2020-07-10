@@ -22,6 +22,8 @@ TOC:
 
 Also see [reproduce.md](reproduce.md), [cloud.md](cloud.md), and the per-client [results/*.md](../results/) texts.
 
+Plus, see the (esp. the closed) [issues on github](https://github.com/drandreaskrueger/chainhammer/issues?q=is%3Aissue), as they might contain solutions to a problem you are also encountering.
+
 ---
 
 ## how to install and run
