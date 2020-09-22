@@ -35,6 +35,7 @@ Later only subkey is needed, but this also installs the default `substrate` bina
 ```
 git clone https://github.com/paritytech/substrate/ paritytech_substrate_v2
 cd paritytech_substrate_v2/
+git fetch --tags
 git checkout v2.0.0-rc2
 cargo clean
 nice cargo build --release # perhaps drop this, as below 'install' compiles anyways?
