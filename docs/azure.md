@@ -32,6 +32,8 @@ tail -f logs/deploy.py.log
 Do not move on, until the above is working fine. If unsolvable, please open a github issue.
 
 ## cloud connection attempt
+(to identify **your** `RPCaddress` here's a helpful standalone script: [test_RPC.py](../hammer/test_RPC.py)).
+
 Patch the two (write & read) RPCaddress'es from localhost:8545 to the wanted remote endpoint:   
 ```
 git reset HEAD hammer/config.py
