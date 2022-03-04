@@ -282,7 +282,7 @@ I am doing (`contract_method_ID()` + `arg` --> `argument_encoding()` --> `txPara
 ### choice
 
 I switch between those two routes here    
-[`contrachow to install from gitlabt_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RPC`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/send.py#L201)
+[`contract_set = contract_set_via_web3   if ROUTE=="web3" else contract_set_via_RPC`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/send.py#L201)
 
 choice constant `ROUTE` is defined in [`config.py`](https://github.com/drandreaskrueger/chainhammer/blob/93c40384a4d178bdb00cea491d15b14046471b72/config.py#L38)
 
