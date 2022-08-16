@@ -212,7 +212,7 @@ def many_transactions_consecutive(contract, numTx):
     txs = []
     for i in range(numTx):
         tx = contract_set(contract, i)
-        print ("set() transaction submitted: ", tx) # Web3.toHex(tx)) # new web3
+        print (i, " set() transaction submitted: ", tx) # Web3.toHex(tx)) # new web3
         txs.append(tx)
     return txs
         
