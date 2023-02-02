@@ -93,5 +93,5 @@ wcwidth==0.1.7
 web3==4.8.2
 webencodings==0.5.1
 websockets==6.0
-Werkzeug==0.14.1
+Werkzeug==0.15.5
 widgetsnbextension==3.4.2
